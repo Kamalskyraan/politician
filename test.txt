@@ -1,1 +1,5 @@
+<<<<<<< HEAD
 wertyuiop[]
+=======
+abcdddddd
+>>>>>>> 173535e0634d26e3664ef5e24a0b9ead221f810c
