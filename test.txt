@@ -1,1 +1,9 @@
+<<<<<<< HEAD
 abcddddddfghjkl
+=======
+<<<<<<< HEAD
+wertyuiop[]
+=======
+abcdddddd
+>>>>>>> 173535e0634d26e3664ef5e24a0b9ead221f810c
+>>>>>>> 7d23bd435ad209879a905ed0678aeb0735f2ba64
