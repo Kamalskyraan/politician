@@ -1,0 +1,204 @@
+<style>
+  * {
+    box-sizing: border-box;
+  }
+
+  body {
+    font-family: Arial, sans-serif;
+    font-size: 11px;
+    color: #333;
+    padding: 8px;
+    margin: 0;
+  }
+
+  .header {
+    text-align: center;
+    margin-bottom: 10px;
+  }
+
+  .header h1 {
+    margin: 0;
+    font-size: 22px;
+    color: #003468;
+  }
+
+  .report-date {
+    margin-top: 3px;
+    font-size: 10px;
+    color: #666;
+  }
+
+  .summary {
+    width: 100%;
+    margin-bottom: 12px;
+    border-collapse: collapse;
+  }
+
+  .summary td {
+    width: 33.33%;
+    padding: 0 4px;
+  }
+
+  .card {
+    /* border: 1px solid #d9d9d9; */
+    border-radius: 4px;
+    text-align: center;
+    padding: 8px 5px;
+    background: #fafafa;
+  }
+
+  .card-title {
+    font-size: 10px;
+    color: #666;
+    margin-bottom: 4px;
+    font-weight: bold;
+  }
+
+  .card-value {
+    font-size: 16px;
+    font-weight: bold;
+    color: #003468;
+  }
+
+  table {
+    width: 100%;
+    border-collapse: collapse;
+    font-size: 10px;
+  }
+
+  thead th {
+    background: #2A9D8F;
+    color: #fff;
+    padding: 6px;
+    /* border: 1px solid #d9d9d9; */
+    text-align: left;
+  }
+
+  tbody td {
+    border: 1px solid #d9d9d9;
+    padding: 5px 6px;
+    vertical-align: middle;
+  }
+
+  tbody tr:nth-child(even) {
+    background: #f8f9fb;
+  }
+
+  .amount {
+    text-align: right;
+    font-weight: 600;
+  }
+
+  .income {
+    color: #198754;
+    font-weight: bold;
+    text-transform: uppercase;
+  }
+
+  .expense {
+    color: #dc3545;
+    font-weight: bold;
+    text-transform: uppercase;
+  }
+
+  .text-center {
+    text-align: center;
+  }
+
+  .footer {
+    margin-top: 10px;
+    text-align: right;
+    font-size: 9px;
+    color: #777;
+  }
+</style>
+
+<div class="header">
+  <h1>Finance Report</h1>
+  <div class="report-date">
+    Generated on: <%= new Date().toLocaleDateString() %>
+  </div>
+</div>
+
+<table class="summary">
+  <tr>
+    <td>
+      <div class="card">
+        <div class="card-title">TOTAL INCOME</div>
+        <div class="card-value">
+          ₹ <%= summary.income_total %>
+        </div>
+      </div>
+    </td>
+
+
+<td>
+  <div class="card">
+    <div class="card-title">TOTAL EXPENSE</div>
+    <div class="card-value">
+      ₹ <%= summary.expense_total %>
+    </div>
+  </div>
+</td>
+  </tr>
+</table>
+
+<table>
+  <thead>
+    <tr>
+      <th width="5%">S.N0</th>
+      <th width="12%">Type</th>
+      <th width="20%">Category</th>
+      <th width="18%">Date</th>
+      <th width="15%">Amount</th>
+      <th width="30%">Notes</th>
+    </tr>
+  </thead>
+
+  <tbody>
+    <% data.forEach((item,index)=> { %>
+      <tr>
+        <td class="text-center">
+          <%= index + 1 %>
+        </td>
+
+
+    <td>
+      <span class="<%= item.type %>">
+        <%= item.type %>
+      </span>
+    </td>
+
+    <td>
+      <%= item.category_name || item.cat_name || '-' %>
+    </td>
+
+    <td>
+      <%= item.trans_date %>
+    </td>
+
+    <td class="amount">
+      ₹ <%= item.amount %>
+    </td>
+
+    <td>
+      <%= item.notes || '-' %>
+    </td>
+  </tr>
+<% }) %>
+
+<% if(!data.length){ %>
+  <tr>
+    <td colspan="6" class="text-center">
+      No Records Found
+    </td>
+  </tr>
+<% } %>
+
+
+  </tbody>
+</table>
+
+<div class="footer">
+ 
+</div>
