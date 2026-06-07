@@ -4,7 +4,7 @@ import mysql from "mysql2/promise";
 
 const pool = mysql.createPool({
   host: "localhost",
-  user: "political",
+  user: "skyraantech_political",
   password: "BHs5$--qOTZ=E4D-",
   database: "skyraantech_political_db",
   waitForConnections: process.env.DB_WAIT_FOR_CONNECTIONS,
