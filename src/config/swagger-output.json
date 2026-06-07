@@ -7,145 +7,49 @@
   },
   "servers": [
     {
-      "url": "http://localhost:5000/api"
+      "url": "http://political.skyraantech.com/server/api"
     }
   ],
   "paths": {
     "/auth/requestotp": {
       "post": {
         "tags": [
-          "AUTH"
+          "1.Auth"
         ],
-        "summary": "Request OTP",
-        "description": "Send OTP to user`s email or phone number. type = 0 for new users (email and phone number verification before sign up) and type = 1 for already signed up users(login, change number or email)",
+        "summary": "Send Otp to related",
+        "description": "Send OTP via email or phn_num",
         "responses": {
           "200": {
-            "description": "Success",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "type": "object",
-                  "properties": {
-                    "success": {
-                      "type": "number",
-                      "example": 1
-                    },
-                    "message": {
-                      "type": "string",
-                      "example": "Operation completed successfully"
-                    },
-                    "data": {
-                      "type": "array",
-                      "example": [],
-                      "items": {}
-                    },
-                    "error": {
-                      "type": "string",
-                      "example": ""
-                    }
-                  },
-                  "xml": {
-                    "name": "main"
-                  }
-                }
-              },
-              "application/xml": {
-                "schema": {
-                  "type": "object",
-                  "properties": {
-                    "success": {
-                      "type": "number",
-                      "example": 1
-                    },
-                    "message": {
-                      "type": "string",
-                      "example": "Operation completed successfully"
-                    },
-                    "data": {
-                      "type": "array",
-                      "example": [],
-                      "items": {}
-                    },
-                    "error": {
-                      "type": "string",
-                      "example": ""
-                    }
-                  },
-                  "xml": {
-                    "name": "main"
-                  }
-                }
-              }
-            }
+            "description": "OTP send successfully"
           },
           "500": {
-            "description": "Internal Server Error",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "type": "object",
-                  "properties": {
-                    "success": {
-                      "type": "number",
-                      "example": 0
-                    },
-                    "message": {
-                      "type": "string",
-                      "example": "Internal Server Error"
-                    },
-                    "data": {
-                      "type": "array",
-                      "example": [],
-                      "items": {}
-                    },
-                    "error": {
-                      "type": "string",
-                      "example": "Error message"
-                    }
-                  },
-                  "xml": {
-                    "name": "main"
-                  }
-                }
-              },
-              "application/xml": {
-                "schema": {
-                  "type": "object",
-                  "properties": {
-                    "success": {
-                      "type": "number",
-                      "example": 0
-                    },
-                    "message": {
-                      "type": "string",
-                      "example": "Internal Server Error"
-                    },
-                    "data": {
-                      "type": "array",
-                      "example": [],
-                      "items": {}
-                    },
-                    "error": {
-                      "type": "string",
-                      "example": "Error message"
-                    }
-                  },
-                  "xml": {
-                    "name": "main"
-                  }
-                }
-              }
-            }
+            "description": "Internal Server Error"
           }
         },
         "requestBody": {
-          "required": true,
-          "description": "Required fields - type, Either email or country code + phone number",
+          "required": false,
           "content": {
             "application/json": {
-              "example": {
-                "email": "skyraan@gmail.com",
-                "type": 0
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "email": {
+                    "type": "string",
+                    "example": "abc@gmail.com"
+                  },
+                  "c_code": {
+                    "type": "string",
+                    "example": "+91"
+                  },
+                  "phn_num": {
+                    "type": "string",
+                    "example": "9876543210"
+                  },
+                  "type": {
+                    "type": "Number",
+                    "example": 0
+                  }
+                }
               }
             }
           }
@@ -155,138 +59,42 @@
     "/auth/verifyotp": {
       "post": {
         "tags": [
-          "AUTH"
+          "1.Auth"
         ],
-        "summary": "Verify OTP",
-        "description": "Verify OTP which sent to user`s email or phone number.",
+        "summary": "Verify Otp to related",
+        "description": "Verify OTP via email or phn_num",
         "responses": {
           "200": {
-            "description": "Success",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "type": "object",
-                  "properties": {
-                    "success": {
-                      "type": "number",
-                      "example": 1
-                    },
-                    "message": {
-                      "type": "string",
-                      "example": "Operation completed successfully"
-                    },
-                    "data": {
-                      "type": "array",
-                      "example": [],
-                      "items": {}
-                    },
-                    "error": {
-                      "type": "string",
-                      "example": ""
-                    }
-                  },
-                  "xml": {
-                    "name": "main"
-                  }
-                }
-              },
-              "application/xml": {
-                "schema": {
-                  "type": "object",
-                  "properties": {
-                    "success": {
-                      "type": "number",
-                      "example": 1
-                    },
-                    "message": {
-                      "type": "string",
-                      "example": "Operation completed successfully"
-                    },
-                    "data": {
-                      "type": "array",
-                      "example": [],
-                      "items": {}
-                    },
-                    "error": {
-                      "type": "string",
-                      "example": ""
-                    }
-                  },
-                  "xml": {
-                    "name": "main"
-                  }
-                }
-              }
-            }
+            "description": "OTP verified successfully"
           },
           "500": {
-            "description": "Internal Server Error",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "type": "object",
-                  "properties": {
-                    "success": {
-                      "type": "number",
-                      "example": 0
-                    },
-                    "message": {
-                      "type": "string",
-                      "example": "Internal Server Error"
-                    },
-                    "data": {
-                      "type": "array",
-                      "example": [],
-                      "items": {}
-                    },
-                    "error": {
-                      "type": "string",
-                      "example": "Error message"
-                    }
-                  },
-                  "xml": {
-                    "name": "main"
-                  }
-                }
-              },
-              "application/xml": {
-                "schema": {
-                  "type": "object",
-                  "properties": {
-                    "success": {
-                      "type": "number",
-                      "example": 0
-                    },
-                    "message": {
-                      "type": "string",
-                      "example": "Internal Server Error"
-                    },
-                    "data": {
-                      "type": "array",
-                      "example": [],
-                      "items": {}
-                    },
-                    "error": {
-                      "type": "string",
-                      "example": "Error message"
-                    }
-                  },
-                  "xml": {
-                    "name": "main"
-                  }
-                }
-              }
-            }
+            "description": "Internal Server Error"
           }
         },
         "requestBody": {
-          "required": true,
-          "description": "Required fields - to which (email or phn_num) OTP sent to and the otp",
+          "required": false,
           "content": {
             "application/json": {
-              "example": {
-                "email": "skyraan@gmail.com",
-                "otp": 1234
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "email": {
+                    "type": "string",
+                    "example": "abc@gmail.com"
+                  },
+                  "c_code": {
+                    "type": "string",
+                    "example": "+91"
+                  },
+                  "phn_num": {
+                    "type": "string",
+                    "example": "9876543210"
+                  },
+                  "otp": {
+                    "type": "string",
+                    "example": "1234"
+                  }
+                }
               }
             }
           }
@@ -296,7 +104,7 @@
     "/auth/signup": {
       "post": {
         "tags": [
-          "AUTH"
+          "10.Auth"
         ],
         "summary": "Sign Up",
         "description": "User sign up. To create new user",
@@ -426,6 +234,7 @@
           "content": {
             "application/json": {
               "example": {
+                "name": "skyraan",
                 "phn_num": "8888833377",
                 "c_code": "+91",
                 "email": "kumar@gmail.com",
