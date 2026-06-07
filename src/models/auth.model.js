@@ -57,9 +57,9 @@ export class authModel {
     }
     try {
       const otpresult = await executeQuery(query, params);
-      // console.log(otpresult?.data);
+      
 
-      if (otpresult?.data.length === 0) {
+      if (!otpresult?.data || otpresult?.data.length === 0 ) {
         return {
           success: 0,
           error: "OTP not found",
@@ -138,8 +138,8 @@ export class authModel {
     device_id,
     device_type,
   }) {
-    let query = `SELECT * FROM users WHERE phn_num = ? AND c_code = ? AND email = ?`;
-    let params = [phn_num, c_code, email];
+    let query = `SELECT * FROM users WHERE email = ?`;
+    let params = [email];
 
     const result = await executeQuery(query, params);
     // console.log("user from users", result);

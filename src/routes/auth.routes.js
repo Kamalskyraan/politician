@@ -1,95 +1,91 @@
 import express from "express";
 import * as authcontroller from "../controller/auth.controller.js";
+import { verifyToken } from "../middleware/auth.middleware.js";
 
 const router = express.Router();
 // router.get("/check",justCheck)
+
 router.post(
   "/requestotp",
   /*
-#swagger.tags = ['AUTH']
-#swagger.summary = 'Request OTP'
-#swagger.description = 'Send OTP to user`s email or phone number. type = 0 for new users (email and phone number verification before sign up) and type = 1 for already signed up users(login, change number or email)'
-
-#swagger.requestBody = {    
-  required: true,
-  description: "Required fields - type, Either email or country code + phone number",
-  content: {
-    "application/json": {
-      example: {
-        email: "skyraan@gmail.com",
-        type: 0,
+    #swagger.tags = ['1.Auth']
+    #swagger.summary = 'Send Otp to related'
+    #swagger.description = 'Send OTP via email or phn_num'
+ 
+    #swagger.requestBody = {
+      required: false,
+      content: {
+        "application/json": {
+          schema: {
+            type: "object",
+            properties: {
+               email: {type: "string" , example: "abc@gmail.com"},
+              c_code: { type: "string", example: "+91" },
+              phn_num: {
+                type: "string",
+                example: "9876543210"
+              },
+              type: {type: "Number", example: 0}
+            
+            }
+          }
+        }
       }
     }
-  }
-}
-
-#swagger.responses[200] = {
-  description: 'Success',
-  schema: {
-    success: 1,
-    message: 'Operation completed successfully',
-    data: [],
-    error: ''
-  }
-}
-
-#swagger.responses[500] = {
-  description: 'Internal Server Error',
-  schema: {
-    success: 0,
-    message: 'Internal Server Error',
-    data: [],
-    error: 'Error message'
-  }
-}
-*/
+ 
+    #swagger.responses[200] = {
+      description: 'OTP send  successfully'
+    }
+ 
+    #swagger.responses[500] = {
+      description: 'Internal Server Error'
+    }
+  */
   authcontroller.requestOtp,
 );
+
 router.post(
   "/verifyotp",
   /*
-#swagger.tags = ['AUTH']
-#swagger.summary = 'Verify OTP'
-#swagger.description = 'Verify OTP which sent to user`s email or phone number.'
-
-#swagger.requestBody = {    
-  required: true,
-  description: "Required fields - to which (email or phn_num) OTP sent to and the otp",
-  content: {
-    "application/json": {
-      example: {
-        email: "skyraan@gmail.com",
-        otp: 1234,
+    #swagger.tags = ['1.Auth']
+    #swagger.summary = 'Verify Otp to related'
+    #swagger.description = 'Verify OTP via email or phn_num'
+ 
+    #swagger.requestBody = {
+      required: false,
+      content: {
+        "application/json": {
+          schema: {
+            type: "object",
+            properties: {
+               email: {type: "string" , example: "abc@gmail.com"},
+              c_code: { type: "string", example: "+91" },
+              phn_num: {
+                type: "string",
+                example: "9876543210"
+              },
+              otp: {type: "string" , example: "1234"}
+            
+            }
+          }
+        }
       }
     }
-  }
-}
-
-#swagger.responses[200] = {
-  description: 'Success',
-  schema: {
-    success: 1,
-    message: 'Operation completed successfully',
-    data: [],
-    error: ''
-  }
-}
-
-#swagger.responses[500] = {
-  description: 'Internal Server Error',
-  schema: {
-    success: 0,
-    message: 'Internal Server Error',
-    data: [],
-    error: 'Error message'
-  }
-}
-*/ authcontroller.verifyOtp,
+ 
+    #swagger.responses[200] = {
+      description: 'OTP verified  successfully'
+    }
+ 
+    #swagger.responses[500] = {
+      description: 'Internal Server Error'
+    }
+  */ authcontroller.verifyOtp,
 );
+
 router.post(
   "/signup",
   /*
-#swagger.tags = ['AUTH']
+#swagger.tags = ['10.Auth']
 #swagger.summary = 'Sign Up'
 #swagger.description = 'User sign up. To create new user'
 
@@ -99,6 +95,7 @@ router.post(
   content: {
     "application/json": {
       example: {
+      name : "skyraan",
         phn_num: "8888833377",
         c_code: "+91",
         email: "kumar@gmail.com",

@@ -15,6 +15,7 @@ import {
   validateRequest,
   verifyOtpSchema,
 } from "../utils/validator.js";
+import { sendSmsOTP } from "../service/sms.js";
 
 const AuthMdl = new authModel();
 
@@ -36,12 +37,12 @@ export const requestOtp = async (req, res) => {
 
     const { phn_num, c_code, email, type } = validatedData?.value;
 
-    let otp = await genarateotp();
+    let otp = await genarateotp({ phn_num, c_code });
+
     const expired_at =
       process.env.NODE_ENV === "development"
         ? new Date(Date.now() + 1000 * 60 * 1)
         : new Date(Date.now() + 1000 * 60 * 5);
-        // console.log(expired_at);
 
     if (type === 0) {
       // no db check
@@ -52,13 +53,24 @@ export const requestOtp = async (req, res) => {
         otp,
         expired_at,
       });
+
       if (result?.success === 0) {
         return sendResponse(res, 200, 0, result?.error, [], "");
       } else {
-        if (email) {
+        if (email && process.env.NODE_ENV !== "development") {
           await sendMail(email, otp);
-        } else {
-          console.log("send sms to mobile");
+        } else if (email && process.env.NODE_ENV === "development") {
+          await sendMail(email, otp);
+
+          return sendResponse(res, 200, 1, "OTP sent successfully", [otp], "");
+        }
+        if (phn_num && process.env.NODE_ENV === "development") {
+          return sendResponse(res, 200, 1, "OTP sent successfully", [otp], "");
+        }
+        if (phn_num && process.env.NODE_ENV !== "development") {
+          await sendSmsOTP(phn_num, otp);
+
+          return sendResponse(res, 200, 1, "OTP sent successfully", [], "");
         }
       }
 
@@ -92,19 +104,13 @@ export const requestOtp = async (req, res) => {
           }
         }
 
-        return sendResponse(
-          res,
-          200,
-          1,
-          "otp sent successfully",
-          [],
-          "",
-        );
+        return sendResponse(res, 200, 1, "otp sent successfully", [], "");
       } else {
         return sendResponse(res, 200, 0, "User not existed", [], "");
       }
     }
   } catch (error) {
+    console.log(error);
     return sendResponse(
       res,
       500,
@@ -118,9 +124,6 @@ export const requestOtp = async (req, res) => {
 
 export const verifyOtp = async (req, res) => {
   try {
-    // const { phn_num, c_code, email, otp } = req.body;
-
-    // console.log(validatedData?.errorObject)
     const validatedData = validateRequest(req.body, verifyOtpSchema);
 
     if (validatedData?.success === 0) {
@@ -202,6 +205,7 @@ export const signUp = async (req, res) => {
       const token = await generateJwtToken({
         user_id: result?.data,
         email: email,
+        device_id: device_id,
       });
       const data = {
         user_id: result?.data,
@@ -255,6 +259,7 @@ export const login = async (req, res) => {
       const token = await generateJwtToken({
         user_id: userlogin?.data,
         email: email,
+        device_id: device_id,
       });
       const data = {
         user_id: userlogin?.data,
