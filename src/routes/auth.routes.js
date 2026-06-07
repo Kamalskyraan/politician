@@ -1,6 +1,6 @@
 import express from "express";
 import * as authcontroller from "../controller/auth.controller.js";
-import { verifyToken } from "../middleware/auth.middleware.js";
+
 
 const router = express.Router();
 // router.get("/check",justCheck)
