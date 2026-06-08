@@ -2,7 +2,7 @@ import express from "express";
 import { userModel } from "../models/user.model.js";
 import { sendResponse } from "../utils/helper.js";
 import {
-    getUserProfileschema,
+  getUserProfileschema,
   loginschema,
   updateUserProfileschema,
   validateRequest,
@@ -44,7 +44,14 @@ export const updateProfileDetail = async (req, res) => {
       return sendResponse(res, 200, 0, error, [], "");
     }
   } catch (error) {
-    return sendResponse(res, 500, 0, "Internal server error", [], error.message);
+    return sendResponse(
+      res,
+      500,
+      0,
+      "Internal server error",
+      [],
+      error.message,
+    );
   }
 };
 
