@@ -1098,6 +1098,15 @@ export const getTravelPhotosSchema = Joi.object({
   }),
 });
 
+export const getCountriesSchema = Joi.object({
+  country: Joi.string().allow("").messages({
+    "string.base": "country should be an string",
+  }),
+  state: Joi.string().allow("").messages({
+    "string.base": "state should be an string",
+  }),
+});
+
 // finace
 
 export const financeSchema = Joi.object({
