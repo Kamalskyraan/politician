@@ -132,10 +132,10 @@ export class financeModel {
     //     params.push(`%${category}%`, `%${category}%`);
     //   }
 
-    //   if (amount) {
-    //     query += ` AND f.amount LIKE ?`;
-    //     params.push(`%${amount}%`);
-    //   }
+      if (amount) {
+        query += ` AND f.amount LIKE ?`;
+        params.push(`%${amount}%`);
+      }
 
     if (category) {
       query += `
@@ -150,6 +150,9 @@ export class financeModel {
 
       params.push(searchValue, searchValue, searchValue);
     }
+
+
+
 
     if (from_date && to_date) {
       query += ` AND DATE(f.trans_date) BETWEEN ? AND ?`;
