@@ -1186,3 +1186,90 @@ export const updateTaskSchema = Joi.object({
     "string.base": "snooze at should be an string",
   }),
 });
+export const getTaskSchema = Joi.object({
+  user_id: Joi.string().required().messages({
+    "string.base": "user id should be a string",
+    "any.required": "task id cannot be empty",
+  }),
+  status: Joi.string()
+    .valid("pending", "inprogress", "completed", "cancelled")
+    .allow("")
+    .messages({
+      "string.base": "status should be a string",
+      "any.only": "status must be pending, upcoming, completed, or cancelled",
+    }),
+});
+
+export const statusChangeSchema = Joi.object({
+  id: Joi.number().required().messages({
+    "string.base": "id should be a number",
+    "any.required": "id cannot be empty",
+  }),
+  status: Joi.string().valid("completed", "cancelled").required().messages({
+    "string.base": "id should be a number",
+    "any.only": "status should be either completed or cancelled",
+    "any.required": "id cannot be empty",
+  }),
+  type: Joi.string().required().messages({
+    "string.base": "type should be a number",
+    "any.required": "type cannot be empty",
+  }),
+});
+export const addIssueCategorySchema = Joi.object({
+  category: Joi.string().required().messages({
+    "string.base": "category should be a string",
+    "any.required": "category cannot be empty",
+  }),
+});
+export const addIssueSchema = Joi.object({
+  user_id: Joi.string().required().messages({
+    "string.base": "user id should be a string",
+    "any.required": "user id cannot be empty",
+  }),
+  cat_id: Joi.number().required().messages({
+    "string.base": "category id should be a number",
+    "any.required": "category id cannot be empty",
+  }),
+  cat_name: Joi.string().allow("").messages({
+    "string.base": "category name should be a number",
+    "any.required": "category name cannot be empty",
+  }),
+  descp: Joi.string().required().messages({
+    "string.base": "description should be a string",
+    "any.required": "description cannot be empty",
+  }),
+  address: Joi.string().required().messages({
+    "string.base": "address should be a string",
+    "any.required": "address cannot be empty",
+  }),
+  lat: Joi.string().required().messages({
+    "string.base": "lat must be a string",
+    "any.required": "lat is required",
+  }),
+  lng: Joi.string().required().messages({
+    "string.base": "lng must be a string",
+    "any.required": "lng is required",
+  }),
+  media_id: Joi.string().allow("").messages({
+    "string.base": "media id must be a string",
+    "any.required": "media id is required",
+  }),
+  report_date: Joi.string().required().messages({
+    "string.base": "report date must be a string",
+    "any.required": "report date is required",
+  }),
+  incharge_id: Joi.string().allow("").messages({
+    "string.base": "incharge id must be a string",
+    "any.required": "incharge id is required",
+  }),
+  member_id: Joi.string().allow("").messages({
+    "string.base": "member id must be a string",
+    "any.required": "member id is required",
+  }),
+});
+export const deleteIssueSchema = Joi.object({
+  id: Joi.number().required().messages({
+    "string.base": "number should be a number",
+    "any.required": "number cannot be empty",
+  }),
+});

@@ -183,5 +183,42 @@ router.post(
     }
 */ taskcontroller.updateTask,
 );
+router.post(
+  "/gettask",
+  /*
+    #swagger.tags = ['7.TASK & REMINDERS']
+    #swagger.summary = 'Get Task and reminders'
+    #swagger.description = 'Get task and reminders by passing user id and if need by status - pass status'
+
+    #swagger.requestBody = {
+      required: true,
+      content: {
+        "application/json": {
+          schema: {
+            type: "object",
+            properties: {
+              user_id: {
+                type: "string",
+                example: "USER_fdd8762"
+              },
+              status: {
+                type: "string",
+                example: "inprogress"
+              },
+            }
+          }
+        }
+      }
+    }
+
+    #swagger.responses[200] = {
+      description: 'Task and reminder fetched successfully'
+    }
+
+    #swagger.responses[500] = {
+      description: 'Internal Server Error'
+    }
+*/ taskcontroller.getTask,
+);
 
 export default router;
