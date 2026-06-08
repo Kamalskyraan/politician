@@ -1,6 +1,9 @@
 import nodemailer from "nodemailer";
 import dotenv from "dotenv";
-import { emailContactUsTemplate, emailOtpTemplate } from "../utils/email.template.js";
+import {
+  emailContactUsTemplate,
+  emailOtpTemplate,
+} from "../utils/email.template.js";
 
 dotenv.config();
 
@@ -14,9 +17,9 @@ dotenv.config();
 //   },
 // };
 const configOptions = {
-  host: mail.skyraantech.com,
+  host: `mail.skyraantech.com`,
   port: 465,
-  secure: true, 
+  secure: true,
   auth: {
     user: `political@skyraantech.com`,
     pass: `mRmSm*^5a9AIleR6`,
@@ -32,7 +35,7 @@ export const sendMail = async (email, otp) => {
       to: `${email}`,
       subject: "OTP Verification",
       html: mailContent,
-    };  
+    };
 
     await transporter.sendMail(mailOptions);
     return true;
@@ -49,7 +52,7 @@ export const sendContactUsMail = async (email, comments) => {
       to: `${email}`,
       subject: "OTP Verification",
       html: mailContent,
-    };  
+    };
 
     await transporter.sendMail(mailOptions);
     return true;
