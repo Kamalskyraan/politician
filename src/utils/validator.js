@@ -63,13 +63,18 @@ export const verifyOtpSchema = Joi.object({
       "string.max": "Mobile number must not exceed 15 digits",
       "string.pattern.base": "Mobile number must start with 6-9",
     }),
-  email: Joi.string().pattern(/^[^\s@]+@[^\s@]+\.[^\s@]+$/).min(13).max(100).optional().messages({
-    "any.required": "Email is required",
-    "string.empty": "Email is required",
-    "string.pattern.base": "Please enter a valid email address",
-    "string.min": "Email must be at least 3 chars",
-    "string.max": "Email must not exceed 100 chars",
-  }),
+  email: Joi.string()
+    .pattern(/^[^\s@]+@[^\s@]+\.[^\s@]+$/)
+    .min(13)
+    .max(100)
+    .optional()
+    .messages({
+      "any.required": "Email is required",
+      "string.empty": "Email is required",
+      "string.pattern.base": "Please enter a valid email address",
+      "string.min": "Email must be at least 3 chars",
+      "string.max": "Email must not exceed 100 chars",
+    }),
   c_code: Joi.string().optional(),
 
   otp: Joi.string().length(4).required().messages({
@@ -1074,5 +1079,110 @@ export const getTravelPhotosSchema = Joi.object({
   travel_id: Joi.number().required().messages({
     "number.base": "Travel Id should be an integer",
     "any.required": "Travel Id cannot be empty",
+  }),
+});
+export const getCountriesSchema = Joi.object({
+  country: Joi.string().allow("").messages({
+    "string.base": "country should be an string",
+  }),
+  state: Joi.string().allow("").messages({
+    "string.base": "state should be an string",
+  }),
+});
+
+export const addTaskSchema = Joi.object({
+  user_id: Joi.string().required().messages({
+    "string.base": "user id should be an string",
+    "any.required": "user id cannot be empty",
+  }),
+  title: Joi.string().required().messages({
+    "string.base": "title should be an string",
+    "any.required": "title cannot be empty",
+  }),
+  descp: Joi.string().required().messages({
+    "string.base": "descp should be an string",
+    "any.required": "descp cannot be empty",
+  }),
+  t_priority: Joi.number().valid(0, 1, 2).required().messages({
+    "number.base": "task priority should be an number",
+    "number.valid": "either 0 or 1 or 2 only",
+    "any.required": "task priority cannot be empty",
+  }),
+  from_date: Joi.string().required().messages({
+    "string.base": "from_date should be an string",
+    "any.required": "from_date cannot be empty",
+  }),
+  to_date: Joi.string().required().messages({
+    "string.base": "to_date should be an string",
+    "any.required": "to_date cannot be empty",
+  }),
+  media_id: Joi.string().allow("").messages({
+    "string.base": "media_id should be an string",
+  }),
+  attnds_id: Joi.string().required().messages({
+    "string.base": "attnds should be an string",
+    "any.required": "attnds cannot be empty",
+  }),
+  is_remind: Joi.number().valid(0, 1, 2).required().messages({
+    "number.base": "is_remind should be an string",
+    "number.valid": "either 0 or 1 or 2 only",
+    "any.required": "is_remind cannot be empty",
+  }),
+  remind_tenure: Joi.string().allow("").messages({
+    "string.base": "remind_tenure should be an string",
+  }),
+  snooze_at: Joi.string().allow("").messages({
+    "string.base": "snooze at should be an string",
+  }),
+});
+export const deleteTaskSchema = Joi.object({
+  id: Joi.number().required().messages({
+    "string.base": "task id should be an number",
+    "any.required": "task id cannot be empty",
+  }),
+});
+export const updateTaskSchema = Joi.object({
+  id: Joi.number().required().messages({
+    "string.base": "task id should be an number",
+    "any.required": "task id cannot be empty",
+  }),
+  title: Joi.string().required().messages({
+    "string.base": "title should be an string",
+    "any.required": "title cannot be empty",
+  }),
+  descp: Joi.string().required().messages({
+    "string.base": "descp should be an string",
+    "any.required": "descp cannot be empty",
+  }),
+  t_priority: Joi.number().valid(0, 1, 2).required().messages({
+    "number.base": "task priority should be an number",
+    "number.valid": "either 0 or 1 or 2 only",
+    "any.required": "task priority cannot be empty",
+  }),
+  from_date: Joi.string().required().messages({
+    "string.base": "from_date should be an string",
+    "any.required": "from_date cannot be empty",
+  }),
+  to_date: Joi.string().required().messages({
+    "string.base": "to_date should be an string",
+    "any.required": "to_date cannot be empty",
+  }),
+  media_id: Joi.string().allow("").messages({
+    "string.base": "media_id should be an string",
+  }),
+  attnds_id: Joi.string().required().messages({
+    "string.base": "attnds should be an string",
+    "any.required": "attnds cannot be empty",
+  }),
+  is_remind: Joi.number().valid(0, 1, 2).required().messages({
+    "number.base": "is_remind should be an string",
+    "number.valid": "either 0 or 1 or 2 only",
+    "any.required": "is_remind cannot be empty",
+  }),
+  remind_tenure: Joi.string().allow("").messages({
+    "string.base": "remind_tenure should be an string",
+  }),
+  snooze_at: Joi.string().allow("").messages({
+    "string.base": "snooze at should be an string",
   }),
 });

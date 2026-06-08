@@ -30,7 +30,6 @@ export const verifyToken = async (req, res, next) => {
 
     if (result?.success === 1 && result?.data?.length > 0) {
       req.user = decoded;
-    //   console.log("token valid");
       return next();
     }
 

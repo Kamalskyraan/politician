@@ -25,7 +25,7 @@ router.post(
                 type: "string",
                 example: "9876543210"
               },
-              type: {type: "Number", example: 0}
+              type: {type: "number", example: 0}
             
             }
           }
@@ -85,90 +85,103 @@ router.post(
 router.post(
   "/signup",
   /*
-#swagger.tags = ['10.Auth']
-#swagger.summary = 'Sign Up'
-#swagger.description = 'User sign up. To create new user'
+    #swagger.tags = ['1.Auth']
+    #swagger.summary = 'Sign Up'
+    #swagger.description = 'User sign up. To create new user'
 
-#swagger.requestBody = {    
-  required: true,
-  description: "Required fields - name, phn_num, Country_code, email, device_token, device_id, device_type",
-  content: {
-    "application/json": {
-      example: {
-      name : "skyraan",
-        phn_num: "8888833377",
-        c_code: "+91",
-        email: "kumar@gmail.com",
-        device_token: "abcd",
-        device_id: "#1234hsykrnaa",
-        device_type: "ios"
+    #swagger.requestBody = {
+      required: true,
+      content: {
+        "application/json": {
+          schema: {
+            type: "object",
+            properties: {
+              name: {
+                type: "string",
+                example: "skyraan"
+              },
+              phn_num: {
+                type: "string",
+                example: "8888833377"
+              },
+              c_code: {
+                type: "string",
+                example: "+91"
+              },
+              email: {
+                type: "string",
+                example: "kumar@gmail.com"
+              },
+              device_token: {
+                type: "string",
+                example: "abcd"
+              },
+              device_id: {
+                type: "string",
+                example: "#1234hsykrnaa"
+              },
+              device_type: {
+                type: "string",
+                example: "ios"
+              }
+            }
+          }
+        }
       }
     }
-  }
-}
 
-#swagger.responses[200] = {
-  description: 'Success',
-  schema: {
-    success: 1,
-    message: 'Operation completed successfully',
-    data: [],
-    error: ''
-  }
-}
+    #swagger.responses[200] = {
+      description: 'User signed up successfully'
+    }
 
-#swagger.responses[500] = {
-  description: 'Internal Server Error',
-  schema: {
-    success: 0,
-    message: 'Internal Server Error',
-    data: [],
-    error: 'Error message'
-  }
-}
+    #swagger.responses[500] = {
+      description: 'Internal Server Error'
+    }
 */ authcontroller.signUp,
 );
 router.post(
   "/login",
   /*
-#swagger.tags = ['AUTH']
-#swagger.summary = 'Login'
-#swagger.description = 'User Login'
+    #swagger.tags = ['1.Auth']
+    #swagger.summary = 'Login'
+    #swagger.description = 'User Login'
 
-#swagger.requestBody = {    
-  required: true,
-  description: "Required fields - email, device_token, device_id, device_type",
-  content: {
-    "application/json": {
-      example: {
-        email: "kuma@gmail.com",
-        device_token: "abc",
-        device_id: "#skyandro000",
-        device_type: "android"
+    #swagger.requestBody = {
+      required: true,
+      content: {
+        "application/json": {
+          schema: {
+            type: "object",
+            properties: {
+              email: {
+                type: "string",
+                example: "skyraan@gmail.com"
+              },
+              device_token: {
+                type: "string",
+                example: "abc"
+              },
+              device_id: {
+                type: "string",
+                example: "#skyandro000"
+              },
+              device_type: {
+                type: "string",
+                example: "android"
+              }
+            }
+          }
+        }
       }
     }
-  }
-}
 
-#swagger.responses[200] = {
-  description: 'Success',
-  schema: {
-    success: 1,
-    message: 'Operation completed successfully',
-    data: [],
-    error: ''
-  }
-}
+    #swagger.responses[200] = {
+      description: 'User logged in successfully'
+    }
 
-#swagger.responses[500] = {
-  description: 'Internal Server Error',
-  schema: {
-    success: 0,
-    message: 'Internal Server Error',
-    data: [],
-    error: 'Error message'
-  }
-}
+    #swagger.responses[500] = {
+      description: 'Internal Server Error'
+    }
 */ authcontroller.login,
 );
 

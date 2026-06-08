@@ -5,6 +5,7 @@ import userRoutes from "./user.routes.js";
 import supportRoutes from "./support.routes.js";
 import meetingRoutes from "./meeting.routes.js";
 import travelRoutes from "./travel.routes.js";
+import taskRoutes from './task.route.js';
 import { verifyToken } from "../middleware/auth.middleware.js";
 
 export const router = express.Router();
@@ -16,5 +17,6 @@ router.use("/user", userRoutes);
 router.use("/support", supportRoutes);
 // router.use("/contact", supportRoutes);
 router.use("/travel", travelRoutes);
+router.use("/task", taskRoutes);
 
 export default router;

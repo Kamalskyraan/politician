@@ -7,176 +7,184 @@ const router = express.Router();
 router.post(
   "/addmember",
   /*
-#swagger.tags = ['MEMBER']
-#swagger.summary = 'Add member'
-#swagger.description = 'Add members required fields'
+    #swagger.tags = ['3.Member']
+    #swagger.summary = 'Add Member'
+    #swagger.description = 'Add a new member'
 
-#swagger.requestBody = {    
-  required: true,
-  description: "Required fields - user_id, name, phn_num, role_id, country, state, district",
-  content: {
-    "application/json": {
-      example: {
-        user_id: "USER_IFZu5632",
-        name: "paschal",
-        phn_num: "9487570100",
-        role_id: 14,
-        country: "german",
-        state: "diffasgune",
-        district: "naattingham"
+    #swagger.requestBody = {
+      required: true,
+      content: {
+        "application/json": {
+          schema: {
+            type: "object",
+            properties: {
+              user_id: {
+                type: "string",
+                example: "USER_IFZu5632"
+              },
+              name: {
+                type: "string",
+                example: "paschal"
+              },
+              phn_num: {
+                type: "string",
+                example: "9487570100"
+              },
+              role_id: {
+                type: "integer",
+                example: 14
+              },
+              country: {
+                type: "string",
+                example: "India"
+              },
+              state: {
+                type: "string",
+                example: "Tamil Nadu"
+              },
+              district: {
+                type: "string",
+                example: "Coimbatore"
+              }
+            }
+          }
+        }
       }
     }
-  }
-}
 
-#swagger.responses[200] = {
-  description: 'Success',
-  schema: {
-    success: 1,
-    message: 'Operation completed successfully',
-    data: [],
-    error: ''
-  }
-}
+    #swagger.responses[200] = {
+      description: 'Member added successfully'
+    }
 
-#swagger.responses[500] = {
-  description: 'Internal Server Error',
-  schema: {
-    success: 0,
-    message: 'Internal Server Error',
-    data: [],
-    error: 'Error message'
-  }
-}
+    #swagger.responses[500] = {
+      description: 'Internal Server Error'
+    }
 */
   meetingcontroller.addMembers,
 );
 router.post(
   "/getmember",
   /*
-#swagger.tags = ['MEMBER']
-#swagger.summary = 'Get member'
-#swagger.description = 'Get members by passing user_id'
+    #swagger.tags = ['3.Member']
+    #swagger.summary = 'Get Member'
+    #swagger.description = 'Get members by passing user_id'
 
-#swagger.requestBody = {    
-  required: true,
-  description: "Required fields - user_id",
-  content: {
-    "application/json": {
-      example: {
-        user_id: "USER_IFZu5632"
+    #swagger.requestBody = {
+      required: true,
+      content: {
+        "application/json": {
+          schema: {
+            type: "object",
+            properties: {
+              user_id: {
+                type: "string",
+                example: "USER_IFZu5632"
+              }
+            }
+          }
+        }
       }
     }
-  }
-}
 
-#swagger.responses[200] = {
-  description: 'Success',
-  schema: {
-    success: 1,
-    message: 'Operation completed successfully',
-    data: [],
-    error: ''
-  }
-}
+    #swagger.responses[200] = {
+      description: 'Members fetched successfully'
+    }
 
-#swagger.responses[500] = {
-  description: 'Internal Server Error',
-  schema: {
-    success: 0,
-    message: 'Internal Server Error',
-    data: [],
-    error: 'Error message'
-  }
-}
+    #swagger.responses[500] = {
+      description: 'Internal Server Error'
+    }
 */
   meetingcontroller.getMembers,
 );
 router.post(
   "/updatemember",
   /*
-#swagger.tags = ['MEMBER']
-#swagger.summary = 'Update member'
-#swagger.description = 'Update members by passing id and other fields to update'
+    #swagger.tags = ['3.Member']
+    #swagger.summary = 'Update Member'
+    #swagger.description = 'Update member details by passing id and fields to update'
 
-#swagger.requestBody = {    
-  required: true,
-  description: "Required fields - id, name, phn_num, role_id, country, state, district",
-  content: {
-    "application/json": {
-      example: {
-        id: 26,
-        name: "paschal",
-        phn_num: "9487570100",
-        role_id: 14,
-        country: "german",
-        state: "diffasgune",
-        district: "naattingham"
+    #swagger.requestBody = {
+      required: true,
+      content: {
+        "application/json": {
+          schema: {
+            type: "object",
+            properties: {
+              id: {
+                type: "integer",
+                example: 26
+              },
+              name: {
+                type: "string",
+                example: "paschal"
+              },
+              phn_num: {
+                type: "string",
+                example: "9487570100"
+              },
+              role_id: {
+                type: "integer",
+                example: 14
+              },
+              country: {
+                type: "string",
+                example: "Germany"
+              },
+              state: {
+                type: "string",
+                example: "Bavaria"
+              },
+              district: {
+                type: "string",
+                example: "Munich"
+              }
+            }
+          }
+        }
       }
     }
-  }
-}
 
-#swagger.responses[200] = {
-  description: 'Success',
-  schema: {
-    success: 1,
-    message: 'Operation completed successfully',
-    data: [],
-    error: ''
-  }
-}
+    #swagger.responses[200] = {
+      description: 'Member updated successfully'
+    }
 
-#swagger.responses[500] = {
-  description: 'Internal Server Error',
-  schema: {
-    success: 0,
-    message: 'Internal Server Error',
-    data: [],
-    error: 'Error message'
-  }
-}
+    #swagger.responses[500] = {
+      description: 'Internal Server Error'
+    }
 */
   meetingcontroller.updateMembers,
 );
 router.post(
   "/deletemember",
   /*
-#swagger.tags = ['MEMBER']
-#swagger.summary = 'delete member'
-#swagger.description = 'Delete members by passing id'
+    #swagger.tags = ['3.Member']
+    #swagger.summary = 'Delete Member'
+    #swagger.description = 'Delete member by passing id'
 
-#swagger.requestBody = {    
-  required: true,
-  description: "Required fields - id",
-  content: {
-    "application/json": {
-      example: {
-        id: 26
+    #swagger.requestBody = {
+      required: true,
+      content: {
+        "application/json": {
+          schema: {
+            type: "object",
+            properties: {
+              id: {
+                type: "integer",
+                example: 26
+              }
+            }
+          }
+        }
       }
     }
-  }
-}
 
-#swagger.responses[200] = {
-  description: 'Success',
-  schema: {
-    success: 1,
-    message: 'Operation completed successfully',
-    data: [],
-    error: ''
-  }
-}
+    #swagger.responses[200] = {
+      description: 'Member deleted successfully'
+    }
 
-#swagger.responses[500] = {
-  description: 'Internal Server Error',
-  schema: {
-    success: 0,
-    message: 'Internal Server Error',
-    data: [],
-    error: 'Error message'
-  }
-}
+    #swagger.responses[500] = {
+      description: 'Internal Server Error'
+    }
 */
   verifyToken,
   meetingcontroller.deleteMembers,
@@ -185,430 +193,518 @@ router.post(
 router.post(
   "/addmeeting",
   /*
-#swagger.tags = ['MEETING']
-#swagger.summary = 'Add meeting'
-#swagger.description = 'Add meeting by passing required fields'
+    #swagger.tags = ['4.Meeting']
+    #swagger.summary = 'Add Meeting'
+    #swagger.description = 'Add a new meeting by passing required fields'
 
-#swagger.requestBody = {    
-  required: true,
-  description: "Required fields - user_id, title, description, meeting_type, meeting_priority, meeting_link, notes, address, lat, lng, media_id, attnds_id, from_date, to_date, is_remind, remind_tenure, snooze_at",
-  content: {
-    "application/json": {
-      example: {
-        "user_id": "USER_efKL6767",
-        title:"meeting title 100",
-        descp: "meeting desc",
-        m_type: 0,
-        m_priority: 2,
-        m_link: "asdsa",
-        notes: "m notes is created for reference",
-        address: "10, skyraan building",
-        lat: 10.23456,
-        lng: 9.98765,
-        media_id: "1000,2,3,900,8999",
-        attnds_id: "1,3,4,5,5",
-        from_date: "1779447600000",
-        to_date: "1779449400000",
-        is_remind: 1,
-        remind_tenure: 300,
-        snooze_at: 180
+    #swagger.requestBody = {
+      required: true,
+      content: {
+        "application/json": {
+          schema: {
+            type: "object",
+            properties: {
+              user_id: {
+                type: "string",
+                example: "USER_efKL6767"
+              },
+              title: {
+                type: "string",
+                example: "Meeting Title 100"
+              },
+              descp: {
+                type: "string",
+                example: "Meeting description"
+              },
+              m_type: {
+                type: "integer",
+                example: 0
+              },
+              m_priority: {
+                type: "integer",
+                example: 2
+              },
+              m_link: {
+                type: "string",
+                example: "https://meet.google.com/abc-defg-hij"
+              },
+              notes: {
+                type: "string",
+                example: "Meeting notes created for reference"
+              },
+              address: {
+                type: "string",
+                example: "10, Skyraan Building"
+              },
+              lat: {
+                type: "number",
+                example: 10.23456
+              },
+              lng: {
+                type: "number",
+                example: 9.98765
+              },
+              media_id: {
+                type: "string",
+                example: "1000,2,3,900,8999"
+              },
+              attnds_id: {
+                type: "string",
+                example: "1,3,4,5"
+              },
+              from_date: {
+                type: "string",
+                example: "1779447600000"
+              },
+              to_date: {
+                type: "string",
+                example: "1779449400000"
+              },
+              is_remind: {
+                type: "integer",
+                example: 1
+              },
+              remind_tenure: {
+                type: "integer",
+                example: 300
+              },
+              snooze_at: {
+                type: "integer",
+                example: 180
+              }
+            }
+          }
+        }
       }
     }
-  }
-}
 
-#swagger.responses[200] = {
-  description: 'Success',
-  schema: {
-    success: 1,
-    message: 'Operation completed successfully',
-    data: [],
-    error: ''
-  }
-}
+    #swagger.responses[200] = {
+      description: 'Meeting added successfully'
+    }
 
-#swagger.responses[500] = {
-  description: 'Internal Server Error',
-  schema: {
-    success: 0,
-    message: 'Internal Server Error',
-    data: [],
-    error: 'Error message'
-  }
-}
+    #swagger.responses[500] = {
+      description: 'Internal Server Error'
+    }
 */ meetingcontroller.addMeeting,
 );
 router.post(
   "/getmeeting",
   /*
-#swagger.tags = ['MEETING']
-#swagger.summary = 'Get meeting'
-#swagger.description = 'Get meeting by passing user_id, pass with status if need by status -upcoming, cancelled, completed, pending'
+    #swagger.tags = ['4.Meeting']
+    #swagger.summary = 'Get Meeting'
+    #swagger.description = 'Get meetings by passing user_id. Optionally pass status (upcoming, cancelled, completed, pending)'
 
-#swagger.requestBody = {    
-  required: true,
-  description: "Required fields - user_id, status",
-  content: {
-    "application/json": {
-      example: {
-        user_id: "USER_efKL6767",
-        status: "pending"
+    #swagger.requestBody = {
+      required: true,
+      content: {
+        "application/json": {
+          schema: {
+            type: "object",
+            properties: {
+              user_id: {
+                type: "string",
+                example: "USER_efKL6767"
+              },
+              status: {
+                type: "string",
+                example: "pending"
+              }
+            }
+          }
+        }
       }
     }
-  }
-}
 
-#swagger.responses[200] = {
-  description: 'Success',
-  schema: {
-    success: 1,
-    message: 'Operation completed successfully',
-    data: [],
-    error: ''
-  }
-}
+    #swagger.responses[200] = {
+      description: 'Meetings fetched successfully'
+    }
 
-#swagger.responses[500] = {
-  description: 'Internal Server Error',
-  schema: {
-    success: 0,
-    message: 'Internal Server Error',
-    data: [],
-    error: 'Error message'
-  }
-}
+    #swagger.responses[500] = {
+      description: 'Internal Server Error'
+    }
 */ meetingcontroller.getMeeting,
 );
 router.post(
   "/deletemeeting",
   /*
-#swagger.tags = ['MEETING']
-#swagger.summary = 'Delete meeting'
-#swagger.description = 'Delete meeting by passing id'
+    #swagger.tags = ['4.Meeting']
+    #swagger.summary = 'Delete Meeting'
+    #swagger.description = 'Delete meeting by passing id'
 
-#swagger.requestBody = {    
-  required: true,
-  description: "Required fields - id",
-  content: {
-    "application/json": {
-      example: {
-        id: 10
+    #swagger.requestBody = {
+      required: true,
+      content: {
+        "application/json": {
+          schema: {
+            type: "object",
+            properties: {
+              id: {
+                type: "integer",
+                example: 10
+              }
+            }
+          }
+        }
       }
     }
-  }
-}
 
-#swagger.responses[200] = {
-  description: 'Success',
-  schema: {
-    success: 1,
-    message: 'Operation completed successfully',
-    data: [],
-    error: ''
-  }
-}
+    #swagger.responses[200] = {
+      description: 'Meeting deleted successfully'
+    }
 
-#swagger.responses[500] = {
-  description: 'Internal Server Error',
-  schema: {
-    success: 0,
-    message: 'Internal Server Error',
-    data: [],
-    error: 'Error message'
-  }
-}
+    #swagger.responses[500] = {
+      description: 'Internal Server Error'
+    }
 */ meetingcontroller.deleteMeeting,
 );
 router.post(
   "/updatemeeting",
   /*
-#swagger.tags = ['MEETING']
-#swagger.summary = 'Update meeting'
-#swagger.description = 'Update meeting by passing id and other fields to update'
+    #swagger.tags = ['4.Meeting']
+    #swagger.summary = 'Update Meeting'
+    #swagger.description = 'Update meeting by passing id and other fields to update'
 
-#swagger.requestBody = {    
-  required: true,
-  description: "Required fields - id,title,descp,m_type,m_priority,m_link,notes,address,lat,lng,status,media_id, attnds_id, from_date, to_date, is_remind, remind_tenure, snooze_at
-      attnds_id,
-      from_date,
-      to_date,
-      is_remind,
-      remind_tenure,
-      snooze_at,",
-  content: {
-    "application/json": {
-      example: {
-        id: 8,
-        title:"meeting title 100",
-        descp: "meeting desc",
-        m_type: 0,
-        m_priority: 2,
-        m_link: "asdsa",
-        notes: "m notes is created for reference",
-        address: "10, skyraan building",
-        lat: 10.23456,
-        lng: 9.98765,
-        media_id: "1000,2,3,900,8999",
-        attnds_id: "1,3,4,5,5",
-        from_date: "1779447600000",
-        to_date: "1779449400000",
-        is_remind: 1,
-        remind_tenure: 300,
-        snooze_at: 180
+    #swagger.requestBody = {
+      required: true,
+      content: {
+        "application/json": {
+          schema: {
+            type: "object",
+            properties: {
+              id: {
+                type: "integer",
+                example: 8
+              },
+              title: {
+                type: "string",
+                example: "Meeting Title 100"
+              },
+              descp: {
+                type: "string",
+                example: "Meeting description"
+              },
+              m_type: {
+                type: "integer",
+                example: 0
+              },
+              m_priority: {
+                type: "integer",
+                example: 2
+              },
+              m_link: {
+                type: "string",
+                example: "https://meet.google.com/abc-defg-hij"
+              },
+              notes: {
+                type: "string",
+                example: "Meeting notes created for reference"
+              },
+              address: {
+                type: "string",
+                example: "10, Skyraan Building"
+              },
+              lat: {
+                type: "number",
+                example: 10.23456
+              },
+              lng: {
+                type: "number",
+                example: 9.98765
+              },
+              status: {
+                type: "string",
+                example: "pending"
+              },
+              media_id: {
+                type: "string",
+                example: "1000,2,3,900,8999"
+              },
+              attnds_id: {
+                type: "string",
+                example: "1,3,4,5"
+              },
+              from_date: {
+                type: "string",
+                example: "1779447600000"
+              },
+              to_date: {
+                type: "string",
+                example: "1779449400000"
+              },
+              is_remind: {
+                type: "integer",
+                example: 1
+              },
+              remind_tenure: {
+                type: "integer",
+                example: 300
+              },
+              snooze_at: {
+                type: "integer",
+                example: 180
+              }
+            }
+          }
+        }
       }
     }
-  }
-}
 
-#swagger.responses[200] = {
-  description: 'Success',
-  schema: {
-    success: 1,
-    message: 'Operation completed successfully',
-    data: [],
-    error: ''
-  }
-}
+    #swagger.responses[200] = {
+      description: 'Meeting updated successfully'
+    }
 
-#swagger.responses[500] = {
-  description: 'Internal Server Error',
-  schema: {
-    success: 0,
-    message: 'Internal Server Error',
-    data: [],
-    error: 'Error message'
-  }
-}
+    #swagger.responses[500] = {
+      description: 'Internal Server Error'
+    }
 */ meetingcontroller.updateMeeting,
 );
 
 router.post(
   "/addappointment",
   /*
-#swagger.tags = ['APPOINTMENT']
-#swagger.summary = 'Add appointment'
-#swagger.description = 'Add appointment by passing user_id and other fields'
+    #swagger.tags = ['5.Appointment']
+    #swagger.summary = 'Add Appointment'
+    #swagger.description = 'Add appointment by passing user_id and other required fields'
 
-#swagger.requestBody = {    
-  required: true,
-  description: "Required fields - user_id,
-      title,
-      a_type,
-      notes,
-      address,
-      lat,
-      lng,
-      media_id,
-      con_name,
-      con_desg,
-      from_date,
-      to_date,
-      is_remind,
-      remind_tenure,
-      snooze_at,
-      attnds_id,
-      from_date,
-      to_date,
-      is_remind,
-      remind_tenure,
-      snooze_at,",
-  content: {
-    "application/json": {
-      example: {
-        "user_id": "USER_Z8bn0076",
-        title: "booth meeting",
-        a_type: "public meeting",
-        notes: "regarding booth council meeting with ministers",
-        address: "10, skyraan 101, FCI road ganapathy",
-        lat: 10.23456,
-        lng: 9.98765,
-        media_id: "1,3,4,5,10,11",
-        con_name: "modi",
-        con_desg: "prime minister",
-        from_date: "1779787800000",
-        to_date: "1779798600000",
-        is_remind: 1,
-        remind_tenure: 300,
-        snooze_at: 180
+    #swagger.requestBody = {
+      required: true,
+      content: {
+        "application/json": {
+          schema: {
+            type: "object",
+            properties: {
+              user_id: {
+                type: "string",
+                example: "USER_Z8bn0076"
+              },
+              title: {
+                type: "string",
+                example: "Booth Meeting"
+              },
+              a_type: {
+                type: "string",
+                example: "Public Meeting"
+              },
+              notes: {
+                type: "string",
+                example: "Regarding booth council meeting with ministers"
+              },
+              address: {
+                type: "string",
+                example: "10, Skyraan 101, FCI Road, Ganapathy"
+              },
+              lat: {
+                type: "number",
+                example: 10.23456
+              },
+              lng: {
+                type: "number",
+                example: 9.98765
+              },
+              media_id: {
+                type: "string",
+                example: "1,3,4,5,10,11"
+              },
+              con_name: {
+                type: "string",
+                example: "Modi"
+              },
+              con_desg: {
+                type: "string",
+                example: "Prime Minister"
+              },
+              from_date: {
+                type: "string",
+                example: "1779787800000"
+              },
+              to_date: {
+                type: "string",
+                example: "1779798600000"
+              },
+              is_remind: {
+                type: "integer",
+                example: 1
+              },
+              remind_tenure: {
+                type: "integer",
+                example: 300
+              },
+              snooze_at: {
+                type: "integer",
+                example: 180
+              }
+            }
+          }
+        }
       }
     }
-  }
-}
 
-#swagger.responses[200] = {
-  description: 'Success',
-  schema: {
-    success: 1,
-    message: 'Operation completed successfully',
-    data: [],
-    error: ''
-  }
-}
+    #swagger.responses[200] = {
+      description: 'Appointment added successfully'
+    }
 
-#swagger.responses[500] = {
-  description: 'Internal Server Error',
-  schema: {
-    success: 0,
-    message: 'Internal Server Error',
-    data: [],
-    error: 'Error message'
-  }
-}
+    #swagger.responses[500] = {
+      description: 'Internal Server Error'
+    }
 */ meetingcontroller.addAppointment,
 );
 router.post(
   "/deleteappointment",
   /*
-#swagger.tags = ['APPOINTMENT']
-#swagger.summary = 'Delete appointment'
-#swagger.description = 'Delete appointment by passing id'
+    #swagger.tags = ['5.Appointment']
+    #swagger.summary = 'Delete Appointment'
+    #swagger.description = 'Delete appointment by passing id'
 
-#swagger.requestBody = {    
-  required: true,
-  description: "Required fields - id",
-  content: {
-    "application/json": {
-      example: {
-        id: 3
+    #swagger.requestBody = {
+      required: true,
+      content: {
+        "application/json": {
+          schema: {
+            type: "object",
+            properties: {
+              id: {
+                type: "integer",
+                example: 3
+              }
+            }
+          }
+        }
       }
     }
-  }
-}
 
-#swagger.responses[200] = {
-  description: 'Success',
-  schema: {
-    success: 1,
-    message: 'Operation completed successfully',
-    data: [],
-    error: ''
-  }
-}
+    #swagger.responses[200] = {
+      description: 'Appointment deleted successfully'
+    }
 
-#swagger.responses[500] = {
-  description: 'Internal Server Error',
-  schema: {
-    success: 0,
-    message: 'Internal Server Error',
-    data: [],
-    error: 'Error message'
-  }
-}
+    #swagger.responses[500] = {
+      description: 'Internal Server Error'
+    }
 */ meetingcontroller.deleteAppointment,
 );
 router.post(
   "/getappointment",
   /*
-#swagger.tags = ['APPOINTMENT']
-#swagger.summary = 'Get appointment'
-#swagger.description = 'Get appointment by passing user_id, pass with status if needed by status -upcoming, cancelled, completed, pending'
+    #swagger.tags = ['5.Appointment']
+    #swagger.summary = 'Get Appointment'
+    #swagger.description = 'Get appointments by passing user_id. Optionally pass status (upcoming, cancelled, completed, pending)'
 
-#swagger.requestBody = {    
-  required: true,
-  description: "Required fields - user_id, status",
-  content: {
-    "application/json": {
-      example: {
-        user_id: "USER_efKL6767",
-        status: "pending"
+    #swagger.requestBody = {
+      required: true,
+      content: {
+        "application/json": {
+          schema: {
+            type: "object",
+            properties: {
+              user_id: {
+                type: "string",
+                example: "USER_efKL6767"
+              },
+              status: {
+                type: "string",
+                example: "pending"
+              }
+            }
+          }
+        }
       }
     }
-  }
-}
 
-#swagger.responses[200] = {
-  description: 'Success',
-  schema: {
-    success: 1,
-    message: 'Operation completed successfully',
-    data: [],
-    error: ''
-  }
-}
+    #swagger.responses[200] = {
+      description: 'Appointments fetched successfully'
+    }
 
-#swagger.responses[500] = {
-  description: 'Internal Server Error',
-  schema: {
-    success: 0,
-    message: 'Internal Server Error',
-    data: [],
-    error: 'Error message'
-  }
-}
+    #swagger.responses[500] = {
+      description: 'Internal Server Error'
+    }
 */ meetingcontroller.getAppointment,
 );
 router.post(
   "/updateappointment",
   /*
-#swagger.tags = ['APPOINTMENT']
-#swagger.summary = 'Update appointment'
-#swagger.description = 'Update appointment by passing id and other fields to update'
+    #swagger.tags = ['5.Appointment']
+    #swagger.summary = 'Update Appointment'
+    #swagger.description = 'Update appointment by passing id and other fields to update'
 
-#swagger.requestBody = {    
-  required: true,
-  description: "Required fields - user_id,
-      title,
-      a_type,
-      notes,
-      address,
-      lat,
-      lng,
-      media_id,
-      con_name,
-      con_desg,
-      from_date,
-      to_date,
-      is_remind,
-      remind_tenure,
-      snooze_at,
-      attnds_id,
-      from_date,
-      to_date,
-      is_remind,
-      remind_tenure,
-      snooze_at,",
-  content: {
-    "application/json": {
-      example: {
-        id: 8,
-        title: "booth meeting",
-        a_type: "public meeting",
-        notes: "regarding booth council meeting with ministers",
-        address: "10, skyraan 101, FCI road ganapathy",
-        lat: 10.23456,
-        lng: 9.98765,
-        media_id: "1,3,4,5,10,11",
-        con_name: "modi",
-        con_desg: "prime minister",
-        from_date: "1779787800000",
-        to_date: "1779798600000",
-        is_remind: 1,
-        remind_tenure: 300,
-        snooze_at: 180
+    #swagger.requestBody = {
+      required: true,
+      content: {
+        "application/json": {
+          schema: {
+            type: "object",
+            properties: {
+              id: {
+                type: "integer",
+                example: 8
+              },
+              title: {
+                type: "string",
+                example: "Booth Meeting"
+              },
+              a_type: {
+                type: "string",
+                example: "Public Meeting"
+              },
+              notes: {
+                type: "string",
+                example: "Regarding booth council meeting with ministers"
+              },
+              address: {
+                type: "string",
+                example: "10, Skyraan 101, FCI Road, Ganapathy"
+              },
+              lat: {
+                type: "number",
+                example: 10.23456
+              },
+              lng: {
+                type: "number",
+                example: 9.98765
+              },
+              media_id: {
+                type: "string",
+                example: "1,3,4,5,10,11"
+              },
+              con_name: {
+                type: "string",
+                example: "Modi"
+              },
+              con_desg: {
+                type: "string",
+                example: "Prime Minister"
+              },
+              from_date: {
+                type: "string",
+                example: "1779787800000"
+              },
+              to_date: {
+                type: "string",
+                example: "1779798600000"
+              },
+              is_remind: {
+                type: "integer",
+                example: 1
+              },
+              remind_tenure: {
+                type: "integer",
+                example: 300
+              },
+              snooze_at: {
+                type: "integer",
+                example: 180
+              }
+            }
+          }
+        }
       }
     }
-  }
-}
 
-#swagger.responses[200] = {
-  description: 'Success',
-  schema: {
-    success: 1,
-    message: 'Operation completed successfully',
-    data: [],
-    error: ''
-  }
-}
+    #swagger.responses[200] = {
+      description: 'Appointment updated successfully'
+    }
 
-#swagger.responses[500] = {
-  description: 'Internal Server Error',
-  schema: {
-    success: 0,
-    message: 'Internal Server Error',
-    data: [],
-    error: 'Error message'
-  }
-}
+    #swagger.responses[500] = {
+      description: 'Internal Server Error'
+    }
 */ meetingcontroller.updateAppointment,
 );
 
