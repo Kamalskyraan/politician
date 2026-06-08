@@ -200,7 +200,11 @@ export const emailOtpTemplate = (otp) => {
 
                 If you observe any suspicious activity,
                 please report it immediately through the app or contact our
+<<<<<<< HEAD
                 support team at
+=======
+                support team for assistance. (support mail/contact).
+>>>>>>> origin/akash
 
                 <a href="mailto:support@yourdomain.com"
                   style="
@@ -280,7 +284,10 @@ export const emailOtpTemplate = (otp) => {
                   Privacy Policy
                 </a>
 
+<<<<<<< HEAD
                 <span style="color: #ffffff;">•</span>
+=======
+>>>>>>> origin/akash
 
                 <a href="#"
                   style="

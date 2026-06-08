@@ -11,7 +11,7 @@ const router = express.Router();
 router.post(
   "/upload",
   /*
-#swagger.tags = ['Media']
+#swagger.tags = ['2.Media']
 #swagger.summary = 'Upload media'
 #swagger.description = 'Upload images, videos or documents'
 
@@ -42,23 +42,11 @@ router.post(
 }
 
 #swagger.responses[200] = {
-  description: 'Success',
-  schema: {
-    success: 1,
-    message: 'Operation completed successfully',
-    data: [],
-    error: ''
-  }
+  description: 'Media uploaded successfully',
 }
 
 #swagger.responses[500] = {
   description: 'Internal Server Error',
-  schema: {
-    success: 0,
-    message: 'Internal Server Error',
-    data: [],
-    error: 'Error message'
-  }
 }
 */
   upload.array("files"),
@@ -68,7 +56,7 @@ router.post(
 router.post(
   "/upload-docs",
   /*
-#swagger.tags = ['Media']
+#swagger.tags = ['2.Media']
 #swagger.summary = 'Upload Documents'
 #swagger.description = 'Upload documents only'
 
@@ -99,23 +87,11 @@ router.post(
 }
 
 #swagger.responses[200] = {
-  description: 'Success',
-  schema: {
-    success: 1,
-    message: 'Operation completed successfully',
-    data: [],
-    error: ''
-  }
+  description: 'Documents uploaded successfully',
 }
 
 #swagger.responses[500] = {
   description: 'Internal Server Error',
-  schema: {
-    success: 0,
-    message: 'Internal Server Error',
-    data: [],
-    error: 'Error message'
-  }
 }
 */
   upload.array("files"),
@@ -125,7 +101,7 @@ router.post(
 router.post(
   "/upload-imgs",
   /*
-#swagger.tags = ['Media']
+#swagger.tags = ['2.Media']
 #swagger.summary = 'Upload Images '
 #swagger.description = 'Upload Images Only'
 
@@ -156,23 +132,11 @@ router.post(
 }
 
 #swagger.responses[200] = {
-  description: 'Success',
-  schema: {
-    success: 1,
-    message: 'Operation completed successfully',
-    data: [],
-    error: ''
-  }
+  description: 'Images uploaded successfully',
 }
 
 #swagger.responses[500] = {
   description: 'Internal Server Error',
-  schema: {
-    success: 0,
-    message: 'Internal Server Error',
-    data: [],
-    error: 'Error message'
-  }
 }
 */
   upload.array("files"),
@@ -182,7 +146,7 @@ router.post(
 router.post(
   "/upload-vids",
   /*
-#swagger.tags = ['Media']
+#swagger.tags = ['2.Media']
 #swagger.summary = 'Upload Videos '
 #swagger.description = 'Upload Videos Only'
 
@@ -213,23 +177,11 @@ router.post(
 }
 
 #swagger.responses[200] = {
-  description: 'Success',
-  schema: {
-    success: 1,
-    message: 'Operation completed successfully',
-    data: [],
-    error: ''
-  }
+  description: 'Videos uploaded successfully',
 }
 
 #swagger.responses[500] = {
   description: 'Internal Server Error',
-  schema: {
-    success: 0,
-    message: 'Internal Server Error',
-    data: [],
-    error: 'Error message'
-  }
 }
 */
   upload.array("files"),
@@ -238,7 +190,8 @@ router.post(
 );
 
 router.post("/addrole", sourcecontroller.addUserrole);
-router.post("/updaterole", sourcecontroller.updaterole);
+router.post("/updaterole", sourcecontroller.updateUserrole);
+router.post("/getrole", sourcecontroller.getUserrole);
 
 // finance cat
 
@@ -312,7 +265,5 @@ router.post(
   */
   sourcecontroller.getFinCategory,
 );
-
-
 
 export default router;

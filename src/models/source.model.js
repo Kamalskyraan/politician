@@ -1,27 +1,25 @@
 import pool from "../config/db.js";
 import { executeQuery, sendResponse } from "../utils/helper.js";
-import dotenv from "dotenv";
-dotenv.config();
 
-export const insertmedia = async (files) => {
-  const values = files.map((f) => [
-    f.url,
-    f.pathname,
-    f.size,
-    f.type,
-    f.mimetype,
-    f.filename,
-  ]);
+// export const insertmedia = async (files) => {
+//   const values = files.map((f) => [
+//     f.url,
+//     f.pathname,
+//     f.size,
+//     f.type,
+//     f.mimetype,
+//     f.filename,
+//   ]);
 
-  const [results] = await pool.query(
-    "INSERT INTO media (url, path_name, media_size, media_type, mime_type, org_name) VALUES ?",
-    [values],
-  );
+//   const [results] = await pool.query(
+//     "INSERT INTO media (url, path_name, media_size, media_type, mime_type, org_name) VALUES ?",
+//     [values],
+//   );
 
-  const firstId = results.insertId;
+//   const firstId = results.insertId;
 
-  return files.map((_, i) => firstId + i);
-};
+//   return files.map((_, i) => firstId + i);
+// };
 
 export class sourceModel {
   async addRole({ role_name }) {
@@ -58,6 +56,25 @@ export class sourceModel {
         data: result?.data,
       };
     } else {
+      return {
+        success: 0,
+        error: result?.error,
+      };
+    }
+  }
+
+  async getUserrole() {
+    let query = `SELECT id, role_name FROM user_role WHERE status = ?`;
+    let params = ["active"];
+
+    const result = await executeQuery(query, params);
+
+    if (result?.success === 1) {
+      return {
+        success: 1,
+        data: result?.data,
+      };
+    } else if (result?.success === 0) {
       return {
         success: 0,
         error: result?.error,

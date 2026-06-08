@@ -46,7 +46,7 @@
                     "example": "9876543210"
                   },
                   "type": {
-                    "type": "Number",
+                    "type": "number",
                     "example": 0
                   }
                 }
@@ -104,143 +104,54 @@
     "/auth/signup": {
       "post": {
         "tags": [
-          "10.Auth"
+          "1.Auth"
         ],
         "summary": "Sign Up",
         "description": "User sign up. To create new user",
         "responses": {
           "200": {
-            "description": "Success",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "type": "object",
-                  "properties": {
-                    "success": {
-                      "type": "number",
-                      "example": 1
-                    },
-                    "message": {
-                      "type": "string",
-                      "example": "Operation completed successfully"
-                    },
-                    "data": {
-                      "type": "array",
-                      "example": [],
-                      "items": {}
-                    },
-                    "error": {
-                      "type": "string",
-                      "example": ""
-                    }
-                  },
-                  "xml": {
-                    "name": "main"
-                  }
-                }
-              },
-              "application/xml": {
-                "schema": {
-                  "type": "object",
-                  "properties": {
-                    "success": {
-                      "type": "number",
-                      "example": 1
-                    },
-                    "message": {
-                      "type": "string",
-                      "example": "Operation completed successfully"
-                    },
-                    "data": {
-                      "type": "array",
-                      "example": [],
-                      "items": {}
-                    },
-                    "error": {
-                      "type": "string",
-                      "example": ""
-                    }
-                  },
-                  "xml": {
-                    "name": "main"
-                  }
-                }
-              }
-            }
+            "description": "User signed up successfully"
           },
           "500": {
-            "description": "Internal Server Error",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "type": "object",
-                  "properties": {
-                    "success": {
-                      "type": "number",
-                      "example": 0
-                    },
-                    "message": {
-                      "type": "string",
-                      "example": "Internal Server Error"
-                    },
-                    "data": {
-                      "type": "array",
-                      "example": [],
-                      "items": {}
-                    },
-                    "error": {
-                      "type": "string",
-                      "example": "Error message"
-                    }
-                  },
-                  "xml": {
-                    "name": "main"
-                  }
-                }
-              },
-              "application/xml": {
-                "schema": {
-                  "type": "object",
-                  "properties": {
-                    "success": {
-                      "type": "number",
-                      "example": 0
-                    },
-                    "message": {
-                      "type": "string",
-                      "example": "Internal Server Error"
-                    },
-                    "data": {
-                      "type": "array",
-                      "example": [],
-                      "items": {}
-                    },
-                    "error": {
-                      "type": "string",
-                      "example": "Error message"
-                    }
-                  },
-                  "xml": {
-                    "name": "main"
-                  }
-                }
-              }
-            }
+            "description": "Internal Server Error"
           }
         },
         "requestBody": {
           "required": true,
-          "description": "Required fields - name, phn_num, Country_code, email, device_token, device_id, device_type",
           "content": {
             "application/json": {
-              "example": {
-                "name": "skyraan",
-                "phn_num": "8888833377",
-                "c_code": "+91",
-                "email": "kumar@gmail.com",
-                "device_token": "abcd",
-                "device_id": "#1234hsykrnaa",
-                "device_type": "ios"
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "name": {
+                    "type": "string",
+                    "example": "skyraan"
+                  },
+                  "phn_num": {
+                    "type": "string",
+                    "example": "8888833377"
+                  },
+                  "c_code": {
+                    "type": "string",
+                    "example": "+91"
+                  },
+                  "email": {
+                    "type": "string",
+                    "example": "kumar@gmail.com"
+                  },
+                  "device_token": {
+                    "type": "string",
+                    "example": "abcd"
+                  },
+                  "device_id": {
+                    "type": "string",
+                    "example": "#1234hsykrnaa"
+                  },
+                  "device_type": {
+                    "type": "string",
+                    "example": "ios"
+                  }
+                }
               }
             }
           }
@@ -250,140 +161,42 @@
     "/auth/login": {
       "post": {
         "tags": [
-          "AUTH"
+          "1.Auth"
         ],
         "summary": "Login",
         "description": "User Login",
         "responses": {
           "200": {
-            "description": "Success",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "type": "object",
-                  "properties": {
-                    "success": {
-                      "type": "number",
-                      "example": 1
-                    },
-                    "message": {
-                      "type": "string",
-                      "example": "Operation completed successfully"
-                    },
-                    "data": {
-                      "type": "array",
-                      "example": [],
-                      "items": {}
-                    },
-                    "error": {
-                      "type": "string",
-                      "example": ""
-                    }
-                  },
-                  "xml": {
-                    "name": "main"
-                  }
-                }
-              },
-              "application/xml": {
-                "schema": {
-                  "type": "object",
-                  "properties": {
-                    "success": {
-                      "type": "number",
-                      "example": 1
-                    },
-                    "message": {
-                      "type": "string",
-                      "example": "Operation completed successfully"
-                    },
-                    "data": {
-                      "type": "array",
-                      "example": [],
-                      "items": {}
-                    },
-                    "error": {
-                      "type": "string",
-                      "example": ""
-                    }
-                  },
-                  "xml": {
-                    "name": "main"
-                  }
-                }
-              }
-            }
+            "description": "User logged in successfully"
           },
           "500": {
-            "description": "Internal Server Error",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "type": "object",
-                  "properties": {
-                    "success": {
-                      "type": "number",
-                      "example": 0
-                    },
-                    "message": {
-                      "type": "string",
-                      "example": "Internal Server Error"
-                    },
-                    "data": {
-                      "type": "array",
-                      "example": [],
-                      "items": {}
-                    },
-                    "error": {
-                      "type": "string",
-                      "example": "Error message"
-                    }
-                  },
-                  "xml": {
-                    "name": "main"
-                  }
-                }
-              },
-              "application/xml": {
-                "schema": {
-                  "type": "object",
-                  "properties": {
-                    "success": {
-                      "type": "number",
-                      "example": 0
-                    },
-                    "message": {
-                      "type": "string",
-                      "example": "Internal Server Error"
-                    },
-                    "data": {
-                      "type": "array",
-                      "example": [],
-                      "items": {}
-                    },
-                    "error": {
-                      "type": "string",
-                      "example": "Error message"
-                    }
-                  },
-                  "xml": {
-                    "name": "main"
-                  }
-                }
-              }
-            }
+            "description": "Internal Server Error"
           }
         },
         "requestBody": {
           "required": true,
-          "description": "Required fields - email, device_token, device_id, device_type",
           "content": {
             "application/json": {
-              "example": {
-                "email": "kuma@gmail.com",
-                "device_token": "abc",
-                "device_id": "#skyandro000",
-                "device_type": "android"
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "email": {
+                    "type": "string",
+                    "example": "skyraan@gmail.com"
+                  },
+                  "device_token": {
+                    "type": "string",
+                    "example": "abc"
+                  },
+                  "device_id": {
+                    "type": "string",
+                    "example": "#skyandro000"
+                  },
+                  "device_type": {
+                    "type": "string",
+                    "example": "android"
+                  }
+                }
               }
             }
           }
@@ -393,128 +206,16 @@
     "/source/upload": {
       "post": {
         "tags": [
-          "Media"
+          "2.Media"
         ],
         "summary": "Upload media",
         "description": "Upload images, videos or documents",
         "responses": {
           "200": {
-            "description": "Success",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "type": "object",
-                  "properties": {
-                    "success": {
-                      "type": "number",
-                      "example": 1
-                    },
-                    "message": {
-                      "type": "string",
-                      "example": "Operation completed successfully"
-                    },
-                    "data": {
-                      "type": "array",
-                      "example": [],
-                      "items": {}
-                    },
-                    "error": {
-                      "type": "string",
-                      "example": ""
-                    }
-                  },
-                  "xml": {
-                    "name": "main"
-                  }
-                }
-              },
-              "application/xml": {
-                "schema": {
-                  "type": "object",
-                  "properties": {
-                    "success": {
-                      "type": "number",
-                      "example": 1
-                    },
-                    "message": {
-                      "type": "string",
-                      "example": "Operation completed successfully"
-                    },
-                    "data": {
-                      "type": "array",
-                      "example": [],
-                      "items": {}
-                    },
-                    "error": {
-                      "type": "string",
-                      "example": ""
-                    }
-                  },
-                  "xml": {
-                    "name": "main"
-                  }
-                }
-              }
-            }
+            "description": "Media uploaded successfully"
           },
           "500": {
-            "description": "Internal Server Error",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "type": "object",
-                  "properties": {
-                    "success": {
-                      "type": "number",
-                      "example": 0
-                    },
-                    "message": {
-                      "type": "string",
-                      "example": "Internal Server Error"
-                    },
-                    "data": {
-                      "type": "array",
-                      "example": [],
-                      "items": {}
-                    },
-                    "error": {
-                      "type": "string",
-                      "example": "Error message"
-                    }
-                  },
-                  "xml": {
-                    "name": "main"
-                  }
-                }
-              },
-              "application/xml": {
-                "schema": {
-                  "type": "object",
-                  "properties": {
-                    "success": {
-                      "type": "number",
-                      "example": 0
-                    },
-                    "message": {
-                      "type": "string",
-                      "example": "Internal Server Error"
-                    },
-                    "data": {
-                      "type": "array",
-                      "example": [],
-                      "items": {}
-                    },
-                    "error": {
-                      "type": "string",
-                      "example": "Error message"
-                    }
-                  },
-                  "xml": {
-                    "name": "main"
-                  }
-                }
-              }
-            }
+            "description": "Internal Server Error"
           }
         },
         "requestBody": {
@@ -545,128 +246,16 @@
     "/source/upload-docs": {
       "post": {
         "tags": [
-          "Media"
+          "2.Media"
         ],
         "summary": "Upload Documents",
         "description": "Upload documents only",
         "responses": {
           "200": {
-            "description": "Success",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "type": "object",
-                  "properties": {
-                    "success": {
-                      "type": "number",
-                      "example": 1
-                    },
-                    "message": {
-                      "type": "string",
-                      "example": "Operation completed successfully"
-                    },
-                    "data": {
-                      "type": "array",
-                      "example": [],
-                      "items": {}
-                    },
-                    "error": {
-                      "type": "string",
-                      "example": ""
-                    }
-                  },
-                  "xml": {
-                    "name": "main"
-                  }
-                }
-              },
-              "application/xml": {
-                "schema": {
-                  "type": "object",
-                  "properties": {
-                    "success": {
-                      "type": "number",
-                      "example": 1
-                    },
-                    "message": {
-                      "type": "string",
-                      "example": "Operation completed successfully"
-                    },
-                    "data": {
-                      "type": "array",
-                      "example": [],
-                      "items": {}
-                    },
-                    "error": {
-                      "type": "string",
-                      "example": ""
-                    }
-                  },
-                  "xml": {
-                    "name": "main"
-                  }
-                }
-              }
-            }
+            "description": "Documents uploaded successfully"
           },
           "500": {
-            "description": "Internal Server Error",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "type": "object",
-                  "properties": {
-                    "success": {
-                      "type": "number",
-                      "example": 0
-                    },
-                    "message": {
-                      "type": "string",
-                      "example": "Internal Server Error"
-                    },
-                    "data": {
-                      "type": "array",
-                      "example": [],
-                      "items": {}
-                    },
-                    "error": {
-                      "type": "string",
-                      "example": "Error message"
-                    }
-                  },
-                  "xml": {
-                    "name": "main"
-                  }
-                }
-              },
-              "application/xml": {
-                "schema": {
-                  "type": "object",
-                  "properties": {
-                    "success": {
-                      "type": "number",
-                      "example": 0
-                    },
-                    "message": {
-                      "type": "string",
-                      "example": "Internal Server Error"
-                    },
-                    "data": {
-                      "type": "array",
-                      "example": [],
-                      "items": {}
-                    },
-                    "error": {
-                      "type": "string",
-                      "example": "Error message"
-                    }
-                  },
-                  "xml": {
-                    "name": "main"
-                  }
-                }
-              }
-            }
+            "description": "Internal Server Error"
           }
         },
         "requestBody": {
@@ -697,128 +286,16 @@
     "/source/upload-imgs": {
       "post": {
         "tags": [
-          "Media"
+          "2.Media"
         ],
         "summary": "Upload Images ",
         "description": "Upload Images Only",
         "responses": {
           "200": {
-            "description": "Success",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "type": "object",
-                  "properties": {
-                    "success": {
-                      "type": "number",
-                      "example": 1
-                    },
-                    "message": {
-                      "type": "string",
-                      "example": "Operation completed successfully"
-                    },
-                    "data": {
-                      "type": "array",
-                      "example": [],
-                      "items": {}
-                    },
-                    "error": {
-                      "type": "string",
-                      "example": ""
-                    }
-                  },
-                  "xml": {
-                    "name": "main"
-                  }
-                }
-              },
-              "application/xml": {
-                "schema": {
-                  "type": "object",
-                  "properties": {
-                    "success": {
-                      "type": "number",
-                      "example": 1
-                    },
-                    "message": {
-                      "type": "string",
-                      "example": "Operation completed successfully"
-                    },
-                    "data": {
-                      "type": "array",
-                      "example": [],
-                      "items": {}
-                    },
-                    "error": {
-                      "type": "string",
-                      "example": ""
-                    }
-                  },
-                  "xml": {
-                    "name": "main"
-                  }
-                }
-              }
-            }
+            "description": "Images uploaded successfully"
           },
           "500": {
-            "description": "Internal Server Error",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "type": "object",
-                  "properties": {
-                    "success": {
-                      "type": "number",
-                      "example": 0
-                    },
-                    "message": {
-                      "type": "string",
-                      "example": "Internal Server Error"
-                    },
-                    "data": {
-                      "type": "array",
-                      "example": [],
-                      "items": {}
-                    },
-                    "error": {
-                      "type": "string",
-                      "example": "Error message"
-                    }
-                  },
-                  "xml": {
-                    "name": "main"
-                  }
-                }
-              },
-              "application/xml": {
-                "schema": {
-                  "type": "object",
-                  "properties": {
-                    "success": {
-                      "type": "number",
-                      "example": 0
-                    },
-                    "message": {
-                      "type": "string",
-                      "example": "Internal Server Error"
-                    },
-                    "data": {
-                      "type": "array",
-                      "example": [],
-                      "items": {}
-                    },
-                    "error": {
-                      "type": "string",
-                      "example": "Error message"
-                    }
-                  },
-                  "xml": {
-                    "name": "main"
-                  }
-                }
-              }
-            }
+            "description": "Internal Server Error"
           }
         },
         "requestBody": {
@@ -849,128 +326,16 @@
     "/source/upload-vids": {
       "post": {
         "tags": [
-          "Media"
+          "2.Media"
         ],
         "summary": "Upload Videos ",
         "description": "Upload Videos Only",
         "responses": {
           "200": {
-            "description": "Success",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "type": "object",
-                  "properties": {
-                    "success": {
-                      "type": "number",
-                      "example": 1
-                    },
-                    "message": {
-                      "type": "string",
-                      "example": "Operation completed successfully"
-                    },
-                    "data": {
-                      "type": "array",
-                      "example": [],
-                      "items": {}
-                    },
-                    "error": {
-                      "type": "string",
-                      "example": ""
-                    }
-                  },
-                  "xml": {
-                    "name": "main"
-                  }
-                }
-              },
-              "application/xml": {
-                "schema": {
-                  "type": "object",
-                  "properties": {
-                    "success": {
-                      "type": "number",
-                      "example": 1
-                    },
-                    "message": {
-                      "type": "string",
-                      "example": "Operation completed successfully"
-                    },
-                    "data": {
-                      "type": "array",
-                      "example": [],
-                      "items": {}
-                    },
-                    "error": {
-                      "type": "string",
-                      "example": ""
-                    }
-                  },
-                  "xml": {
-                    "name": "main"
-                  }
-                }
-              }
-            }
+            "description": "Videos uploaded successfully"
           },
           "500": {
-            "description": "Internal Server Error",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "type": "object",
-                  "properties": {
-                    "success": {
-                      "type": "number",
-                      "example": 0
-                    },
-                    "message": {
-                      "type": "string",
-                      "example": "Internal Server Error"
-                    },
-                    "data": {
-                      "type": "array",
-                      "example": [],
-                      "items": {}
-                    },
-                    "error": {
-                      "type": "string",
-                      "example": "Error message"
-                    }
-                  },
-                  "xml": {
-                    "name": "main"
-                  }
-                }
-              },
-              "application/xml": {
-                "schema": {
-                  "type": "object",
-                  "properties": {
-                    "success": {
-                      "type": "number",
-                      "example": 0
-                    },
-                    "message": {
-                      "type": "string",
-                      "example": "Internal Server Error"
-                    },
-                    "data": {
-                      "type": "array",
-                      "example": [],
-                      "items": {}
-                    },
-                    "error": {
-                      "type": "string",
-                      "example": "Error message"
-                    }
-                  },
-                  "xml": {
-                    "name": "main"
-                  }
-                }
-              }
-            }
+            "description": "Internal Server Error"
           }
         },
         "requestBody": {
@@ -1048,6 +413,16 @@
                 }
               }
             }
+          }
+        }
+      }
+    },
+    "/source/getrole": {
+      "post": {
+        "description": "",
+        "responses": {
+          "default": {
+            "description": ""
           }
         }
       }
@@ -1142,1773 +517,18 @@
         }
       }
     },
-    "/meeting/addmember": {
-      "post": {
-        "tags": [
-          "MEMBER"
-        ],
-        "summary": "Add member",
-        "description": "Add members required fields",
-        "responses": {
-          "200": {
-            "description": "Success",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "type": "object",
-                  "properties": {
-                    "success": {
-                      "type": "number",
-                      "example": 1
-                    },
-                    "message": {
-                      "type": "string",
-                      "example": "Operation completed successfully"
-                    },
-                    "data": {
-                      "type": "array",
-                      "example": [],
-                      "items": {}
-                    },
-                    "error": {
-                      "type": "string",
-                      "example": ""
-                    }
-                  },
-                  "xml": {
-                    "name": "main"
-                  }
-                }
-              },
-              "application/xml": {
-                "schema": {
-                  "type": "object",
-                  "properties": {
-                    "success": {
-                      "type": "number",
-                      "example": 1
-                    },
-                    "message": {
-                      "type": "string",
-                      "example": "Operation completed successfully"
-                    },
-                    "data": {
-                      "type": "array",
-                      "example": [],
-                      "items": {}
-                    },
-                    "error": {
-                      "type": "string",
-                      "example": ""
-                    }
-                  },
-                  "xml": {
-                    "name": "main"
-                  }
-                }
-              }
-            }
-          },
-          "500": {
-            "description": "Internal Server Error",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "type": "object",
-                  "properties": {
-                    "success": {
-                      "type": "number",
-                      "example": 0
-                    },
-                    "message": {
-                      "type": "string",
-                      "example": "Internal Server Error"
-                    },
-                    "data": {
-                      "type": "array",
-                      "example": [],
-                      "items": {}
-                    },
-                    "error": {
-                      "type": "string",
-                      "example": "Error message"
-                    }
-                  },
-                  "xml": {
-                    "name": "main"
-                  }
-                }
-              },
-              "application/xml": {
-                "schema": {
-                  "type": "object",
-                  "properties": {
-                    "success": {
-                      "type": "number",
-                      "example": 0
-                    },
-                    "message": {
-                      "type": "string",
-                      "example": "Internal Server Error"
-                    },
-                    "data": {
-                      "type": "array",
-                      "example": [],
-                      "items": {}
-                    },
-                    "error": {
-                      "type": "string",
-                      "example": "Error message"
-                    }
-                  },
-                  "xml": {
-                    "name": "main"
-                  }
-                }
-              }
-            }
-          }
-        },
-        "requestBody": {
-          "required": true,
-          "description": "Required fields - user_id, name, phn_num, role_id, country, state, district",
-          "content": {
-            "application/json": {
-              "example": {
-                "user_id": "USER_IFZu5632",
-                "name": "paschal",
-                "phn_num": "9487570100",
-                "role_id": 14,
-                "country": "german",
-                "state": "diffasgune",
-                "district": "naattingham"
-              }
-            }
-          }
-        }
-      }
-    },
-    "/meeting/getmember": {
-      "post": {
-        "tags": [
-          "MEMBER"
-        ],
-        "summary": "Get member",
-        "description": "Get members by passing user_id",
-        "responses": {
-          "200": {
-            "description": "Success",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "type": "object",
-                  "properties": {
-                    "success": {
-                      "type": "number",
-                      "example": 1
-                    },
-                    "message": {
-                      "type": "string",
-                      "example": "Operation completed successfully"
-                    },
-                    "data": {
-                      "type": "array",
-                      "example": [],
-                      "items": {}
-                    },
-                    "error": {
-                      "type": "string",
-                      "example": ""
-                    }
-                  },
-                  "xml": {
-                    "name": "main"
-                  }
-                }
-              },
-              "application/xml": {
-                "schema": {
-                  "type": "object",
-                  "properties": {
-                    "success": {
-                      "type": "number",
-                      "example": 1
-                    },
-                    "message": {
-                      "type": "string",
-                      "example": "Operation completed successfully"
-                    },
-                    "data": {
-                      "type": "array",
-                      "example": [],
-                      "items": {}
-                    },
-                    "error": {
-                      "type": "string",
-                      "example": ""
-                    }
-                  },
-                  "xml": {
-                    "name": "main"
-                  }
-                }
-              }
-            }
-          },
-          "500": {
-            "description": "Internal Server Error",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "type": "object",
-                  "properties": {
-                    "success": {
-                      "type": "number",
-                      "example": 0
-                    },
-                    "message": {
-                      "type": "string",
-                      "example": "Internal Server Error"
-                    },
-                    "data": {
-                      "type": "array",
-                      "example": [],
-                      "items": {}
-                    },
-                    "error": {
-                      "type": "string",
-                      "example": "Error message"
-                    }
-                  },
-                  "xml": {
-                    "name": "main"
-                  }
-                }
-              },
-              "application/xml": {
-                "schema": {
-                  "type": "object",
-                  "properties": {
-                    "success": {
-                      "type": "number",
-                      "example": 0
-                    },
-                    "message": {
-                      "type": "string",
-                      "example": "Internal Server Error"
-                    },
-                    "data": {
-                      "type": "array",
-                      "example": [],
-                      "items": {}
-                    },
-                    "error": {
-                      "type": "string",
-                      "example": "Error message"
-                    }
-                  },
-                  "xml": {
-                    "name": "main"
-                  }
-                }
-              }
-            }
-          }
-        },
-        "requestBody": {
-          "required": true,
-          "description": "Required fields - user_id",
-          "content": {
-            "application/json": {
-              "example": {
-                "user_id": "USER_IFZu5632"
-              }
-            }
-          }
-        }
-      }
-    },
-    "/meeting/updatemember": {
-      "post": {
-        "tags": [
-          "MEMBER"
-        ],
-        "summary": "Update member",
-        "description": "Update members by passing id and other fields to update",
-        "responses": {
-          "200": {
-            "description": "Success",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "type": "object",
-                  "properties": {
-                    "success": {
-                      "type": "number",
-                      "example": 1
-                    },
-                    "message": {
-                      "type": "string",
-                      "example": "Operation completed successfully"
-                    },
-                    "data": {
-                      "type": "array",
-                      "example": [],
-                      "items": {}
-                    },
-                    "error": {
-                      "type": "string",
-                      "example": ""
-                    }
-                  },
-                  "xml": {
-                    "name": "main"
-                  }
-                }
-              },
-              "application/xml": {
-                "schema": {
-                  "type": "object",
-                  "properties": {
-                    "success": {
-                      "type": "number",
-                      "example": 1
-                    },
-                    "message": {
-                      "type": "string",
-                      "example": "Operation completed successfully"
-                    },
-                    "data": {
-                      "type": "array",
-                      "example": [],
-                      "items": {}
-                    },
-                    "error": {
-                      "type": "string",
-                      "example": ""
-                    }
-                  },
-                  "xml": {
-                    "name": "main"
-                  }
-                }
-              }
-            }
-          },
-          "500": {
-            "description": "Internal Server Error",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "type": "object",
-                  "properties": {
-                    "success": {
-                      "type": "number",
-                      "example": 0
-                    },
-                    "message": {
-                      "type": "string",
-                      "example": "Internal Server Error"
-                    },
-                    "data": {
-                      "type": "array",
-                      "example": [],
-                      "items": {}
-                    },
-                    "error": {
-                      "type": "string",
-                      "example": "Error message"
-                    }
-                  },
-                  "xml": {
-                    "name": "main"
-                  }
-                }
-              },
-              "application/xml": {
-                "schema": {
-                  "type": "object",
-                  "properties": {
-                    "success": {
-                      "type": "number",
-                      "example": 0
-                    },
-                    "message": {
-                      "type": "string",
-                      "example": "Internal Server Error"
-                    },
-                    "data": {
-                      "type": "array",
-                      "example": [],
-                      "items": {}
-                    },
-                    "error": {
-                      "type": "string",
-                      "example": "Error message"
-                    }
-                  },
-                  "xml": {
-                    "name": "main"
-                  }
-                }
-              }
-            }
-          }
-        },
-        "requestBody": {
-          "required": true,
-          "description": "Required fields - id, name, phn_num, role_id, country, state, district",
-          "content": {
-            "application/json": {
-              "example": {
-                "id": 26,
-                "name": "paschal",
-                "phn_num": "9487570100",
-                "role_id": 14,
-                "country": "german",
-                "state": "diffasgune",
-                "district": "naattingham"
-              }
-            }
-          }
-        }
-      }
-    },
-    "/meeting/deletemember": {
-      "post": {
-        "tags": [
-          "MEMBER"
-        ],
-        "summary": "delete member",
-        "description": "Delete members by passing id",
-        "responses": {
-          "200": {
-            "description": "Success",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "type": "object",
-                  "properties": {
-                    "success": {
-                      "type": "number",
-                      "example": 1
-                    },
-                    "message": {
-                      "type": "string",
-                      "example": "Operation completed successfully"
-                    },
-                    "data": {
-                      "type": "array",
-                      "example": [],
-                      "items": {}
-                    },
-                    "error": {
-                      "type": "string",
-                      "example": ""
-                    }
-                  },
-                  "xml": {
-                    "name": "main"
-                  }
-                }
-              },
-              "application/xml": {
-                "schema": {
-                  "type": "object",
-                  "properties": {
-                    "success": {
-                      "type": "number",
-                      "example": 1
-                    },
-                    "message": {
-                      "type": "string",
-                      "example": "Operation completed successfully"
-                    },
-                    "data": {
-                      "type": "array",
-                      "example": [],
-                      "items": {}
-                    },
-                    "error": {
-                      "type": "string",
-                      "example": ""
-                    }
-                  },
-                  "xml": {
-                    "name": "main"
-                  }
-                }
-              }
-            }
-          },
-          "500": {
-            "description": "Internal Server Error",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "type": "object",
-                  "properties": {
-                    "success": {
-                      "type": "number",
-                      "example": 0
-                    },
-                    "message": {
-                      "type": "string",
-                      "example": "Internal Server Error"
-                    },
-                    "data": {
-                      "type": "array",
-                      "example": [],
-                      "items": {}
-                    },
-                    "error": {
-                      "type": "string",
-                      "example": "Error message"
-                    }
-                  },
-                  "xml": {
-                    "name": "main"
-                  }
-                }
-              },
-              "application/xml": {
-                "schema": {
-                  "type": "object",
-                  "properties": {
-                    "success": {
-                      "type": "number",
-                      "example": 0
-                    },
-                    "message": {
-                      "type": "string",
-                      "example": "Internal Server Error"
-                    },
-                    "data": {
-                      "type": "array",
-                      "example": [],
-                      "items": {}
-                    },
-                    "error": {
-                      "type": "string",
-                      "example": "Error message"
-                    }
-                  },
-                  "xml": {
-                    "name": "main"
-                  }
-                }
-              }
-            }
-          }
-        },
-        "requestBody": {
-          "required": true,
-          "description": "Required fields - id",
-          "content": {
-            "application/json": {
-              "example": {
-                "id": 26
-              }
-            }
-          }
-        }
-      }
-    },
-    "/meeting/addmeeting": {
-      "post": {
-        "tags": [
-          "MEETING"
-        ],
-        "summary": "Add meeting",
-        "description": "Add meeting by passing required fields",
-        "responses": {
-          "200": {
-            "description": "Success",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "type": "object",
-                  "properties": {
-                    "success": {
-                      "type": "number",
-                      "example": 1
-                    },
-                    "message": {
-                      "type": "string",
-                      "example": "Operation completed successfully"
-                    },
-                    "data": {
-                      "type": "array",
-                      "example": [],
-                      "items": {}
-                    },
-                    "error": {
-                      "type": "string",
-                      "example": ""
-                    }
-                  },
-                  "xml": {
-                    "name": "main"
-                  }
-                }
-              },
-              "application/xml": {
-                "schema": {
-                  "type": "object",
-                  "properties": {
-                    "success": {
-                      "type": "number",
-                      "example": 1
-                    },
-                    "message": {
-                      "type": "string",
-                      "example": "Operation completed successfully"
-                    },
-                    "data": {
-                      "type": "array",
-                      "example": [],
-                      "items": {}
-                    },
-                    "error": {
-                      "type": "string",
-                      "example": ""
-                    }
-                  },
-                  "xml": {
-                    "name": "main"
-                  }
-                }
-              }
-            }
-          },
-          "500": {
-            "description": "Internal Server Error",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "type": "object",
-                  "properties": {
-                    "success": {
-                      "type": "number",
-                      "example": 0
-                    },
-                    "message": {
-                      "type": "string",
-                      "example": "Internal Server Error"
-                    },
-                    "data": {
-                      "type": "array",
-                      "example": [],
-                      "items": {}
-                    },
-                    "error": {
-                      "type": "string",
-                      "example": "Error message"
-                    }
-                  },
-                  "xml": {
-                    "name": "main"
-                  }
-                }
-              },
-              "application/xml": {
-                "schema": {
-                  "type": "object",
-                  "properties": {
-                    "success": {
-                      "type": "number",
-                      "example": 0
-                    },
-                    "message": {
-                      "type": "string",
-                      "example": "Internal Server Error"
-                    },
-                    "data": {
-                      "type": "array",
-                      "example": [],
-                      "items": {}
-                    },
-                    "error": {
-                      "type": "string",
-                      "example": "Error message"
-                    }
-                  },
-                  "xml": {
-                    "name": "main"
-                  }
-                }
-              }
-            }
-          }
-        },
-        "requestBody": {
-          "required": true,
-          "description": "Required fields - user_id, title, description, meeting_type, meeting_priority, meeting_link, notes, address, lat, lng, media_id, attnds_id, from_date, to_date, is_remind, remind_tenure, snooze_at",
-          "content": {
-            "application/json": {
-              "example": {
-                "user_id": "USER_efKL6767",
-                "title": "meeting title 100",
-                "descp": "meeting desc",
-                "m_type": 0,
-                "m_priority": 2,
-                "m_link": "asdsa",
-                "notes": "m notes is created for reference",
-                "address": "10, skyraan building",
-                "lat": 10.23456,
-                "lng": 9.98765,
-                "media_id": "1000,2,3,900,8999",
-                "attnds_id": "1,3,4,5,5",
-                "from_date": "1779447600000",
-                "to_date": "1779449400000",
-                "is_remind": 1,
-                "remind_tenure": 300,
-                "snooze_at": 180
-              }
-            }
-          }
-        }
-      }
-    },
-    "/meeting/getmeeting": {
-      "post": {
-        "tags": [
-          "MEETING"
-        ],
-        "summary": "Get meeting",
-        "description": "Get meeting by passing user_id, pass with status if need by status -upcoming, cancelled, completed, pending",
-        "responses": {
-          "200": {
-            "description": "Success",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "type": "object",
-                  "properties": {
-                    "success": {
-                      "type": "number",
-                      "example": 1
-                    },
-                    "message": {
-                      "type": "string",
-                      "example": "Operation completed successfully"
-                    },
-                    "data": {
-                      "type": "array",
-                      "example": [],
-                      "items": {}
-                    },
-                    "error": {
-                      "type": "string",
-                      "example": ""
-                    }
-                  },
-                  "xml": {
-                    "name": "main"
-                  }
-                }
-              },
-              "application/xml": {
-                "schema": {
-                  "type": "object",
-                  "properties": {
-                    "success": {
-                      "type": "number",
-                      "example": 1
-                    },
-                    "message": {
-                      "type": "string",
-                      "example": "Operation completed successfully"
-                    },
-                    "data": {
-                      "type": "array",
-                      "example": [],
-                      "items": {}
-                    },
-                    "error": {
-                      "type": "string",
-                      "example": ""
-                    }
-                  },
-                  "xml": {
-                    "name": "main"
-                  }
-                }
-              }
-            }
-          },
-          "500": {
-            "description": "Internal Server Error",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "type": "object",
-                  "properties": {
-                    "success": {
-                      "type": "number",
-                      "example": 0
-                    },
-                    "message": {
-                      "type": "string",
-                      "example": "Internal Server Error"
-                    },
-                    "data": {
-                      "type": "array",
-                      "example": [],
-                      "items": {}
-                    },
-                    "error": {
-                      "type": "string",
-                      "example": "Error message"
-                    }
-                  },
-                  "xml": {
-                    "name": "main"
-                  }
-                }
-              },
-              "application/xml": {
-                "schema": {
-                  "type": "object",
-                  "properties": {
-                    "success": {
-                      "type": "number",
-                      "example": 0
-                    },
-                    "message": {
-                      "type": "string",
-                      "example": "Internal Server Error"
-                    },
-                    "data": {
-                      "type": "array",
-                      "example": [],
-                      "items": {}
-                    },
-                    "error": {
-                      "type": "string",
-                      "example": "Error message"
-                    }
-                  },
-                  "xml": {
-                    "name": "main"
-                  }
-                }
-              }
-            }
-          }
-        },
-        "requestBody": {
-          "required": true,
-          "description": "Required fields - user_id, status",
-          "content": {
-            "application/json": {
-              "example": {
-                "user_id": "USER_efKL6767",
-                "status": "pending"
-              }
-            }
-          }
-        }
-      }
-    },
-    "/meeting/deletemeeting": {
-      "post": {
-        "tags": [
-          "MEETING"
-        ],
-        "summary": "Delete meeting",
-        "description": "Delete meeting by passing id",
-        "responses": {
-          "200": {
-            "description": "Success",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "type": "object",
-                  "properties": {
-                    "success": {
-                      "type": "number",
-                      "example": 1
-                    },
-                    "message": {
-                      "type": "string",
-                      "example": "Operation completed successfully"
-                    },
-                    "data": {
-                      "type": "array",
-                      "example": [],
-                      "items": {}
-                    },
-                    "error": {
-                      "type": "string",
-                      "example": ""
-                    }
-                  },
-                  "xml": {
-                    "name": "main"
-                  }
-                }
-              },
-              "application/xml": {
-                "schema": {
-                  "type": "object",
-                  "properties": {
-                    "success": {
-                      "type": "number",
-                      "example": 1
-                    },
-                    "message": {
-                      "type": "string",
-                      "example": "Operation completed successfully"
-                    },
-                    "data": {
-                      "type": "array",
-                      "example": [],
-                      "items": {}
-                    },
-                    "error": {
-                      "type": "string",
-                      "example": ""
-                    }
-                  },
-                  "xml": {
-                    "name": "main"
-                  }
-                }
-              }
-            }
-          },
-          "500": {
-            "description": "Internal Server Error",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "type": "object",
-                  "properties": {
-                    "success": {
-                      "type": "number",
-                      "example": 0
-                    },
-                    "message": {
-                      "type": "string",
-                      "example": "Internal Server Error"
-                    },
-                    "data": {
-                      "type": "array",
-                      "example": [],
-                      "items": {}
-                    },
-                    "error": {
-                      "type": "string",
-                      "example": "Error message"
-                    }
-                  },
-                  "xml": {
-                    "name": "main"
-                  }
-                }
-              },
-              "application/xml": {
-                "schema": {
-                  "type": "object",
-                  "properties": {
-                    "success": {
-                      "type": "number",
-                      "example": 0
-                    },
-                    "message": {
-                      "type": "string",
-                      "example": "Internal Server Error"
-                    },
-                    "data": {
-                      "type": "array",
-                      "example": [],
-                      "items": {}
-                    },
-                    "error": {
-                      "type": "string",
-                      "example": "Error message"
-                    }
-                  },
-                  "xml": {
-                    "name": "main"
-                  }
-                }
-              }
-            }
-          }
-        },
-        "requestBody": {
-          "required": true,
-          "description": "Required fields - id",
-          "content": {
-            "application/json": {
-              "example": {
-                "id": 10
-              }
-            }
-          }
-        }
-      }
-    },
-    "/meeting/updatemeeting": {
-      "post": {
-        "tags": [
-          "MEETING"
-        ],
-        "summary": "Update meeting",
-        "description": "Update meeting by passing id and other fields to update",
-        "responses": {
-          "200": {
-            "description": "Success",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "type": "object",
-                  "properties": {
-                    "success": {
-                      "type": "number",
-                      "example": 1
-                    },
-                    "message": {
-                      "type": "string",
-                      "example": "Operation completed successfully"
-                    },
-                    "data": {
-                      "type": "array",
-                      "example": [],
-                      "items": {}
-                    },
-                    "error": {
-                      "type": "string",
-                      "example": ""
-                    }
-                  },
-                  "xml": {
-                    "name": "main"
-                  }
-                }
-              },
-              "application/xml": {
-                "schema": {
-                  "type": "object",
-                  "properties": {
-                    "success": {
-                      "type": "number",
-                      "example": 1
-                    },
-                    "message": {
-                      "type": "string",
-                      "example": "Operation completed successfully"
-                    },
-                    "data": {
-                      "type": "array",
-                      "example": [],
-                      "items": {}
-                    },
-                    "error": {
-                      "type": "string",
-                      "example": ""
-                    }
-                  },
-                  "xml": {
-                    "name": "main"
-                  }
-                }
-              }
-            }
-          },
-          "500": {
-            "description": "Internal Server Error",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "type": "object",
-                  "properties": {
-                    "success": {
-                      "type": "number",
-                      "example": 0
-                    },
-                    "message": {
-                      "type": "string",
-                      "example": "Internal Server Error"
-                    },
-                    "data": {
-                      "type": "array",
-                      "example": [],
-                      "items": {}
-                    },
-                    "error": {
-                      "type": "string",
-                      "example": "Error message"
-                    }
-                  },
-                  "xml": {
-                    "name": "main"
-                  }
-                }
-              },
-              "application/xml": {
-                "schema": {
-                  "type": "object",
-                  "properties": {
-                    "success": {
-                      "type": "number",
-                      "example": 0
-                    },
-                    "message": {
-                      "type": "string",
-                      "example": "Internal Server Error"
-                    },
-                    "data": {
-                      "type": "array",
-                      "example": [],
-                      "items": {}
-                    },
-                    "error": {
-                      "type": "string",
-                      "example": "Error message"
-                    }
-                  },
-                  "xml": {
-                    "name": "main"
-                  }
-                }
-              }
-            }
-          }
-        },
-        "requestBody": {
-          "required": true,
-          "description": "Required fields - id,title,descp,m_type,m_priority,m_link,notes,address,lat,lng,status,media_id, attnds_id, from_date, to_date, is_remind, remind_tenure, snooze_at   attnds_id,   from_date,   to_date,   is_remind,   remind_tenure,   snooze_at,",
-          "content": {
-            "application/json": {
-              "example": {
-                "id": 8,
-                "title": "meeting title 100",
-                "descp": "meeting desc",
-                "m_type": 0,
-                "m_priority": 2,
-                "m_link": "asdsa",
-                "notes": "m notes is created for reference",
-                "address": "10, skyraan building",
-                "lat": 10.23456,
-                "lng": 9.98765,
-                "media_id": "1000,2,3,900,8999",
-                "attnds_id": "1,3,4,5,5",
-                "from_date": "1779447600000",
-                "to_date": "1779449400000",
-                "is_remind": 1,
-                "remind_tenure": 300,
-                "snooze_at": 180
-              }
-            }
-          }
-        }
-      }
-    },
-    "/meeting/addappointment": {
-      "post": {
-        "tags": [
-          "APPOINTMENT"
-        ],
-        "summary": "Add appointment",
-        "description": "Add appointment by passing user_id and other fields",
-        "responses": {
-          "200": {
-            "description": "Success",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "type": "object",
-                  "properties": {
-                    "success": {
-                      "type": "number",
-                      "example": 1
-                    },
-                    "message": {
-                      "type": "string",
-                      "example": "Operation completed successfully"
-                    },
-                    "data": {
-                      "type": "array",
-                      "example": [],
-                      "items": {}
-                    },
-                    "error": {
-                      "type": "string",
-                      "example": ""
-                    }
-                  },
-                  "xml": {
-                    "name": "main"
-                  }
-                }
-              },
-              "application/xml": {
-                "schema": {
-                  "type": "object",
-                  "properties": {
-                    "success": {
-                      "type": "number",
-                      "example": 1
-                    },
-                    "message": {
-                      "type": "string",
-                      "example": "Operation completed successfully"
-                    },
-                    "data": {
-                      "type": "array",
-                      "example": [],
-                      "items": {}
-                    },
-                    "error": {
-                      "type": "string",
-                      "example": ""
-                    }
-                  },
-                  "xml": {
-                    "name": "main"
-                  }
-                }
-              }
-            }
-          },
-          "500": {
-            "description": "Internal Server Error",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "type": "object",
-                  "properties": {
-                    "success": {
-                      "type": "number",
-                      "example": 0
-                    },
-                    "message": {
-                      "type": "string",
-                      "example": "Internal Server Error"
-                    },
-                    "data": {
-                      "type": "array",
-                      "example": [],
-                      "items": {}
-                    },
-                    "error": {
-                      "type": "string",
-                      "example": "Error message"
-                    }
-                  },
-                  "xml": {
-                    "name": "main"
-                  }
-                }
-              },
-              "application/xml": {
-                "schema": {
-                  "type": "object",
-                  "properties": {
-                    "success": {
-                      "type": "number",
-                      "example": 0
-                    },
-                    "message": {
-                      "type": "string",
-                      "example": "Internal Server Error"
-                    },
-                    "data": {
-                      "type": "array",
-                      "example": [],
-                      "items": {}
-                    },
-                    "error": {
-                      "type": "string",
-                      "example": "Error message"
-                    }
-                  },
-                  "xml": {
-                    "name": "main"
-                  }
-                }
-              }
-            }
-          }
-        },
-        "requestBody": {
-          "required": true,
-          "description": "Required fields - user_id,   title,   a_type,   notes,   address,   lat,   lng,   media_id,   con_name,   con_desg,   from_date,   to_date,   is_remind,   remind_tenure,   snooze_at,   attnds_id,   from_date,   to_date,   is_remind,   remind_tenure,   snooze_at,",
-          "content": {
-            "application/json": {
-              "example": {
-                "user_id": "USER_Z8bn0076",
-                "title": "booth meeting",
-                "a_type": "public meeting",
-                "notes": "regarding booth council meeting with ministers",
-                "address": "10, skyraan 101, FCI road ganapathy",
-                "lat": 10.23456,
-                "lng": 9.98765,
-                "media_id": "1,3,4,5,10,11",
-                "con_name": "modi",
-                "con_desg": "prime minister",
-                "from_date": "1779787800000",
-                "to_date": "1779798600000",
-                "is_remind": 1,
-                "remind_tenure": 300,
-                "snooze_at": 180
-              }
-            }
-          }
-        }
-      }
-    },
-    "/meeting/deleteappointment": {
-      "post": {
-        "tags": [
-          "APPOINTMENT"
-        ],
-        "summary": "Delete appointment",
-        "description": "Delete appointment by passing id",
-        "responses": {
-          "200": {
-            "description": "Success",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "type": "object",
-                  "properties": {
-                    "success": {
-                      "type": "number",
-                      "example": 1
-                    },
-                    "message": {
-                      "type": "string",
-                      "example": "Operation completed successfully"
-                    },
-                    "data": {
-                      "type": "array",
-                      "example": [],
-                      "items": {}
-                    },
-                    "error": {
-                      "type": "string",
-                      "example": ""
-                    }
-                  },
-                  "xml": {
-                    "name": "main"
-                  }
-                }
-              },
-              "application/xml": {
-                "schema": {
-                  "type": "object",
-                  "properties": {
-                    "success": {
-                      "type": "number",
-                      "example": 1
-                    },
-                    "message": {
-                      "type": "string",
-                      "example": "Operation completed successfully"
-                    },
-                    "data": {
-                      "type": "array",
-                      "example": [],
-                      "items": {}
-                    },
-                    "error": {
-                      "type": "string",
-                      "example": ""
-                    }
-                  },
-                  "xml": {
-                    "name": "main"
-                  }
-                }
-              }
-            }
-          },
-          "500": {
-            "description": "Internal Server Error",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "type": "object",
-                  "properties": {
-                    "success": {
-                      "type": "number",
-                      "example": 0
-                    },
-                    "message": {
-                      "type": "string",
-                      "example": "Internal Server Error"
-                    },
-                    "data": {
-                      "type": "array",
-                      "example": [],
-                      "items": {}
-                    },
-                    "error": {
-                      "type": "string",
-                      "example": "Error message"
-                    }
-                  },
-                  "xml": {
-                    "name": "main"
-                  }
-                }
-              },
-              "application/xml": {
-                "schema": {
-                  "type": "object",
-                  "properties": {
-                    "success": {
-                      "type": "number",
-                      "example": 0
-                    },
-                    "message": {
-                      "type": "string",
-                      "example": "Internal Server Error"
-                    },
-                    "data": {
-                      "type": "array",
-                      "example": [],
-                      "items": {}
-                    },
-                    "error": {
-                      "type": "string",
-                      "example": "Error message"
-                    }
-                  },
-                  "xml": {
-                    "name": "main"
-                  }
-                }
-              }
-            }
-          }
-        },
-        "requestBody": {
-          "required": true,
-          "description": "Required fields - id",
-          "content": {
-            "application/json": {
-              "example": {
-                "id": 3
-              }
-            }
-          }
-        }
-      }
-    },
-    "/meeting/getappointment": {
-      "post": {
-        "tags": [
-          "APPOINTMENT"
-        ],
-        "summary": "Get appointment",
-        "description": "Get appointment by passing user_id, pass with status if needed by status -upcoming, cancelled, completed, pending",
-        "responses": {
-          "200": {
-            "description": "Success",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "type": "object",
-                  "properties": {
-                    "success": {
-                      "type": "number",
-                      "example": 1
-                    },
-                    "message": {
-                      "type": "string",
-                      "example": "Operation completed successfully"
-                    },
-                    "data": {
-                      "type": "array",
-                      "example": [],
-                      "items": {}
-                    },
-                    "error": {
-                      "type": "string",
-                      "example": ""
-                    }
-                  },
-                  "xml": {
-                    "name": "main"
-                  }
-                }
-              },
-              "application/xml": {
-                "schema": {
-                  "type": "object",
-                  "properties": {
-                    "success": {
-                      "type": "number",
-                      "example": 1
-                    },
-                    "message": {
-                      "type": "string",
-                      "example": "Operation completed successfully"
-                    },
-                    "data": {
-                      "type": "array",
-                      "example": [],
-                      "items": {}
-                    },
-                    "error": {
-                      "type": "string",
-                      "example": ""
-                    }
-                  },
-                  "xml": {
-                    "name": "main"
-                  }
-                }
-              }
-            }
-          },
-          "500": {
-            "description": "Internal Server Error",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "type": "object",
-                  "properties": {
-                    "success": {
-                      "type": "number",
-                      "example": 0
-                    },
-                    "message": {
-                      "type": "string",
-                      "example": "Internal Server Error"
-                    },
-                    "data": {
-                      "type": "array",
-                      "example": [],
-                      "items": {}
-                    },
-                    "error": {
-                      "type": "string",
-                      "example": "Error message"
-                    }
-                  },
-                  "xml": {
-                    "name": "main"
-                  }
-                }
-              },
-              "application/xml": {
-                "schema": {
-                  "type": "object",
-                  "properties": {
-                    "success": {
-                      "type": "number",
-                      "example": 0
-                    },
-                    "message": {
-                      "type": "string",
-                      "example": "Internal Server Error"
-                    },
-                    "data": {
-                      "type": "array",
-                      "example": [],
-                      "items": {}
-                    },
-                    "error": {
-                      "type": "string",
-                      "example": "Error message"
-                    }
-                  },
-                  "xml": {
-                    "name": "main"
-                  }
-                }
-              }
-            }
-          }
-        },
-        "requestBody": {
-          "required": true,
-          "description": "Required fields - user_id, status",
-          "content": {
-            "application/json": {
-              "example": {
-                "user_id": "USER_efKL6767",
-                "status": "pending"
-              }
-            }
-          }
-        }
-      }
-    },
-    "/meeting/updateappointment": {
-      "post": {
-        "tags": [
-          "APPOINTMENT"
-        ],
-        "summary": "Update appointment",
-        "description": "Update appointment by passing id and other fields to update",
-        "responses": {
-          "200": {
-            "description": "Success",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "type": "object",
-                  "properties": {
-                    "success": {
-                      "type": "number",
-                      "example": 1
-                    },
-                    "message": {
-                      "type": "string",
-                      "example": "Operation completed successfully"
-                    },
-                    "data": {
-                      "type": "array",
-                      "example": [],
-                      "items": {}
-                    },
-                    "error": {
-                      "type": "string",
-                      "example": ""
-                    }
-                  },
-                  "xml": {
-                    "name": "main"
-                  }
-                }
-              },
-              "application/xml": {
-                "schema": {
-                  "type": "object",
-                  "properties": {
-                    "success": {
-                      "type": "number",
-                      "example": 1
-                    },
-                    "message": {
-                      "type": "string",
-                      "example": "Operation completed successfully"
-                    },
-                    "data": {
-                      "type": "array",
-                      "example": [],
-                      "items": {}
-                    },
-                    "error": {
-                      "type": "string",
-                      "example": ""
-                    }
-                  },
-                  "xml": {
-                    "name": "main"
-                  }
-                }
-              }
-            }
-          },
-          "500": {
-            "description": "Internal Server Error",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "type": "object",
-                  "properties": {
-                    "success": {
-                      "type": "number",
-                      "example": 0
-                    },
-                    "message": {
-                      "type": "string",
-                      "example": "Internal Server Error"
-                    },
-                    "data": {
-                      "type": "array",
-                      "example": [],
-                      "items": {}
-                    },
-                    "error": {
-                      "type": "string",
-                      "example": "Error message"
-                    }
-                  },
-                  "xml": {
-                    "name": "main"
-                  }
-                }
-              },
-              "application/xml": {
-                "schema": {
-                  "type": "object",
-                  "properties": {
-                    "success": {
-                      "type": "number",
-                      "example": 0
-                    },
-                    "message": {
-                      "type": "string",
-                      "example": "Internal Server Error"
-                    },
-                    "data": {
-                      "type": "array",
-                      "example": [],
-                      "items": {}
-                    },
-                    "error": {
-                      "type": "string",
-                      "example": "Error message"
-                    }
-                  },
-                  "xml": {
-                    "name": "main"
-                  }
-                }
-              }
-            }
-          }
-        },
-        "requestBody": {
-          "required": true,
-          "description": "Required fields - user_id,   title,   a_type,   notes,   address,   lat,   lng,   media_id,   con_name,   con_desg,   from_date,   to_date,   is_remind,   remind_tenure,   snooze_at,   attnds_id,   from_date,   to_date,   is_remind,   remind_tenure,   snooze_at,",
-          "content": {
-            "application/json": {
-              "example": {
-                "id": 8,
-                "title": "booth meeting",
-                "a_type": "public meeting",
-                "notes": "regarding booth council meeting with ministers",
-                "address": "10, skyraan 101, FCI road ganapathy",
-                "lat": 10.23456,
-                "lng": 9.98765,
-                "media_id": "1,3,4,5,10,11",
-                "con_name": "modi",
-                "con_desg": "prime minister",
-                "from_date": "1779787800000",
-                "to_date": "1779798600000",
-                "is_remind": 1,
-                "remind_tenure": 300,
-                "snooze_at": 180
-              }
-            }
-          }
-        }
-      }
-    },
-    "/meeting/reminder": {
-      "post": {
-        "description": "",
-        "responses": {
-          "default": {
-            "description": ""
-          }
-        }
-      }
-    },
     "/user/getuserprofile": {
       "post": {
         "description": "",
+        "parameters": [
+          {
+            "name": "authorization",
+            "in": "header",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
         "responses": {
           "default": {
             "description": ""
@@ -2919,6 +539,15 @@
     "/user/updateuserprofile": {
       "post": {
         "description": "",
+        "parameters": [
+          {
+            "name": "authorization",
+            "in": "header",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
         "responses": {
           "default": {
             "description": ""
@@ -3020,212 +649,1312 @@
         }
       }
     },
-    "/travel/addtravel": {
+    "/faq/filterapi": {
       "post": {
         "description": "",
         "responses": {
           "default": {
             "description": ""
+          }
+        }
+      }
+    },
+    "/faq/getcountry": {
+      "post": {
+        "description": "",
+        "responses": {
+          "default": {
+            "description": ""
+          }
+        }
+      }
+    },
+    "/travel/addtravel": {
+      "post": {
+        "tags": [
+          "6.TRAVEL"
+        ],
+        "summary": "Add Travel",
+        "description": "Add a new travel plan",
+        "parameters": [
+          {
+            "name": "authorization",
+            "in": "header",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Travel added successfully"
+          },
+          "500": {
+            "description": "Internal Server Error"
+          }
+        },
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "user_id": {
+                    "type": "string",
+                    "example": "USER_ZNLl2665"
+                  },
+                  "title": {
+                    "type": "string",
+                    "example": "Munnar Trip"
+                  },
+                  "descp": {
+                    "type": "string",
+                    "example": "Three days two nights trip"
+                  },
+                  "purpose": {
+                    "type": "integer",
+                    "example": 0
+                  },
+                  "travel_from": {
+                    "type": "string",
+                    "example": "Salem"
+                  },
+                  "from_lat": {
+                    "type": "number",
+                    "example": 25.87575
+                  },
+                  "from_lng": {
+                    "type": "number",
+                    "example": 67.5443
+                  },
+                  "travel_to": {
+                    "type": "string",
+                    "example": "Yercaud"
+                  },
+                  "to_lat": {
+                    "type": "number",
+                    "example": 67.544
+                  },
+                  "to_lng": {
+                    "type": "number",
+                    "example": 78.655
+                  },
+                  "from_date": {
+                    "type": "string",
+                    "example": "2026-06-04 12:01:45"
+                  },
+                  "to_date": {
+                    "type": "string",
+                    "example": "2026-06-04 13:01:45"
+                  },
+                  "vech_mode": {
+                    "type": "string",
+                    "example": "car"
+                  },
+                  "media_id": {
+                    "type": "string",
+                    "example": "1,2,3"
+                  },
+                  "in_hotel": {
+                    "type": "integer",
+                    "example": 1
+                  },
+                  "hot_name": {
+                    "type": "string",
+                    "example": "RHR"
+                  },
+                  "hot_address": {
+                    "type": "string",
+                    "example": "Near Junction"
+                  },
+                  "hot_lat": {
+                    "type": "number",
+                    "example": 83.333
+                  },
+                  "hot_lng": {
+                    "type": "number",
+                    "example": 43.333
+                  },
+                  "hot_in": {
+                    "type": "string",
+                    "example": "2026-06-04 16:01:40"
+                  },
+                  "hot_out": {
+                    "type": "string",
+                    "example": "2026-06-04 18:30:40"
+                  },
+                  "hot_media": {
+                    "type": "string",
+                    "example": "5,6"
+                  },
+                  "is_remind": {
+                    "type": "integer",
+                    "example": 1
+                  },
+                  "remind_tenure": {
+                    "type": "integer",
+                    "example": 600
+                  },
+                  "snooze_at": {
+                    "type": "integer",
+                    "example": 120
+                  }
+                }
+              }
+            }
           }
         }
       }
     },
     "/travel/deletetravel": {
       "post": {
-        "description": "",
+        "tags": [
+          "6.TRAVEL"
+        ],
+        "summary": "Delete Travel",
+        "description": "Delete travel by passing id",
+        "parameters": [
+          {
+            "name": "authorization",
+            "in": "header",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
         "responses": {
-          "default": {
-            "description": ""
+          "200": {
+            "description": "Travel deleted successfully"
+          },
+          "500": {
+            "description": "Internal Server Error"
+          }
+        },
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "id": {
+                    "type": "integer",
+                    "example": 2
+                  }
+                }
+              }
+            }
           }
         }
       }
     },
     "/travel/updatetravel": {
       "post": {
-        "description": "",
+        "tags": [
+          "6.TRAVEL"
+        ],
+        "summary": "Update Travel",
+        "description": "Update travel by passing id and other fields to update",
+        "parameters": [
+          {
+            "name": "authorization",
+            "in": "header",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
         "responses": {
-          "default": {
-            "description": ""
+          "200": {
+            "description": "Travel updated successfully"
+          },
+          "500": {
+            "description": "Internal Server Error"
+          }
+        },
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "id": {
+                    "type": "integer",
+                    "example": 10
+                  },
+                  "title": {
+                    "type": "string",
+                    "example": "Ooty Travel"
+                  },
+                  "descp": {
+                    "type": "string",
+                    "example": "IV from college"
+                  },
+                  "purpose": {
+                    "type": "integer",
+                    "example": 1
+                  },
+                  "travel_from": {
+                    "type": "string",
+                    "example": "Coimbatore"
+                  },
+                  "from_lat": {
+                    "type": "number",
+                    "example": 70.33234
+                  },
+                  "from_lng": {
+                    "type": "number",
+                    "example": 60.123
+                  },
+                  "travel_to": {
+                    "type": "string",
+                    "example": "Bangalore"
+                  },
+                  "to_lat": {
+                    "type": "number",
+                    "example": 50.123
+                  },
+                  "to_lng": {
+                    "type": "number",
+                    "example": 50.321
+                  },
+                  "from_date": {
+                    "type": "string",
+                    "example": "2026-06-04 12:01:45"
+                  },
+                  "to_date": {
+                    "type": "string",
+                    "example": "2026-06-05 21:30:45"
+                  },
+                  "vech_mode": {
+                    "type": "string",
+                    "example": "train"
+                  },
+                  "media_id": {
+                    "type": "string",
+                    "example": "1,2,3"
+                  },
+                  "in_hotel": {
+                    "type": "integer",
+                    "example": 1
+                  },
+                  "hot_name": {
+                    "type": "string",
+                    "example": "RHR"
+                  },
+                  "hot_address": {
+                    "type": "string",
+                    "example": "Near Junction"
+                  },
+                  "hot_lat": {
+                    "type": "number",
+                    "example": 12.3433
+                  },
+                  "hot_lng": {
+                    "type": "number",
+                    "example": 10.3322
+                  },
+                  "hot_in": {
+                    "type": "string",
+                    "example": "2026-06-04 20:10:20"
+                  },
+                  "hot_out": {
+                    "type": "string",
+                    "example": "2026-06-04 20:30:20"
+                  },
+                  "hot_media": {
+                    "type": "string",
+                    "example": "1,2,3"
+                  },
+                  "is_remind": {
+                    "type": "integer",
+                    "example": 1
+                  },
+                  "remind_tenure": {
+                    "type": "integer",
+                    "example": 600
+                  },
+                  "snooze_at": {
+                    "type": "integer",
+                    "example": 120
+                  }
+                }
+              }
+            }
           }
         }
       }
     },
     "/travel/gettravel": {
       "post": {
-        "description": "",
+        "tags": [
+          "6.TRAVEL"
+        ],
+        "summary": "Get Travel",
+        "description": "Get travel details by passing user_id",
+        "parameters": [
+          {
+            "name": "authorization",
+            "in": "header",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
         "responses": {
-          "default": {
-            "description": ""
+          "200": {
+            "description": "Travel details fetched successfully"
+          },
+          "500": {
+            "description": "Internal Server Error"
+          }
+        },
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "user_id": {
+                    "type": "string",
+                    "example": "USER_ZNLl2665"
+                  }
+                }
+              }
+            }
           }
         }
       }
     },
     "/travel/adddaily": {
       "post": {
-        "description": "",
+        "tags": [
+          "6.1.TRAVEL DAILY PLAN"
+        ],
+        "summary": "Add Daily Plan",
+        "description": "Add a daily plan to a travel",
+        "parameters": [
+          {
+            "name": "authorization",
+            "in": "header",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
         "responses": {
-          "default": {
-            "description": ""
+          "200": {
+            "description": "Daily plan added successfully"
+          },
+          "500": {
+            "description": "Internal Server Error"
+          }
+        },
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "user_id": {
+                    "type": "string",
+                    "example": "USER_Z8bn0076"
+                  },
+                  "travel_id": {
+                    "type": "integer",
+                    "example": 3
+                  },
+                  "from": {
+                    "type": "string",
+                    "example": "Gandhipuram"
+                  },
+                  "to": {
+                    "type": "string",
+                    "example": "Prozone Mall"
+                  },
+                  "departure": {
+                    "type": "string",
+                    "example": "2026-06-04 15:30:30"
+                  },
+                  "vech_mode": {
+                    "type": "string",
+                    "example": "train"
+                  },
+                  "media_id": {
+                    "type": "string",
+                    "example": "1,2"
+                  }
+                }
+              }
+            }
           }
         }
       }
     },
     "/travel/updatedaily": {
       "post": {
-        "description": "",
+        "tags": [
+          "6.1.TRAVEL DAILY PLAN"
+        ],
+        "summary": "Update Daily Plan",
+        "description": "Update a daily plan by passing id and other fields to update",
+        "parameters": [
+          {
+            "name": "authorization",
+            "in": "header",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
         "responses": {
-          "default": {
-            "description": ""
+          "200": {
+            "description": "Daily plan updated successfully"
+          },
+          "500": {
+            "description": "Internal Server Error"
+          }
+        },
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "id": {
+                    "type": "integer",
+                    "example": 9
+                  },
+                  "from": {
+                    "type": "string",
+                    "example": "Gandhipuram"
+                  },
+                  "to": {
+                    "type": "string",
+                    "example": "Prozone Mall"
+                  },
+                  "departure": {
+                    "type": "string",
+                    "example": "2026-06-04 15:30:30"
+                  },
+                  "vech_mode": {
+                    "type": "string",
+                    "example": "flight"
+                  },
+                  "media_id": {
+                    "type": "string",
+                    "example": "1,2"
+                  }
+                }
+              }
+            }
           }
         }
       }
     },
     "/travel/deletedaily": {
       "post": {
-        "description": "",
+        "tags": [
+          "6.1.TRAVEL DAILY PLAN"
+        ],
+        "summary": "Delete Daily Plan",
+        "description": "Delete a daily plan by passing id",
+        "parameters": [
+          {
+            "name": "authorization",
+            "in": "header",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
         "responses": {
-          "default": {
-            "description": ""
+          "200": {
+            "description": "Daily plan deleted successfully"
+          },
+          "500": {
+            "description": "Internal Server Error"
+          }
+        },
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "id": {
+                    "type": "integer",
+                    "example": 9
+                  }
+                }
+              }
+            }
           }
         }
       }
     },
     "/travel/addexpense": {
       "post": {
-        "description": "",
+        "tags": [
+          "6.2.TRAVEL EXPENSE"
+        ],
+        "summary": "Add Travel Expense",
+        "description": "Add a travel expense",
+        "parameters": [
+          {
+            "name": "authorization",
+            "in": "header",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
         "responses": {
-          "default": {
-            "description": ""
+          "200": {
+            "description": "Travel expense added successfully"
+          },
+          "500": {
+            "description": "Internal Server Error"
+          }
+        },
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "user_id": {
+                    "type": "string",
+                    "example": "USER_ZNLl2665"
+                  },
+                  "travel_id": {
+                    "type": "integer",
+                    "example": 3
+                  },
+                  "category": {
+                    "type": "string",
+                    "example": "Bus Expense"
+                  },
+                  "notes": {
+                    "type": "string",
+                    "example": "Travelled in bus for meeting"
+                  },
+                  "exp_date": {
+                    "type": "string",
+                    "example": "1780230601000"
+                  },
+                  "amount": {
+                    "type": "number",
+                    "example": 87.89
+                  }
+                }
+              }
+            }
           }
         }
       }
     },
     "/travel/deleteexpense": {
       "post": {
-        "description": "",
+        "tags": [
+          "6.2.TRAVEL EXPENSE"
+        ],
+        "summary": "Delete Travel Expense",
+        "description": "Delete a travel expense by passing id",
+        "parameters": [
+          {
+            "name": "authorization",
+            "in": "header",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
         "responses": {
-          "default": {
-            "description": ""
+          "200": {
+            "description": "Travel expense deleted successfully"
+          },
+          "500": {
+            "description": "Internal Server Error"
+          }
+        },
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "id": {
+                    "type": "integer",
+                    "example": 3
+                  }
+                }
+              }
+            }
           }
         }
       }
     },
     "/travel/updateexpense": {
       "post": {
-        "description": "",
+        "tags": [
+          "6.2.TRAVEL EXPENSE"
+        ],
+        "summary": "Update Travel Expense",
+        "description": "Update a travel expense by passing id and other fields to update",
+        "parameters": [
+          {
+            "name": "authorization",
+            "in": "header",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
         "responses": {
-          "default": {
-            "description": ""
+          "200": {
+            "description": "Travel expense updated successfully"
+          },
+          "500": {
+            "description": "Internal Server Error"
+          }
+        },
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "id": {
+                    "type": "integer",
+                    "example": 3
+                  },
+                  "category": {
+                    "type": "string",
+                    "example": "Bus Expense"
+                  },
+                  "notes": {
+                    "type": "string",
+                    "example": "Travelled in bus for meeting"
+                  },
+                  "exp_date": {
+                    "type": "string",
+                    "example": "2026-06-10 18:39:38"
+                  },
+                  "amount": {
+                    "type": "number",
+                    "example": 100
+                  }
+                }
+              }
+            }
           }
         }
       }
     },
     "/travel/getexpense": {
       "post": {
-        "description": "",
+        "tags": [
+          "6.2.TRAVEL EXPENSE"
+        ],
+        "summary": "Get Travel Expense",
+        "description": "Get travel expenses by passing travel_id",
+        "parameters": [
+          {
+            "name": "authorization",
+            "in": "header",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
         "responses": {
-          "default": {
-            "description": ""
+          "200": {
+            "description": "Travel expenses fetched successfully"
+          },
+          "500": {
+            "description": "Internal Server Error"
+          }
+        },
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "travel_id": {
+                    "type": "integer",
+                    "example": 3
+                  }
+                }
+              }
+            }
           }
         }
       }
     },
     "/travel/addnotes": {
       "post": {
-        "description": "",
+        "tags": [
+          "6.3.TRAVEL NOTES"
+        ],
+        "summary": "Add Travel Notes",
+        "description": "Add notes for a travel",
+        "parameters": [
+          {
+            "name": "authorization",
+            "in": "header",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
         "responses": {
-          "default": {
-            "description": ""
+          "200": {
+            "description": "Travel notes added successfully"
+          },
+          "500": {
+            "description": "Internal Server Error"
+          }
+        },
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "user_id": {
+                    "type": "string",
+                    "example": "USER_ZNLl2665"
+                  },
+                  "travel_id": {
+                    "type": "integer",
+                    "example": 4
+                  },
+                  "title": {
+                    "type": "string",
+                    "example": "Met Vijay Regarding New Posting"
+                  },
+                  "descp": {
+                    "type": "string",
+                    "example": "Gathered party members and went to meet PM"
+                  }
+                }
+              }
+            }
           }
         }
       }
     },
     "/travel/getnotes": {
       "post": {
-        "description": "",
+        "tags": [
+          "6.3.TRAVEL NOTES"
+        ],
+        "summary": "Get Travel Notes",
+        "description": "Get travel notes by passing travel_id",
+        "parameters": [
+          {
+            "name": "authorization",
+            "in": "header",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
         "responses": {
-          "default": {
-            "description": ""
+          "200": {
+            "description": "Travel notes fetched successfully"
+          },
+          "500": {
+            "description": "Internal Server Error"
+          }
+        },
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "travel_id": {
+                    "type": "integer",
+                    "example": 10
+                  }
+                }
+              }
+            }
           }
         }
       }
     },
     "/travel/updatenotes": {
       "post": {
-        "description": "",
+        "tags": [
+          "6.3.TRAVEL NOTES"
+        ],
+        "summary": "Update Travel Notes",
+        "description": "Update travel notes by passing id and other fields to update",
+        "parameters": [
+          {
+            "name": "authorization",
+            "in": "header",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
         "responses": {
-          "default": {
-            "description": ""
+          "200": {
+            "description": "Travel notes updated successfully"
+          },
+          "500": {
+            "description": "Internal Server Error"
+          }
+        },
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "id": {
+                    "type": "integer",
+                    "example": 4
+                  },
+                  "title": {
+                    "type": "string",
+                    "example": "Met Vijay Regarding New Posting"
+                  },
+                  "descp": {
+                    "type": "string",
+                    "example": "Gathered party members and went to meet PM"
+                  }
+                }
+              }
+            }
           }
         }
       }
     },
     "/travel/deletenotes": {
       "post": {
-        "description": "",
+        "tags": [
+          "6.3.TRAVEL NOTES"
+        ],
+        "summary": "Delete Travel Notes",
+        "description": "Delete travel notes by passing id",
+        "parameters": [
+          {
+            "name": "authorization",
+            "in": "header",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
         "responses": {
-          "default": {
-            "description": ""
+          "200": {
+            "description": "Travel notes deleted successfully"
+          },
+          "500": {
+            "description": "Internal Server Error"
+          }
+        },
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "id": {
+                    "type": "integer",
+                    "example": 3
+                  }
+                }
+              }
+            }
           }
         }
       }
     },
     "/travel/addtravelphotos": {
       "post": {
-        "description": "",
+        "tags": [
+          "6.4.TRAVEL PHOTOS"
+        ],
+        "summary": "Add Travel Photos",
+        "description": "Add photos to a travel",
+        "parameters": [
+          {
+            "name": "authorization",
+            "in": "header",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
         "responses": {
-          "default": {
-            "description": ""
+          "200": {
+            "description": "Travel photos added successfully"
+          },
+          "500": {
+            "description": "Internal Server Error"
+          }
+        },
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "user_id": {
+                    "type": "string",
+                    "example": "USER_ZNLl2665"
+                  },
+                  "travel_id": {
+                    "type": "integer",
+                    "example": 10
+                  },
+                  "media_id": {
+                    "type": "string",
+                    "example": "1,2,3"
+                  }
+                }
+              }
+            }
           }
         }
       }
     },
     "/travel/updatetravelphotos": {
       "post": {
-        "description": "",
+        "tags": [
+          "6.4.TRAVEL PHOTOS"
+        ],
+        "summary": "Update Travel Photos",
+        "description": "Update travel photos by passing id and media_id",
+        "parameters": [
+          {
+            "name": "authorization",
+            "in": "header",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
         "responses": {
-          "default": {
-            "description": ""
+          "200": {
+            "description": "Travel photos updated successfully"
+          },
+          "500": {
+            "description": "Internal Server Error"
+          }
+        },
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "id": {
+                    "type": "integer",
+                    "example": 10
+                  },
+                  "media_id": {
+                    "type": "string",
+                    "example": "1,2,3"
+                  }
+                }
+              }
+            }
           }
         }
       }
     },
     "/travel/gettravelphotos": {
       "post": {
-        "description": "",
+        "tags": [
+          "6.4.TRAVEL PHOTOS"
+        ],
+        "summary": "Get Travel Photos",
+        "description": "Get travel photos by passing travel_id",
+        "parameters": [
+          {
+            "name": "authorization",
+            "in": "header",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
         "responses": {
-          "default": {
-            "description": ""
+          "200": {
+            "description": "Travel photos fetched successfully"
+          },
+          "500": {
+            "description": "Internal Server Error"
+          }
+        },
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "travel_id": {
+                    "type": "integer",
+                    "example": 10
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/travel/deletetravelphotos": {
+      "post": {
+        "tags": [
+          "6.4.TRAVEL PHOTOS"
+        ],
+        "summary": "DELETE TRAVEL PHOTOS",
+        "description": "Delete travel photos by passing travel id and media id",
+        "parameters": [
+          {
+            "name": "authorization",
+            "in": "header",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Travel photos deleted successfully"
+          },
+          "500": {
+            "description": "Internal Server Error"
+          }
+        },
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "travel_id": {
+                    "type": "integer",
+                    "example": 10
+                  },
+                  "media_id": {
+                    "type": "string",
+                    "example": "15"
+                  }
+                }
+              }
+            }
           }
         }
       }
     },
     "/travel/addtraveldocs": {
       "post": {
-        "description": "",
+        "tags": [
+          "6.5.TRAVEL Documents"
+        ],
+        "summary": "ADD TRAVEL DOCUMENTS",
+        "description": "Add travel documents",
+        "parameters": [
+          {
+            "name": "authorization",
+            "in": "header",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
         "responses": {
-          "default": {
-            "description": ""
+          "200": {
+            "description": "Travel documents added successfully"
+          },
+          "500": {
+            "description": "Internal Server Error"
+          }
+        },
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "user_id": {
+                    "type": "string",
+                    "example": "USER_ZNLl2665"
+                  },
+                  "travel_id": {
+                    "type": "integer",
+                    "example": 10
+                  },
+                  "media_id": {
+                    "type": "string",
+                    "example": "1,2,3"
+                  }
+                }
+              }
+            }
           }
         }
       }
     },
     "/travel/updatetraveldocs": {
       "post": {
-        "description": "",
+        "tags": [
+          "6.5.TRAVEL Documents"
+        ],
+        "summary": "UPDATE TRAVEL DOCUMENTS",
+        "description": "Update travel documents by passing travel id and other update fields",
+        "parameters": [
+          {
+            "name": "authorization",
+            "in": "header",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
         "responses": {
-          "default": {
-            "description": ""
+          "200": {
+            "description": "Travel documents updated successfully"
+          },
+          "500": {
+            "description": "Internal Server Error"
+          }
+        },
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "travel_id": {
+                    "type": "integer",
+                    "example": 10
+                  },
+                  "media_id": {
+                    "type": "string",
+                    "example": "1,2,3"
+                  }
+                }
+              }
+            }
           }
         }
       }
     },
     "/travel/gettraveldocs": {
       "post": {
-        "description": "",
+        "tags": [
+          "6.5.TRAVEL Documents"
+        ],
+        "summary": "GET TRAVEL DOCUMENTS",
+        "description": "Get travel documents by passing travel id",
+        "parameters": [
+          {
+            "name": "authorization",
+            "in": "header",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
         "responses": {
-          "default": {
-            "description": ""
+          "200": {
+            "description": "Travel documents fetched successfully"
+          },
+          "500": {
+            "description": "Internal Server Error"
+          }
+        },
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "travel_id": {
+                    "type": "integer",
+                    "example": 10
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/travel/deletetraveldocs": {
+      "post": {
+        "tags": [
+          "6.5.TRAVEL Documents"
+        ],
+        "summary": "DELETE TRAVEL DOCUMENTS",
+        "description": "Delete travel documents by passing travel id and media id",
+        "parameters": [
+          {
+            "name": "authorization",
+            "in": "header",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Travel documents deleted successfully"
+          },
+          "500": {
+            "description": "Internal Server Error"
+          }
+        },
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "travel_id": {
+                    "type": "integer",
+                    "example": 10
+                  },
+                  "media_id": {
+                    "type": "string",
+                    "example": "1,2,3"
+                  }
+                }
+              }
+            }
           }
         }
       }
@@ -3474,6 +2203,174 @@
           }
         }
       }
+    },
+    "/support/addfaq": {
+      "post": {
+        "description": "",
+        "parameters": [
+          {
+            "name": "authorization",
+            "in": "header",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "default": {
+            "description": ""
+          }
+        },
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "question": {
+                    "example": "any"
+                  },
+                  "answer": {
+                    "example": "any"
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/support/getfaq": {
+      "post": {
+        "description": "",
+        "parameters": [
+          {
+            "name": "authorization",
+            "in": "header",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "default": {
+            "description": ""
+          }
+        },
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "status": {
+                    "example": "any"
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/support/updatefaq": {
+      "post": {
+        "description": "",
+        "parameters": [
+          {
+            "name": "authorization",
+            "in": "header",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "default": {
+            "description": ""
+          }
+        },
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "id": {
+                    "example": "any"
+                  },
+                  "question": {
+                    "example": "any"
+                  },
+                  "answer": {
+                    "example": "any"
+                  },
+                  "status": {
+                    "example": "any"
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/support/contact_us": {
+      "post": {
+        "description": "",
+        "parameters": [
+          {
+            "name": "authorization",
+            "in": "header",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "default": {
+            "description": ""
+          }
+        }
+      }
+    },
+    "/support/filterapi": {
+      "post": {
+        "description": "",
+        "parameters": [
+          {
+            "name": "authorization",
+            "in": "header",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "default": {
+            "description": ""
+          }
+        }
+      }
+    },
+    "/support/getcountry": {
+      "post": {
+        "description": "",
+        "parameters": [
+          {
+            "name": "authorization",
+            "in": "header",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "default": {
+            "description": ""
+          }
+        }
+      }
     }
   },
   "components": {
@@ -3484,5 +2381,10 @@
         "bearerFormat": "JWT"
       }
     }
-  }
+  },
+  "security": [
+    {
+      "bearerAuth": []
+    }
+  ]
 }

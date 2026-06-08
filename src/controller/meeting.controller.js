@@ -14,6 +14,7 @@ import {
   deleteMeetingSchema,
   deleteMemberSchema,
   getAppointSchema,
+  getMemberschema,
   reminderSchema,
   updateAppointSchema,
   updateMeetingSchema,
@@ -62,14 +63,21 @@ export const addMembers = async (req, res) => {
     if (result?.success === 1) {
       return sendResponse(res, 200, 1, "member added successfully", [], "");
     } else {
-      return sendResponse(res, 200, 0, error, [], "");
+      return sendResponse(
+        res,
+        200,
+        0,
+        "failed to add member",
+        [],
+        result?.error,
+      );
     }
   } catch (error) {
     return sendResponse(
       res,
       500,
       0,
-      "Internal Server Error",
+      "Internal Server Error in add member",
       [],
       error.message,
     );
@@ -78,9 +86,44 @@ export const addMembers = async (req, res) => {
 
 export const getMembers = async (req, res) => {
   try {
-    const { user_id } = req.body;
+    // console.log(req.body);
+    const validatedData = validateRequest(req.body, getMemberschema);
+    // console.log(validatedData);
 
-    const result = await meetingMdl.getMember({ user_id });
+    let { user_id, role_id, country, state, district } = validatedData?.value;
+    console.log(country);
+
+    role_id = role_id === "" ? null : role_id;
+    country = country === "" ? null : country;
+    state = state === "" ? null : state;
+    district = district === "" ? null : district;
+
+    let upt_cols = [];
+    let params = [];
+
+    upt_cols.push("m.user_id = ?");
+    params.push(user_id);
+
+    if (role_id !== undefined) {
+      upt_cols.push("m.role_name = ?");
+      params.push(role_name);
+    }
+    if (country !== undefined) {
+      upt_cols.push("m.country = ?");
+      params.push(country);
+    }
+    if (state !== undefined) {
+      upt_cols.push("m.state = ?");
+      params.push(state);
+    }
+    if (district !== undefined) {
+      upt_cols.push("m.district = ?");
+      params.push(district);
+    }
+    upt_cols.push("m.status = ?");
+    params.push("active");
+
+    const result = await meetingMdl.getMember({ upt_cols, params });
     const data = (await result?.data) || [];
 
     if (result?.data.length >= 1) {
@@ -122,11 +165,12 @@ export const updateMembers = async (req, res) => {
       );
     }
 
-    let { id, name, phn_num, role_id, state, district } = validatedData?.value;
+    let { user_id, id, name, phn_num, role_id, state, district } = validatedData?.value;
 
     let country = "India";
 
     const result = await meetingMdl.updateMember({
+      user_id,
       id,
       name,
       phn_num,
@@ -136,13 +180,10 @@ export const updateMembers = async (req, res) => {
       district,
     });
 
-    const data = result?.data || "";
-    const error = result?.error || "";
-
     if (result?.success === 1) {
       return sendResponse(res, 200, 1, "member details updated", [], "");
     } else {
-      return sendResponse(res, 200, 0, error, [], "");
+      return sendResponse(res, 200, 0, "Failed to update members", [], "");
     }
   } catch (error) {
     return sendResponse(
@@ -263,18 +304,18 @@ export const addMeeting = async (req, res) => {
     if (is_remind === 1 && snooze_at) {
       let remind_at;
       let nxt_snooze_at;
-      // from_date_obj = new Date(from_date);
-      // to_date_obj = new Date(to_date);
+      from_date_obj = new Date(from_date);
+      to_date_obj = new Date(to_date);
       // from_date_obj.setSeconds(0, 0);
       // to_date_obj.setSeconds(0, 0);
 
-      remind_at = from_date - remind_tenure * 1000;
+      remind_at = from_date_obj.getTime() - remind_tenure * 1000;
       nxt_snooze_at = remind_at + snooze_at * 1000;
 
       remind_at = new Date(remind_at);
       nxt_snooze_at = new Date(nxt_snooze_at);
-      from_date_obj = new Date(Number(from_date));
-      to_date_obj = new Date(Number(to_date));
+      // from_date_obj = new Date(Number(from_date));
+      // to_date_obj = new Date(Number(to_date));
 
       // console.log(remind_at);
 
@@ -328,12 +369,18 @@ export const addMeeting = async (req, res) => {
     } else if (is_remind === 0) {
       // let media_id_arr = media_id.toString();
       // let attnds_id_arr = attnds_id.toString();
+      // console.log(from_date);
 
-      from_date_obj = new Date(Number(from_date));
-      to_date_obj = new Date(Number(to_date));
+      from_date_obj = new Date(from_date);
+      to_date_obj = new Date(to_date);
+      from_date_obj.setSeconds(0, 0);
+      to_date_obj.setSeconds(0, 0);
+      // console.log(from_date_obj);
 
       from_date_obj = formatDateForSQL(from_date_obj);
       to_date_obj = formatDateForSQL(to_date_obj);
+
+      // console.log(from_date_obj);
 
       const result = await meetingMdl.addMeeting({
         user_id,
@@ -364,15 +411,16 @@ export const addMeeting = async (req, res) => {
       }
     } else if (is_remind === 1 && !snooze_at) {
       let remind_at;
-      from_date_obj = new Date(Number(from_date));
-      to_date_obj = new Date(Number(to_date));
+      from_date_obj = new Date(from_date);
+      to_date_obj = new Date(to_date);
 
       from_date_obj.setSeconds(0, 0);
+      to_date_obj.setSeconds(0, 0);
 
       // from_date_obj = from_date_obj.getTime();
       // to_date_obj = to_date_obj.getTime();
 
-      remind_at = from_date - remind_tenure * 1000;
+      remind_at = from_date_obj.getTime() - remind_tenure * 1000;
       remind_at = new Date(remind_at);
       remind_at.setSeconds(0, 0);
       // remind_at = remind_at.getTime();
@@ -445,6 +493,8 @@ export const getMeeting = async (req, res) => {
     } else if (status === "cancelled") {
       result = await meetingMdl.getMeeting({ user_id, status });
     } else if (status === "completed") {
+      result = await meetingMdl.getMeeting({ user_id, status });
+    } else if (status === "pending") {
       result = await meetingMdl.getMeeting({ user_id, status });
     } else {
       result = await meetingMdl.getMeeting({ user_id });
@@ -520,11 +570,11 @@ export const getMeeting = async (req, res) => {
 
     // console.log(formattedMeetings);
     const response = await replaceNullWithEmptyString(formattedMeetings);
-    console.log(response);
+    // console.log(response[0].to_date);
 
     // dateDate has columns to convert to millis & dateToMillis is to convert to utc to millis
-    const dateData = ["from_date", "to_date", "remind_at", "nxt_snooze_at"];
-    const finalResponse = await dateToMillis(response, dateData);
+    // const dateData = ["from_date", "to_date", "remind_at", "nxt_snooze_at"];
+    // const finalResponse = await dateToMillis(response, dateData);
 
     if (result?.success === 1) {
       return sendResponse(
@@ -532,7 +582,7 @@ export const getMeeting = async (req, res) => {
         200,
         1,
         "meetings fetched successfully",
-        finalResponse,
+        response,
         "",
       );
     } else {
@@ -632,8 +682,20 @@ export const updateMeeting = async (req, res) => {
       snooze_at,
     } = validatedData?.value;
 
-    const mediaAllowFive = media_id.split(",");
-    const attndAllowFive = attnds_id.split(",");
+    m_link = m_link === "" ? null : m_link;
+    notes = notes === "" ? null : notes;
+    address = address === "" ? null : address;
+    lat = lat === "" ? null : lat;
+    lng = lng === "" ? null : lng;
+    status = status === "" ? null : status;
+    media_id = media_id === "" ? null : media_id;
+    remind_tenure = remind_tenure === "" ? null : Number(remind_tenure);
+    // remind_at = is_remind === 0 ? null : remind_at;
+    snooze_at = snooze_at === "" ? null : Number(snooze_at);
+    // nxt_snooze_at = is_remind === 0 ? null : nxt_snooze_at;
+
+    let mediaAllowFive = media_id ? media_id.split(",") : [];
+    let attndAllowFive = attnds_id ? attnds_id.split(",") : [];
     if (mediaAllowFive.length > 5 || attndAllowFive.length > 5) {
       return sendResponse(
         res,
@@ -668,7 +730,7 @@ export const updateMeeting = async (req, res) => {
       params.push(m_priority);
     }
 
-    if (m_link) {
+    if (m_link !== undefined) {
       update_columns.push("m_link = ?");
       params.push(m_link);
     }
@@ -686,7 +748,8 @@ export const updateMeeting = async (req, res) => {
         lng === "" ? null : lng,
       );
     }
-    if (status) {
+    if (status !== undefined) {
+      // console.log(status);
       update_columns.push("status = ?");
       params.push(status);
     }
@@ -699,46 +762,57 @@ export const updateMeeting = async (req, res) => {
       params.push(attnds_id);
     }
     if (to_date) {
-      let to = Number(to_date);
+      let to = to_date;
       to = new Date(to);
       to.setSeconds(0, 0);
       to = formatDateForSQL(to);
       update_columns.push("to_date = ?");
       params.push(to);
     }
-    if (from_date) {
+    if (from_date && is_remind === 0) {
+      from_date = new Date(from_date);
+      from_date.setSeconds(0, 0);
+      from_date = formatDateForSQL(from_date);
+      console.log(from_date);
       update_columns.push("from_date = ?");
       params.push(from_date);
     }
-    if (from_date && remind_tenure) {
-      let date = Number(from_date);
+
+    if (from_date && is_remind === 1) {
+      let date = from_date;
       let status_date = date;
       let sts = "upcoming";
       let today = new Date();
       let reminder_at;
       let snzee_at;
+      date = new Date(date);
 
-      reminder_at = date - remind_tenure * 1000;
+      reminder_at = date.getTime() - remind_tenure * 1000;
 
-      if (snooze_at !== undefined || snooze_at != null) {
+      if (snooze_at !== null) {
         snzee_at = reminder_at + snooze_at * 1000;
         snzee_at = new Date(snzee_at);
         snzee_at.setSeconds(0, 0);
-        snzee_at = snzee_at.getTime();
+        // snzee_at = snzee_at.getTime();
         // console.log(snzee_at);
+        snzee_at = formatDateForSQL(snzee_at);
+        update_columns.push("snooze_at = ?");
+        params.push(snooze_at);
       } else {
         snzee_at = null;
-        snooze_at = null;
+        // snooze_at = null;
         update_columns.push("snooze_at = ?");
-        params.push(null);
+        params.push(snooze_at);
       }
 
       reminder_at = new Date(reminder_at);
-      date = new Date(date);
+      // date = new Date(date);
       date.setSeconds(0, 0);
       reminder_at.setSeconds(0, 0);
-      reminder_at = reminder_at.getTime();
-      date = date.getTime();
+      // reminder_at = reminder_at.getTime();
+      // console.log(date);
+      // date = date.getTime();
+      // console.log(date);
 
       status_date = new Date(status_date);
 
@@ -748,9 +822,18 @@ export const updateMeeting = async (req, res) => {
       if (status_date.getTime() === today.getTime()) {
         sts = "pending";
       }
+
+      // console.log(snzee_at);
       date = formatDateForSQL(date);
       reminder_at = formatDateForSQL(reminder_at);
-      snzee_at = formatDateForSQL(snzee_at);
+      // snzee_at = formatDateForSQL(snzee_at);
+      // console.log(nxt_snooze_at);
+
+      // console.log(sts);
+      // console.log(remind_tenure);
+      // console.log(reminder_at);
+      // console.log(snooze_at);
+      // console.log(snzee_at)
 
       update_columns.push(
         "status = ?, from_date = ?, is_remind = ?, remind_tenure = ?, remind_at = ?, snooze_at = ?,nxt_snooze_at = ?",
@@ -766,12 +849,12 @@ export const updateMeeting = async (req, res) => {
       );
     }
 
-    if (is_remind === 0) {
-      update_columns.push(
-        "is_remind = ?, remind_status = ?, remind_tenure = ?, remind_at = ?, snooze_at = ?, nxt_snooze_at = ?",
-      );
-      params.push(0, null, null, null, null, null);
-    }
+    // if (is_remind === 0) {
+    //   update_columns.push(
+    //     "is_remind = ?, remind_status = ?, remind_tenure = ?, remind_at = ?, snooze_at = ?, nxt_snooze_at = ?",
+    //   );
+    //   params.push(0, null, null, null, null, null);
+    // }
 
     params.push(id);
     const result = await meetingMdl.updateMeeting(update_columns, params);
@@ -826,8 +909,19 @@ export const addAppointment = async (req, res) => {
       remind_tenure,
       snooze_at,
     } = validatedData?.value;
-    // console.log(req.body);
-    const allowFive = media_id.split(",");
+
+    notes = notes === "" ? null : notes;
+    address = address === "" ? null : address;
+    lat = lat === "" ? null : lat;
+    lng = lng === "" ? null : lng;
+    media_id = media_id === "" ? null : media_id;
+    con_desg = con_desg === "" ? null : con_desg;
+    remind_tenure = remind_tenure === "" ? null : Number(remind_tenure);
+    // remind_at = is_remind === 0 ? null : remind_at;
+    snooze_at = snooze_at === "" ? null : Number(snooze_at);
+    // nxt_snooze_at = is_remind === 0 ? null : nxt_snooze_at;
+
+    const allowFive = media_id ? media_id.split(",") : [];
     if (allowFive.length > 5) {
       return sendResponse(
         res,
@@ -840,9 +934,19 @@ export const addAppointment = async (req, res) => {
     }
 
     if (is_remind === 0) {
-      let from_date_obj = new Date(Number(from_date));
-      let to_date_obj = new Date(Number(to_date));
+      let from_date_obj = new Date(from_date);
+      let to_date_obj = new Date(to_date);
 
+      let today = new Date();
+      let status = "upcoming";
+
+      if (
+        from_date_obj.getFullYear() === today.getFullYear() &&
+        from_date_obj.getMonth() === today.getMonth() &&
+        from_date_obj.getDate() === today.getDate()
+      ) {
+        status = "pending";
+      }
       from_date_obj.setSeconds(0, 0);
       to_date_obj.setSeconds(0, 0);
 
@@ -856,6 +960,7 @@ export const addAppointment = async (req, res) => {
         address,
         lat,
         lng,
+        status,
         media_id,
         con_name,
         con_desg,
@@ -875,13 +980,32 @@ export const addAppointment = async (req, res) => {
           "",
         );
       } else if (result?.success === 0) {
-        return sendResponse(res, 200, 0, "Failed to add Appointment", [], "");
+        return sendResponse(
+          res,
+          200,
+          0,
+          "Failed to add Appointment",
+          [],
+          result?.error,
+        );
       }
     } else if (is_remind === 1 && !snooze_at) {
-      let remind_at = from_date - remind_tenure * 1000;
-      let from_date_obj = new Date(Number(from_date));
-      let to_date_obj = new Date(Number(to_date));
-      remind_at = new Date(Number(remind_at));
+      let from_date_obj = new Date(from_date);
+      let remind_at = from_date_obj.getTime() - remind_tenure * 1000;
+
+      let to_date_obj = new Date(to_date);
+      remind_at = new Date(remind_at);
+
+      let today = new Date();
+      let status = "upcoming";
+
+      if (
+        from_date_obj.getFullYear() === today.getFullYear() &&
+        from_date_obj.getMonth() === today.getMonth() &&
+        from_date_obj.getDate() === today.getDate()
+      ) {
+        status = "pending";
+      }
 
       from_date_obj.setSeconds(0, 0);
       to_date_obj.setSeconds(0, 0);
@@ -899,6 +1023,7 @@ export const addAppointment = async (req, res) => {
         address,
         lat,
         lng,
+        status,
         media_id,
         con_name,
         con_desg,
@@ -921,12 +1046,24 @@ export const addAppointment = async (req, res) => {
         return sendResponse(res, 200, 0, "Failed to add Appointment", [], "");
       }
     } else if (is_remind === 1 && snooze_at) {
-      let remind_at = from_date - remind_tenure * 1000;
+      let from_date_obj = new Date(from_date);
+      let to_date_obj = new Date(to_date);
+      let remind_at = from_date_obj.getTime() - remind_tenure * 1000;
       let nxt_snooze_at = remind_at + snooze_at * 1000;
-      let from_date_obj = new Date(Number(from_date));
-      let to_date_obj = new Date(Number(to_date));
+
       remind_at = new Date(Number(remind_at));
       nxt_snooze_at = new Date(Number(nxt_snooze_at));
+
+      let today = new Date();
+      let status = "upcoming";
+
+      if (
+        from_date_obj.getFullYear() === today.getFullYear() &&
+        from_date_obj.getMonth() === today.getMonth() &&
+        from_date_obj.getDate() === today.getDate()
+      ) {
+        status = "pending";
+      }
 
       from_date_obj.setSeconds(0, 0);
       to_date_obj.setSeconds(0, 0);
@@ -946,6 +1083,7 @@ export const addAppointment = async (req, res) => {
         address,
         lat,
         lng,
+        status,
         media_id,
         con_name,
         con_desg,
@@ -1084,15 +1222,15 @@ export const getAppointment = async (req, res) => {
       }),
     );
     const response = replaceNullWithEmptyString(formattedAppointments);
-    const dateCols = ["from_date", "to_date", "remind_at", "nxt_snooze_at"];
-    const finalResponse = dateToMillis(response, dateCols);
+    // const dateCols = ["from_date", "to_date", "remind_at", "nxt_snooze_at"];
+    // const finalResponse = dateToMillis(response, dateCols);
 
     return sendResponse(
       res,
       200,
       1,
       "Appointments fetched successfully",
-      finalResponse,
+      response,
       "",
     );
   } catch (error) {
@@ -1133,26 +1271,36 @@ export const updateAppointment = async (req, res) => {
       media_id,
       con_name,
       con_desg,
-      status,
       from_date,
+      to_date,
       is_remind,
       remind_tenure,
       snooze_at,
     } = validatedData?.value;
     // console.log(validatedData?.value);
 
-    if (media_id) {
-      const allowFive = media_id.split(",");
-      if (allowFive.length > 5) {
-        return sendResponse(
-          res,
-          200,
-          0,
-          "media Id cannot be more than five",
-          [],
-          "",
-        );
-      }
+    notes = notes === "" ? null : notes;
+    address = address === "" ? null : address;
+    lat = lat === "" ? null : lat;
+    lng = lng === "" ? null : lng;
+    media_id = media_id === "" ? null : media_id;
+    con_desg = con_desg === "" ? null : con_desg;
+    remind_tenure = remind_tenure === "" ? null : Number(remind_tenure);
+    // remind_at = is_remind === 0 ? null : remind_at;
+    snooze_at = snooze_at === "" ? null : Number(snooze_at);
+    // nxt_snooze_at = is_remind === 0 ? null : nxt_snooze_at;
+
+    const allowFive = media_id ? media_id.split(",") : [];
+
+    if (allowFive.length > 5) {
+      return sendResponse(
+        res,
+        200,
+        0,
+        "media Id cannot be more than five",
+        [],
+        "",
+      );
     }
 
     let upt_cols = [];
@@ -1170,37 +1318,48 @@ export const updateAppointment = async (req, res) => {
 
     if (notes !== undefined) {
       upt_cols.push("notes = ?");
-      params.push(notes === "" ? null : notes);
+      params.push(notes);
     }
 
     if (address !== undefined) {
-      upt_cols.push("address = ?, lat = ?, lng = ?");
-      params.push(
-        address === "" ? null : address,
-        lat === "" ? null : lat,
-        lng === "" ? null : lng,
-      );
+      upt_cols.push("address = ?");
+      params.push(address);
     }
+    if (lat !== undefined) {
+      upt_cols.push("lat = ?");
+      params.push(lat);
+    }
+    if (lng !== undefined) {
+      upt_cols.push("lng = ?");
+      params.push(lng);
+    }
+
     if (media_id !== undefined) {
       upt_cols.push("media_id = ?");
-      params.push(media_id === "" ? null : media_id);
+      params.push(media_id);
     }
     if (con_name) {
       upt_cols.push("con_name = ?");
       params.push(con_name);
     }
-    if (con_desg) {
+    if (con_desg !== undefined) {
       upt_cols.push("con_desg = ?");
       params.push(con_desg);
     }
-    if (status) {
-      upt_cols.push("status = ?");
-      params.push(status);
+    // if (status) {
+    //   upt_cols.push("status = ?");
+    //   params.push(status);
+    // }
+    if (to_date) {
+      to_date = new Date(to_date);
+      to_date.setSeconds(0, 0);
+      to_date = formatDateForSQL(to_date);
+      upt_cols.push("to_date = ?");
+      params.push(to_date);
     }
     if (from_date && is_remind === 0) {
       let today = new Date();
       let sts;
-      from_date = Number(from_date);
       from_date = new Date(from_date);
       // console.log(from_date);
       if (
@@ -1218,17 +1377,26 @@ export const updateAppointment = async (req, res) => {
       }
       from_date.setSeconds(0, 0);
       from_date = formatDateForSQL(from_date);
-      upt_cols.push("from_date = ?, status = ?");
-      params.push(from_date, sts);
+      upt_cols.push(
+        "from_date = ?, status = ?, is_remind = ?, remind_tenure = ?, snooze_at = ?, remind_at = ?, nxt_snooze_at = ?",
+      );
+      params.push(
+        from_date,
+        sts,
+        is_remind,
+        remind_tenure,
+        snooze_at,
+        null,
+        null,
+      );
     }
     if (from_date && is_remind === 1 && !snooze_at) {
       let today = new Date();
       let sts;
       let remind_at;
-      from_date = Number(from_date);
-      remind_at = from_date - remind_tenure * 1000;
-      remind_at = new Date(remind_at);
       from_date = new Date(from_date);
+      remind_at = from_date.getTime() - remind_tenure * 1000;
+      remind_at = new Date(remind_at);
 
       if (
         from_date.getFullYear() === today.getFullYear() &&
@@ -1255,18 +1423,15 @@ export const updateAppointment = async (req, res) => {
       params.push(from_date, sts, is_remind, remind_tenure, remind_at);
     }
     if (from_date && is_remind === 1 && snooze_at) {
-      console.log(from_date);
       let today = new Date();
       let sts;
       let remind_at;
       let nxt_snooze_at;
 
-      from_date = Number(from_date);
-      // console.log(from_date); // should log a number like 1779856200000
+      from_date = new Date(from_date);
 
       // do arithmetic on numbers
-      remind_at = from_date - remind_tenure * 1000;
-      // console.log(remind_at); // numeric timestamp
+      remind_at = from_date.getTime() - remind_tenure * 1000;
 
       nxt_snooze_at = remind_at + snooze_at * 1000;
 
@@ -1274,7 +1439,6 @@ export const updateAppointment = async (req, res) => {
       remind_at = new Date(remind_at);
       // console.log(remind_at);
 
-      from_date = new Date(from_date);
       nxt_snooze_at = new Date(nxt_snooze_at);
 
       if (

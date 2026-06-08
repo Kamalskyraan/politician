@@ -77,8 +77,8 @@ export class travelModel {
   }
 
   async deleteTravel({ user_id, id }) {
-    let query = `DELETE FROM travels WHERE user_id = ? AND id = ?`;
-    let params = [user_id, id];
+    let query = `DELETE FROM travels WHERE id = ?`;
+    let params = [id];
 
     const result = await executeQuery(query, params);
     if (result?.success === 1) {
@@ -95,9 +95,8 @@ export class travelModel {
   }
 
   async updateTravel({ upt_cols, params }) {
-    let query = `UPDATE travels SET ${upt_cols.join(", ")} WHERE user_id = ? AND id = 
-    ? `;
-
+    let query = `UPDATE travels SET ${upt_cols.join(", ")} WHERE id = ? `;
+    // console.log(params);
     const result = await executeQuery(query, params);
 
     if (result?.success === 1) {
@@ -187,6 +186,7 @@ export class travelModel {
   }
 
   async updateDailyplan({ upt_cols, params }) {
+    console.log(upt_cols, params);
     let query = `UPDATE travel_daily_plan SET ${upt_cols.join(", ")} WHERE id = ?`;
 
     const result = await executeQuery(query, params);
@@ -299,7 +299,7 @@ export class travelModel {
       };
     }
   }
-  async getExpense({ id, user_id, travel_id }) {
+  async getExpense({ travel_id }) {
     let query = `SELECT id, user_id, travel_id, category, notes, exp_date, amount FROM travel_exp WHERE travel_id = ?`;
     let params = [travel_id];
 
@@ -335,9 +335,9 @@ export class travelModel {
       };
     }
   }
-  async getNotes({ id }) {
-    let query = `SELECT id, user_id, travel_id, title, descp FROM travel_notes WHERE id = ?`;
-    let params = [id];
+  async getNotes({ travel_id }) {
+    let query = `SELECT id, user_id, travel_id, title, descp FROM travel_notes WHERE travel_id = ?`;
+    let params = [travel_id];
 
     const result = await executeQuery(query, params);
     if (result?.success === 1) {
@@ -403,9 +403,10 @@ export class travelModel {
       };
     }
   }
-  async updateTravelPhotos({ travel_id, media_id }) {
+  async updateTravelPhotos({ travel_id, fetch_media_id }) {
     let query = `UPDATE travel_photos SET media_id = ? WHERE travel_id = ?`;
-    let params = [media_id, travel_id];
+    let params = [fetch_media_id, travel_id];
+    // console.log(params);
 
     const result = await executeQuery(query, params);
     // console.log(result?.data.affectedRows);
@@ -479,9 +480,9 @@ export class travelModel {
       };
     }
   }
-  async updateTravelDocs({ travel_id, media_id }) {
+  async updateTravelDocs({ travel_id, fetch_media_id }) {
     let query = `UPDATE travel_docs SET media_id = ? WHERE travel_id = ?`;
-    let params = [media_id, travel_id];
+    let params = [fetch_media_id, travel_id];
 
     const result = await executeQuery(query, params);
     // console.log(result?.data.affectedRows);

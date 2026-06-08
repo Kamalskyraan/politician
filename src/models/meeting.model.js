@@ -44,10 +44,11 @@ export class meetingModel {
     }
   }
 
-  async getMember({ user_id }) {
-    let query = `SELECT m.id, m.name, m.phn_num, m.country, m.state, m.district, r.role_name FROM members m JOIN user_role r ON m.role_id = r.id WHERE m.user_id = ? AND m.status = ?;
-`;
-    let params = [user_id, "active"];
+  async getMember({ upt_cols, params }) {
+    console.log(upt_cols);
+    console.log(params);
+    let query = `SELECT m.id, m.name, m.phn_num, m.country, m.state, m.district, r.role_name FROM members m JOIN user_role r ON m.role_id = r.id WHERE ${upt_cols.join(" AND ")}`;
+    // let params = [user_id, "active"];
 
     const result = await executeQuery(query, params);
 
@@ -66,11 +67,12 @@ export class meetingModel {
     }
   }
 
-  async updateMember({ id, name, phn_num, role_id, country, state, district }) {
-    let query = `SELECT * FROM members WHERE id = ?`;
-    let params = [id];
+  async updateMember({ user_id, id, name, phn_num, role_id, country, state, district }) {
+    let query = `SELECT * FROM members WHERE user_id = ? AND id = ?`;
+    let params = [user_id, id];
 
     const result = await executeQuery(query, params);
+    // console.log(result?.data);
     if (result?.data.length === 0) {
       return {
         success: 0,
@@ -312,6 +314,7 @@ export class meetingModel {
   async updateMeeting(update_columns, params) {
     let query = `UPDATE meeting SET ${update_columns.join(", ")} WHERE id = ?`;
 
+    // console.log(params);
     const result = await executeQuery(query, params);
 
     if (result?.success === 0) {
@@ -352,6 +355,7 @@ export class meetingModel {
     address,
     lat,
     lng,
+    status,
     media_id,
     con_name,
     con_desg,
@@ -363,7 +367,7 @@ export class meetingModel {
     snooze_at,
     nxt_snooze_at,
   }) {
-    let query = `INSERT INTO appointments (user_id, title, a_type, notes, address, lat, lng, media_id, con_name, con_desg, from_date, to_date, is_remind, remind_tenure, remind_at, snooze_at, nxt_snooze_at) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)`;
+    let query = `INSERT INTO appointments (user_id, title, a_type, notes, address, lat, lng, status, media_id, con_name, con_desg, from_date, to_date, is_remind, remind_tenure, remind_at, snooze_at, nxt_snooze_at) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)`;
     let params = [
       user_id,
       title,
@@ -372,6 +376,7 @@ export class meetingModel {
       address,
       lat,
       lng,
+      status,
       media_id || null,
       con_name,
       con_desg,
@@ -442,6 +447,8 @@ export class meetingModel {
 
   async updateAppointment({ upt_cols, params }) {
     let query = `UPDATE appointments SET ${upt_cols.join(", ")} WHERE id = ?`;
+
+    // console.log(params);
 
     const result = await executeQuery(query, params);
     if (result?.success === 1) {

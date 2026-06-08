@@ -21,6 +21,11 @@ const doc = {
       },
     },
   },
+  security: [
+    {
+      bearerAuth: [],
+    },
+  ],
 };
 
 const outputFile = "./src/config/swagger-output.json";

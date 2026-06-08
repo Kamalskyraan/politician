@@ -1,8 +1,15 @@
 import express from "express";
 import { supportModel } from "../models/support.model.js";
-import { sendResponse } from "../utils/helper.js";
+import { executeQuery, sendResponse } from "../utils/helper.js";
 import { sendContactUsMail, sendMail } from "../config/email.js";
-import { contactUsSchema, validateRequest } from "../utils/validator.js";
+import {
+  contactUsSchema,
+  getCountriesSchema,
+  getMemberschema,
+  validateRequest,
+} from "../utils/validator.js";
+import axios from "axios";
+import District from "../json_datas/states-and-districts.json" with { type: "json" };
 
 const supportMdl = new supportModel();
 
@@ -93,5 +100,170 @@ export const contactUs = async (req, res) => {
     }
   } catch (error) {
     sendResponse(res, 500, 0, "Internal Server error", [], error.message);
+  }
+};
+
+// export const get
+
+export const filterApi = async (req, res) => {
+  try {
+    const validatedData = validateRequest(req.body, getMemberschema);
+
+    if (validatedData?.success === 0) {
+      return sendResponse(
+        res,
+        200,
+        0,
+        "validation error",
+        [],
+        validatedData?.errorObject?.errors,
+      );
+    }
+
+    let { user_id } = validatedData?.value;
+
+    const result = await supportMdl.getLocations(user_id);
+    const data = result?.data;
+    // console.log(data);
+    const locations = {};
+
+    for (const row of data) {
+      const { country, state, district, member_count } = row;
+
+      // Create country if not exists
+      if (!locations[country]) {
+        locations[country] = {
+          country,
+          states: [],
+        };
+      }
+
+      // Find state
+      let stateObj = locations[country].states.find((s) => s.state === state);
+
+      // Create state if not exists
+      if (!stateObj) {
+        stateObj = {
+          state,
+          districts: [],
+        };
+
+        locations[country].states.push(stateObj);
+      }
+
+      // Add district
+      stateObj.districts.push({
+        district,
+        member_count,
+      });
+    }
+
+    if (result?.data.length > 0) {
+      return sendResponse(
+        res,
+        200,
+        1,
+        "Filters fetched successfully",
+        [locations],
+        "",
+      );
+    } else if (result?.data.length > 0) {
+      return sendResponse(res, 200, 0, "Failed to fetch Filters", [], "");
+    }
+  } catch (error) {
+    return sendResponse(
+      res,
+      500,
+      0,
+      "Internal server error",
+      [],
+      error.message,
+    );
+  }
+};
+export const getCountries = async (req, res) => {
+  try {
+    const validatedData = validateRequest(req.body, getCountriesSchema);
+
+    if (validatedData?.success === 0) {
+      return sendResponse(
+        res,
+        200,
+        0,
+        "validation error",
+        [],
+        validatedData?.errorObject?.errors,
+      );
+    }
+
+    let { country, state } = validatedData?.value;
+
+    country = country === "" ? null : country;
+    state = state === "" ? null : state;
+
+    let fetched_country = [];
+    let fetched_state = [];
+    let fetched_district = [];
+
+    if (!country) {
+      const response = await axios.get(
+        "https://countriesnow.space/api/v0.1/countries",
+      );
+      fetched_country = response?.data?.data.map((obj) => obj.country);
+      return sendResponse(
+        res,
+        200,
+        1,
+        "countries fetched successfully",
+        fetched_country,
+        "",
+      );
+    }
+    if (!state) {
+      const response = await axios.post(
+        "https://countriesnow.space/api/v0.1/countries/states",
+        {
+          country: country,
+        },
+      );
+      fetched_state = response?.data?.data?.states.map((obj) => obj.name);
+      return sendResponse(
+        res,
+        200,
+        1,
+        "states fetched successfully",
+        fetched_state,
+        "",
+      );
+    }
+    if (country && state) {
+      // const response = await axios.post(
+      //   "https://countriesnow.space/api/v0.1/countries/state/cities",
+      //   { country: country, state: state },
+      // );
+      // console.log(response?.data?.data);
+      // fetched_district = response?.data?.data.map((obj) => obj);
+
+      fetched_district = District?.states.filter((obj) => obj.state === state);
+      fetched_district = fetched_district[0].districts;
+
+      return sendResponse(
+        res,
+        200,
+        1,
+        "District fetched successfully",
+        fetched_district,
+        "",
+      );
+    }
+  } catch (error) {
+    return sendResponse(
+      res,
+      500,
+      0,
+      "Internal server error",
+      [],
+      error.message,
+    );
   }
 };

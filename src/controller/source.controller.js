@@ -89,7 +89,7 @@ export const addUserrole = async (req, res) => {
   }
 };
 
-export const updaterole = async (req, res) => {
+export const updateUserrole = async (req, res) => {
   try {
     const { id, role_name, status } = req.body;
 
@@ -108,6 +108,27 @@ export const updaterole = async (req, res) => {
   }
 };
 
+export const getUserrole = async (req, res) => {
+  try {
+    const result = await sourceMdl.getUserrole();
+    const data = result?.data || [];
+
+    if (result?.success === 1) {
+      return sendResponse(res, 200, 1, "Roles fetched successfully", data, "");
+    } else if (result?.success === 0) {
+      return sendResponse(res, 200, 0, "Failed to fetch roles", [], "");
+    }
+  } catch (error) {
+    return sendResponse(
+      res,
+      500,
+      0,
+      "Internal server error",
+      [],
+      error.message,
+    );
+  }
+};
 export const addFinanceCategory = async (req, res) => {
   try {
     const { id, cat_name, cat_img, cat_type, status } = await validateRequests(
@@ -168,4 +189,3 @@ export const getFinCategory = async (req, res) => {
     );
   }
 };
-

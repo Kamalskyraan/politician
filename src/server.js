@@ -7,6 +7,8 @@ import fs from "fs";
 import swaggerUi from "swagger-ui-express";
 import pool from "./config/db.js";
 
+
+
 const swaggerDocument = JSON.parse(
   fs.readFileSync("./src/config/swagger-output.json", "utf8"),
 );

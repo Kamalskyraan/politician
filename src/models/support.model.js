@@ -78,4 +78,32 @@ export class supportModel {
 
     // console.log(result)
   }
+
+  async getLocations(user_id) {
+    let query = `SELECT DISTINCT
+    country,
+    state,
+    district,
+    COUNT(*) AS member_count
+  FROM members
+  WHERE user_id = ?
+  GROUP BY country, state, district
+  ORDER BY country, state, district;`;
+    let params = [user_id];
+
+    const result = await executeQuery(query, params);
+    // console.log(result);
+
+    if (result?.success === 1) {
+      return {
+        success: 1,
+        data: result?.data,
+      };
+    } else {
+      return {
+        success: 0,
+        error: result?.error,
+      };
+    }
+  }
 }

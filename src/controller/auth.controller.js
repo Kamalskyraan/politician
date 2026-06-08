@@ -97,10 +97,34 @@ export const requestOtp = async (req, res) => {
         if (otpResult?.success === 0) {
           return sendResponse(res, 200, 0, otpResult?.error, [], "");
         } else {
-          if (email) {
+          if (email && process.env.NODE_ENV !== "development") {
             await sendMail(email, otp);
-          } else {
-            console.log("send sms to mobile number");
+          } else if (email && process.env.NODE_ENV === "development") {
+            await sendMail(email, otp);
+
+            return sendResponse(
+              res,
+              200,
+              1,
+              "OTP sent successfully",
+              [otp],
+              "",
+            );
+          }
+          if (phn_num && process.env.NODE_ENV === "development") {
+            return sendResponse(
+              res,
+              200,
+              1,
+              "OTP sent successfully",
+              [otp],
+              "",
+            );
+          }
+          if (phn_num && process.env.NODE_ENV !== "development") {
+            await sendSmsOTP(phn_num, otp);
+
+            return sendResponse(res, 200, 1, "OTP sent successfully", [], "");
           }
         }
 
