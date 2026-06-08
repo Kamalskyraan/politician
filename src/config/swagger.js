@@ -8,7 +8,7 @@ const doc = {
 
   servers: [
     {
-      url: "http://political.skyraantech.com/server/api",
+      url: "https://political.skyraantech.com/server/api",
     },
   ],
 

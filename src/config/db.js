@@ -12,6 +12,7 @@ const pool = mysql.createPool({
   queueLimit: Number(process.env.DB_QUEUE_LIMIT) || 0,
   timezone: "Z",
 });
+
 // const pool = mysql.createPool({
 //   host: process.env.DB_HOST || "localhost",
 //   user: process.env.DB_USER || "political",
@@ -22,7 +23,5 @@ const pool = mysql.createPool({
 //   queueLimit: Number(process.env.DB_QUEUE_LIMIT) || 0,
 //   timezone: "Z",
 // });
-
-
 
 export default pool;

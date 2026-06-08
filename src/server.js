@@ -4,7 +4,6 @@ import cors from "cors";
 import router from "./routes/index.js";
 dotenv.config();
 import fs from "fs";
-
 import swaggerUi from "swagger-ui-express";
 import pool from "./config/db.js";
 
