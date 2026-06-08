@@ -943,6 +943,52 @@ export const deleteDailyplanSchema = Joi.object({
   }),
 });
 
+export const addTaskSchema = Joi.object({
+  user_id: Joi.string().required().messages({
+    "string.base": "user id should be an string",
+    "any.required": "user id cannot be empty",
+  }),
+  title: Joi.string().required().messages({
+    "string.base": "title should be an string",
+    "any.required": "title cannot be empty",
+  }),
+  descp: Joi.string().required().messages({
+    "string.base": "descp should be an string",
+    "any.required": "descp cannot be empty",
+  }),
+  t_priority: Joi.number().valid(0, 1, 2).required().messages({
+    "number.base": "task priority should be an number",
+    "number.valid": "either 0 or 1 or 2 only",
+    "any.required": "task priority cannot be empty",
+  }),
+  from_date: Joi.string().required().messages({
+    "string.base": "from_date should be an string",
+    "any.required": "from_date cannot be empty",
+  }),
+  to_date: Joi.string().required().messages({
+    "string.base": "to_date should be an string",
+    "any.required": "to_date cannot be empty",
+  }),
+  media_id: Joi.string().allow("").messages({
+    "string.base": "media_id should be an string",
+  }),
+  attnds_id: Joi.string().required().messages({
+    "string.base": "attnds should be an string",
+    "any.required": "attnds cannot be empty",
+  }),
+  is_remind: Joi.number().valid(0, 1, 2).required().messages({
+    "number.base": "is_remind should be an string",
+    "number.valid": "either 0 or 1 or 2 only",
+    "any.required": "is_remind cannot be empty",
+  }),
+  remind_tenure: Joi.string().allow("").messages({
+    "string.base": "remind_tenure should be an string",
+  }),
+  snooze_at: Joi.string().allow("").messages({
+    "string.base": "snooze at should be an string",
+  }),
+});
+
 export const addExpenseSchema = Joi.object({
   user_id: Joi.string().required().messages({
     "string.base": "User Id should be a string",
