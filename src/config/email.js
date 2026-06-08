@@ -4,13 +4,22 @@ import { emailContactUsTemplate, emailOtpTemplate } from "../utils/email.templat
 
 dotenv.config();
 
+// const configOptions = {
+//   host: process.env.MAIL_HOST,
+//   port: process.env.MAIL_PORT,
+//   secure: false, // true for 465, false for 587
+//   auth: {
+//     user: process.env.MAIL_USER,
+//     pass: process.env.MAIL_PASS,
+//   },
+// };
 const configOptions = {
-  host: process.env.MAIL_HOST,
-  port: process.env.MAIL_PORT,
-  secure: false, // true for 465, false for 587
+  host: mail.skyraantech.com,
+  port: 465,
+  secure: true, 
   auth: {
-    user: process.env.MAIL_USER,
-    pass: process.env.MAIL_PASS,
+    user: `political@skyraantech.com`,
+    pass: `mRmSm*^5a9AIleR6`,
   },
 };
 export const transporter = nodemailer.createTransport(configOptions);

@@ -26,9 +26,9 @@ app.get("/check", (req, res) => {
   res.send("backend server is running now");
 });
 
-app.get("/abc", (req,res)=>{
-  res.send("server")
-})
+app.get("/abc", (req, res) => {
+  res.send("server");
+});
 const port = process.env.PORT || 3000;
 
 app.listen(port, () =>
