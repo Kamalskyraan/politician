@@ -203,7 +203,7 @@ export class sourceModel {
 
     const [rows] = await pool.query(query, params);
 
-    if (!id && status !=="inactive") {
+    if (!id || status !== "inactive") {
       rows.push({
         id: 0,
         cat_name: "Others",
@@ -248,6 +248,4 @@ export class sourceModel {
       rows,
     };
   }
-
-  
 }
