@@ -120,20 +120,35 @@ export class financeModel {
       params.push(user_id);
     }
 
+    //   if (category) {
+    //     query += `
+    //   AND (
+    //     f.category_name LIKE ?
+    //     OR fc.cat_name LIKE ?
+    //     OR f.amount LIKE ?
+    //   )
+    // `;
+
+    //     params.push(`%${category}%`, `%${category}%`);
+    //   }
+
+    //   if (amount) {
+    //     query += ` AND f.amount LIKE ?`;
+    //     params.push(`%${amount}%`);
+    //   }
+
     if (category) {
       query += `
     AND (
       f.category_name LIKE ?
       OR fc.cat_name LIKE ?
+      OR CAST(f.amount AS CHAR) LIKE ?
     )
   `;
 
-      params.push(`%${category}%`, `%${category}%`);
-    }
+      const searchValue = `%${category}%`;
 
-    if (amount) {
-      query += ` AND f.amount LIKE ?`;
-      params.push(`%${amount}%`);
+      params.push(searchValue, searchValue, searchValue);
     }
 
     if (from_date && to_date) {
