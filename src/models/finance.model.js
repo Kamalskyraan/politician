@@ -45,6 +45,7 @@ export class financeModel {
 
       return {
         action: "updated",
+        id,
       };
     }
 
@@ -67,6 +68,7 @@ export class financeModel {
 
     return {
       action: "created",
+      id: result.insertId,
     };
   }
 
@@ -88,7 +90,7 @@ export class financeModel {
     f.user_id,
    COALESCE(f.category_id, '0') AS category_id,
     f.category_name,
-    fc.cat_img,
+   COALESCE(fc.cat_img, 0) AS cat_img,
     fc.cat_name,
     f.trans_date,
     f.amount,
@@ -203,7 +205,7 @@ export class financeModel {
       COALESCE(f.category_id, 0) AS category_id,
       COALESCE(f.category_name, '') AS category_name,
       COALESCE(fc.cat_name, '') AS cat_name,
-      COALESCE(fc.cat_img, '') AS cat_img,
+      COALESCE(fc.cat_img, 0) AS cat_img,
       f.trans_date,
       f.amount,
       f.notes,
@@ -299,6 +301,4 @@ export class financeModel {
       data: replaceNullWithEmptyString(rows),
     };
   }
-
-
 }

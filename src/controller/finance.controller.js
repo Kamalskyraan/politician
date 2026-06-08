@@ -43,13 +43,16 @@ export const addUpdateFinanceData = async (req, res) => {
       notes,
       attachment,
     });
+    const financeData = await financeMdl.fetchFinanceData({
+      id: data.id,
+    });
 
     return sendResponse(
       res,
       200,
       1,
       `Finance Data ${data.action} Successfully`,
-      [],
+      financeData.data,
       "",
     );
   } catch (err) {

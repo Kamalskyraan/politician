@@ -517,6 +517,829 @@
         }
       }
     },
+    "/meeting/addmember": {
+      "post": {
+        "tags": [
+          "3.Member"
+        ],
+        "summary": "Add Member",
+        "description": "Add a new member",
+        "parameters": [
+          {
+            "name": "authorization",
+            "in": "header",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Member added successfully"
+          },
+          "500": {
+            "description": "Internal Server Error"
+          }
+        },
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "user_id": {
+                    "type": "string",
+                    "example": "USER_IFZu5632"
+                  },
+                  "name": {
+                    "type": "string",
+                    "example": "paschal"
+                  },
+                  "phn_num": {
+                    "type": "string",
+                    "example": "9487570100"
+                  },
+                  "role_id": {
+                    "type": "integer",
+                    "example": 14
+                  },
+                  "country": {
+                    "type": "string",
+                    "example": "India"
+                  },
+                  "state": {
+                    "type": "string",
+                    "example": "Tamil Nadu"
+                  },
+                  "district": {
+                    "type": "string",
+                    "example": "Coimbatore"
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/meeting/getmember": {
+      "post": {
+        "tags": [
+          "3.Member"
+        ],
+        "summary": "Get Member",
+        "description": "Get members by passing user_id",
+        "parameters": [
+          {
+            "name": "authorization",
+            "in": "header",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Members fetched successfully"
+          },
+          "500": {
+            "description": "Internal Server Error"
+          }
+        },
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "user_id": {
+                    "type": "string",
+                    "example": "USER_IFZu5632"
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/meeting/updatemember": {
+      "post": {
+        "tags": [
+          "3.Member"
+        ],
+        "summary": "Update Member",
+        "description": "Update member details by passing id and fields to update",
+        "parameters": [
+          {
+            "name": "authorization",
+            "in": "header",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Member updated successfully"
+          },
+          "500": {
+            "description": "Internal Server Error"
+          }
+        },
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "id": {
+                    "type": "integer",
+                    "example": 26
+                  },
+                  "name": {
+                    "type": "string",
+                    "example": "paschal"
+                  },
+                  "phn_num": {
+                    "type": "string",
+                    "example": "9487570100"
+                  },
+                  "role_id": {
+                    "type": "integer",
+                    "example": 14
+                  },
+                  "country": {
+                    "type": "string",
+                    "example": "Germany"
+                  },
+                  "state": {
+                    "type": "string",
+                    "example": "Bavaria"
+                  },
+                  "district": {
+                    "type": "string",
+                    "example": "Munich"
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/meeting/deletemember": {
+      "post": {
+        "tags": [
+          "3.Member"
+        ],
+        "summary": "Delete Member",
+        "description": "Delete member by passing id",
+        "parameters": [
+          {
+            "name": "authorization",
+            "in": "header",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Member deleted successfully"
+          },
+          "500": {
+            "description": "Internal Server Error"
+          }
+        },
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "id": {
+                    "type": "integer",
+                    "example": 26
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/meeting/addmeeting": {
+      "post": {
+        "tags": [
+          "4.Meeting"
+        ],
+        "summary": "Add Meeting",
+        "description": "Add a new meeting by passing required fields",
+        "parameters": [
+          {
+            "name": "authorization",
+            "in": "header",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Meeting added successfully"
+          },
+          "500": {
+            "description": "Internal Server Error"
+          }
+        },
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "user_id": {
+                    "type": "string",
+                    "example": "USER_efKL6767"
+                  },
+                  "title": {
+                    "type": "string",
+                    "example": "Meeting Title 100"
+                  },
+                  "descp": {
+                    "type": "string",
+                    "example": "Meeting description"
+                  },
+                  "m_type": {
+                    "type": "integer",
+                    "example": 0
+                  },
+                  "m_priority": {
+                    "type": "integer",
+                    "example": 2
+                  },
+                  "m_link": {
+                    "type": "string",
+                    "example": "https://meet.google.com/abc-defg-hij"
+                  },
+                  "notes": {
+                    "type": "string",
+                    "example": "Meeting notes created for reference"
+                  },
+                  "address": {
+                    "type": "string",
+                    "example": "10, Skyraan Building"
+                  },
+                  "lat": {
+                    "type": "number",
+                    "example": 10.23456
+                  },
+                  "lng": {
+                    "type": "number",
+                    "example": 9.98765
+                  },
+                  "media_id": {
+                    "type": "string",
+                    "example": "1000,2,3,900,8999"
+                  },
+                  "attnds_id": {
+                    "type": "string",
+                    "example": "1,3,4,5"
+                  },
+                  "from_date": {
+                    "type": "string",
+                    "example": "1779447600000"
+                  },
+                  "to_date": {
+                    "type": "string",
+                    "example": "1779449400000"
+                  },
+                  "is_remind": {
+                    "type": "integer",
+                    "example": 1
+                  },
+                  "remind_tenure": {
+                    "type": "integer",
+                    "example": 300
+                  },
+                  "snooze_at": {
+                    "type": "integer",
+                    "example": 180
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/meeting/getmeeting": {
+      "post": {
+        "tags": [
+          "4.Meeting"
+        ],
+        "summary": "Get Meeting",
+        "description": "Get meetings by passing user_id. Optionally pass status (upcoming, cancelled, completed, pending)",
+        "parameters": [
+          {
+            "name": "authorization",
+            "in": "header",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Meetings fetched successfully"
+          },
+          "500": {
+            "description": "Internal Server Error"
+          }
+        },
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "user_id": {
+                    "type": "string",
+                    "example": "USER_efKL6767"
+                  },
+                  "status": {
+                    "type": "string",
+                    "example": "pending"
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/meeting/deletemeeting": {
+      "post": {
+        "tags": [
+          "4.Meeting"
+        ],
+        "summary": "Delete Meeting",
+        "description": "Delete meeting by passing id",
+        "parameters": [
+          {
+            "name": "authorization",
+            "in": "header",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Meeting deleted successfully"
+          },
+          "500": {
+            "description": "Internal Server Error"
+          }
+        },
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "id": {
+                    "type": "integer",
+                    "example": 10
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/meeting/updatemeeting": {
+      "post": {
+        "tags": [
+          "4.Meeting"
+        ],
+        "summary": "Update Meeting",
+        "description": "Update meeting by passing id and other fields to update",
+        "parameters": [
+          {
+            "name": "authorization",
+            "in": "header",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Meeting updated successfully"
+          },
+          "500": {
+            "description": "Internal Server Error"
+          }
+        },
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "id": {
+                    "type": "integer",
+                    "example": 8
+                  },
+                  "title": {
+                    "type": "string",
+                    "example": "Meeting Title 100"
+                  },
+                  "descp": {
+                    "type": "string",
+                    "example": "Meeting description"
+                  },
+                  "m_type": {
+                    "type": "integer",
+                    "example": 0
+                  },
+                  "m_priority": {
+                    "type": "integer",
+                    "example": 2
+                  },
+                  "m_link": {
+                    "type": "string",
+                    "example": "https://meet.google.com/abc-defg-hij"
+                  },
+                  "notes": {
+                    "type": "string",
+                    "example": "Meeting notes created for reference"
+                  },
+                  "address": {
+                    "type": "string",
+                    "example": "10, Skyraan Building"
+                  },
+                  "lat": {
+                    "type": "number",
+                    "example": 10.23456
+                  },
+                  "lng": {
+                    "type": "number",
+                    "example": 9.98765
+                  },
+                  "status": {
+                    "type": "string",
+                    "example": "pending"
+                  },
+                  "media_id": {
+                    "type": "string",
+                    "example": "1000,2,3,900,8999"
+                  },
+                  "attnds_id": {
+                    "type": "string",
+                    "example": "1,3,4,5"
+                  },
+                  "from_date": {
+                    "type": "string",
+                    "example": "1779447600000"
+                  },
+                  "to_date": {
+                    "type": "string",
+                    "example": "1779449400000"
+                  },
+                  "is_remind": {
+                    "type": "integer",
+                    "example": 1
+                  },
+                  "remind_tenure": {
+                    "type": "integer",
+                    "example": 300
+                  },
+                  "snooze_at": {
+                    "type": "integer",
+                    "example": 180
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/meeting/addappointment": {
+      "post": {
+        "tags": [
+          "5.Appointment"
+        ],
+        "summary": "Add Appointment",
+        "description": "Add appointment by passing user_id and other required fields",
+        "parameters": [
+          {
+            "name": "authorization",
+            "in": "header",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Appointment added successfully"
+          },
+          "500": {
+            "description": "Internal Server Error"
+          }
+        },
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "user_id": {
+                    "type": "string",
+                    "example": "USER_Z8bn0076"
+                  },
+                  "title": {
+                    "type": "string",
+                    "example": "Booth Meeting"
+                  },
+                  "a_type": {
+                    "type": "string",
+                    "example": "Public Meeting"
+                  },
+                  "notes": {
+                    "type": "string",
+                    "example": "Regarding booth council meeting with ministers"
+                  },
+                  "address": {
+                    "type": "string",
+                    "example": "10, Skyraan 101, FCI Road, Ganapathy"
+                  },
+                  "lat": {
+                    "type": "number",
+                    "example": 10.23456
+                  },
+                  "lng": {
+                    "type": "number",
+                    "example": 9.98765
+                  },
+                  "media_id": {
+                    "type": "string",
+                    "example": "1,3,4,5,10,11"
+                  },
+                  "con_name": {
+                    "type": "string",
+                    "example": "Modi"
+                  },
+                  "con_desg": {
+                    "type": "string",
+                    "example": "Prime Minister"
+                  },
+                  "from_date": {
+                    "type": "string",
+                    "example": "1779787800000"
+                  },
+                  "to_date": {
+                    "type": "string",
+                    "example": "1779798600000"
+                  },
+                  "is_remind": {
+                    "type": "integer",
+                    "example": 1
+                  },
+                  "remind_tenure": {
+                    "type": "integer",
+                    "example": 300
+                  },
+                  "snooze_at": {
+                    "type": "integer",
+                    "example": 180
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/meeting/deleteappointment": {
+      "post": {
+        "tags": [
+          "5.Appointment"
+        ],
+        "summary": "Delete Appointment",
+        "description": "Delete appointment by passing id",
+        "parameters": [
+          {
+            "name": "authorization",
+            "in": "header",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Appointment deleted successfully"
+          },
+          "500": {
+            "description": "Internal Server Error"
+          }
+        },
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "id": {
+                    "type": "integer",
+                    "example": 3
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/meeting/getappointment": {
+      "post": {
+        "tags": [
+          "5.Appointment"
+        ],
+        "summary": "Get Appointment",
+        "description": "Get appointments by passing user_id. Optionally pass status (upcoming, cancelled, completed, pending)",
+        "parameters": [
+          {
+            "name": "authorization",
+            "in": "header",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Appointments fetched successfully"
+          },
+          "500": {
+            "description": "Internal Server Error"
+          }
+        },
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "user_id": {
+                    "type": "string",
+                    "example": "USER_efKL6767"
+                  },
+                  "status": {
+                    "type": "string",
+                    "example": "pending"
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/meeting/updateappointment": {
+      "post": {
+        "tags": [
+          "5.Appointment"
+        ],
+        "summary": "Update Appointment",
+        "description": "Update appointment by passing id and other fields to update",
+        "parameters": [
+          {
+            "name": "authorization",
+            "in": "header",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Appointment updated successfully"
+          },
+          "500": {
+            "description": "Internal Server Error"
+          }
+        },
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "id": {
+                    "type": "integer",
+                    "example": 8
+                  },
+                  "title": {
+                    "type": "string",
+                    "example": "Booth Meeting"
+                  },
+                  "a_type": {
+                    "type": "string",
+                    "example": "Public Meeting"
+                  },
+                  "notes": {
+                    "type": "string",
+                    "example": "Regarding booth council meeting with ministers"
+                  },
+                  "address": {
+                    "type": "string",
+                    "example": "10, Skyraan 101, FCI Road, Ganapathy"
+                  },
+                  "lat": {
+                    "type": "number",
+                    "example": 10.23456
+                  },
+                  "lng": {
+                    "type": "number",
+                    "example": 9.98765
+                  },
+                  "media_id": {
+                    "type": "string",
+                    "example": "1,3,4,5,10,11"
+                  },
+                  "con_name": {
+                    "type": "string",
+                    "example": "Modi"
+                  },
+                  "con_desg": {
+                    "type": "string",
+                    "example": "Prime Minister"
+                  },
+                  "from_date": {
+                    "type": "string",
+                    "example": "1779787800000"
+                  },
+                  "to_date": {
+                    "type": "string",
+                    "example": "1779798600000"
+                  },
+                  "is_remind": {
+                    "type": "integer",
+                    "example": 1
+                  },
+                  "remind_tenure": {
+                    "type": "integer",
+                    "example": 300
+                  },
+                  "snooze_at": {
+                    "type": "integer",
+                    "example": 180
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/meeting/reminder": {
+      "post": {
+        "description": "",
+        "parameters": [
+          {
+            "name": "authorization",
+            "in": "header",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "default": {
+            "description": ""
+          }
+        }
+      }
+    },
     "/user/getuserprofile": {
       "post": {
         "description": "",
@@ -1959,251 +2782,6 @@
         }
       }
     },
-    "/finance/add-finance-data": {
-      "post": {
-        "tags": [
-          "10.Finance"
-        ],
-        "summary": "Add or Update Finance",
-        "description": "",
-        "responses": {
-          "200": {
-            "description": "Finance saved successfully"
-          },
-          "500": {
-            "description": "Internal Server Error"
-          }
-        },
-        "requestBody": {
-          "required": false,
-          "content": {
-            "application/json": {
-              "schema": {
-                "type": "object",
-                "properties": {
-                  "id": {
-                    "type": "integer",
-                    "example": 1
-                  },
-                  "user_id": {
-                    "type": "string",
-                    "example": "USER_Yl_e5736"
-                  },
-                  "type": {
-                    "type": "string",
-                    "example": "income"
-                  },
-                  "cat_id": {
-                    "type": "string",
-                    "example": "1"
-                  },
-                  "cat_name": {
-                    "type": "string",
-                    "example": "Medical Expense"
-                  },
-                  "trans_date": {
-                    "type": "string",
-                    "example": "2026-06-03"
-                  },
-                  "amount": {
-                    "type": "number",
-                    "example": 1500
-                  },
-                  "notes": {
-                    "type": "string",
-                    "example": "Hospital bill"
-                  },
-                  "attachment": {
-                    "type": "string",
-                    "example": "1,2,3"
-                  }
-                }
-              }
-            }
-          }
-        }
-      }
-    },
-    "/finance/get-finance-data": {
-      "post": {
-        "tags": [
-          "10.Finance"
-        ],
-        "summary": "Get Finance Data",
-        "description": "Fetch finance data based on filters",
-        "responses": {
-          "200": {
-            "description": "Finance data fetched successfully"
-          },
-          "500": {
-            "description": "Internal Server Error"
-          }
-        },
-        "requestBody": {
-          "required": false,
-          "content": {
-            "application/json": {
-              "schema": {
-                "type": "object",
-                "properties": {
-                  "id": {
-                    "type": "integer",
-                    "example": 1
-                  },
-                  "user_id": {
-                    "type": "string",
-                    "example": "USER_Yl_e5736"
-                  },
-                  "type": {
-                    "type": "string",
-                    "example": "income"
-                  },
-                  "category": {
-                    "type": "string",
-                    "example": "medical"
-                  },
-                  "amount": {
-                    "type": "number",
-                    "example": 1500
-                  },
-                  "from_date": {
-                    "type": "string",
-                    "example": "2026-03-22"
-                  },
-                  "to_date": {
-                    "type": "string",
-                    "example": "2026-03-25"
-                  }
-                }
-              }
-            }
-          }
-        }
-      }
-    },
-    "/finance/remove-finance-data": {
-      "post": {
-        "tags": [
-          "10.Finance"
-        ],
-        "summary": "Remove Finance Data",
-        "description": "Delete Finance Data BY ID",
-        "responses": {
-          "200": {
-            "description": "Finance data removed successfully"
-          },
-          "500": {
-            "description": "Internal Server Error"
-          }
-        },
-        "requestBody": {
-          "required": false,
-          "content": {
-            "application/json": {
-              "schema": {
-                "type": "object",
-                "properties": {
-                  "id": {
-                    "type": "integer",
-                    "example": 1
-                  }
-                }
-              }
-            }
-          }
-        }
-      }
-    },
-    "/finance/get-report-data": {
-      "post": {
-        "tags": [
-          "10.Finance"
-        ],
-        "summary": "get Report Data",
-        "description": "Get Report Data",
-        "responses": {
-          "200": {
-            "description": "Report data fetched successfully"
-          },
-          "500": {
-            "description": "Internal Server Error"
-          }
-        },
-        "requestBody": {
-          "required": false,
-          "content": {
-            "application/json": {
-              "schema": {
-                "type": "object",
-                "properties": {
-                  "user_id": {
-                    "type": "string",
-                    "example": "USER_Yl_e5736"
-                  },
-                  "type": {
-                    "type": "string",
-                    "example": "income"
-                  },
-                  "from_date": {
-                    "type": "string",
-                    "example": "2026-03-22"
-                  },
-                  "to_date": {
-                    "type": "string",
-                    "example": "2026-03-25"
-                  }
-                }
-              }
-            }
-          }
-        }
-      }
-    },
-    "/finance/get-report-download": {
-      "post": {
-        "tags": [
-          "10.Finance"
-        ],
-        "summary": "get Report Download",
-        "description": "Get Report Download",
-        "responses": {
-          "200": {
-            "description": "Report data downloaded successfully"
-          },
-          "500": {
-            "description": "Internal Server Error"
-          }
-        },
-        "requestBody": {
-          "required": false,
-          "content": {
-            "application/json": {
-              "schema": {
-                "type": "object",
-                "properties": {
-                  "user_id": {
-                    "type": "string",
-                    "example": "USER_Yl_e5736"
-                  },
-                  "type": {
-                    "type": "string",
-                    "example": "income"
-                  },
-                  "from_date": {
-                    "type": "string",
-                    "example": "2026-03-22"
-                  },
-                  "to_date": {
-                    "type": "string",
-                    "example": "2026-03-25"
-                  }
-                }
-              }
-            }
-          }
-        }
-      }
-    },
     "/support/addfaq": {
       "post": {
         "description": "",
@@ -2368,6 +2946,552 @@
         "responses": {
           "default": {
             "description": ""
+          }
+        }
+      }
+    },
+    "/task/addtask": {
+      "post": {
+        "tags": [
+          "7.TASK & REMINDERS"
+        ],
+        "summary": "Add Task and reminders",
+        "description": "Add task and reminders by passing user id and other fields",
+        "parameters": [
+          {
+            "name": "authorization",
+            "in": "header",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Task and reminder added successfully"
+          },
+          "500": {
+            "description": "Internal Server Error"
+          }
+        },
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "user_id": {
+                    "type": "string",
+                    "example": "USER_ZNLl2665"
+                  },
+                  "title": {
+                    "type": "string",
+                    "example": "election meeting"
+                  },
+                  "descp": {
+                    "type": "string",
+                    "example": "Met cm Regarding New Posting"
+                  },
+                  "t_priority": {
+                    "type": "number",
+                    "example": 1
+                  },
+                  "from_date": {
+                    "type": "string",
+                    "example": "2026-06-07 18:10:30"
+                  },
+                  "to_date": {
+                    "type": "string",
+                    "example": "2026-06-07 18:10:30"
+                  },
+                  "media_id": {
+                    "type": "string",
+                    "example": "1,2,3"
+                  },
+                  "attnds_id": {
+                    "type": "string",
+                    "example": "10,21,24"
+                  },
+                  "is_remind": {
+                    "type": "number",
+                    "example": 1
+                  },
+                  "remind_tenure": {
+                    "type": "string",
+                    "example": "600"
+                  },
+                  "snooze_at": {
+                    "type": "string",
+                    "example": "100"
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/task/deletetask": {
+      "post": {
+        "tags": [
+          "7.TASK & REMINDERS"
+        ],
+        "summary": "Delete Task and reminders",
+        "description": "delete task and reminders by passing user id and task id",
+        "parameters": [
+          {
+            "name": "authorization",
+            "in": "header",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Task and reminder deleted successfully"
+          },
+          "500": {
+            "description": "Internal Server Error"
+          }
+        },
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "id": {
+                    "type": "number",
+                    "example": 2
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/task/updatetask": {
+      "post": {
+        "tags": [
+          "7.TASK & REMINDERS"
+        ],
+        "summary": "Update Task and reminders",
+        "description": "Update task and reminders by passing user id and other fields to update",
+        "parameters": [
+          {
+            "name": "authorization",
+            "in": "header",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Task and reminder updated successfully"
+          },
+          "500": {
+            "description": "Internal Server Error"
+          }
+        },
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "id": {
+                    "type": "number",
+                    "example": 2
+                  },
+                  "title": {
+                    "type": "string",
+                    "example": "election meeting"
+                  },
+                  "descp": {
+                    "type": "string",
+                    "example": "Met cm Regarding New Posting"
+                  },
+                  "t_priority": {
+                    "type": "number",
+                    "example": 1
+                  },
+                  "from_date": {
+                    "type": "string",
+                    "example": "2026-06-07 18:10:30"
+                  },
+                  "to_date": {
+                    "type": "string",
+                    "example": "2026-06-07 18:10:30"
+                  },
+                  "media_id": {
+                    "type": "string",
+                    "example": "1,2,3"
+                  },
+                  "attnds_id": {
+                    "type": "string",
+                    "example": "10,21,24"
+                  },
+                  "is_remind": {
+                    "type": "number",
+                    "example": 1
+                  },
+                  "remind_tenure": {
+                    "type": "string",
+                    "example": "600"
+                  },
+                  "snooze_at": {
+                    "type": "string",
+                    "example": "100"
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/finance/add-finance-data": {
+      "post": {
+        "tags": [
+          "10.Finance"
+        ],
+        "summary": "Add or Update Finance",
+        "description": "",
+        "parameters": [
+          {
+            "name": "authorization",
+            "in": "header",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Finance saved successfully"
+          },
+          "500": {
+            "description": "Internal Server Error"
+          }
+        },
+        "requestBody": {
+          "required": false,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "id": {
+                    "type": "integer",
+                    "example": 1
+                  },
+                  "user_id": {
+                    "type": "string",
+                    "example": "USER_Yl_e5736"
+                  },
+                  "type": {
+                    "type": "string",
+                    "example": "income"
+                  },
+                  "cat_id": {
+                    "type": "string",
+                    "example": "1"
+                  },
+                  "cat_name": {
+                    "type": "string",
+                    "example": "Medical Expense"
+                  },
+                  "trans_date": {
+                    "type": "string",
+                    "example": "2026-06-03"
+                  },
+                  "amount": {
+                    "type": "number",
+                    "example": 1500
+                  },
+                  "notes": {
+                    "type": "string",
+                    "example": "Hospital bill"
+                  },
+                  "attachment": {
+                    "type": "string",
+                    "example": "1,2,3"
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/finance/get-finance-data": {
+      "post": {
+        "tags": [
+          "10.Finance"
+        ],
+        "summary": "Get Finance Data",
+        "description": "Fetch finance data based on filters",
+        "parameters": [
+          {
+            "name": "authorization",
+            "in": "header",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Finance data fetched successfully"
+          },
+          "500": {
+            "description": "Internal Server Error"
+          }
+        },
+        "requestBody": {
+          "required": false,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "id": {
+                    "type": "integer",
+                    "example": 1
+                  },
+                  "user_id": {
+                    "type": "string",
+                    "example": "USER_Yl_e5736"
+                  },
+                  "type": {
+                    "type": "string",
+                    "example": "income"
+                  },
+                  "category": {
+                    "type": "string",
+                    "example": "medical"
+                  },
+                  "amount": {
+                    "type": "number",
+                    "example": 1500
+                  },
+                  "from_date": {
+                    "type": "string",
+                    "example": "2026-03-22"
+                  },
+                  "to_date": {
+                    "type": "string",
+                    "example": "2026-03-25"
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/finance/remove-finance-data": {
+      "post": {
+        "tags": [
+          "10.Finance"
+        ],
+        "summary": "Remove Finance Data",
+        "description": "Delete Finance Data BY ID",
+        "parameters": [
+          {
+            "name": "authorization",
+            "in": "header",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Finance data removed successfully"
+          },
+          "500": {
+            "description": "Internal Server Error"
+          }
+        },
+        "requestBody": {
+          "required": false,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "id": {
+                    "type": "integer",
+                    "example": 1
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/finance/get-report-data": {
+      "post": {
+        "tags": [
+          "10.Finance"
+        ],
+        "summary": "get Report Data",
+        "description": "Get Report Data",
+        "parameters": [
+          {
+            "name": "authorization",
+            "in": "header",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Report data fetched successfully"
+          },
+          "500": {
+            "description": "Internal Server Error"
+          }
+        },
+        "requestBody": {
+          "required": false,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "user_id": {
+                    "type": "string",
+                    "example": "USER_Yl_e5736"
+                  },
+                  "type": {
+                    "type": "string",
+                    "example": "income"
+                  },
+                  "from_date": {
+                    "type": "string",
+                    "example": "2026-03-22"
+                  },
+                  "to_date": {
+                    "type": "string",
+                    "example": "2026-03-25"
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/finance/get-report-download": {
+      "post": {
+        "tags": [
+          "10.Finance"
+        ],
+        "summary": "get Report Download",
+        "description": "Get Report Download",
+        "parameters": [
+          {
+            "name": "authorization",
+            "in": "header",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Report data downloaded successfully"
+          },
+          "500": {
+            "description": "Internal Server Error"
+          }
+        },
+        "requestBody": {
+          "required": false,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "user_id": {
+                    "type": "string",
+                    "example": "USER_Yl_e5736"
+                  },
+                  "type": {
+                    "type": "string",
+                    "example": "income"
+                  },
+                  "from_date": {
+                    "type": "string",
+                    "example": "2026-03-22"
+                  },
+                  "to_date": {
+                    "type": "string",
+                    "example": "2026-03-25"
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/folder/add-folder-name": {
+      "post": {
+        "tags": [
+          "11.Folder"
+        ],
+        "summary": "Add or Update Folder",
+        "description": "",
+        "parameters": [
+          {
+            "name": "authorization",
+            "in": "header",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Folder name saved successfully"
+          },
+          "500": {
+            "description": "Internal Server Error"
+          }
+        },
+        "requestBody": {
+          "required": false,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "id": {
+                    "type": "integer",
+                    "example": 1
+                  },
+                  "user_id": {
+                    "type": "string",
+                    "example": "USER_Yl_e5736"
+                  },
+                  "folder_name": {
+                    "type": "string",
+                    "example": "ABC folder"
+                  }
+                }
+              }
+            }
           }
         }
       }

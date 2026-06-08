@@ -9,6 +9,7 @@ const doc = {
   servers: [
     {
       url: "https://political.skyraantech.com/server/api",
+      // url: "http://localhost:5000/api",
     },
   ],
 

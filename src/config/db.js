@@ -14,10 +14,10 @@ const pool = mysql.createPool({
 });
 
 // const pool = mysql.createPool({
-//   host: process.env.DB_HOST || "localhost",
-//   user: process.env.DB_USER || "political",
-//   password: process.env.DB_PASSWORD || "BHs5$--qOTZ=E4D-",
-//   database: process.env.DB_NAME || "political_db",
+//   host: "localhost",
+//   user: "root",
+//   password: "",
+//   database: "political",
 //   waitForConnections: process.env.DB_WAIT_FOR_CONNECTIONS,
 //   connectionLimit: Number(process.env.DB_CONNECTION_LIMIT) || 10,
 //   queueLimit: Number(process.env.DB_QUEUE_LIMIT) || 0,

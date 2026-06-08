@@ -7,6 +7,7 @@ import meetingRoutes from "./meeting.routes.js";
 import travelRoutes from "./travel.routes.js";
 import taskRoutes from "./task.route.js";
 import finaceRoutes from "./finance.routes.js";
+import folderRoutes from "./folder.routes.js";
 import { verifyToken } from "../middleware/auth.middleware.js";
 
 export const router = express.Router();
@@ -18,7 +19,6 @@ router.use("/user", userRoutes);
 router.use("/faq", supportRoutes);
 // router.use("/contact", supportRoutes);
 router.use("/travel", travelRoutes);
-router.use("/finance", finaceRoutes);
 router.use("/meeting", verifyToken, meetingRoutes);
 
 router.use("/user", userRoutes);
@@ -26,5 +26,7 @@ router.use("/support", supportRoutes);
 // router.use("/contact", supportRoutes);
 router.use("/travel", travelRoutes);
 router.use("/task", taskRoutes);
+router.use("/finance", finaceRoutes);
+router.use("/folder", folderRoutes);
 
 export default router;
