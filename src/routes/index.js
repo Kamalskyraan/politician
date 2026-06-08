@@ -5,6 +5,7 @@ import userRoutes from "./user.routes.js";
 import supportRoutes from "./support.routes.js";
 import meetingRoutes from "./meeting.routes.js";
 import travelRoutes from "./travel.routes.js";
+import taskRoutes from "./task.route.js";
 import finaceRoutes from "./finance.routes.js";
 import { verifyToken } from "../middleware/auth.middleware.js";
 
