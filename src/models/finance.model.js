@@ -297,7 +297,7 @@ export class financeModel {
         chartMap[key] = {
           category_id: Number(row.category_id) || 0,
           category_name: row.category_name || row.cat_name || "",
-          category_icon: row.cat_icon,
+          category_icon: row.cat_icon || {},
           total_amount: 0,
         };
       }
