@@ -132,10 +132,10 @@ export class financeModel {
     //     params.push(`%${category}%`, `%${category}%`);
     //   }
 
-      if (amount) {
-        query += ` AND f.amount LIKE ?`;
-        params.push(`%${amount}%`);
-      }
+    if (amount) {
+      query += ` AND f.amount LIKE ?`;
+      params.push(`%${amount}%`);
+    }
 
     if (category) {
       query += `
@@ -150,9 +150,6 @@ export class financeModel {
 
       params.push(searchValue, searchValue, searchValue);
     }
-
-
-
 
     if (from_date && to_date) {
       query += ` AND DATE(f.trans_date) BETWEEN ? AND ?`;
@@ -259,9 +256,9 @@ export class financeModel {
     for (const row of rows) {
       if (row.cat_img) {
         const catMedia = await srcMdl.getMedia([Number(row.cat_img)]);
-        row.cat_icon = catMedia?.success ? catMedia.data[0] : null;
+        row.cat_icon = catMedia?.success ? catMedia.data[0] : {};
       } else {
-        row.cat_icon = null;
+        row.cat_icon = {};
       }
 
       if (row.attachment_ids) {

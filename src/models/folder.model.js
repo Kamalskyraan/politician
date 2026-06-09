@@ -34,4 +34,41 @@ export class folderModel {
       action: "created",
     };
   }
+
+  async addUpdateFolderImages({ id, folder_id, media_ids }) {
+    const values = media_ids.map((media_id) => [folder_id, media_id]);
+    if (id) {
+      const [result] = await pool.query(
+        `
+        UPDATE folder_media
+        SET
+        folder_id = ?,
+        media_id =?
+        WHERE id = ?
+        `,
+        [folder_id, media_id, id],
+      );
+
+      return {
+        action: "updated",
+      };
+    }
+
+    const [result] = await pool.query(
+      `
+      INSERT INTO  folder_media (
+      folder_id,
+    media_id
+      )
+      VALUES (?, ?)
+      `,
+      [folder_id, media_id],
+    );
+
+    return {
+      action: "created",
+    };
+  }
+
+  
 }
