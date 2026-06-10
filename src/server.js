@@ -7,8 +7,6 @@ import fs from "fs";
 import swaggerUi from "swagger-ui-express";
 import pool from "./config/db.js";
 
-
-
 const swaggerDocument = JSON.parse(
   fs.readFileSync("./src/config/swagger-output.json", "utf8"),
 );
@@ -31,6 +29,8 @@ app.get("/check", (req, res) => {
 app.get("/abc", (req, res) => {
   res.send("server");
 });
+
+console.log("abc");
 const port = process.env.PORT || 3000;
 
 app.listen(port, () =>
