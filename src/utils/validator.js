@@ -1459,7 +1459,7 @@ export const getSumitSchema = Joi.object({
     "any.required": "User id cannot be empty",
   }),
   status: Joi.string()
-    .valid("upcoming", "completed", "cancelled")
+    .valid("upcoming", "completed", "cancelled", "inprogress")
     .allow("")
     .messages({
       "string.base": "status should be a string",

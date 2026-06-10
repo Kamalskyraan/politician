@@ -10,6 +10,7 @@ export class politicalSumitModel {
     lat,
     lng,
     sumit_date,
+    sts,
     vip,
     member,
     sumit_incharge,
@@ -19,8 +20,8 @@ export class politicalSumitModel {
 
     try {
       await connection.beginTransaction();
-      let query = `INSERT INTO political_sumit (user_id, title, location, lat, lng, sumit_date) VALUES (?, ?, ?, ?, ?, ?)`;
-      let params = [user_id, title, location, lat, lng, sumit_date];
+      let query = `INSERT INTO political_sumit (user_id, title, location, lat, lng, sumit_date, status) VALUES (?, ?, ?, ?, ?, ?, ?)`;
+      let params = [user_id, title, location, lat, lng, sumit_date, sts];
       const [result] = await connection.execute(query, params);
 
       const sumit_id = result?.insertId;
@@ -95,6 +96,22 @@ export class politicalSumitModel {
   async deleteSumit({ id }) {
     let query = `DELETE FROM political_sumit WHERE id = ?`;
     let params = [id];
+
+    const result = await executeQuery(query, params);
+    if (result?.success === 1) {
+      return {
+        success: 1,
+        data: result?.data,
+      };
+    } else if (result?.success === 0) {
+      return {
+        success: 0,
+        error: result?.error,
+      };
+    }
+  }
+  async getSumit({ upt_cols, params }) {
+    let query = `SELECT s.id as sumit_id, s.title, s.sumit_date, p.id, p.name, p.type FROM political_sumit s LEFT JOIN political_sumit_peoples p ON p.sumit_id = s.id WHERE ${upt_cols.join(",")}`;
 
     const result = await executeQuery(query, params);
     if (result?.success === 1) {

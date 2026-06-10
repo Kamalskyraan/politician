@@ -2,6 +2,7 @@ import express from "express";
 import {
   addSumitSchema,
   deleteSumitSchema,
+  getSumitSchema,
   validateRequest,
 } from "../utils/validator.js";
 import { sendResponse } from "../utils/helper.js";
@@ -35,6 +36,17 @@ export const addSumit = async (req, res) => {
       dept_incharge,
     } = validatedData?.value;
 
+    let sts = "upcoming";
+    const sts_date = new Date(sumit_date);
+    const today = new Date();
+
+    if (
+      sts_date.getFullYear() === today.getFullYear() &&
+      sts_date.getMonth() === today.getMonth() &&
+      sts_date.getDate() === today.getDate()
+    ) {
+      sts = "inprogress";
+    }
     const result = await sumitMdl.addSumit({
       user_id,
       title,
@@ -42,6 +54,7 @@ export const addSumit = async (req, res) => {
       lat,
       lng,
       sumit_date,
+      sts,
       vip,
       member,
       sumit_incharge,
@@ -139,6 +152,54 @@ export const getSumit = async (req, res) => {
       );
     }
     let { user_id, status, from_date, to_date } = validatedData?.value;
+
+    status = status === "" ? null : status;
+    from_date = from_date === "" ? null : from_date;
+    to_date = to_date === "" ? null : to_date;
+
+    let upt_cols = [];
+    let params = [];
+
+    if (user_id != null) {
+      upt_cols.push("user_id = ?");
+      params.push(user_id);
+    }
+    if (status != null) {
+      upt_cols.push(" AND status = ?");
+      params.push(status);
+    }
+    if (from_date != null) {
+      upt_cols.push(" AND from_date > ?");
+      params.push(from_date);
+    }
+    if (to_date != null) {
+      upt_cols.push(" AND to_date > ?");
+      params.push(to_date);
+    }
+
+    const result = await sumitMdl.getSumit({ upt_cols, params });
+
+    const data = result?.data;
+
+    if (result?.success === 1) {
+      return sendResponse(
+        res,
+        200,
+        1,
+        "Political Sumit fetched successfully",
+        data,
+        "",
+      );
+    } else if (result?.success === 0) {
+      return sendResponse(
+        res,
+        200,
+        0,
+        "Failed to fetch political sumit",
+        [],
+        "",
+      );
+    }
   } catch (error) {
     return sendResponse(
       res,

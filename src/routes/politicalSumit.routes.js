@@ -60,21 +60,6 @@ router.post(
                 type: "array",
                 example: []
                 },
-                sumit: {
-                type: "array",
-                example: [
-                    {
-                    name: "Minister A",
-                    cat_id: 1,
-                    cat_name: ""
-                    },
-                    {
-                    name: "Minister B",
-                    cat_id: 0,
-                    cat_name: "Transport"
-                    }
-                    ]
-                },
                 sumit_incharge: {
                 type: "array",
                 example: [
@@ -158,6 +143,51 @@ router.post(
 */,
   politicalsumitcontroller.deletesumit,
 );
-router.post("/getsumit", politicalsumitcontroller.getSumit);
+router.post(
+  "/getsumit",
+  /*
+    #swagger.tags = ['9.POLITICAL SUMIT']
+    #swagger.summary = 'Get political sumit'
+    #swagger.description = 'Get political sumit by pssing user id and other related fields'
+
+    #swagger.requestBody = {
+      required: true,
+      content: {
+        "application/json": {
+          schema: {
+            type: "object",
+            properties: {
+              user_id: {
+                type: "string",
+                example: "3"
+              },
+              status: {
+                type: "string",
+                example: "pending"
+              },
+              from_date: {
+                type: "string",
+                example: "2026-06-10 17:27:43"
+              },
+              to_date: {
+                type: "string",
+                example: "2026-06-10 17:27:43"
+              },
+            }
+          }
+        }
+      }
+    }
+
+    #swagger.responses[200] = {
+      description: 'political sumit fetched successfully'
+    }
+
+    #swagger.responses[500] = {
+      description: 'Internal Server Error'
+    }
+*/
+  politicalsumitcontroller.getSumit,
+);
 
 export default router;
