@@ -1,5 +1,8 @@
 import { Router } from "express";
-import { addUpdateFolderName } from "../controller/folder.controller.js";
+import {
+  addUpdateFolderName,
+  removeFolder,
+} from "../controller/folder.controller.js";
 const router = Router();
 
 router.post(
@@ -35,6 +38,41 @@ router.post(
     }
   */
   addUpdateFolderName,
+);
+
+router.post(
+  "/remove-folder-img",
+  /*
+    #swagger.tags = ['11.Folder']
+    #swagger.summary = 'Remove Folder or Folder Images using type'
+
+    #swagger.requestBody = {
+      required: false,
+      content: {
+        "application/json": {
+          schema: {
+            type: "object",
+            properties: {
+              ids: { type: "string", example: "1,2,3" },
+              type : {type :"string" , example : "folder or image"}
+            }
+          }
+        }
+      }
+    }
+
+    #swagger.responses[200] = {
+      description: 'Folder or Folder Images deleted successfully'
+    }
+
+   
+
+    #swagger.responses[500] = {
+      description: 'Internal Server Error'
+    }
+  */
+
+  removeFolder,
 );
 
 export default router;

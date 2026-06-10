@@ -33,6 +33,34 @@ export const addUpdateFolderName = async (req, res) => {
   }
 };
 
+export const removeFolder = async (req, res) => {
+  try {
+    const { ids, type } = req.body;
+    if (!ids) {
+      return sendResponse(res, 200, 0, "Id is required", [], "");
+    }
+
+    if (!["folder", "image"].includes(type)) {
+      return sendResponse(res, 200, 0, "Type must be folder or image", [], "");
+    }
+
+    await folderMdl.removeFolderOrImages({ ids, type });
+
+    return sendResponse(res, 200, 1, "Deleted successfully", [], "");
+  } catch (err) {
+    return sendResponse(
+      res,
+      500,
+      0,
+      "Internal server error",
+      [],
+      err.errors || err.message || err,
+    );
+  }
+};
+
+
+
 export const addUpdateFolderImages = async (req, res) => {
   try {
     const { id, folder_id, media_ids } = req.body;
@@ -60,8 +88,6 @@ export const addUpdateFolderImages = async (req, res) => {
     );
   }
 };
-
-
 
 export const getFinanceFolder = async (req, res) => {
   try {

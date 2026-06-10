@@ -7,7 +7,7 @@
   },
   "servers": [
     {
-      "url": "https://political.skyraantech.com/server/api"
+      "url": "http://localhost:5000/api"
     }
   ],
   "paths": {
@@ -3050,6 +3050,425 @@
                   "folder_name": {
                     "type": "string",
                     "example": "ABC folder"
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/folder/remove-folder-img": {
+      "post": {
+        "tags": [
+          "11.Folder"
+        ],
+        "summary": "Remove Folder or Folder Images using type",
+        "description": "",
+        "responses": {
+          "200": {
+            "description": "Folder or Folder Images deleted successfully"
+          },
+          "500": {
+            "description": "Internal Server Error"
+          }
+        },
+        "requestBody": {
+          "required": false,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "ids": {
+                    "type": "string",
+                    "example": "1,2,3"
+                  },
+                  "type": {
+                    "type": "string",
+                    "example": "folder or image"
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/issue/addissue": {
+      "post": {
+        "tags": [
+          "8.ISSUES & GRIEVANCE"
+        ],
+        "summary": "Add issue and grievance",
+        "description": "Add issue and grievance by pssing user_id and other fields",
+        "responses": {
+          "200": {
+            "description": "Issue and Grievance added successfully"
+          },
+          "500": {
+            "description": "Internal Server Error"
+          }
+        },
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "user_id": {
+                    "type": "string",
+                    "example": "USER_fdd8762"
+                  },
+                  "cat_id": {
+                    "type": "number",
+                    "example": 0
+                  },
+                  "cat_name": {
+                    "type": "string",
+                    "example": "Education"
+                  },
+                  "descp": {
+                    "type": "string",
+                    "example": "Issue description has been given here"
+                  },
+                  "address": {
+                    "type": "string",
+                    "example": "No 10, skyraan, coimbatore"
+                  },
+                  "lat": {
+                    "type": "string",
+                    "example": "8.2432"
+                  },
+                  "lng": {
+                    "type": "string",
+                    "example": "19.54332"
+                  },
+                  "media_id": {
+                    "type": "string",
+                    "example": "1,2,3"
+                  },
+                  "report_date": {
+                    "type": "string",
+                    "example": "2026-06-10 10:20:32"
+                  },
+                  "incharge_id": {
+                    "type": "string",
+                    "example": "22,33,32"
+                  },
+                  "member_id": {
+                    "type": "string",
+                    "example": "122,34,232"
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/issue/deleteissue": {
+      "post": {
+        "tags": [
+          "8.ISSUES & GRIEVANCE"
+        ],
+        "summary": "Delete issue and grievance",
+        "description": "Delete issue and grievance by pssing id",
+        "responses": {
+          "200": {
+            "description": "Issue and Grievance deleted successfully"
+          },
+          "500": {
+            "description": "Internal Server Error"
+          }
+        },
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "id": {
+                    "type": "number",
+                    "example": "3"
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/issue/updateissue": {
+      "post": {
+        "tags": [
+          "8.ISSUES & GRIEVANCE"
+        ],
+        "summary": "Update issue and grievance",
+        "description": "Update issue and grievance by pssing id and other fields",
+        "responses": {
+          "200": {
+            "description": "Issue and Grievance updated successfully"
+          },
+          "500": {
+            "description": "Internal Server Error"
+          }
+        },
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "id": {
+                    "type": "number",
+                    "example": "3"
+                  },
+                  "cat_id": {
+                    "type": "number",
+                    "example": 0
+                  },
+                  "cat_name": {
+                    "type": "string",
+                    "example": "Education"
+                  },
+                  "descp": {
+                    "type": "string",
+                    "example": "Issue description has been given here"
+                  },
+                  "address": {
+                    "type": "string",
+                    "example": "No 10, skyraan, coimbatore"
+                  },
+                  "lat": {
+                    "type": "string",
+                    "example": "8.2432"
+                  },
+                  "lng": {
+                    "type": "string",
+                    "example": "19.54332"
+                  },
+                  "media_id": {
+                    "type": "string",
+                    "example": "1,2,3"
+                  },
+                  "report_date": {
+                    "type": "string",
+                    "example": "2026-06-10 10:20:32"
+                  },
+                  "incharge_id": {
+                    "type": "string",
+                    "example": "22,33,32"
+                  },
+                  "member_id": {
+                    "type": "string",
+                    "example": "122,34,232"
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/issue/getIssue": {
+      "post": {
+        "tags": [
+          "8.ISSUES & GRIEVANCE"
+        ],
+        "summary": "Get issue and grievance",
+        "description": "Get issue and grievance by pssing user id and other fields",
+        "responses": {
+          "200": {
+            "description": "Issue and Grievance fetched successfully"
+          },
+          "500": {
+            "description": "Internal Server Error"
+          }
+        },
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "user_id": {
+                    "type": "string",
+                    "example": "USER_EYWH2235"
+                  },
+                  "status": {
+                    "type": "string",
+                    "example": "pending"
+                  },
+                  "assigned": {
+                    "type": "number",
+                    "example": "0"
+                  },
+                  "from_date": {
+                    "type": "string",
+                    "example": "2026-06-12"
+                  },
+                  "to_date": {
+                    "type": "string",
+                    "example": "2026-06-14"
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/sumit/addsumit": {
+      "post": {
+        "tags": [
+          "9.POLITICAL SUMIT"
+        ],
+        "summary": "Add political sumit",
+        "description": "Add political sumit by passing user id and other fields",
+        "responses": {
+          "200": {
+            "description": "Political sumit added successfully"
+          },
+          "500": {
+            "description": "Internal Server Error"
+          }
+        },
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "user_id": {
+                    "type": "string",
+                    "example": "USER_fdd8762"
+                  },
+                  "title": {
+                    "type": "string",
+                    "example": "Election campaign"
+                  },
+                  "location": {
+                    "type": "string",
+                    "example": "no 10, skyraan, coimbatore"
+                  },
+                  "lat": {
+                    "type": "string",
+                    "example": "56.4313"
+                  },
+                  "lng": {
+                    "type": "string",
+                    "example": "56.4313"
+                  },
+                  "sumit_date": {
+                    "type": "string",
+                    "example": "2026-06-12 10:10:21"
+                  },
+                  "vip": {
+                    "type": "array",
+                    "example": [
+                      {
+                        "name": "Minister A",
+                        "cat_id": 1,
+                        "cat_name": ""
+                      },
+                      {
+                        "name": "Minister B",
+                        "cat_id": 0,
+                        "cat_name": "Transport"
+                      }
+                    ]
+                  },
+                  "member": {
+                    "type": "array",
+                    "example": []
+                  },
+                  "sumit": {
+                    "type": "array",
+                    "example": [
+                      {
+                        "name": "Minister A",
+                        "cat_id": 1,
+                        "cat_name": ""
+                      },
+                      {
+                        "name": "Minister B",
+                        "cat_id": 0,
+                        "cat_name": "Transport"
+                      }
+                    ]
+                  },
+                  "sumit_incharge": {
+                    "type": "array",
+                    "example": [
+                      {
+                        "name": "Minister A",
+                        "cat_id": 1,
+                        "cat_name": ""
+                      },
+                      {
+                        "name": "Minister B",
+                        "cat_id": 0,
+                        "cat_name": "Transport"
+                      }
+                    ]
+                  },
+                  "dept_incharge": {
+                    "type": "array",
+                    "example": [
+                      {
+                        "name": "Minister A",
+                        "cat_id": 1,
+                        "cat_name": "",
+                        "dept_id": 1,
+                        "dept_name": ""
+                      },
+                      {
+                        "name": "Minister B",
+                        "cat_id": 0,
+                        "cat_name": "Transport",
+                        "dept_id": 0,
+                        "dept_name": "Transport"
+                      }
+                    ]
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/sumit/deletesumit": {
+      "post": {
+        "tags": [
+          "9.POLITICAL SUMIT"
+        ],
+        "summary": "Delete political sumit",
+        "description": "Delete political sumit by pssing id",
+        "responses": {
+          "200": {
+            "description": "political sumit deleted successfully"
+          },
+          "500": {
+            "description": "Internal Server Error"
+          }
+        },
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "id": {
+                    "type": "number",
+                    "example": "3"
                   }
                 }
               }
