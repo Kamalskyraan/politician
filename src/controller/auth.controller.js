@@ -297,7 +297,7 @@ export const signUp = async (req, res) => {
         jwt_token: token,
       };
       
-      return sendResponse(res, 200, 1, "user created successfully", [data], "");
+      return sendResponse(res, 200, 1, "user created successfullyy", [data], "");
     }
   } catch (error) {
     return sendResponse(

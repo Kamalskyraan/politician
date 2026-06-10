@@ -3552,6 +3552,16 @@
           }
         }
       }
+    },
+    "/sumit/getsumit": {
+      "post": {
+        "description": "",
+        "responses": {
+          "default": {
+            "description": ""
+          }
+        }
+      }
     }
   },
   "components": {
