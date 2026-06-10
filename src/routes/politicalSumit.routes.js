@@ -158,5 +158,6 @@ router.post(
 */,
   politicalsumitcontroller.deletesumit,
 );
+router.post("/getsumit", politicalsumitcontroller.getSumit);
 
 export default router;

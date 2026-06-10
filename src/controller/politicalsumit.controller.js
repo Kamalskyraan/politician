@@ -125,3 +125,28 @@ export const deletesumit = async (req, res) => {
     );
   }
 };
+export const getSumit = async (req, res) => {
+  try {
+    const validatedData = validateRequest(req.body, getSumitSchema);
+    if (validatedData?.success === 0) {
+      return sendResponse(
+        res,
+        200,
+        0,
+        "validation error",
+        [],
+        validatedData?.errorObject?.errors,
+      );
+    }
+    let { user_id, status, from_date, to_date } = validatedData?.value;
+  } catch (error) {
+    return sendResponse(
+      res,
+      500,
+      0,
+      "Internal server error",
+      [],
+      error.message,
+    );
+  }
+};

@@ -262,10 +262,6 @@ export const addMemberSchema = Joi.object({
   }),
 });
 export const updateMemberSchema = Joi.object({
-  user_id: Joi.string().required().messages({
-    "string.base": "id must be an string",
-    "any.required": "id is required",
-  }),
   id: Joi.number().required().messages({
     "any.required": "id is required",
     "number.base": "id should be number",
@@ -274,11 +270,11 @@ export const updateMemberSchema = Joi.object({
     "any.required": "role id is required",
     "string.base": "role id should be string",
   }),
-  name: Joi.string().required("").messages({
+  name: Joi.string().required().messages({
     "any.required": "Name is required",
     "string.base": "Name is should be string",
   }),
-  phn_num: Joi.string().required("").messages({
+  phn_num: Joi.string().required().messages({
     "any.required": "Name is required",
     "string.base": "Name is should be string",
   }),
@@ -302,6 +298,7 @@ export const deleteMemberSchema = Joi.object({
     "any.empty": "id should not be empty",
   }),
 });
+
 export const getMemberschema = Joi.object({
   user_id: Joi.string().required().messages({
     "string.base": "user Id should be a string",
@@ -311,18 +308,17 @@ export const getMemberschema = Joi.object({
     "number.base": "role id should be a number",
     "any.required": "role id cannot be empty",
   }),
-  country: Joi.string().allow("").messages({
-    "string.base": "country should be a string",
-    "any.required": "country cannot be empty",
-  }),
-  state: Joi.string().allow("").messages({
-    "string.base": "state should be a string",
-    "any.required": "state cannot be empty",
-  }),
-  district: Joi.string().allow("").messages({
-    "string.base": "district should be a string",
-    "any.required": "district cannot be empty",
-  }),
+  district: Joi.array()
+    .items(
+      Joi.string().messages({
+        "string.base": "district should be a string",
+      }),
+    )
+    .required()
+    .messages({
+      "string.base": "district should be a array",
+      "any.required": "district cannot be empty",
+    }),
 });
 
 export const addMeetingSchema = Joi.object({
@@ -513,11 +509,33 @@ export const updateMeetingSchema = Joi.object({
     "number.base": "snooze at must be a number",
   }),
 });
-
-export const addMediaSchema = Joi.object({
+export const getMeetingSchema = Joi.object({
   user_id: Joi.string().required().messages({
     "string.string": "user Id should be a string",
     "string.required": "user Id cannot be empty",
+  }),
+  status: Joi.string()
+    .valid("upcoming", "completed", "cancelled", "pending")
+    .allow("")
+    .messages({
+      "string.string": "status should be a string",
+      "any.only":
+        "status must be one of: upcoming, completed, cancelled, pending, or an empty string",
+    }),
+  from_date: Joi.string().allow("").messages({
+    "string.string": "from_date should be a string",
+    "any.required": "from_date cannot be empty",
+  }),
+  to_date: Joi.string().allow("").messages({
+    "string.string": "to_date should be a string",
+    "any.required": "to_date cannot be empty",
+  }),
+});
+
+export const addMediaSchema = Joi.object({
+  org_name: Joi.string().required().messages({
+    "string.string": "original name should be a string",
+    "string.required": "original name cannot be empty",
   }),
 });
 
@@ -1485,14 +1503,36 @@ export const addSumitSchema = Joi.object({
     "array.base": "sumit_incharge should be a array",
     "any.required": "sumit_incharge cannot be empty",
   }),
-  dept_incharge: Joi.array().items(politicalDeptMemberSchema).required().messages({
-    "array.base": "dept_incharge should be a array",
-    "any.required": "dept_incharge cannot be empty",
-  }),
+  dept_incharge: Joi.array()
+    .items(politicalDeptMemberSchema)
+    .required()
+    .messages({
+      "array.base": "dept_incharge should be a array",
+      "any.required": "dept_incharge cannot be empty",
+    }),
 });
 export const deleteSumitSchema = Joi.object({
   id: Joi.number().required().messages({
     "string.base": "sumit id should be a number",
-    "any.required": "sumit id is required"
-  })
-})
+    "any.required": "sumit id is required",
+  }),
+});
+export const getSumitSchema = Joi.object({
+  user_id: Joi.string().required().messages({
+    "string.base": "User id should be a string",
+    "any.required": "User id cannot be empty",
+  }),
+  status: Joi.string()
+    .valid("upcoming", "completed", "cancelled")
+    .allow("")
+    .messages({
+      "string.base": "status should be a string",
+      "any.only": "status must be one of: pending, completed, cancelled",
+    }),
+  from_date: Joi.string().allow("").messages({
+    "string.base": "from date should be a string",
+  }),
+  to_date: Joi.string().allow("").messages({
+    "string.base": "from date should be a string",
+  }),
+});

@@ -12,7 +12,7 @@ const sourceMdl = new sourceModel();
 
 export const uploadMedia = async (req, res) => {
   try {
-    // const validatedData = validateRequest(req.body, addMediaSchema);
+    const validatedData = validateRequest(req.body, addMediaSchema);
 
     // if (validatedData?.success === 0) {
     //   return sendResponse(
@@ -25,17 +25,19 @@ export const uploadMedia = async (req, res) => {
     //   );
     // }
 
-    // const { user_id } = validatedData?.value;
+    let { org_name } = validatedData?.value;
     const files = req.files;
 
     if (!files || files.length === 0) {
       return sendResponse(res, 200, 0, "No files uploaded", [], "");
     }
+    if(!Array.isArray(org_name)){
+      org_name = [org_name];
+    }
 
-    // console.log(req.files);
 
     const uploadedFiles = await Promise.all(
-      files.map(async (file) => {
+      files.map(async (file, index) => {
         const url = `${file.destination.replace("src", "")}/${file.filename}`;
         const file_type = file.mimetype.split("/");
         const result = await sourceMdl.addMedia({
@@ -44,15 +46,14 @@ export const uploadMedia = async (req, res) => {
           size: file.size,
           mime_type: file.mimetype,
           type: file_type[1],
-          org_name: file.originalname,
+          org_name: org_name[index],
         });
-        // console.log(result);
 
         return {
           id: result?.data?.insertId,
           url: url,
           size: file.size,
-          org_name: file.originalname
+          org_name: org_name[index]
         };
       }),
     );

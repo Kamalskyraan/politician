@@ -79,6 +79,17 @@ router.post(
               user_id: {
                 type: "string",
                 example: "USER_IFZu5632"
+              },
+              role_id: {
+                type: "string",
+                example: "1"
+              },
+              district: {
+                type: "array",
+                items: {
+                type: "string"
+                },
+                example: ["coimbatore", "salem", "palakkad"]
               }
             }
           }
@@ -238,11 +249,11 @@ router.post(
               },
               lat: {
                 type: "number",
-                example: 10.23456
+                example: "10.23456"
               },
               lng: {
                 type: "number",
-                example: 9.98765
+                example: "9.98765"
               },
               media_id: {
                 type: "string",
@@ -254,11 +265,11 @@ router.post(
               },
               from_date: {
                 type: "string",
-                example: "1779447600000"
+                example: "2026-06-10 14:40:32"
               },
               to_date: {
                 type: "string",
-                example: "1779449400000"
+                example: "2026-06-10 14:40:32"
               },
               is_remind: {
                 type: "integer",
@@ -266,11 +277,11 @@ router.post(
               },
               remind_tenure: {
                 type: "integer",
-                example: 300
+                example: "300"
               },
               snooze_at: {
                 type: "integer",
-                example: 180
+                example: "180"
               }
             }
           }
@@ -308,7 +319,15 @@ router.post(
               status: {
                 type: "string",
                 example: "pending"
-              }
+              },
+              from_date: {
+                type: "string",
+                example: "2026-06-12"
+              },
+              to_date: {
+                type: "string",
+                example: "2026-06-13"
+              },
             }
           }
         }
@@ -405,15 +424,11 @@ router.post(
               },
               lat: {
                 type: "number",
-                example: 10.23456
+                example: "10.23456"
               },
               lng: {
                 type: "number",
-                example: 9.98765
-              },
-              status: {
-                type: "string",
-                example: "pending"
+                example: "9.98765"
               },
               media_id: {
                 type: "string",
@@ -425,11 +440,11 @@ router.post(
               },
               from_date: {
                 type: "string",
-                example: "1779447600000"
+                example: "2026-06-10 14:40:32"
               },
               to_date: {
                 type: "string",
-                example: "1779449400000"
+                example: "2026-06-10 14:40:32"
               },
               is_remind: {
                 type: "integer",
@@ -437,11 +452,11 @@ router.post(
               },
               remind_tenure: {
                 type: "integer",
-                example: 300
+                example: "300"
               },
               snooze_at: {
                 type: "integer",
-                example: 180
+                example: "180"
               }
             }
           }

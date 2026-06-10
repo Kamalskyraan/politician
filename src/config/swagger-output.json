@@ -232,9 +232,9 @@
                       "format": "binary"
                     }
                   },
-                  "user_id": {
+                  "org_name": {
                     "type": "string",
-                    "example": "USR001"
+                    "example": "img-20213312"
                   }
                 }
               }
@@ -417,12 +417,19 @@
         }
       }
     },
-    "/source/getrole": {
+    "/source/getmemberrole": {
       "post": {
-        "description": "",
+        "tags": [
+          "3.Member"
+        ],
+        "summary": "Get member role dropdown list",
+        "description": "Get member role dropdown list",
         "responses": {
-          "default": {
-            "description": ""
+          "200": {
+            "description": "dropdown list fetched successfully"
+          },
+          "500": {
+            "description": "Internal Server Error"
           }
         }
       }
@@ -599,6 +606,21 @@
                   "user_id": {
                     "type": "string",
                     "example": "USER_IFZu5632"
+                  },
+                  "role_id": {
+                    "type": "string",
+                    "example": "1"
+                  },
+                  "district": {
+                    "type": "array",
+                    "items": {
+                      "type": "string"
+                    },
+                    "example": [
+                      "coimbatore",
+                      "salem",
+                      "palakkad"
+                    ]
                   }
                 }
               }
@@ -762,11 +784,11 @@
                   },
                   "lat": {
                     "type": "number",
-                    "example": 10.23456
+                    "example": "10.23456"
                   },
                   "lng": {
                     "type": "number",
-                    "example": 9.98765
+                    "example": "9.98765"
                   },
                   "media_id": {
                     "type": "string",
@@ -778,11 +800,11 @@
                   },
                   "from_date": {
                     "type": "string",
-                    "example": "1779447600000"
+                    "example": "2026-06-10 14:40:32"
                   },
                   "to_date": {
                     "type": "string",
-                    "example": "1779449400000"
+                    "example": "2026-06-10 14:40:32"
                   },
                   "is_remind": {
                     "type": "integer",
@@ -790,11 +812,11 @@
                   },
                   "remind_tenure": {
                     "type": "integer",
-                    "example": 300
+                    "example": "300"
                   },
                   "snooze_at": {
                     "type": "integer",
-                    "example": 180
+                    "example": "180"
                   }
                 }
               }
@@ -832,6 +854,14 @@
                   "status": {
                     "type": "string",
                     "example": "pending"
+                  },
+                  "from_date": {
+                    "type": "string",
+                    "example": "2026-06-12"
+                  },
+                  "to_date": {
+                    "type": "string",
+                    "example": "2026-06-13"
                   }
                 }
               }
@@ -929,15 +959,11 @@
                   },
                   "lat": {
                     "type": "number",
-                    "example": 10.23456
+                    "example": "10.23456"
                   },
                   "lng": {
                     "type": "number",
-                    "example": 9.98765
-                  },
-                  "status": {
-                    "type": "string",
-                    "example": "pending"
+                    "example": "9.98765"
                   },
                   "media_id": {
                     "type": "string",
@@ -949,11 +975,11 @@
                   },
                   "from_date": {
                     "type": "string",
-                    "example": "1779447600000"
+                    "example": "2026-06-10 14:40:32"
                   },
                   "to_date": {
                     "type": "string",
-                    "example": "1779449400000"
+                    "example": "2026-06-10 14:40:32"
                   },
                   "is_remind": {
                     "type": "integer",
@@ -961,11 +987,11 @@
                   },
                   "remind_tenure": {
                     "type": "integer",
-                    "example": 300
+                    "example": "300"
                   },
                   "snooze_at": {
                     "type": "integer",
-                    "example": 180
+                    "example": "180"
                   }
                 }
               }
@@ -1348,20 +1374,70 @@
     },
     "/support/filterapi": {
       "post": {
-        "description": "",
+        "tags": [
+          "3.Member"
+        ],
+        "summary": "Get filter list for member filter",
+        "description": "Get filter list for member filter as per the user added",
         "responses": {
-          "default": {
-            "description": ""
+          "200": {
+            "description": "Filter list fetched successfully"
+          },
+          "500": {
+            "description": "Internal Server Error"
+          }
+        },
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "user_id": {
+                    "type": "string",
+                    "example": "USER_1JDE1213"
+                  }
+                }
+              }
+            }
           }
         }
       }
     },
     "/support/getcountry": {
       "post": {
-        "description": "",
+        "tags": [
+          "3.Member"
+        ],
+        "summary": "Get Country,State,district DROPDOWN list",
+        "description": "Get country,state,district Dropdowns by passing country and state",
         "responses": {
-          "default": {
-            "description": ""
+          "200": {
+            "description": "Filter list fetched successfully"
+          },
+          "500": {
+            "description": "Internal Server Error"
+          }
+        },
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "country": {
+                    "type": "string",
+                    "example": "India"
+                  },
+                  "state": {
+                    "type": "string",
+                    "example": "Tamil Nadu"
+                  }
+                }
+              }
+            }
           }
         }
       }

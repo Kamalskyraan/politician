@@ -9,8 +9,76 @@ router.post("/updatefaq", supportController.updateFaq);
 
 router.post("/contact_us", supportController.contactUs);
 
-router.post("/filterapi", supportController.filterApi);
-router.post("/getcountry", supportController.getCountries);
+router.post(
+  "/filterapi",
+  /*
+    #swagger.tags = ['3.Member']
+    #swagger.summary = 'Get filter list for member filter'
+    #swagger.description = 'Get filter list for member filter as per the user added'
+
+    #swagger.requestBody = {
+      required: true,
+      content: {
+        "application/json": {
+          schema: {
+            type: "object",
+            properties: {
+              user_id: {
+                type: "string",
+                example: "USER_1JDE1213"
+              }
+            }
+          }
+        }
+      }
+    }
+
+    #swagger.responses[200] = {
+      description: 'Filter list fetched successfully'
+    }
+
+    #swagger.responses[500] = {
+      description: 'Internal Server Error'
+    }
+*/ supportController.filterApi,
+);
+router.post(
+  "/getcountry",
+  /*
+    #swagger.tags = ['3.Member']
+    #swagger.summary = 'Get Country,State,district DROPDOWN list'
+    #swagger.description = 'Get country,state,district Dropdowns by passing country and state'
+
+    #swagger.requestBody = {
+      required: true,
+      content: {
+        "application/json": {
+          schema: {
+            type: "object",
+            properties: {
+              country: {
+                type: "string",
+                example: "India"
+              },
+              state: {
+                type: "string",
+                example: "Tamil Nadu"
+              },
+            }
+          }
+        }
+      }
+    }
+
+    #swagger.responses[200] = {
+      description: 'Filter list fetched successfully'
+    }
+
+    #swagger.responses[500] = {
+      description: 'Internal Server Error'
+    }
+*/ supportController.getCountries,
+);
 router.post(
   "/statuschange",
   /*
@@ -117,7 +185,7 @@ router.post(
     #swagger.responses[500] = {
       description: 'Internal Server Error'
     }
-*/ 
-supportController.addSumitcategory,
+*/
+  supportController.addSumitcategory,
 );
 export default router;

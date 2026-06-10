@@ -31,9 +31,9 @@ router.post(
               format: "binary"
             }
           },
-          user_id: {
+          org_name: {
             type: "string",
-            example: "USR001"
+            example: "img-20213312"
           }
         }
       }
@@ -191,7 +191,22 @@ router.post(
 
 router.post("/addrole", sourcecontroller.addUserrole);
 router.post("/updaterole", sourcecontroller.updateUserrole);
-router.post("/getrole", sourcecontroller.getUserrole);
+router.post(
+  "/getmemberrole",
+  /*
+    #swagger.tags = ['3.Member']
+    #swagger.summary = 'Get member role dropdown list'
+    #swagger.description = 'Get member role dropdown list'
+
+    #swagger.responses[200] = {
+      description: 'dropdown list fetched successfully'
+    }
+
+    #swagger.responses[500] = {
+      description: 'Internal Server Error'
+    }
+*/ sourcecontroller.getUserrole,
+);
 
 // finance cat
 

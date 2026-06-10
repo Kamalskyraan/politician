@@ -126,7 +126,7 @@
          ]
       },
       {  
-         "state":"Chandigarh (UT)",
+         "state":"Chandigarh",
          "districts":[  
             "Chandigarh"
          ]
@@ -164,20 +164,20 @@
          ]
       },
       {  
-         "state":"Dadra and Nagar Haveli (UT)",
+         "state":"Dadra and Nagar Haveli",
          "districts":[  
             "Dadra & Nagar Haveli"
          ]
       },
       {  
-         "state":"Daman and Diu (UT)",
+         "state":"Daman and Diu",
          "districts":[  
             "Daman",
             "Diu"
          ]
       },
       {  
-         "state":"Delhi (NCT)",
+         "state":"Delhi",
          "districts":[  
             "Central Delhi",
             "East Delhi",
@@ -392,7 +392,7 @@
          ]
       },
       {  
-         "state":"Lakshadweep (UT)",
+         "state":"Lakshadweep",
          "districts":[  
             "Agatti",
             "Amini",
@@ -605,7 +605,7 @@
          ]
       },
       {  
-         "state":"Puducherry (UT)",
+         "state":"Puducherry",
          "districts":[  
             "Karaikal",
             "Mahe",
