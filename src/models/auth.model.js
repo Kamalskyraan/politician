@@ -17,6 +17,7 @@ export class authModel {
         error: "Send either email or phone number",
       };
     } else if (email) {
+      console.log("inside email otp")
       query = `INSERT INTO otp (otp, email, expired_at) VALUES (?, ?, ?)`;
       params = [otp, email, expired_at];
     } else {
@@ -154,12 +155,13 @@ export class authModel {
         userRegisterQuery,
         userRegisterParams,
       );
+      console.log("new register",registerresult);
 
       let userdevicequery = `INSERT INTO user_device (user_id, device_token, device_id, device_type) VALUES (?, ?, ?, ?)`;
       let userdeviceparams = [userId, device_token, device_id, device_type];
 
       const userdevice = await executeQuery(userdevicequery, userdeviceparams);
-      // console.log(userdevice);
+      console.log(userdevice);
       return {
         success: 1,
         data: userId,

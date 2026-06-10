@@ -67,7 +67,16 @@ export class meetingModel {
     }
   }
 
-  async updateMember({ user_id, id, name, phn_num, role_id, country, state, district }) {
+  async updateMember({
+    user_id,
+    id,
+    name,
+    phn_num,
+    role_id,
+    country,
+    state,
+    district,
+  }) {
     let query = `SELECT * FROM members WHERE user_id = ? AND id = ?`;
     let params = [user_id, id];
 
@@ -233,58 +242,63 @@ export class meetingModel {
     }
   }
 
-  async getMeeting({ user_id, status }) {
-    if (status) {
-      let query = `SELECT id, title, descp, m_type, m_priority, m_link, notes, address, lat, lng, status, media_id, attnds_id, from_date, to_date, is_remind, remind_tenure, remind_at, snooze_at, nxt_snooze_at FROM meeting WHERE user_id = ? AND status = ?`;
-      let params = [user_id, status];
+  async getMeeting({ user_id, status, from_date, to_date }) {
+    let query = `
+    SELECT
+      id,
+      title,
+      descp,
+      m_type,
+      m_priority,
+      m_link,
+      notes,
+      address,
+      lat,
+      lng,
+      status,
+      media_id,
+      attnds_id,
+      from_date,
+      to_date,
+      is_remind,
+      remind_tenure,
+      remind_at,
+      snooze_at,
+      nxt_snooze_at
+    FROM meeting
+    WHERE user_id = ?
+  `;
 
-      const result = await executeQuery(query, params);
-      if (result?.data.length >= 1) {
-        // console.log("type of from get meeting model",Array.isArray(result?.data));
-        return {
-          success: 1,
-          data: result?.data,
-        };
-      } else {
-        return {
-          success: 0,
-          error: "no meeting found for this user",
-        };
-      }
-    } else {
-      let query = `SELECT id, title, descp, m_type, m_priority, m_link, notes, address, lat, lng, status, media_id, attnds_id, from_date, to_date, is_remind, remind_tenure, remind_at, snooze_at, nxt_snooze_at FROM meeting WHERE user_id = ?`;
-      let params = [user_id];
-
-      const result = await executeQuery(query, params);
-      // console.log(result?.data);
-
-      if (result?.data.length >= 1) {
-        return {
-          success: 1,
-          data: result?.data,
-        };
-      } else {
-        return {
-          success: 0,
-          error: "no meeting found for this user",
-        };
-      }
-    }
-    let query = `SELECT id, title, descp, m_type, m_priority, m_link, notes, address, lat, lng, status, media_id, attnds_id, from_date, to_date, is_remind, remind_tenure, remind_at, snooze_at, nxt_snooze_at FROM meeting WHERE user_id = ?`;
     let params = [user_id];
 
+    if (status != null) {
+      query += ` AND status = ?`;
+      params.push(status);
+    }
+
+    if (from_date != null) {
+      query += ` AND from_date >= ?`;
+      params.push(`${from_date} 00:00:00`);
+    }
+
+    if (to_date != null) {
+      query += ` AND from_date <= ?`;
+      params.push(`${to_date} 23:59:59`);
+    }
+
     const result = await executeQuery(query, params);
-    if (result?.data.length >= 1) {
+
+    if (result?.success === 1 && result?.data?.length > 0) {
       return {
         success: 1,
-        data: result?.data,
-      };
-    } else {
-      return {
-        success: 0,
-        error: "no meeting found for this user",
+        data: result.data,
       };
     }
+
+    return {
+      success: 0,
+      error: "no meeting found for this user",
+    };
   }
 
   async deleteMeeting({ id }) {

@@ -132,9 +132,69 @@ export const requestOtp = async (req, res) => {
       } else {
         return sendResponse(res, 200, 0, "User not existed", [], "");
       }
+    } else if (type === 2) {
+      const userresult = await AuthMdl.checkUserExists({
+        phn_num,
+        c_code,
+        email,
+      });
+      if (userresult?.success === 1) {
+        return sendResponse(
+          res,
+          200,
+          0,
+          "user already registered in this credentials",
+          [],
+          "",
+        );
+      } else if (userresult?.success === 0) {
+        const otpResult = await AuthMdl.requestOtp({
+          phn_num,
+          c_code,
+          email,
+          otp,
+          expired_at,
+        });
+        // console.log(otpResult);
+
+        if (otpResult?.success === 0) {
+          return sendResponse(res, 200, 0, otpResult?.error, [], "");
+        } else {
+          if (email && process.env.NODE_ENV !== "development") {
+            await sendMail(email, otp);
+            return sendResponse(res, 200, 1, "otp sent successfully", [], "");
+          } else if (email && process.env.NODE_ENV === "development") {
+            await sendMail(email, otp);
+
+            return sendResponse(
+              res,
+              200,
+              1,
+              "OTP sent successfully",
+              [otp],
+              "",
+            );
+          }
+          if (phn_num && process.env.NODE_ENV === "development") {
+            return sendResponse(
+              res,
+              200,
+              1,
+              "OTP sent successfully",
+              [otp],
+              "",
+            );
+          }
+          if (phn_num && process.env.NODE_ENV !== "development") {
+            await sendSmsOTP(phn_num, otp);
+
+            return sendResponse(res, 200, 1, "OTP sent successfully", [], "");
+          }
+        }
+      }
     }
   } catch (error) {
-    console.log(error);
+    // console.log(error);
     return sendResponse(
       res,
       500,

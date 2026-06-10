@@ -14,6 +14,7 @@ import {
   deleteMeetingSchema,
   deleteMemberSchema,
   getAppointSchema,
+  getMeetingSchema,
   getMemberschema,
   reminderSchema,
   updateAppointSchema,
@@ -165,7 +166,8 @@ export const updateMembers = async (req, res) => {
       );
     }
 
-    let { user_id, id, name, phn_num, role_id, state, district } = validatedData?.value;
+    let { user_id, id, name, phn_num, role_id, state, district } =
+      validatedData?.value;
 
     let country = "India";
 
@@ -471,7 +473,7 @@ export const addMeeting = async (req, res) => {
 
 export const getMeeting = async (req, res) => {
   try {
-    const validatedData = validateRequest(req.body, userIdSchema);
+    const validatedData = validateRequest(req.body, getMeetingSchema);
 
     if (validatedData?.success === 0) {
       sendResponse(
@@ -484,22 +486,20 @@ export const getMeeting = async (req, res) => {
       );
     }
 
-    const { user_id, status } = validatedData?.value;
+    let { user_id, status, from_date, to_date } = validatedData?.value;
     let result = [];
     let meetings = [];
 
-    if (status === "upcoming") {
-      result = await meetingMdl.getMeeting({ user_id, status });
-    } else if (status === "cancelled") {
-      result = await meetingMdl.getMeeting({ user_id, status });
-    } else if (status === "completed") {
-      result = await meetingMdl.getMeeting({ user_id, status });
-    } else if (status === "pending") {
-      result = await meetingMdl.getMeeting({ user_id, status });
-    } else {
-      result = await meetingMdl.getMeeting({ user_id });
-    }
-    // console.log("meeting length",result);
+    status = status === "" ? null : status;
+    from_date = from_date === "" ? null : from_date;
+    to_date = to_date === "" ? null : to_date;
+
+    result = await meetingMdl.getMeeting({
+      user_id,
+      status,
+      from_date,
+      to_date,
+    });
 
     if (result?.success === 0) {
       return sendResponse(
@@ -672,7 +672,6 @@ export const updateMeeting = async (req, res) => {
       address,
       lat,
       lng,
-      status,
       media_id,
       attnds_id,
       from_date,
@@ -687,7 +686,6 @@ export const updateMeeting = async (req, res) => {
     address = address === "" ? null : address;
     lat = lat === "" ? null : lat;
     lng = lng === "" ? null : lng;
-    status = status === "" ? null : status;
     media_id = media_id === "" ? null : media_id;
     remind_tenure = remind_tenure === "" ? null : Number(remind_tenure);
     // remind_at = is_remind === 0 ? null : remind_at;
@@ -747,11 +745,6 @@ export const updateMeeting = async (req, res) => {
         lat === "" ? null : lat,
         lng === "" ? null : lng,
       );
-    }
-    if (status !== undefined) {
-      // console.log(status);
-      update_columns.push("status = ?");
-      params.push(status);
     }
     if (media_id !== undefined) {
       update_columns.push("media_id = ?");

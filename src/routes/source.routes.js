@@ -31,9 +31,9 @@ router.post(
               format: "binary"
             }
           },
-          user_id: {
+          org_name: {
             type: "string",
-            example: "USR001"
+            example: "img-20213312"
           }
         }
       }

@@ -497,11 +497,33 @@ export const updateMeetingSchema = Joi.object({
     "number.base": "snooze at must be a number",
   }),
 });
-
-export const addMediaSchema = Joi.object({
+export const getMeetingSchema = Joi.object({
   user_id: Joi.string().required().messages({
     "string.string": "user Id should be a string",
     "string.required": "user Id cannot be empty",
+  }),
+  status: Joi.string()
+    .valid("upcoming", "completed", "cancelled", "pending")
+    .allow("")
+    .messages({
+      "string.string": "status should be a string",
+      "any.only":
+        "status must be one of: upcoming, completed, cancelled, pending, or an empty string",
+    }),
+  from_date: Joi.string().allow("").messages({
+    "string.string": "from_date should be a string",
+    "any.required": "from_date cannot be empty",
+  }),
+  to_date: Joi.string().allow("").messages({
+    "string.string": "to_date should be a string",
+    "any.required": "to_date cannot be empty",
+  }),
+});
+
+export const addMediaSchema = Joi.object({
+  org_name: Joi.string().required().messages({
+    "string.string": "original name should be a string",
+    "string.required": "original name cannot be empty",
   }),
 });
 
@@ -1421,14 +1443,17 @@ export const addSumitSchema = Joi.object({
     "array.base": "sumit_incharge should be a array",
     "any.required": "sumit_incharge cannot be empty",
   }),
-  dept_incharge: Joi.array().items(politicalDeptMemberSchema).required().messages({
-    "array.base": "dept_incharge should be a array",
-    "any.required": "dept_incharge cannot be empty",
-  }),
+  dept_incharge: Joi.array()
+    .items(politicalDeptMemberSchema)
+    .required()
+    .messages({
+      "array.base": "dept_incharge should be a array",
+      "any.required": "dept_incharge cannot be empty",
+    }),
 });
 export const deleteSumitSchema = Joi.object({
   id: Joi.number().required().messages({
     "string.base": "sumit id should be a number",
-    "any.required": "sumit id is required"
-  })
-})
+    "any.required": "sumit id is required",
+  }),
+});

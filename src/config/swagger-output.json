@@ -232,9 +232,9 @@
                       "format": "binary"
                     }
                   },
-                  "user_id": {
+                  "org_name": {
                     "type": "string",
-                    "example": "USR001"
+                    "example": "img-20213312"
                   }
                 }
               }
@@ -742,6 +742,14 @@
                   "status": {
                     "type": "string",
                     "example": "pending"
+                  },
+                  "from_date": {
+                    "type": "string",
+                    "example": "2026-06-12"
+                  },
+                  "to_date": {
+                    "type": "string",
+                    "example": "2026-06-13"
                   }
                 }
               }

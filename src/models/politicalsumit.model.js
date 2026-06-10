@@ -34,7 +34,7 @@ export class politicalSumitModel {
           "Vip",
           sumitvip.name,
           sumitvip.cat_id,
-          sumitvip.cat_name,
+          sumitvip.cat_name || null,
         ];
         await connection.execute(query, params);
       }
@@ -45,7 +45,7 @@ export class politicalSumitModel {
           "member",
           sumitmember.name,
           sumitmember.cat_id,
-          sumitmember.cat_name,
+          sumitmember.cat_name || null,
         ];
         await connection.execute(query, params);
       }
@@ -57,7 +57,7 @@ export class politicalSumitModel {
           "sumit incharge",
           sumit_incharger.name,
           sumit_incharger.cat_id,
-          sumit_incharger.cat_name,
+          sumit_incharger.cat_name || null,
         ];
         await connection.execute(query, params);
       }
@@ -70,9 +70,9 @@ export class politicalSumitModel {
           "dept incharge",
           dept_incharger.name,
           dept_incharger.cat_id,
-          dept_incharger.cat_name,
+          dept_incharger.cat_name || null,
           dept_incharger.dept_id,
-          dept_incharger.dept_name,
+          dept_incharger.dept_name || null,
         ];
         await connection.execute(query, params);
       }
