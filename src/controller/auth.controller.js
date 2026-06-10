@@ -296,7 +296,7 @@ export const signUp = async (req, res) => {
         user_id: result?.data,
         jwt_token: token,
       };
-      // console.log(result?.data);
+      
       return sendResponse(res, 200, 1, "user created successfully", [data], "");
     }
   } catch (error) {
