@@ -79,6 +79,17 @@ router.post(
               user_id: {
                 type: "string",
                 example: "USER_IFZu5632"
+              },
+              role_id: {
+                type: "string",
+                example: "1"
+              },
+              district: {
+                type: "array",
+                items: {
+                type: "string"
+                },
+                example: ["coimbatore", "salem", "palakkad"]
               }
             }
           }

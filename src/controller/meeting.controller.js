@@ -87,17 +87,13 @@ export const addMembers = async (req, res) => {
 
 export const getMembers = async (req, res) => {
   try {
-    // console.log(req.body);
     const validatedData = validateRequest(req.body, getMemberschema);
     // console.log(validatedData);
 
-    let { user_id, role_id, country, state, district } = validatedData?.value;
-    console.log(country);
+    let { user_id, role_id, district } = validatedData?.value;
 
-    role_id = role_id === "" ? null : role_id;
-    country = country === "" ? null : country;
-    state = state === "" ? null : state;
-    district = district === "" ? null : district;
+    role_id = role_id === "" ? null : Number(role_id);
+    // district = district === "" ? null : district;
 
     let upt_cols = [];
     let params = [];
@@ -105,21 +101,13 @@ export const getMembers = async (req, res) => {
     upt_cols.push("m.user_id = ?");
     params.push(user_id);
 
-    if (role_id !== undefined) {
-      upt_cols.push("m.role_name = ?");
-      params.push(role_name);
+    if (role_id != undefined) {
+      upt_cols.push("m.role_id = ?");
+      params.push(role_id);
     }
-    if (country !== undefined) {
-      upt_cols.push("m.country = ?");
-      params.push(country);
-    }
-    if (state !== undefined) {
-      upt_cols.push("m.state = ?");
-      params.push(state);
-    }
-    if (district !== undefined) {
-      upt_cols.push("m.district = ?");
-      params.push(district);
+    if (district !== undefined && district.length > 0) {
+      upt_cols.push(`m.district IN (${district.map(() => "?").join(",")})`);
+      params.push(...district);
     }
     upt_cols.push("m.status = ?");
     params.push("active");
@@ -166,13 +154,11 @@ export const updateMembers = async (req, res) => {
       );
     }
 
-    let { user_id, id, name, phn_num, role_id, state, district } =
-      validatedData?.value;
+    let { id, name, phn_num, role_id, state, district } = validatedData?.value;
 
     let country = "India";
 
     const result = await meetingMdl.updateMember({
-      user_id,
       id,
       name,
       phn_num,

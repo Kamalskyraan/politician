@@ -45,11 +45,12 @@ export class meetingModel {
   }
 
   async getMember({ upt_cols, params }) {
-    console.log(upt_cols);
-    console.log(params);
+    // console.log(upt_cols);
+    // console.log(params);
     let query = `SELECT m.id, m.name, m.phn_num, m.country, m.state, m.district, r.role_name FROM members m JOIN user_role r ON m.role_id = r.id WHERE ${upt_cols.join(" AND ")}`;
     // let params = [user_id, "active"];
 
+    // console.log(query)
     const result = await executeQuery(query, params);
 
     // console.log(result);
@@ -67,18 +68,9 @@ export class meetingModel {
     }
   }
 
-  async updateMember({
-    user_id,
-    id,
-    name,
-    phn_num,
-    role_id,
-    country,
-    state,
-    district,
-  }) {
-    let query = `SELECT * FROM members WHERE user_id = ? AND id = ?`;
-    let params = [user_id, id];
+  async updateMember({ id, name, phn_num, role_id, country, state, district }) {
+    let query = `SELECT * FROM members WHERE id = ?`;
+    let params = [id];
 
     const result = await executeQuery(query, params);
     // console.log(result?.data);

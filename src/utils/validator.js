@@ -246,10 +246,6 @@ export const addMemberSchema = Joi.object({
   }),
 });
 export const updateMemberSchema = Joi.object({
-  user_id: Joi.string().required().messages({
-    "string.base": "id must be an string",
-    "any.required": "id is required",
-  }),
   id: Joi.number().required().messages({
     "any.required": "id is required",
     "number.base": "id should be number",
@@ -258,11 +254,11 @@ export const updateMemberSchema = Joi.object({
     "any.required": "role id is required",
     "string.base": "role id should be string",
   }),
-  name: Joi.string().required("").messages({
+  name: Joi.string().required().messages({
     "any.required": "Name is required",
     "string.base": "Name is should be string",
   }),
-  phn_num: Joi.string().required("").messages({
+  phn_num: Joi.string().required().messages({
     "any.required": "Name is required",
     "string.base": "Name is should be string",
   }),
@@ -286,6 +282,7 @@ export const deleteMemberSchema = Joi.object({
     "any.empty": "id should not be empty",
   }),
 });
+
 export const getMemberschema = Joi.object({
   user_id: Joi.string().required().messages({
     "string.base": "user Id should be a string",
@@ -295,18 +292,17 @@ export const getMemberschema = Joi.object({
     "number.base": "role id should be a number",
     "any.required": "role id cannot be empty",
   }),
-  country: Joi.string().allow("").messages({
-    "string.base": "country should be a string",
-    "any.required": "country cannot be empty",
-  }),
-  state: Joi.string().allow("").messages({
-    "string.base": "state should be a string",
-    "any.required": "state cannot be empty",
-  }),
-  district: Joi.string().allow("").messages({
-    "string.base": "district should be a string",
-    "any.required": "district cannot be empty",
-  }),
+  district: Joi.array()
+    .items(
+      Joi.string().messages({
+        "string.base": "district should be a string",
+      }),
+    )
+    .required()
+    .messages({
+      "string.base": "district should be a array",
+      "any.required": "district cannot be empty",
+    }),
 });
 
 export const addMeetingSchema = Joi.object({
