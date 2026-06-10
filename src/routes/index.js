@@ -16,17 +16,13 @@ router.use("/source", sourceRoutes);
 router.use("/meeting", meetingRoutes);
 
 router.use("/user", userRoutes);
-router.use("/faq", supportRoutes);
-// router.use("/contact", supportRoutes);
-router.use("/travel", travelRoutes);
-router.use("/meeting", verifyToken, meetingRoutes);
-
-router.use("/user", userRoutes);
 router.use("/support", supportRoutes);
 // router.use("/contact", supportRoutes);
 router.use("/travel", travelRoutes);
 router.use("/task", taskRoutes);
 router.use("/finance", finaceRoutes);
 router.use("/folder", folderRoutes);
+router.use("/issue", issueRoutes);
+router.use("/sumit", politicalsumitRoutes);
 
 export default router;

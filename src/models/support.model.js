@@ -106,4 +106,57 @@ export class supportModel {
       };
     }
   }
+  async updateStatus({ id, status, table_name, col_name }) {
+    let query = `UPDATE ${table_name} SET ${col_name} = ? WHERE id = ?`;
+    let params = [status, id];
+
+    const result = await executeQuery(query, params);
+    // console.log(result);
+
+    if (result?.success === 1) {
+      return {
+        success: 1,
+        data: result?.data,
+      };
+    } else {
+      return {
+        success: 0,
+        error: result?.error,
+      };
+    }
+  }
+  async addIssueCat({ category }) {
+    let query = `INSERT INTO issue_category (cat_name) VALUES (?)`;
+    let params = [category];
+
+    const result = await executeQuery(query, params);
+    if (result?.success === 1) {
+      return {
+        success: 1,
+        data: result?.data,
+      };
+    } else {
+      return {
+        success: 0,
+        error: result?.error,
+      };
+    }
+  }
+  async addSumitCat({ category }) {
+    let query = `INSERT INTO political_sumit_category (category_name) VALUES (?)`;
+    let params = [category];
+
+    const result = await executeQuery(query, params);
+    if (result?.success === 1) {
+      return {
+        success: 1,
+        data: result?.data,
+      };
+    } else {
+      return {
+        success: 0,
+        error: result?.error,
+      };
+    }
+  }
 }

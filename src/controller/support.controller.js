@@ -3,9 +3,12 @@ import { supportModel } from "../models/support.model.js";
 import { executeQuery, sendResponse } from "../utils/helper.js";
 import { sendContactUsMail, sendMail } from "../config/email.js";
 import {
+  addIssueCategorySchema,
+  addSumitCategorySchema,
   contactUsSchema,
   getCountriesSchema,
   getMemberschema,
+  statusChangeSchema,
   validateRequest,
 } from "../utils/validator.js";
 import axios from "axios";
@@ -102,8 +105,6 @@ export const contactUs = async (req, res) => {
     sendResponse(res, 500, 0, "Internal Server error", [], error.message);
   }
 };
-
-// export const get
 
 export const filterApi = async (req, res) => {
   try {
@@ -255,6 +256,142 @@ export const getCountries = async (req, res) => {
         fetched_district,
         "",
       );
+    }
+  } catch (error) {
+    return sendResponse(
+      res,
+      500,
+      0,
+      "Internal server error",
+      [],
+      error.message,
+    );
+  }
+};
+export const updateStatus = async (req, res) => {
+  try {
+    const validatedData = validateRequest(req.body, statusChangeSchema);
+    if (validatedData?.success === 0) {
+      return sendResponse(
+        res,
+        200,
+        0,
+        "validation error",
+        [],
+        validatedData?.errorObject?.errors,
+      );
+    }
+    let { id, status, type } = validatedData?.value;
+    let table_name;
+    let col_name;
+
+    if (type === "meeting") {
+      table_name = "meeting";
+      col_name = "status";
+    }
+    if (type === "appointment") {
+      table_name = "appointments";
+      col_name = "status";
+    }
+    if (type === "task") {
+      table_name = "tasks";
+      col_name = "t_status";
+    }
+    if (type === "issue") {
+      table_name = "issues";
+      col_name = "status";
+    }
+
+    const result = await supportMdl.updateStatus({
+      id,
+      status,
+      table_name,
+      col_name,
+    });
+
+    if (result?.success === 1) {
+      return sendResponse(res, 200, 1, "Status changed successfully", [], "");
+    } else if (result?.success === 0) {
+      return sendResponse(res, 200, 0, "Failed to change status", [], "");
+    }
+  } catch (error) {
+    return sendResponse(
+      res,
+      500,
+      0,
+      "Internal server error",
+      [],
+      error.message,
+    );
+  }
+};
+
+export const addIssueCat = async (req, res) => {
+  try {
+    const validatedData = validateRequest(req.body, addIssueCategorySchema);
+    if (validatedData?.success === 0) {
+      return sendResponse(
+        res,
+        200,
+        0,
+        "validation error",
+        [],
+        validatedData?.errorObject?.errors,
+      );
+    }
+    let { category } = validatedData?.value;
+
+    const result = await supportMdl.addIssueCat({ category });
+    if (result?.success === 1) {
+      return sendResponse(
+        res,
+        200,
+        1,
+        "Issue category added successfully",
+        [],
+        "",
+      );
+    } else if (result?.success === 0) {
+      return sendResponse(res, 200, 0, "Failed to add issue category", [], "");
+    }
+  } catch (error) {
+    return sendResponse(
+      res,
+      500,
+      0,
+      "Internal server error",
+      [],
+      error.message,
+    );
+  }
+};
+export const addSumitcategory = async (req, res) => {
+  try {
+    const validatedData = validateRequest(req.body, addSumitCategorySchema);
+    if (validatedData?.success === 0) {
+      return sendResponse(
+        res,
+        200,
+        0,
+        "validation error",
+        [],
+        validatedData?.errorObject?.errors,
+      );
+    }
+    let { category } = validatedData?.value;
+
+    const result = await supportMdl.addSumitCat({ category });
+    if (result?.success === 1) {
+      return sendResponse(
+        res,
+        200,
+        1,
+        "political sumit category added successfully",
+        [],
+        "",
+      );
+    } else if (result?.success === 0) {
+      return sendResponse(res, 200, 0, "Failed to add political sumit category", [], "");
     }
   } catch (error) {
     return sendResponse(

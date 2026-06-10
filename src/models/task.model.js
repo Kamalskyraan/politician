@@ -69,12 +69,35 @@ export class taskModel {
     }
   }
   async updateTask({ upt_cols, params }) {
-    console.log(upt_cols);
-    console.log(params.length);
     let query = `UPDATE tasks SET ${upt_cols.join(", ")} WHERE id = ?`;
 
     const result = await executeQuery(query, params);
 
+    if (result?.success === 1) {
+      return {
+        success: 1,
+        data: result?.data,
+      };
+    } else if (result?.success === 0) {
+      console.log(result?.error);
+      return {
+        success: 0,
+        error: result?.error,
+      };
+    }
+  }
+  async getTask({ user_id, status }) {
+    let query;
+    let params = [];
+    if (status != null) {
+      query = `SELECT * FROM tasks WHERE user_id = ? AND t_status = ?`;
+      params.push(user_id, status);
+    } else {
+      query = `SELECT * FROM tasks WHERE user_id = ?`;
+      params.push(user_id);
+    }
+
+    const result = await executeQuery(query, params);
     if (result?.success === 1) {
       return {
         success: 1,
