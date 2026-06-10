@@ -204,7 +204,7 @@ export class authModel {
       } else if (updateLoginResult.success === 1) {
         return {
           success: 1,
-          data: devUserId,
+          data: result?.data,
         };
       }
     }

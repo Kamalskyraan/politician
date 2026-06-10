@@ -1453,3 +1453,22 @@ export const deleteSumitSchema = Joi.object({
     "any.required": "sumit id is required",
   }),
 });
+export const getSumitSchema = Joi.object({
+  user_id: Joi.string().required().messages({
+    "string.base": "User id should be a string",
+    "any.required": "User id cannot be empty",
+  }),
+  status: Joi.string()
+    .valid("upcoming", "completed", "cancelled")
+    .allow("")
+    .messages({
+      "string.base": "status should be a string",
+      "any.only": "status must be one of: pending, completed, cancelled",
+    }),
+  from_date: Joi.string().allow("").messages({
+    "string.base": "from date should be a string",
+  }),
+  to_date: Joi.string().allow("").messages({
+    "string.base": "from date should be a string",
+  }),
+});

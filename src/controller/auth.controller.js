@@ -2,6 +2,7 @@ import express from "express";
 import {
   genarateotp,
   generateJwtToken,
+  replaceNullWithEmptyString,
   sendResponse,
 } from "../utils/helper.js";
 import { authModel } from "../models/auth.model.js";
@@ -335,7 +336,8 @@ export const login = async (req, res) => {
       device_type,
     });
 
-    // console.log(userlogin?.success);
+    // console.log(userlogin?.data[0]);
+    const userLoginResult = userlogin?.data[0];
 
     if (userlogin?.success === 0) {
       return sendResponse(res, 200, 0, "login failed", [], userlogin.error);
@@ -345,10 +347,15 @@ export const login = async (req, res) => {
         email: email,
         device_id: device_id,
       });
-      const data = {
-        user_id: userlogin?.data,
+      let data = {
+        user_id: userLoginResult?.user_id,
         jwt_token: token,
+        name: userLoginResult?.name,
+        phn_num: userLoginResult?.phn_num,
+        c_code: userLoginResult?.c_code,
+        email: userLoginResult?.email
       };
+      data = replaceNullWithEmptyString(data);
       return sendResponse(res, 200, 1, "login successfull", [data], "");
     }
   } catch (error) {
