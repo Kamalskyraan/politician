@@ -7,7 +7,7 @@ import meetingRoutes from "./meeting.routes.js";
 import travelRoutes from "./travel.routes.js";
 import taskRoutes from "./task.route.js";
 import finaceRoutes from "./finance.routes.js";
-import issueRoutes from "./issue.routes.js";
+import issueRoutes from "./issues.routes.js";
 import politicalsumitRoutes from "./politicalSumit.routes.js";
 import folderRoutes from "./folder.routes.js";
 import { verifyToken } from "../middleware/auth.middleware.js";
