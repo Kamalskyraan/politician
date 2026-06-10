@@ -4,6 +4,7 @@ import { executeQuery, sendResponse } from "../utils/helper.js";
 import { sendContactUsMail, sendMail } from "../config/email.js";
 import {
   addIssueCategorySchema,
+  addSumitCategorySchema,
   contactUsSchema,
   getCountriesSchema,
   getMemberschema,
@@ -296,6 +297,10 @@ export const updateStatus = async (req, res) => {
       table_name = "tasks";
       col_name = "t_status";
     }
+    if (type === "issue") {
+      table_name = "issues";
+      col_name = "status";
+    }
 
     const result = await supportMdl.updateStatus({
       id,
@@ -338,9 +343,55 @@ export const addIssueCat = async (req, res) => {
 
     const result = await supportMdl.addIssueCat({ category });
     if (result?.success === 1) {
-      return sendResponse(res, 200, 1, "Issue category added successfully", [], "");
+      return sendResponse(
+        res,
+        200,
+        1,
+        "Issue category added successfully",
+        [],
+        "",
+      );
     } else if (result?.success === 0) {
       return sendResponse(res, 200, 0, "Failed to add issue category", [], "");
+    }
+  } catch (error) {
+    return sendResponse(
+      res,
+      500,
+      0,
+      "Internal server error",
+      [],
+      error.message,
+    );
+  }
+};
+export const addSumitcategory = async (req, res) => {
+  try {
+    const validatedData = validateRequest(req.body, addSumitCategorySchema);
+    if (validatedData?.success === 0) {
+      return sendResponse(
+        res,
+        200,
+        0,
+        "validation error",
+        [],
+        validatedData?.errorObject?.errors,
+      );
+    }
+    let { category } = validatedData?.value;
+
+    const result = await supportMdl.addSumitCat({ category });
+    if (result?.success === 1) {
+      return sendResponse(
+        res,
+        200,
+        1,
+        "political sumit category added successfully",
+        [],
+        "",
+      );
+    } else if (result?.success === 0) {
+      return sendResponse(res, 200, 0, "Failed to add political sumit category", [], "");
     }
   } catch (error) {
     return sendResponse(

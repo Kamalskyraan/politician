@@ -86,4 +86,38 @@ router.post(
     }
 */ supportController.addIssueCat,
 );
+router.post(
+  "/addsumitcategory",
+  /*
+    #swagger.tags = ['12.Support Api`s']
+    #swagger.summary = 'Add category for political sumit'
+    #swagger.description = 'Add category'
+
+    #swagger.requestBody = {
+      required: true,
+      content: {
+        "application/json": {
+          schema: {
+            type: "object",
+            properties: {
+              category: {
+                type: "string",
+                example: "Road"
+              },
+            }
+          }
+        }
+      }
+    }
+
+    #swagger.responses[200] = {
+      description: 'political sumit category added successfully'
+    }
+
+    #swagger.responses[500] = {
+      description: 'Internal Server Error'
+    }
+*/ 
+supportController.addSumitcategory,
+);
 export default router;

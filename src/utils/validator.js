@@ -1273,3 +1273,162 @@ export const deleteIssueSchema = Joi.object({
     "any.required": "number cannot be empty",
   }),
 });
+export const updateIssueschema = Joi.object({
+  id: Joi.number().required().messages({
+    "string.base": "Issue id should be a number",
+    "any.required": "Issue id cannot be empty",
+  }),
+  cat_id: Joi.number().required().messages({
+    "string.base": "category id should be a number",
+    "any.required": "category id cannot be empty",
+  }),
+  cat_name: Joi.string().allow("").messages({
+    "string.base": "category name should be a number",
+    "any.required": "category name cannot be empty",
+  }),
+  descp: Joi.string().required().messages({
+    "string.base": "description should be a string",
+    "any.required": "description cannot be empty",
+  }),
+  address: Joi.string().required().messages({
+    "string.base": "address should be a string",
+    "any.required": "address cannot be empty",
+  }),
+  lat: Joi.string().required().messages({
+    "string.base": "lat must be a string",
+    "any.required": "lat is required",
+  }),
+  lng: Joi.string().required().messages({
+    "string.base": "lng must be a string",
+    "any.required": "lng is required",
+  }),
+  media_id: Joi.string().allow("").messages({
+    "string.base": "media id must be a string",
+    "any.required": "media id is required",
+  }),
+  report_date: Joi.string().required().messages({
+    "string.base": "report date must be a string",
+    "any.required": "report date is required",
+  }),
+  incharge_id: Joi.string().allow("").messages({
+    "string.base": "incharge id must be a string",
+    "any.required": "incharge id is required",
+  }),
+  member_id: Joi.string().allow("").messages({
+    "string.base": "member id must be a string",
+    "any.required": "member id is required",
+  }),
+});
+export const getIssueSchema = Joi.object({
+  user_id: Joi.string().required().messages({
+    "string.base": "User id should be a string",
+    "any.required": "User id cannot be empty",
+  }),
+  status: Joi.string()
+    .valid("pending", "inprogress", "completed")
+    .allow("")
+    .messages({
+      "string.base": "status should be a string",
+    }),
+  assigned: Joi.number().valid(0, 1).allow("").messages({
+    "string.base": "assigned should be a number",
+  }),
+  from_date: Joi.string().allow("").messages({
+    "string.base": "from_date should be a string",
+  }),
+  to_date: Joi.string().allow("").messages({
+    "string.base": "to_date should be a string",
+  }),
+});
+
+export const addSumitCategorySchema = Joi.object({
+  category: Joi.string().required().messages({
+    "string.base": "category should be a string",
+    "any.required": "category cannot be empty",
+  }),
+});
+
+const politicalDeptMemberSchema = Joi.object({
+  name: Joi.string().required().messages({
+    "string.base": "VIP name should be string",
+    "any.required": "VIP name is required",
+  }),
+  cat_id: Joi.number().required().messages({
+    "number.base": "category id should be string",
+    "any.required": "category id is required",
+  }),
+  cat_name: Joi.string().allow("").messages({
+    "string.base": "category name should be string",
+    "any.required": "category name is required",
+  }),
+  dept_id: Joi.number().required().messages({
+    "number.base": "department id should be string",
+    "any.required": "department id is required",
+  }),
+  dept_name: Joi.string().allow("").messages({
+    "string.base": "department name should be string",
+    "any.required": "department name is required",
+  }),
+});
+const politicalMemberSchema = Joi.object({
+  name: Joi.string().required().messages({
+    "string.base": "VIP name should be string",
+    "any.required": "VIP name is required",
+  }),
+  cat_id: Joi.number().required().messages({
+    "number.base": "category id should be string",
+    "any.required": "category id is required",
+  }),
+  cat_name: Joi.string().allow("").messages({
+    "string.base": "category name should be string",
+    "any.required": "category name is required",
+  }),
+});
+export const addSumitSchema = Joi.object({
+  user_id: Joi.string().required().messages({
+    "string.base": "User id should be a string",
+    "any.required": "User id cannot be empty",
+  }),
+  title: Joi.string().required().messages({
+    "string.base": "Title should be a string",
+    "any.required": "Title cannot be empty",
+  }),
+  location: Joi.string().required().messages({
+    "string.base": "location should be a string",
+    "any.required": "location cannot be empty",
+  }),
+  lat: Joi.string().required().messages({
+    "string.base": "lat should be a string",
+    "any.required": "lat cannot be empty",
+  }),
+  lng: Joi.string().required().messages({
+    "string.base": "lng should be a string",
+    "any.required": "lng cannot be empty",
+  }),
+  sumit_date: Joi.string().required().messages({
+    "string.base": "sumit date should be a string",
+    "any.required": "sumit date cannot be empty",
+  }),
+  vip: Joi.array().items(politicalMemberSchema).required().messages({
+    "array.base": "vip should be a array",
+    "any.required": "vip cannot be empty",
+  }),
+  member: Joi.array().items(politicalMemberSchema).required().messages({
+    "array.base": "member should be a array",
+    "any.required": "member cannot be empty",
+  }),
+  sumit_incharge: Joi.array().items(politicalMemberSchema).required().messages({
+    "array.base": "sumit_incharge should be a array",
+    "any.required": "sumit_incharge cannot be empty",
+  }),
+  dept_incharge: Joi.array().items(politicalDeptMemberSchema).required().messages({
+    "array.base": "dept_incharge should be a array",
+    "any.required": "dept_incharge cannot be empty",
+  }),
+});
+export const deleteSumitSchema = Joi.object({
+  id: Joi.number().required().messages({
+    "string.base": "sumit id should be a number",
+    "any.required": "sumit id is required"
+  })
+})

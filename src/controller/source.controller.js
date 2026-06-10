@@ -7,20 +7,20 @@ const sourceMdl = new sourceModel();
 
 export const uploadMedia = async (req, res) => {
   try {
-    const validatedData = validateRequest(req.body, addMediaSchema);
+    // const validatedData = validateRequest(req.body, addMediaSchema);
 
-    if (validatedData?.success === 0) {
-      return sendResponse(
-        res,
-        validatedData?.errorObject?.status,
-        0,
-        "validation error",
-        [],
-        validatedData?.errorObject?.errors,
-      );
-    }
+    // if (validatedData?.success === 0) {
+    //   return sendResponse(
+    //     res,
+    //     validatedData?.errorObject?.status,
+    //     0,
+    //     "validation error",
+    //     [],
+    //     validatedData?.errorObject?.errors,
+    //   );
+    // }
 
-    const { user_id } = validatedData?.value;
+    // const { user_id } = validatedData?.value;
     const files = req.files;
 
     if (!files || files.length === 0) {
@@ -34,7 +34,6 @@ export const uploadMedia = async (req, res) => {
         const url = `${file.destination.replace("src", "")}/${file.filename}`;
         const file_type = file.mimetype.split("/");
         const result = await sourceMdl.addMedia({
-          user_id,
           url,
           path: file.path,
           size: file.size,
@@ -47,7 +46,8 @@ export const uploadMedia = async (req, res) => {
         return {
           id: result?.data?.insertId,
           url: url,
-          size: file.size
+          size: file.size,
+          org_name: file.originalname
         };
       }),
     );

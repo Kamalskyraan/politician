@@ -142,4 +142,21 @@ export class supportModel {
       };
     }
   }
+  async addSumitCat({ category }) {
+    let query = `INSERT INTO political_sumit_category (category_name) VALUES (?)`;
+    let params = [category];
+
+    const result = await executeQuery(query, params);
+    if (result?.success === 1) {
+      return {
+        success: 1,
+        data: result?.data,
+      };
+    } else {
+      return {
+        success: 0,
+        error: result?.error,
+      };
+    }
+  }
 }

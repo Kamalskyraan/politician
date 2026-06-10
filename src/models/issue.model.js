@@ -71,4 +71,52 @@ export class issueModel {
       };
     }
   }
+  async updateIssue({ upt_cols, params }) {
+    let query = `UPDATE issues SET ${upt_cols.join(", ")} WHERE id = ?`;
+
+    const result = await executeQuery(query, params);
+    if (result?.success === 1) {
+      return {
+        success: 1,
+        data: result?.data,
+      };
+    } else {
+      return {
+        success: 0,
+        error: result?.error,
+      };
+    }
+  }
+  async getIssue({ user_id, status, assigned, from_date, to_date }) {
+    let query = `SELECT * FROM issues WHERE user_id = ?`;
+    let params = [user_id];
+
+    if (status != null) {
+      query += ` AND status = ?`;
+      params.push(status);
+    }
+    if (assigned != null && assigned === 0) {
+      query += ` AND incharge_id IS NULL AND member_id IS NULL`;
+    }
+    if (assigned != null && assigned === 1) {
+      query += ` AND incharge_id IS NOT NULL AND member_id IS NOT NULL`;
+    }
+    if (from_date != null && to_date != null) {
+      query += ` AND report_date BETWEEN ? AND ?`;
+      params.push(`${from_date} 00:00:00`, `${to_date} 23:59:59`);
+    }
+
+    const result = await executeQuery(query, params);
+    if (result?.success === 1) {
+      return {
+        success: 1,
+        data: result?.data,
+      };
+    } else {
+      return {
+        success: 0,
+        error: result?.error,
+      };
+    }
+  }
 }

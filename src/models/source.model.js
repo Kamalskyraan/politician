@@ -82,10 +82,9 @@ export class sourceModel {
     }
   }
 
-  async addMedia({ user_id, url, path, size, mime_type, type, org_name }) {
+  async addMedia({ url, path, size, mime_type, type, org_name }) {
     let query = `
       INSERT INTO media (
-        user_id,
         url,
         path_name,
         media_size,
@@ -93,10 +92,10 @@ export class sourceModel {
         mime_type,
         org_name
       )
-      VALUES (?, ?, ?, ?, ?, ?, ?)
+      VALUES (?, ?, ?, ?, ?, ?)
     `;
 
-    const params = [user_id, url, path, size, type, mime_type, org_name];
+    const params = [url, path, size, type, mime_type, org_name];
 
     const result = await executeQuery(query, params);
     // console.log(result?.data?.insertId);
@@ -168,5 +167,20 @@ export class sourceModel {
     }
   }
 
-  
+  async getCatName(id) {
+    let query = `SELECT cat_name FROM issue_category where id = ?`;
+
+    const result = await executeQuery(query, [id]);
+    if (result?.success === 1) {
+      return {
+        success: 1,
+        data: result?.data,
+      };
+    } else {
+      return {
+        success: 0,
+        error: result?.error,
+      };
+    }
+  }
 }
