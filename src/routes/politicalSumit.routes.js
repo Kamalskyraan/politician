@@ -159,7 +159,7 @@ router.post(
             properties: {
               user_id: {
                 type: "string",
-                example: "3"
+                example: "USER_fdd8762"
               },
               status: {
                 type: "string",
@@ -167,11 +167,15 @@ router.post(
               },
               from_date: {
                 type: "string",
-                example: "2026-06-10 17:27:43"
+                example: "2026-06-10"
               },
               to_date: {
                 type: "string",
-                example: "2026-06-10 17:27:43"
+                example: "2026-06-10"
+              },
+              id: {
+                type: "number",
+                example: 3
               },
             }
           }
@@ -189,5 +193,6 @@ router.post(
 */
   politicalsumitcontroller.getSumit,
 );
+router.post("/updatesumit", politicalsumitcontroller.updateSumit);
 
 export default router;

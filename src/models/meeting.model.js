@@ -47,7 +47,7 @@ export class meetingModel {
   async getMember({ upt_cols, params }) {
     // console.log(upt_cols);
     // console.log(params);
-    let query = `SELECT m.id, m.name, m.phn_num, m.country, m.state, m.district, r.role_name FROM members m JOIN user_role r ON m.role_id = r.id WHERE ${upt_cols.join(" AND ")}`;
+    let query = `SELECT m.id, m.name, m.phn_num, m.country, m.state, m.district, m.role_id, r.role_name FROM members m JOIN user_role r ON m.role_id = r.id WHERE ${upt_cols.join(" AND ")}`;
     // let params = [user_id, "active"];
 
     // console.log(query)
