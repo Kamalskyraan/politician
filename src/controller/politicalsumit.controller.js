@@ -270,7 +270,14 @@ export const updateSumit = async (req, res) => {
         validatedData?.errorObject?.errors,
       );
     }
-    let { user_id, status, from_date, to_date, id } = validatedData?.value;
+    let { id, title, location, lat, lng, sumit_date, vip, member, sumit_incharge, dept_incharge, del_people  } = validatedData?.value;
+    
+    const sumitResult = await sumitMdl.updateSumit({id, title, location, lat, lng, sumit_date});
+    if(sumitResult?.success === 0){
+      return sendResponse(res, 200, 0, "Failed to update political sumit", [], "");
+    }
+
+    
   } catch (error) {
     return sendResponse(
       res,
