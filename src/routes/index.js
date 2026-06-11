@@ -5,9 +5,10 @@ import userRoutes from "./user.routes.js";
 import supportRoutes from "./support.routes.js";
 import meetingRoutes from "./meeting.routes.js";
 import travelRoutes from "./travel.routes.js";
-import taskRoutes from './task.route.js';
-import issueRoutes from './issues.routes.js';
-import politicalsumitRoutes from './politicalSumit.routes.js'
+import taskRoutes from "./task.route.js";
+import issueRoutes from "./issues.routes.js";
+import politicalsumitRoutes from "./politicalSumit.routes.js";
+import reminderRoutes from "./reminder.routes.js";
 import { verifyToken } from "../middleware/auth.middleware.js";
 
 export const router = express.Router();
@@ -22,5 +23,6 @@ router.use("/travel", travelRoutes);
 router.use("/task", taskRoutes);
 router.use("/issue", issueRoutes);
 router.use("/sumit", politicalsumitRoutes);
+router.use("/reminder", reminderRoutes);
 
 export default router;

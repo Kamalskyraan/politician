@@ -30,7 +30,6 @@ export const uploadMedia = async (req, res) => {
       org_name = [org_name];
     }
 
-
     const uploadedFiles = await Promise.all(
       files.map(async (file, index) => {
         const url = `${file.destination.replace("src", "")}/${file.filename}`;

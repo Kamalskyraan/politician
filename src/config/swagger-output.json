@@ -603,15 +603,6 @@
         ],
         "summary": "Delete Member",
         "description": "Delete member by passing id",
-        "parameters": [
-          {
-            "name": "authorization",
-            "in": "header",
-            "schema": {
-              "type": "string"
-            }
-          }
-        ],
         "responses": {
           "200": {
             "description": "Member deleted successfully"
@@ -3166,6 +3157,156 @@
                   "id": {
                     "type": "number",
                     "example": 3
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/sumit/updatesumit": {
+      "post": {
+        "tags": [
+          "9.POLITICAL SUMIT"
+        ],
+        "summary": "Update political sumit",
+        "description": "Update political sumit by passing id and other fields",
+        "responses": {
+          "200": {
+            "description": "Political sumit updated successfully"
+          },
+          "500": {
+            "description": "Internal Server Error"
+          }
+        },
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "id": {
+                    "type": "number",
+                    "example": 2
+                  },
+                  "title": {
+                    "type": "string",
+                    "example": "new project scheme campaign"
+                  },
+                  "location": {
+                    "type": "string",
+                    "example": "no 10, FCI road, coimbatore"
+                  },
+                  "lat": {
+                    "type": "string",
+                    "example": "52.4313"
+                  },
+                  "lng": {
+                    "type": "string",
+                    "example": "26.4313"
+                  },
+                  "sumit_date": {
+                    "type": "string",
+                    "example": "2026-06-12 10:10:21"
+                  },
+                  "vip": {
+                    "type": "array",
+                    "example": [
+                      {
+                        "name": "Minister A",
+                        "cat_id": 1,
+                        "cat_name": ""
+                      },
+                      {
+                        "name": "Minister B",
+                        "cat_id": 0,
+                        "cat_name": "Transport"
+                      }
+                    ]
+                  },
+                  "member": {
+                    "type": "array",
+                    "example": []
+                  },
+                  "sumit_incharge": {
+                    "type": "array",
+                    "example": [
+                      {
+                        "name": "Minister A",
+                        "cat_id": 1,
+                        "cat_name": ""
+                      },
+                      {
+                        "name": "Minister B",
+                        "cat_id": 0,
+                        "cat_name": "Transport"
+                      }
+                    ]
+                  },
+                  "dept_incharge": {
+                    "type": "array",
+                    "example": [
+                      {
+                        "name": "Minister A",
+                        "cat_id": 1,
+                        "cat_name": "",
+                        "dept_id": 1,
+                        "dept_name": ""
+                      },
+                      {
+                        "name": "Minister B",
+                        "cat_id": 0,
+                        "cat_name": "Transport",
+                        "dept_id": 0,
+                        "dept_name": "Transport"
+                      }
+                    ]
+                  },
+                  "del_people": {
+                    "type": "array",
+                    "example": [
+                      "1",
+                      "2"
+                    ]
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/reminder/getreminder": {
+      "post": {
+        "tags": [
+          "10.REMINDERS"
+        ],
+        "summary": "Get reminders",
+        "description": "Get reminders by passing user id and status",
+        "responses": {
+          "200": {
+            "description": "Reminders fetched successfully"
+          },
+          "500": {
+            "description": "Internal Server Error"
+          }
+        },
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "user_id": {
+                    "type": "string",
+                    "example": "User_dhh21332"
+                  },
+                  "status": {
+                    "type": "string",
+                    "example": "snoozed"
                   }
                 }
               }

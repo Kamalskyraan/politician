@@ -64,15 +64,17 @@ export const addMembers = async (req, res) => {
 
     const role_result = await sourceMdl.getUserrole(role_id);
     // console.log(role_result);
-    const data = {
+    let data = {
       id: result?.data?.insertId,
       name: name,
       phn_num: phn_num,
+      role_id: role_id,
       role_name: role_result?.data[0]?.role_name,
       country: country,
       state: state,
-      district: district
-    }
+      district: district,
+    };
+    data = replaceNullWithEmptyString(data);
 
     if (result?.success === 1) {
       return sendResponse(res, 200, 1, "member added successfully", [data], "");
@@ -124,6 +126,8 @@ export const getMembers = async (req, res) => {
     }
     upt_cols.push("m.status = ?");
     params.push("active");
+    // console.log(upt_cols);
+    // console.log(params);
 
     const result = await meetingMdl.getMember({ upt_cols, params });
     const data = (await result?.data) || [];
@@ -183,15 +187,18 @@ export const updateMembers = async (req, res) => {
 
     const role_result = await sourceMdl.getUserrole(role_id);
 
-    const data = {
+    let data = {
       id: id,
       name: name,
       phn_num: phn_num,
+      role_id: role_id,
       role_name: role_result?.data[0]?.role_name,
       country: country,
       state: state,
-      district: district
-    }
+      district: district,
+    };
+
+    data = replaceNullWithEmptyString(data);
 
     if (result?.success === 1) {
       return sendResponse(res, 200, 1, "member details updated", [data], "");

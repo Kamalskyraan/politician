@@ -141,4 +141,65 @@ export class politicalSumitModel {
       };
     }
   }
+  async updateSumit({ id, title, location, lat, lng, sumit_date, sts }) {
+    let query = `UPDATE political_sumit SET title = ?, location = ?, lat = ?, lng = ?, sumit_date = ?, status = ? WHERE id = ?`;
+    let params = [title, location, lat, lng, sumit_date, sts, id];
+    // console.log(params);
+
+    const result = await executeQuery(query, params);
+    if (result?.success === 1) {
+      return {
+        success: 1,
+        data: result?.data,
+      };
+    } else if (result?.success === 0) {
+      return {
+        success: 0,
+        error: result?.error,
+      };
+    }
+  }
+  async updateSumitPeople({ type, params }) {
+    let result;
+    if (type === 1) {
+      let query1 = `INSERT INTO political_sumit_peoples (sumit_id, type, name, cat_id, cat_name) VALUES (?, ?, ?, ?, ?)`;
+      let params1 = params;
+      result = await executeQuery(query1, params1);
+    } else if (type === 2) {
+      let query2 = `INSERT INTO political_sumit_peoples (sumit_id, type, name, cat_id, cat_name, dept_id, dept_name) VALUES (?, ?, ?, ?, ?, ?, ?)`;
+      let params2 = params;
+      result = await executeQuery(query2, params2);
+    }
+// console.log(result?.success);
+    if (result?.success === 1) {
+      return {
+        success: 1,
+        data: result?.data,
+      };
+    } else if (result?.success === 0) {
+      return {
+        success: 0,
+        error: result?.error,
+      };
+    }
+  }
+  async deleteSumitMember({ del_people }) {
+    const placeholder = del_people.map(()=> "?").join(", ");
+    let query = `DELETE FROM political_sumit_peoples WHERE id IN (${placeholder})`;
+    let params = del_people;
+
+    const del_result = await executeQuery(query, params);
+
+    if (del_result?.success === 1) {
+      return {
+        success: 1,
+        data: del_result?.data,
+      };
+    } else if (del_result?.success === 0) {
+      return {
+        success: 0,
+        error: del_result?.error,
+      };
+    }
+  }
 }

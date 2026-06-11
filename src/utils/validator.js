@@ -1531,3 +1531,14 @@ export const updateSumitSchema = Joi.object({
       "any.required": "dept_incharge cannot be empty",
     }),
 });
+export const getReminderSchema = Joi.object({
+  user_id: Joi.string().required().messages({
+    "string.base": "user id name should be string",
+    "any.required": "user id name is required",
+  }),
+  status: Joi.string().valid("pending", "snoozed", "completed").allow("").messages({
+    "string.base": "status name should be string",
+    "any.required": "status name is required",
+    "any.only": "status should be one of pending,snoozed,completed"
+  }),
+});

@@ -125,6 +125,9 @@ export const filterApi = async (req, res) => {
     let { user_id } = validatedData?.value;
 
     const result = await supportMdl.getLocations(user_id);
+    if(result?.success === 0){
+      return sendResponse(res, 200, 0, "no data found", [], "");
+    }
     const data = result?.data;
     // console.log(data);
     const locations = {};
