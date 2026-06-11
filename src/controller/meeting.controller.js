@@ -60,9 +60,22 @@ export const addMembers = async (req, res) => {
       state,
       district,
     });
+    // console.log(result?.data?.insertId);
+
+    const role_result = await sourceMdl.getUserrole(role_id);
+    // console.log(role_result);
+    const data = {
+      id: result?.data?.insertId,
+      name: name,
+      phn_num: phn_num,
+      role_name: role_result?.data[0]?.role_name,
+      country: country,
+      state: state,
+      district: district
+    }
 
     if (result?.success === 1) {
-      return sendResponse(res, 200, 1, "member added successfully", [], "");
+      return sendResponse(res, 200, 1, "member added successfully", [data], "");
     } else {
       return sendResponse(
         res,
@@ -168,8 +181,20 @@ export const updateMembers = async (req, res) => {
       district,
     });
 
+    const role_result = await sourceMdl.getUserrole(role_id);
+
+    const data = {
+      id: id,
+      name: name,
+      phn_num: phn_num,
+      role_name: role_result?.data[0]?.role_name,
+      country: country,
+      state: state,
+      district: district
+    }
+
     if (result?.success === 1) {
-      return sendResponse(res, 200, 1, "member details updated", [], "");
+      return sendResponse(res, 200, 1, "member details updated", [data], "");
     } else {
       return sendResponse(res, 200, 0, "Failed to update members", [], "");
     }

@@ -197,7 +197,6 @@ router.post(
       description: 'Internal Server Error'
     }
 */
-  verifyToken,
   meetingcontroller.deleteMembers,
 );
 

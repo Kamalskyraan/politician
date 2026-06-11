@@ -63,9 +63,14 @@ export class sourceModel {
     }
   }
 
-  async getUserrole() {
+  async getUserrole(role_id) {
     let query = `SELECT id, role_name FROM user_role WHERE status = ?`;
     let params = ["active"];
+
+    if (role_id) {
+      query = `SELECT id, role_name FROM user_role WHERE id = ?`;
+      params = [role_id];
+    }
 
     const result = await executeQuery(query, params);
 

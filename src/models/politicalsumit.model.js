@@ -10,6 +10,7 @@ export class politicalSumitModel {
     lat,
     lng,
     sumit_date,
+    sts,
     vip,
     member,
     sumit_incharge,
@@ -19,8 +20,8 @@ export class politicalSumitModel {
 
     try {
       await connection.beginTransaction();
-      let query = `INSERT INTO political_sumit (user_id, title, location, lat, lng, sumit_date) VALUES (?, ?, ?, ?, ?, ?)`;
-      let params = [user_id, title, location, lat, lng, sumit_date];
+      let query = `INSERT INTO political_sumit (user_id, title, location, lat, lng, sumit_date, status) VALUES (?, ?, ?, ?, ?, ?, ?)`;
+      let params = [user_id, title, location, lat, lng, sumit_date, sts];
       const [result] = await connection.execute(query, params);
 
       const sumit_id = result?.insertId;
@@ -97,6 +98,37 @@ export class politicalSumitModel {
     let params = [id];
 
     const result = await executeQuery(query, params);
+    if (result?.success === 1) {
+      return {
+        success: 1,
+        data: result?.data,
+      };
+    } else if (result?.success === 0) {
+      return {
+        success: 0,
+        error: result?.error,
+      };
+    }
+  }
+  async getSumit({ upt_cols, params }) {
+    let query = `SELECT id, title, sumit_date, status FROM political_sumit WHERE ${upt_cols.join("")}`;
+    const result = await executeQuery(query, params);
+    if (result?.success === 1) {
+      return {
+        success: 1,
+        data: result?.data,
+      };
+    } else if (result?.success === 0) {
+      return {
+        success: 0,
+        error: result?.error,
+      };
+    }
+  }
+  async getSumitPeopleDetails(id) {
+    let query = `SELECT s.id AS sumit_id, s.title, s.sumit_date, s.status, s.location, s.lat, s.lng, p.id AS people_id, p.name, p.type, p.cat_id, p.cat_name, p.dept_id, p.dept_name, c.category_name AS designation, dept.category_name AS department FROM political_sumit s LEFT JOIN political_sumit_peoples p ON p.sumit_id = s.id LEFT JOIN political_sumit_category c ON c.id = p.cat_id LEFT JOIN political_sumit_category dept ON dept.id = p.dept_id WHERE s.id = ?`;
+
+    const result = await executeQuery(query, [id]);
     if (result?.success === 1) {
       return {
         success: 1,

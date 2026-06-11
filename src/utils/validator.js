@@ -1500,14 +1500,14 @@ export const addSumitSchema = Joi.object({
     "any.required": "member cannot be empty",
   }),
   sumit_incharge: Joi.array().items(politicalMemberSchema).required().messages({
-    "array.base": "sumit_incharge should be a array",
+    "array.base": "sumit_incharge should be an array",
     "any.required": "sumit_incharge cannot be empty",
   }),
   dept_incharge: Joi.array()
     .items(politicalDeptMemberSchema)
     .required()
     .messages({
-      "array.base": "dept_incharge should be a array",
+      "array.base": "dept_incharge should be an array",
       "any.required": "dept_incharge cannot be empty",
     }),
 });
@@ -1523,11 +1523,12 @@ export const getSumitSchema = Joi.object({
     "any.required": "User id cannot be empty",
   }),
   status: Joi.string()
-    .valid("upcoming", "completed", "cancelled")
+    .valid("upcoming", "completed", "cancelled", "inprogress")
     .allow("")
     .messages({
       "string.base": "status should be a string",
-      "any.only": "status must be one of: pending, completed, cancelled",
+      "any.only":
+        "status must be one of: pending, completed, cancelled, inprogress",
     }),
   from_date: Joi.string().allow("").messages({
     "string.base": "from date should be a string",
@@ -1535,4 +1536,62 @@ export const getSumitSchema = Joi.object({
   to_date: Joi.string().allow("").messages({
     "string.base": "from date should be a string",
   }),
+  id: Joi.string().allow("").messages({
+    "number.base": "sumit id should be a number",
+  }),
+});
+export const updateSumitSchema = Joi.object({
+  id: Joi.number().required().messages({
+    "number.base": "sumit id should be a string",
+    "any.required": "sumit id cannot be empty",
+  }),
+  title: Joi.string().required().messages({
+    "string.base": "Title should be a string",
+    "any.required": "Title cannot be empty",
+  }),
+  location: Joi.string().required().messages({
+    "string.base": "location should be a string",
+    "any.required": "location cannot be empty",
+  }),
+  lat: Joi.string().required().messages({
+    "string.base": "lat should be a string",
+    "any.required": "lat cannot be empty",
+  }),
+  lng: Joi.string().required().messages({
+    "string.base": "lng should be a string",
+    "any.required": "lng cannot be empty",
+  }),
+  sumit_date: Joi.string().required().messages({
+    "string.base": "sumit date should be a string",
+    "any.required": "sumit date cannot be empty",
+  }),
+  del_people: Joi.array()
+    .items(
+      Joi.string().messages({
+        "string.base": "array items should be a string",
+      }),
+    )
+    .required()
+    .messages({
+      "array.base": "delete people id's date should be an array",
+    }),
+  vip: Joi.array().items(politicalMemberSchema).required().messages({
+    "array.base": "vip should be a array",
+    "any.required": "vip cannot be empty",
+  }),
+  member: Joi.array().items(politicalMemberSchema).required().messages({
+    "array.base": "member should be a array",
+    "any.required": "member cannot be empty",
+  }),
+  sumit_incharge: Joi.array().items(politicalMemberSchema).required().messages({
+    "array.base": "sumit_incharge should be an array",
+    "any.required": "sumit_incharge cannot be empty",
+  }),
+  dept_incharge: Joi.array()
+    .items(politicalDeptMemberSchema)
+    .required()
+    .messages({
+      "array.base": "dept_incharge should be an array",
+      "any.required": "dept_incharge cannot be empty",
+    }),
 });

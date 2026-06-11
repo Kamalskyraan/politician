@@ -9,6 +9,7 @@ import {
   getCountriesSchema,
   getMemberschema,
   statusChangeSchema,
+  userIdSchema,
   validateRequest,
 } from "../utils/validator.js";
 import axios from "axios";
@@ -108,7 +109,7 @@ export const contactUs = async (req, res) => {
 
 export const filterApi = async (req, res) => {
   try {
-    const validatedData = validateRequest(req.body, getMemberschema);
+    const validatedData = validateRequest(req.body, userIdSchema);
 
     if (validatedData?.success === 0) {
       return sendResponse(

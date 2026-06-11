@@ -3542,21 +3542,6 @@
                     "type": "array",
                     "example": []
                   },
-                  "sumit": {
-                    "type": "array",
-                    "example": [
-                      {
-                        "name": "Minister A",
-                        "cat_id": 1,
-                        "cat_name": ""
-                      },
-                      {
-                        "name": "Minister B",
-                        "cat_id": 0,
-                        "cat_name": "Transport"
-                      }
-                    ]
-                  },
                   "sumit_incharge": {
                     "type": "array",
                     "example": [
@@ -3633,10 +3618,49 @@
     },
     "/sumit/getsumit": {
       "post": {
-        "description": "",
+        "tags": [
+          "9.POLITICAL SUMIT"
+        ],
+        "summary": "Get political sumit",
+        "description": "Get political sumit by pssing user id and other related fields",
         "responses": {
-          "default": {
-            "description": ""
+          "200": {
+            "description": "political sumit fetched successfully"
+          },
+          "500": {
+            "description": "Internal Server Error"
+          }
+        },
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "user_id": {
+                    "type": "string",
+                    "example": "USER_fdd8762"
+                  },
+                  "status": {
+                    "type": "string",
+                    "example": "pending"
+                  },
+                  "from_date": {
+                    "type": "string",
+                    "example": "2026-06-10"
+                  },
+                  "to_date": {
+                    "type": "string",
+                    "example": "2026-06-10"
+                  },
+                  "id": {
+                    "type": "number",
+                    "example": 3
+                  }
+                }
+              }
+            }
           }
         }
       }
