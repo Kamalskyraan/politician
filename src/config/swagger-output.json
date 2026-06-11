@@ -7,7 +7,7 @@
   },
   "servers": [
     {
-      "url": "https://political.skyraantech.com/server/api"
+      "url": "http://localhost:5000/api"
     }
   ],
   "paths": {
@@ -3163,6 +3163,84 @@
                   "type": {
                     "type": "string",
                     "example": "folder or image"
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/folder/add-img-folder": {
+      "post": {
+        "tags": [
+          "11.Folder"
+        ],
+        "summary": "Add Images into a Folder",
+        "description": "",
+        "responses": {
+          "200": {
+            "description": "Add Image into folder successfully"
+          },
+          "500": {
+            "description": "Internal Server Error"
+          }
+        },
+        "requestBody": {
+          "required": false,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "id": {
+                    "type": "integer",
+                    "example": 1
+                  },
+                  "folder_id": {
+                    "type": "string",
+                    "example": "2"
+                  },
+                  "media_ids": {
+                    "type": "string",
+                    "example": "1,2"
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/folder/get-img-folder": {
+      "post": {
+        "tags": [
+          "11.Folder"
+        ],
+        "summary": "Get Folder Images",
+        "description": "",
+        "responses": {
+          "200": {
+            "description": "Get Image folder successfully"
+          },
+          "500": {
+            "description": "Internal Server Error"
+          }
+        },
+        "requestBody": {
+          "required": false,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "user_id": {
+                    "type": "string",
+                    "example": "USER_Yl_e5736"
+                  },
+                  "folder_id": {
+                    "type": "string",
+                    "example": "2"
                   }
                 }
               }

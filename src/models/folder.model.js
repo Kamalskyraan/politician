@@ -51,10 +51,9 @@ export class folderModel {
     }
 
     if (type === "image") {
-      const [result] = await pool.query(
-        `DELETE FROM folder_media WHERE id IN (?)`,
-        [idArray],
-      );
+      const [result] = await pool.query(`DELETE FROM media WHERE id IN (?)`, [
+        idArray,
+      ]);
 
       return {
         action: "image(s) deleted",
@@ -70,14 +69,17 @@ export class folderModel {
 
     try {
       await connection.beginTransaction();
-
+      const mediaIdsArray = media_ids
+        .split(",")
+        .map((id) => Number(id.trim()))
+        .filter(Boolean);
       await connection.query(
         `
       UPDATE media
       SET folder_id = ?
       WHERE id IN (?)
       `,
-        [folder_id, media_ids],
+        [folder_id, mediaIdsArray],
       );
 
       await connection.commit();
@@ -91,5 +93,84 @@ export class folderModel {
     } finally {
       connection.release();
     }
+  }
+
+  async getFolderImages({ user_id, folder_id, page = 1, limit = 10 }) {
+    const offset = (page - 1) * limit;
+
+    if (folder_id) {
+      const [[{ total }]] = await pool.query(
+        `
+      SELECT COUNT(*) AS total
+      FROM media
+      WHERE folder_id = ?
+      `,
+        [folder_id],
+      );
+
+      const [rows] = await pool.query(
+        `
+      SELECT
+        id,
+        url,
+        media_size,
+        org_name,
+        folder_id,
+        created_at
+      FROM media
+      WHERE folder_id = ?
+      ORDER BY id DESC
+      LIMIT ? OFFSET ?
+      `,
+        [folder_id, Number(limit), Number(offset)],
+      );
+
+      return {
+        data: rows,
+        pagination: {
+          total,
+          page: Number(page),
+          limit: Number(limit),
+          total_pages: Math.ceil(total / limit),
+        },
+      };
+    }
+
+    const [[{ total }]] = await pool.query(
+      `
+    SELECT COUNT(*) AS total
+    FROM user_folder
+    WHERE user_id = ?
+    `,
+      [user_id],
+    );
+
+    const [rows] = await pool.query(
+      `
+    SELECT
+      f.id,
+      f.user_id,
+      f.folder_name,
+      f.created_at,
+      COUNT(m.id) AS image_count
+    FROM user_folder f
+    LEFT JOIN media m ON m.folder_id = f.id
+    WHERE f.user_id = ?
+    GROUP BY f.id
+    ORDER BY f.id DESC
+    LIMIT ? OFFSET ?
+    `,
+      [user_id, Number(limit), Number(offset)],
+    );
+
+    return {
+      data: rows,
+      pagination: {
+        total,
+        page: Number(page),
+        limit: Number(limit),
+        total_pages: Math.ceil(total / limit),
+      },
+    };
   }
 }

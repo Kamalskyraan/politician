@@ -59,21 +59,28 @@ export const removeFolder = async (req, res) => {
   }
 };
 
-
-
 export const addUpdateFolderImages = async (req, res) => {
   try {
     const { id, folder_id, media_ids } = req.body;
+
+    // if (!id) {
+    //   return sendResponse(res, 200, 0, "Id is required", [], "");
+    // }
+    if (!folder_id) {
+      return sendResponse(res, 200, 0, "Folder ID is required", [], "");
+    }
+
     const result = await folderMdl.addUpdateFolderImages({
       id,
       folder_id,
       media_ids,
     });
+
     return sendResponse(
       res,
       200,
       1,
-      `Folder Images ${data.action} Successfully`,
+      `Folder Images ${result.action} Successfully`,
       [],
       "",
     );
@@ -89,8 +96,27 @@ export const addUpdateFolderImages = async (req, res) => {
   }
 };
 
-export const getFinanceFolder = async (req, res) => {
+export const getFolderImages = async (req, res) => {
   try {
+    const { user_id, folder_id, page, limit = 10 } = req.body;
+
+    const result = await folderMdl.getFolderImages({
+      user_id,
+      folder_id,
+      page,
+      limit,
+    });
+
+    return sendResponse(
+      res,
+      200,
+      1,
+      folder_id
+        ? "Folder Images fetched successfully"
+        : "Folders fetched successfully",
+      [result],
+      "",
+    );
   } catch (err) {
     return sendResponse(
       res,
