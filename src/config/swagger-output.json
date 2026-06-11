@@ -7,7 +7,7 @@
   },
   "servers": [
     {
-      "url": "http://localhost:5000/api"
+      "url": "https://political.skyraantech.com/server/api"
     }
   ],
   "paths": {
@@ -693,15 +693,6 @@
         ],
         "summary": "Delete Member",
         "description": "Delete member by passing id",
-        "parameters": [
-          {
-            "name": "authorization",
-            "in": "header",
-            "schema": {
-              "type": "string"
-            }
-          }
-        ],
         "responses": {
           "200": {
             "description": "Member deleted successfully"
@@ -3661,6 +3652,16 @@
                 }
               }
             }
+          }
+        }
+      }
+    },
+    "/sumit/updatesumit": {
+      "post": {
+        "description": "",
+        "responses": {
+          "default": {
+            "description": ""
           }
         }
       }
