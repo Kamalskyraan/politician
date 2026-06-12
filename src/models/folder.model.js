@@ -95,85 +95,6 @@ export class folderModel {
     }
   }
 
-  // async getFolderImages({ user_id, folder_id, page = 1, limit = 10 }) {
-  //   const offset = (page - 1) * limit;
-
-  //   if (folder_id) {
-  //     const [[{ total }]] = await pool.query(
-  //       `
-  //     SELECT COUNT(*) AS total
-  //     FROM media
-  //     WHERE folder_id = ?
-  //     `,
-  //       [folder_id],
-  //     );
-
-  //     const [rows] = await pool.query(
-  //       `
-  //     SELECT
-  //       id,
-  //       url,
-  //       media_size,
-  //       org_name,
-  //       folder_id,
-  //       created_at
-  //     FROM media
-  //     WHERE folder_id = ?
-  //     ORDER BY id DESC
-  //     LIMIT ? OFFSET ?
-  //     `,
-  //       [folder_id, Number(limit), Number(offset)],
-  //     );
-
-  //     return {
-  //       data: rows,
-  //       pagination: {
-  //         total,
-  //         page: Number(page),
-  //         limit: Number(limit),
-  //         total_pages: Math.ceil(total / limit),
-  //       },
-  //     };
-  //   }
-
-  //   const [[{ total }]] = await pool.query(
-  //     `
-  //   SELECT COUNT(*) AS total
-  //   FROM user_folder
-  //   WHERE user_id = ?
-  //   `,
-  //     [user_id],
-  //   );
-
-  //   const [rows] = await pool.query(
-  //     `
-  //   SELECT
-  //     f.id,
-  //     f.user_id,
-  //     f.folder_name,
-  //     f.created_at,
-  //     COUNT(m.id) AS image_count
-  //   FROM user_folder f
-  //   LEFT JOIN media m ON m.folder_id = f.id
-  //   WHERE f.user_id = ?
-  //   GROUP BY f.id
-  //   ORDER BY f.id DESC
-  //   LIMIT ? OFFSET ?
-  //   `,
-  //     [user_id, Number(limit), Number(offset)],
-  //   );
-
-  //   return {
-  //     data: rows,
-  //     pagination: {
-  //       total,
-  //       page: Number(page),
-  //       limit: Number(limit),
-  //       total_pages: Math.ceil(total / limit),
-  //     },
-  //   };
-  // }
-
   async getFolderImages({ user_id, folder_id, page = 1, limit = 10 }) {
     const offset = (page - 1) * limit;
 
@@ -217,47 +138,47 @@ export class folderModel {
 
     const [[{ total }]] = await pool.query(
       `
-    SELECT COUNT(*) AS total
-    FROM user_folder
-    WHERE user_id = ?
-    `,
+  SELECT COUNT(*) AS total
+  FROM user_folder
+  WHERE user_id = ?
+  `,
       [user_id],
     );
 
     const [rows] = await pool.query(
       `
-    SELECT
-      f.id,
-      f.user_id,
-      f.folder_name,
-      f.created_at,
-      COUNT(m.id) AS image_count
-    FROM user_folder f
-    LEFT JOIN media m ON m.folder_id = f.id
-    WHERE f.user_id = ?
-    GROUP BY f.id
-    ORDER BY f.id DESC
-    LIMIT ? OFFSET ?
-    `,
+  SELECT
+    f.id,
+    f.user_id,
+    f.folder_name,
+    f.created_at,
+    COUNT(m.id) AS image_count
+  FROM user_folder f
+  LEFT JOIN media m ON m.folder_id = f.id
+  WHERE f.user_id = ?
+  GROUP BY f.id
+  ORDER BY f.id DESC
+  LIMIT ? OFFSET ?
+  `,
       [user_id, Number(limit), Number(offset)],
     );
 
-    const data = await Promise.all(
+    const foldersWithImages = await Promise.all(
       rows.map(async (folder) => {
         const [images] = await pool.query(
           `
-        SELECT
-          id,
-          url,
-          media_size,
-          org_name,
-          folder_id,
-          created_at
-        FROM media
-        WHERE folder_id = ?
-        ORDER BY id DESC
-        LIMIT 3
-        `,
+      SELECT
+        id,
+        url,
+        media_size,
+        org_name,
+        folder_id,
+        created_at
+      FROM media
+      WHERE folder_id = ?
+      ORDER BY id DESC
+      LIMIT 3
+      `,
           [folder.id],
         );
 
@@ -269,7 +190,7 @@ export class folderModel {
     );
 
     return {
-      data,
+      data: foldersWithImages,
       pagination: {
         total,
         page: Number(page),
