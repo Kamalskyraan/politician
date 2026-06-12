@@ -10,6 +10,9 @@ import finaceRoutes from "./finance.routes.js";
 import issueRoutes from "./issues.routes.js";
 import politicalsumitRoutes from "./politicalSumit.routes.js";
 import folderRoutes from "./folder.routes.js";
+import issueRoutes from "./issues.routes.js";
+import politicalsumitRoutes from "./politicalSumit.routes.js";
+import reminderRoutes from "./reminder.routes.js";
 import { verifyToken } from "../middleware/auth.middleware.js";
 
 export const router = express.Router();
@@ -26,5 +29,6 @@ router.use("/finance", finaceRoutes);
 router.use("/folder", folderRoutes);
 router.use("/issue", issueRoutes);
 router.use("/sumit", politicalsumitRoutes);
+router.use("/reminder", reminderRoutes);
 
 export default router;

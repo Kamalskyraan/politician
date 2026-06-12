@@ -193,6 +193,116 @@ router.post(
 */
   politicalsumitcontroller.getSumit,
 );
-router.post("/updatesumit", politicalsumitcontroller.updateSumit);
+router.post(
+  "/updatesumit",
+  /*
+    #swagger.tags = ['9.POLITICAL SUMIT']
+    #swagger.summary = 'Update political sumit'
+    #swagger.description = 'Update political sumit by passing id and other fields'
+
+    #swagger.requestBody = {
+      required: true,
+      content: {
+        "application/json": {
+          schema: {
+            type: "object",
+            properties: {
+              id: {
+                type: "number",
+                example: 2
+              },
+              title: {
+                type: "string",
+                example: "new project scheme campaign"
+              },
+              location: {
+                type: "string",
+                example: "no 10, FCI road, coimbatore"
+              },
+              lat: {
+                type: "string",
+                example: "52.4313"
+              },
+              lng: {
+                type: "string",
+                example: "26.4313"
+              },
+              sumit_date: {
+                type: "string",
+                example: "2026-06-12 10:10:21"
+              },
+              vip: {
+                type: "array",
+                example: [
+                    {
+                    name: "Minister A",
+                    cat_id: 1,
+                    cat_name: ""
+                    },
+                    {
+                    name: "Minister B",
+                    cat_id: 0,
+                    cat_name: "Transport"
+                    }
+                    ]
+                },
+                member: {
+                type: "array",
+                example: []
+                },
+                sumit_incharge: {
+                type: "array",
+                example: [
+                    {
+                    name: "Minister A",
+                    cat_id: 1,
+                    cat_name: ""
+                    },
+                    {
+                    name: "Minister B",
+                    cat_id: 0,
+                    cat_name: "Transport"
+                    }
+                    ]
+                },
+                dept_incharge: {
+                type: "array",
+                example: [
+                    {
+                    name: "Minister A",
+                    cat_id: 1,
+                    cat_name: "",
+                    dept_id: 1,
+                    dept_name: ""
+                    },
+                    {
+                    name: "Minister B",
+                    cat_id: 0,
+                    cat_name: "Transport",
+                    dept_id: 0,
+                    dept_name: "Transport"
+                    }
+                    ]
+                },
+                del_people: {
+                type: "array",
+                example: ["1","2"]
+                }
+            }
+          }
+        }
+      }
+    }
+
+    #swagger.responses[200] = {
+      description: 'Political sumit updated successfully'
+    }
+
+    #swagger.responses[500] = {
+      description: 'Internal Server Error'
+    }
+*/
+  politicalsumitcontroller.updateSumit,
+);
 
 export default router;

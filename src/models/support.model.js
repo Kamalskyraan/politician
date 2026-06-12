@@ -86,23 +86,23 @@ export class supportModel {
     district,
     COUNT(*) AS member_count
   FROM members
-  WHERE user_id = ?
+  WHERE user_id = ? AND status = ?
   GROUP BY country, state, district
   ORDER BY country, state, district;`;
-    let params = [user_id];
+    let params = [user_id, "active"];
 
     const result = await executeQuery(query, params);
     // console.log(result);
 
-    if (result?.success === 1) {
-      return {
-        success: 1,
-        data: result?.data,
-      };
-    } else {
+    if (result?.data.length === 0) {
       return {
         success: 0,
         error: result?.error,
+      };
+    } else if (result?.success === 1) {
+      return {
+        success: 1,
+        data: result?.data,
       };
     }
   }

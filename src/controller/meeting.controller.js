@@ -64,15 +64,17 @@ export const addMembers = async (req, res) => {
 
     const role_result = await sourceMdl.getUserrole(role_id);
     // console.log(role_result);
-    const data = {
+    let data = {
       id: result?.data?.insertId,
       name: name,
       phn_num: phn_num,
+      role_id: role_id,
       role_name: role_result?.data[0]?.role_name,
       country: country,
       state: state,
-      district: district
-    }
+      district: district,
+    };
+    data = replaceNullWithEmptyString(data);
 
     if (result?.success === 1) {
       return sendResponse(res, 200, 1, "member added successfully", [data], "");
@@ -124,6 +126,8 @@ export const getMembers = async (req, res) => {
     }
     upt_cols.push("m.status = ?");
     params.push("active");
+    // console.log(upt_cols);
+    // console.log(params);
 
     const result = await meetingMdl.getMember({ upt_cols, params });
     const data = (await result?.data) || [];
@@ -183,15 +187,18 @@ export const updateMembers = async (req, res) => {
 
     const role_result = await sourceMdl.getUserrole(role_id);
 
-    const data = {
+    let data = {
       id: id,
       name: name,
       phn_num: phn_num,
+      role_id: role_id,
       role_name: role_result?.data[0]?.role_name,
       country: country,
       state: state,
-      district: district
-    }
+      district: district,
+    };
+
+    data = replaceNullWithEmptyString(data);
 
     if (result?.success === 1) {
       return sendResponse(res, 200, 1, "member details updated", [data], "");
@@ -1516,52 +1523,4 @@ export const updateAppointment = async (req, res) => {
   }
 };
 
-export const reminder = async (req, res) => {
-  try {
-    const validatedData = validateRequest(req.body, reminderSchema);
 
-    if (validatedData?.success === 0) {
-      return sendResponse(
-        res,
-        validatedData?.errorObject?.status,
-        0,
-        "validation error",
-        [],
-        validatedData?.errorObject?.errors,
-      );
-    }
-
-    const { id, is_remind, snooze_at, cur_snooze_at } = validatedData?.value;
-    let update_column = [];
-    let params = [];
-
-    if (is_remind === 2) {
-      let status = "completed";
-      update_column.push(
-        "is_remind = ?, remind_status = ?, remind_tenure = ?, remind_at = ?, snooze_at = ?, nxt_snooze_at = ?",
-      );
-      params.push(is_remind, status, null, null, null, null);
-    } else if (is_remind === 1) {
-      let status = "snoozed";
-      let current_snooze = Number(cur_snooze_at);
-      current_snooze = current_snooze + snooze_at * 1000;
-      current_snooze = new Date(current_snooze);
-      current_snooze.setSeconds(0, 0);
-      current_snooze = current_snooze.getTime();
-
-      update_column.push("remind_status = ?, snooze_at = ?, nxt_snooze_at = ?");
-      params.push(status, snooze_at, current_snooze);
-    }
-
-    params.push(id);
-
-    const result = await meetingMdl.reminder(update_column, params);
-    if (result?.success === 0) {
-      return sendResponse(res, 200, 1, result?.error, [], "");
-    } else if (result?.success === 1) {
-      return sendResponse(res, 200, 0, "reminder updated successfully", [], "");
-    }
-  } catch (error) {
-    return sendResponse(res, 500, 0, "Internal server error", [], "");
-  }
-};

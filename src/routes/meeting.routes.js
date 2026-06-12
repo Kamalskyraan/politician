@@ -722,6 +722,5 @@ router.post(
 */ meetingcontroller.updateAppointment,
 );
 
-router.post("/reminder", meetingcontroller.reminder);
 
 export default router;

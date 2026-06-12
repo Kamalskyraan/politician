@@ -336,23 +336,6 @@ export class meetingModel {
     }
   }
 
-  async reminder(update_column, params) {
-    let query = `UPDATE meeting SET ${update_column.join(", ")} WHERE id = ?`;
-
-    const result = await executeQuery(query, params);
-    if (result?.success === 0) {
-      return {
-        success: 0,
-        error: result?.error,
-      };
-    } else if (result?.success === 1) {
-      return {
-        success: 1,
-        data: result?.data,
-      };
-    }
-  }
-
   async addappointment({
     user_id,
     title,

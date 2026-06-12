@@ -32,8 +32,15 @@ router.post(
             }
           },
           org_name: {
-            type: "string",
-            example: "img-20213312"
+            type: "array",
+            items: {
+              type: "string"
+            },
+            example: [
+              "filename1.jpg",
+              "filename2.jpg",
+              "filename3.pdf"
+            ]
           }
         }
       }
@@ -49,7 +56,11 @@ router.post(
   description: 'Internal Server Error',
 }
 */
-  upload.array("files"),
+  
+
+
+
+upload.array("files"),
   validateFiles,
   sourcecontroller.uploadMedia,
 );

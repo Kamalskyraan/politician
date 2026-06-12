@@ -270,14 +270,133 @@ export const updateSumit = async (req, res) => {
         validatedData?.errorObject?.errors,
       );
     }
-    let { id, title, location, lat, lng, sumit_date, vip, member, sumit_incharge, dept_incharge, del_people  } = validatedData?.value;
-    
-    const sumitResult = await sumitMdl.updateSumit({id, title, location, lat, lng, sumit_date});
-    if(sumitResult?.success === 0){
-      return sendResponse(res, 200, 0, "Failed to update political sumit", [], "");
+    let {
+      id,
+      title,
+      location,
+      lat,
+      lng,
+      sumit_date,
+      vip,
+      member,
+      sumit_incharge,
+      dept_incharge,
+      del_people,
+    } = validatedData?.value;
+
+    let sts = "upcoming";
+    const sts_date = new Date(sumit_date);
+    const today = new Date();
+
+    if (
+      sts_date.getFullYear() === today.getFullYear() &&
+      sts_date.getMonth() === today.getMonth() &&
+      sts_date.getDate() === today.getDate()
+    ) {
+      sts = "inprogress";
     }
 
-    
+    const sumitResult = await sumitMdl.updateSumit({
+      id,
+      title,
+      location,
+      lat,
+      lng,
+      sumit_date,
+      sts,
+    });
+    // console.log(sumitResult?.success);
+    if (sumitResult?.success === 0) {
+      return sendResponse(
+        res,
+        200,
+        0,
+        "Failed to update political sumit",
+        [],
+        "",
+      );
+    }
+    // console.log("done summit details")
+    let params = [];
+    let updateResult = {
+      success: 1
+    };
+
+    if (vip.length > 0) {
+      for (const value of vip) {
+        params = [id, "vip", value?.name, value?.cat_id, value?.cat_name];
+        const type = 1;
+        updateResult = await sumitMdl.updateSumitPeople({ type, params });
+      }
+    }
+    if (member.length > 0) {
+      for (const value of member) {
+        params = [id, "member", value?.name, value?.cat_id, value?.cat_name];
+        const type = 1;
+        updateResult = await sumitMdl.updateSumitPeople({ type, params });
+      }
+    }
+    if (sumit_incharge.length > 0) {
+      for (const value of sumit_incharge) {
+        params = [
+          id,
+          "sumit incharge",
+          value?.name,
+          value?.cat_id,
+          value?.cat_name,
+        ];
+        const type = 1;
+        updateResult = await sumitMdl.updateSumitPeople({ type, params });
+      }
+    }
+    if (dept_incharge.length > 0) {
+      for (const value of dept_incharge) {
+        params = [
+          id,
+          "dept incharge",
+          value?.name,
+          value?.cat_id,
+          value?.cat_name,
+          value?.dept_id,
+          value?.dept_name,
+        ];
+        const type = 2;
+        updateResult = await sumitMdl.updateSumitPeople({ type, params });
+      }
+    }
+    // console.log(updateResult?.success);
+    if (updateResult?.success === 0) {
+      return sendResponse(
+        res,
+        200,
+        0,
+        "Failed to update political sumit members",
+        [],
+        "",
+      );
+    }
+    // console.log("done members updated")
+    let deleteMemberResult = {
+      success: 1
+    };
+    if (del_people.length > 0) {
+      deleteMemberResult = await sumitMdl.deleteSumitMember({ del_people });
+    }
+    // console.log("deleted removed members")
+    if (
+      sumitResult?.success === 1 &&
+      updateResult?.success === 1 &&
+      deleteMemberResult?.success === 1
+    ) {
+      return sendResponse(
+        res,
+        200,
+        1,
+        "Political sumit updated successfully",
+        [],
+        "",
+      );
+    }
   } catch (error) {
     return sendResponse(
       res,

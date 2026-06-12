@@ -233,8 +233,15 @@
                     }
                   },
                   "org_name": {
-                    "type": "string",
-                    "example": "img-20213312"
+                    "type": "array",
+                    "items": {
+                      "type": "string"
+                    },
+                    "example": [
+                      "filename1.jpg",
+                      "filename2.jpg",
+                      "filename3.pdf"
+                    ]
                   }
                 }
               }
@@ -1235,16 +1242,6 @@
                 }
               }
             }
-          }
-        }
-      }
-    },
-    "/meeting/reminder": {
-      "post": {
-        "description": "",
-        "responses": {
-          "default": {
-            "description": ""
           }
         }
       }
@@ -3658,10 +3655,195 @@
     },
     "/sumit/updatesumit": {
       "post": {
-        "description": "",
+        "tags": [
+          "9.POLITICAL SUMIT"
+        ],
+        "summary": "Update political sumit",
+        "description": "Update political sumit by passing id and other fields",
         "responses": {
-          "default": {
-            "description": ""
+          "200": {
+            "description": "Political sumit updated successfully"
+          },
+          "500": {
+            "description": "Internal Server Error"
+          }
+        },
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "id": {
+                    "type": "number",
+                    "example": 2
+                  },
+                  "title": {
+                    "type": "string",
+                    "example": "new project scheme campaign"
+                  },
+                  "location": {
+                    "type": "string",
+                    "example": "no 10, FCI road, coimbatore"
+                  },
+                  "lat": {
+                    "type": "string",
+                    "example": "52.4313"
+                  },
+                  "lng": {
+                    "type": "string",
+                    "example": "26.4313"
+                  },
+                  "sumit_date": {
+                    "type": "string",
+                    "example": "2026-06-12 10:10:21"
+                  },
+                  "vip": {
+                    "type": "array",
+                    "example": [
+                      {
+                        "name": "Minister A",
+                        "cat_id": 1,
+                        "cat_name": ""
+                      },
+                      {
+                        "name": "Minister B",
+                        "cat_id": 0,
+                        "cat_name": "Transport"
+                      }
+                    ]
+                  },
+                  "member": {
+                    "type": "array",
+                    "example": []
+                  },
+                  "sumit_incharge": {
+                    "type": "array",
+                    "example": [
+                      {
+                        "name": "Minister A",
+                        "cat_id": 1,
+                        "cat_name": ""
+                      },
+                      {
+                        "name": "Minister B",
+                        "cat_id": 0,
+                        "cat_name": "Transport"
+                      }
+                    ]
+                  },
+                  "dept_incharge": {
+                    "type": "array",
+                    "example": [
+                      {
+                        "name": "Minister A",
+                        "cat_id": 1,
+                        "cat_name": "",
+                        "dept_id": 1,
+                        "dept_name": ""
+                      },
+                      {
+                        "name": "Minister B",
+                        "cat_id": 0,
+                        "cat_name": "Transport",
+                        "dept_id": 0,
+                        "dept_name": "Transport"
+                      }
+                    ]
+                  },
+                  "del_people": {
+                    "type": "array",
+                    "example": [
+                      "1",
+                      "2"
+                    ]
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/reminder/getreminder": {
+      "post": {
+        "tags": [
+          "10.REMINDERS"
+        ],
+        "summary": "Get reminders",
+        "description": "Get reminders by passing user id and status",
+        "responses": {
+          "200": {
+            "description": "Reminders fetched successfully"
+          },
+          "500": {
+            "description": "Internal Server Error"
+          }
+        },
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "user_id": {
+                    "type": "string",
+                    "example": "User_dhh21332"
+                  },
+                  "status": {
+                    "type": "string",
+                    "example": "snoozed"
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/reminder/reminder": {
+      "post": {
+        "tags": [
+          "10.REMINDERS"
+        ],
+        "summary": "Update reminders",
+        "description": "Update reminders by passing id and other fields",
+        "responses": {
+          "200": {
+            "description": "Reminders updated successfully"
+          },
+          "500": {
+            "description": "Internal Server Error"
+          }
+        },
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "id": {
+                    "type": "number",
+                    "example": 12
+                  },
+                  "module_type": {
+                    "type": "string",
+                    "example": "meeting"
+                  },
+                  "is_remind": {
+                    "type": "number",
+                    "example": 2
+                  },
+                  "snooze_at": {
+                    "type": "string",
+                    "example": "300"
+                  }
+                }
+              }
+            }
           }
         }
       }
