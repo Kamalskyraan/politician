@@ -238,9 +238,7 @@
                       "type": "string"
                     },
                     "example": [
-                      "filename1.jpg",
-                      "filename2.jpg",
-                      "filename3.pdf"
+                      "img-20213312"
                     ]
                   }
                 }
@@ -3312,7 +3310,7 @@
         }
       }
     },
-    "/reminder/reminder": {
+    "/reminder/updatereminder": {
       "post": {
         "tags": [
           "10.REMINDERS"
@@ -3338,7 +3336,7 @@
                     "type": "number",
                     "example": 12
                   },
-                  "module_type": {
+                  "type": {
                     "type": "string",
                     "example": "meeting"
                   },
@@ -3349,6 +3347,84 @@
                   "snooze_at": {
                     "type": "string",
                     "example": "300"
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/calendar/getcalendarinfo": {
+      "post": {
+        "tags": [
+          "11.Calendar"
+        ],
+        "summary": "Get calendar details",
+        "description": "Get calendar details",
+        "responses": {
+          "200": {
+            "description": "Calendar details fetched successfully"
+          },
+          "500": {
+            "description": "Internal Server Error"
+          }
+        },
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "user_id": {
+                    "type": "string",
+                    "example": "USER_efKL6767"
+                  },
+                  "from_date": {
+                    "type": "string",
+                    "example": "2026-06-10"
+                  },
+                  "to_date": {
+                    "type": "string",
+                    "example": "2026-06-12"
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/calendar/gettodayevents": {
+      "post": {
+        "tags": [
+          "11.Calendar"
+        ],
+        "summary": "Get today calendar events",
+        "description": "Get today calendar details",
+        "responses": {
+          "200": {
+            "description": "Calendar details fetched successfully"
+          },
+          "500": {
+            "description": "Internal Server Error"
+          }
+        },
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "user_id": {
+                    "type": "string",
+                    "example": "USER_efKL6767"
+                  },
+                  "event_date": {
+                    "type": "string",
+                    "example": "2026-06-10"
                   }
                 }
               }

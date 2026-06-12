@@ -22,7 +22,7 @@ export const uploadMedia = async (req, res) => {
 
     let { org_name } = validatedData?.value;
     const files = req.files;
-    console.log(files);
+    // console.log(files);
 
     if (!files || files.length < 1) {
       return sendResponse(res, 200, 0, "No files uploaded", [], "");
@@ -37,7 +37,7 @@ export const uploadMedia = async (req, res) => {
     ) {
       org_name = org_name[0].split(",").map((name) => name.trim());
     }
-    console.log(org_name);
+    // console.log(org_name);
     if(files.length !== org_name.length){
       return sendResponse(res, 200, 0, "files and their original name should be equal", [], "");
     }

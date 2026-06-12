@@ -9,6 +9,7 @@ import taskRoutes from "./task.route.js";
 import issueRoutes from "./issues.routes.js";
 import politicalsumitRoutes from "./politicalSumit.routes.js";
 import reminderRoutes from "./reminder.routes.js";
+import calendarRoutes from "./calendar.routes.js";
 import { verifyToken } from "../middleware/auth.middleware.js";
 
 export const router = express.Router();
@@ -24,5 +25,6 @@ router.use("/task", taskRoutes);
 router.use("/issue", issueRoutes);
 router.use("/sumit", politicalsumitRoutes);
 router.use("/reminder", reminderRoutes);
+router.use("/calendar", calendarRoutes);
 
 export default router;

@@ -540,19 +540,21 @@ export const userIdSchema = Joi.object({
   }),
 });
 
-export const reminderSchema = Joi.object({
+export const updateReminderSchema = Joi.object({
   id: Joi.number().required().messages({
     "number.base": "Id should be a string",
     "any.required": "Id cannot be empty",
   }),
-  is_remind: Joi.number().optional().valid(1, 2).messages({
+  type: Joi.string().required().messages({
+    "number.base": "type should be a string",
+    "any.required": "type cannot be empty",
+  }),
+  is_remind: Joi.number().required().valid(1, 2).messages({
     "number.base": "is_remind should be an number",
+    "any.only": "is remind should be one of 1 or 2",
   }),
-  snooze_at: Joi.number().optional().messages({
-    "number.base": "is_remind must be a number",
-  }),
-  curr_snooze_at: Joi.string().optional().messages({
-    "string.string": "curretn snooze_at must be string",
+  snooze_at: Joi.string().required().allow("").messages({
+    "string.base": "snooze at must be a string",
   }),
 });
 
@@ -1555,3 +1557,27 @@ export const getReminderSchema = Joi.object({
       "any.only": "status should be one of pending,snoozed,completed",
     }),
 });
+export const getcalendarSchema = Joi.object({
+  user_id: Joi.string().required().messages({
+    "string.base": "user id name should be string",
+    "any.required": "user id name is required",
+  }),
+  from_date: Joi.string().required().messages({
+    "string.base": "from date name should be string",
+    "any.required": "from date name is required",
+  }),
+  to_date: Joi.string().required().messages({
+    "string.base": "to date name should be string",
+    "any.required": "to date name is required",
+  }),
+})
+export const getcalendarEventSchema = Joi.object({
+  user_id: Joi.string().required().messages({
+    "string.base": "user id name should be string",
+    "any.required": "user id name is required",
+  }),
+  event_date: Joi.string().allow("").messages({
+    "string.base": "event date name should be string",
+    "any.required": "event date name is required",
+  }),
+})
