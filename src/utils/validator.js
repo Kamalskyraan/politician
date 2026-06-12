@@ -517,10 +517,20 @@ export const getMeetingSchema = Joi.object({
 });
 
 export const addMediaSchema = Joi.object({
-  org_name: Joi.string().required().messages({
-    "string.string": "original name should be a string",
-    "string.required": "original name cannot be empty",
-  }),
+  org_name: Joi.alternatives()
+    .try(
+      Joi.string(),
+      Joi.array().items(
+        Joi.string().required().messages({
+          "string.base": "each org_name should be a string",
+          "string.empty": "org_name cannot be empty",
+        }),
+      ),
+    )
+    .required()
+    .messages({
+      "any.required": "org_name is required",
+    }),
 });
 
 export const userIdSchema = Joi.object({
@@ -1536,9 +1546,12 @@ export const getReminderSchema = Joi.object({
     "string.base": "user id name should be string",
     "any.required": "user id name is required",
   }),
-  status: Joi.string().valid("pending", "snoozed", "completed").allow("").messages({
-    "string.base": "status name should be string",
-    "any.required": "status name is required",
-    "any.only": "status should be one of pending,snoozed,completed"
-  }),
+  status: Joi.string()
+    .valid("pending", "snoozed", "completed")
+    .allow("")
+    .messages({
+      "string.base": "status name should be string",
+      "any.required": "status name is required",
+      "any.only": "status should be one of pending,snoozed,completed",
+    }),
 });

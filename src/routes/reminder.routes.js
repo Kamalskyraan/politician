@@ -40,5 +40,51 @@ router.post(
     }
 */ remindercontroller.getReminder,
 );
+router.post(
+  "/reminder",
+  /*
+    #swagger.tags = ['10.REMINDERS']
+    #swagger.summary = 'Update reminders'
+    #swagger.description = 'Update reminders by passing id and other fields'
+
+    #swagger.requestBody = {
+      required: true,
+      content: {
+        "application/json": {
+          schema: {
+            type: "object",
+            properties: {
+              id: {
+                type: "number",
+                example: 12
+              },
+              module_type: {
+                type: "string",
+                example: "meeting"
+              },
+              is_remind: {
+                type: "number",
+                example: 2
+              },
+              snooze_at: {
+                type: "string",
+                example: "300"
+              },
+            }
+          }
+        }
+      }
+    }
+
+    #swagger.responses[200] = {
+      description: 'Reminders updated successfully'
+    }
+
+    #swagger.responses[500] = {
+      description: 'Internal Server Error'
+    }
+*/
+  remindercontroller.reminder,
+);
 
 export default router;

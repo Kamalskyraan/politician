@@ -9,27 +9,38 @@ export const uploadMedia = async (req, res) => {
   try {
     const validatedData = validateRequest(req.body, addMediaSchema);
 
-    // if (validatedData?.success === 0) {
-    //   return sendResponse(
-    //     res,
-    //     validatedData?.errorObject?.status,
-    //     0,
-    //     "validation error",
-    //     [],
-    //     validatedData?.errorObject?.errors,
-    //   );
-    // }
+    if (validatedData?.success === 0) {
+      return sendResponse(
+        res,
+        validatedData?.errorObject?.status,
+        0,
+        "validation error",
+        [],
+        validatedData?.errorObject?.errors,
+      );
+    }
 
     let { org_name } = validatedData?.value;
     const files = req.files;
+    console.log(files);
 
-    if (!files || files.length === 0) {
+    if (!files || files.length < 1) {
       return sendResponse(res, 200, 0, "No files uploaded", [], "");
     }
-    if(!Array.isArray(org_name)){
+    if (!Array.isArray(org_name)) {
       org_name = [org_name];
     }
-
+    if (
+      org_name.length === 1 &&
+      typeof org_name[0] === "string" &&
+      org_name[0].includes(",")
+    ) {
+      org_name = org_name[0].split(",").map((name) => name.trim());
+    }
+    console.log(org_name);
+    if(files.length !== org_name.length){
+      return sendResponse(res, 200, 0, "files and their original name should be equal", [], "");
+    }
     const uploadedFiles = await Promise.all(
       files.map(async (file, index) => {
         const url = `${file.destination.replace("src", "")}/${file.filename}`;
@@ -47,17 +58,23 @@ export const uploadMedia = async (req, res) => {
           id: result?.data?.insertId,
           url: url,
           size: file.size,
-          org_name: org_name[index]
+          org_name: org_name[index],
         };
       }),
     );
 
-    return sendResponse(res, 200, 1, "Files uploaded successfully", uploadedFiles, "");
+    return sendResponse(
+      res,
+      200,
+      1,
+      "Files uploaded successfully",
+      uploadedFiles,
+      "",
+    );
   } catch (error) {
     return sendResponse(res, 500, "Internal Server error", [], error.message);
   }
 };
-
 
 export const addUserrole = async (req, res) => {
   try {
@@ -97,23 +114,24 @@ export const updateUserrole = async (req, res) => {
   }
 };
 
-export const getUserrole = async (req, res)=> {
-
+export const getUserrole = async (req, res) => {
   try {
     const result = await sourceMdl.getUserrole();
     const data = result?.data || [];
 
-    if(result?.success === 1){
+    if (result?.success === 1) {
       return sendResponse(res, 200, 1, "Roles fetched successfully", data, "");
-    } else if(result?.success === 0){
+    } else if (result?.success === 0) {
       return sendResponse(res, 200, 0, "Failed to fetch roles", [], "");
     }
-    
   } catch (error) {
-    return sendResponse(res, 500, 0, "Internal server error", [], error.message);
-    
+    return sendResponse(
+      res,
+      500,
+      0,
+      "Internal server error",
+      [],
+      error.message,
+    );
   }
-
-}
-
-
+};

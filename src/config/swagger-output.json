@@ -233,8 +233,15 @@
                     }
                   },
                   "org_name": {
-                    "type": "string",
-                    "example": "img-20213312"
+                    "type": "array",
+                    "items": {
+                      "type": "string"
+                    },
+                    "example": [
+                      "filename1.jpg",
+                      "filename2.jpg",
+                      "filename3.pdf"
+                    ]
                   }
                 }
               }
@@ -1145,16 +1152,6 @@
                 }
               }
             }
-          }
-        }
-      }
-    },
-    "/meeting/reminder": {
-      "post": {
-        "description": "",
-        "responses": {
-          "default": {
-            "description": ""
           }
         }
       }
@@ -3307,6 +3304,51 @@
                   "status": {
                     "type": "string",
                     "example": "snoozed"
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/reminder/reminder": {
+      "post": {
+        "tags": [
+          "10.REMINDERS"
+        ],
+        "summary": "Update reminders",
+        "description": "Update reminders by passing id and other fields",
+        "responses": {
+          "200": {
+            "description": "Reminders updated successfully"
+          },
+          "500": {
+            "description": "Internal Server Error"
+          }
+        },
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "id": {
+                    "type": "number",
+                    "example": 12
+                  },
+                  "module_type": {
+                    "type": "string",
+                    "example": "meeting"
+                  },
+                  "is_remind": {
+                    "type": "number",
+                    "example": 2
+                  },
+                  "snooze_at": {
+                    "type": "string",
+                    "example": "300"
                   }
                 }
               }
