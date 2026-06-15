@@ -11,7 +11,7 @@ import finaceRoutes from "./finance.routes.js";
 import politicalsumitRoutes from "./politicalSumit.routes.js";
 import folderRoutes from "./folder.routes.js";
 import issueRoutes from "./issues.routes.js";
-import politicalsumitRoutes from "./politicalSumit.routes.js";
+
 import reminderRoutes from "./reminder.routes.js";
 import { verifyToken } from "../middleware/auth.middleware.js";
 
