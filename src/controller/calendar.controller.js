@@ -37,11 +37,18 @@ export const getCalendarInfo = async (req, res) => {
       calendarResult = await result?.data;
 
       for (const row of calendarResult) {
-        let current = new Date(row.from_date);
-        let end = new Date(row.to_date);
+        let current = new Date(
+          row.from_date > from_date ? row.from_date : from_date,
+        );
+        let end = new Date(row.to_date < to_date ? row.to_date : to_date);
 
         while (current <= end) {
-          const dateKey = current.toISOString().split("T")[0];
+          const dateKey =
+            current.getFullYear() +
+            "-" +
+            String(current.getMonth() + 1).padStart(2, "0") +
+            "-" +
+            String(current.getDate()).padStart(2, "0");
 
           if (!calendarMap[dateKey]) {
             calendarMap[dateKey] = {

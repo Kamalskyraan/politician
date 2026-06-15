@@ -17,7 +17,6 @@ router.use("/auth", authRoutes);
 router.use("/source", sourceRoutes);
 router.use("/meeting", meetingRoutes);
 
-router.use("/user", userRoutes);
 router.use("/support", supportRoutes);
 // router.use("/contact", supportRoutes);
 router.use("/travel", travelRoutes);
@@ -26,5 +25,6 @@ router.use("/issue", issueRoutes);
 router.use("/sumit", politicalsumitRoutes);
 router.use("/reminder", reminderRoutes);
 router.use("/calendar", calendarRoutes);
+router.use("/user", userRoutes);
 
 export default router;

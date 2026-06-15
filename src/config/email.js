@@ -38,7 +38,7 @@ export const sendContactUsMail = async (email, comments) => {
     const mailOptions = {
       from: process.env.MAIL_USER,
       to: `${email}`,
-      subject: "OTP Verification",
+      subject: "Query has been submitted",
       html: mailContent,
     };  
 

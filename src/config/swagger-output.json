@@ -1154,26 +1154,6 @@
         }
       }
     },
-    "/user/getuserprofile": {
-      "post": {
-        "description": "",
-        "responses": {
-          "default": {
-            "description": ""
-          }
-        }
-      }
-    },
-    "/user/updateuserprofile": {
-      "post": {
-        "description": "",
-        "responses": {
-          "default": {
-            "description": ""
-          }
-        }
-      }
-    },
     "/support/addfaq": {
       "post": {
         "description": "",
@@ -1258,16 +1238,6 @@
         }
       }
     },
-    "/support/contact_us": {
-      "post": {
-        "description": "",
-        "responses": {
-          "default": {
-            "description": ""
-          }
-        }
-      }
-    },
     "/support/filterapi": {
       "post": {
         "tags": [
@@ -1341,7 +1311,7 @@
     "/support/statuschange": {
       "post": {
         "tags": [
-          "12.Support Api`s"
+          "15.Support Api`s"
         ],
         "summary": "Change status of Meeting,Appointment,Task,issues and political sumit",
         "description": "Change status",
@@ -1382,7 +1352,7 @@
     "/support/issuecategory": {
       "post": {
         "tags": [
-          "12.Support Api`s"
+          "15.Support Api`s"
         ],
         "summary": "Add category for issues and grievance",
         "description": "Add category",
@@ -1415,7 +1385,7 @@
     "/support/addsumitcategory": {
       "post": {
         "tags": [
-          "12.Support Api`s"
+          "15.Support Api`s"
         ],
         "summary": "Add category for political sumit",
         "description": "Add category",
@@ -3425,6 +3395,178 @@
                   "event_date": {
                     "type": "string",
                     "example": "2026-06-10"
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/user/getuserprofile": {
+      "post": {
+        "tags": [
+          "12.User Details"
+        ],
+        "summary": "Get user details",
+        "description": "Get user details by passing user id",
+        "responses": {
+          "200": {
+            "description": "User profile details fetched successfully"
+          },
+          "500": {
+            "description": "Internal Server Error"
+          }
+        },
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "user_id": {
+                    "type": "string",
+                    "example": "USER_efKL6767"
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/user/updateuserprofile": {
+      "post": {
+        "tags": [
+          "12.User Details"
+        ],
+        "summary": "Update user details",
+        "description": "Update user details by passing user id and other fields",
+        "responses": {
+          "200": {
+            "description": "User profile details updated successfully"
+          },
+          "500": {
+            "description": "Internal Server Error"
+          }
+        },
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "user_id": {
+                    "type": "string",
+                    "example": "USER_efKL6767"
+                  },
+                  "name": {
+                    "type": "string",
+                    "example": "skyraan"
+                  },
+                  "phn_num": {
+                    "type": "string",
+                    "example": "9876543210"
+                  },
+                  "c_code": {
+                    "type": "string",
+                    "example": "+91"
+                  },
+                  "email": {
+                    "type": "string",
+                    "example": "skyraan@gmail.com"
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/user/contact_us": {
+      "post": {
+        "tags": [
+          "12.User Details"
+        ],
+        "summary": "Contact us",
+        "description": "Contact us by passing user_id, name, email, phn_num and comments",
+        "responses": {
+          "200": {
+            "description": "Inquiry submitted successfully"
+          },
+          "500": {
+            "description": "Internal Server Error"
+          }
+        },
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "user_id": {
+                    "type": "string",
+                    "example": "USER_dd1q292"
+                  },
+                  "name": {
+                    "type": "string",
+                    "example": "skyraan"
+                  },
+                  "email": {
+                    "type": "string",
+                    "example": "skyraan@gmail.com"
+                  },
+                  "phn_num": {
+                    "type": "string",
+                    "example": "9876543210"
+                  },
+                  "c_code": {
+                    "type": "string",
+                    "example": "+91"
+                  },
+                  "comments": {
+                    "type": "string",
+                    "example": "This inquiry has been made by user"
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/user/deleteaccount": {
+      "post": {
+        "tags": [
+          "12.User Details"
+        ],
+        "summary": "Delete Account",
+        "description": "Delete account by passing user id and delete reason",
+        "responses": {
+          "200": {
+            "description": "Account deleted successfully"
+          },
+          "500": {
+            "description": "Internal Server Error"
+          }
+        },
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "user_id": {
+                    "type": "string",
+                    "example": "USER_dd1q292"
+                  },
+                  "delete_reason": {
+                    "type": "string",
+                    "example": "Not interested"
                   }
                 }
               }

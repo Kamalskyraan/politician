@@ -4,21 +4,21 @@ import { executeQuery } from "../utils/helper.js";
 export class calendarModel {
   async getCalendarInfo({ user_id, from_date, to_date }) {
     let query = `SELECT id, title, "meeting" AS type, from_date, to_date FROM meeting 
-    WHERE user_id = ? AND from_date >= ? AND to_date <= ? UNION ALL 
+    WHERE user_id = ? AND from_date <= ? AND to_date >= ? UNION ALL 
     SELECT id, title, "appointment" AS type, from_date, to_date FROM appointments 
-    WHERE user_id = ? AND from_date >= ? AND to_date <= ? UNION ALL
+    WHERE user_id = ? AND from_date <= ? AND to_date >= ? UNION ALL
     SELECT id, title, "task" AS type, from_date, to_date FROM tasks 
-    WHERE user_id = ? AND from_date >= ? AND to_date <= ? ORDER BY from_date ASC`;
+    WHERE user_id = ? AND from_date <= ? AND to_date >= ? ORDER BY from_date ASC`;
     let params = [
       user_id,
-      from_date,
       to_date,
+      from_date,
       user_id,
-      from_date,
       to_date,
+      from_date,
       user_id,
-      from_date,
       to_date,
+      from_date,
     ];
     // console.log(params);
 

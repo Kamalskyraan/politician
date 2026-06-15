@@ -67,46 +67,6 @@ export const updateFaq = async (req, res) => {
   }
 };
 
-export const contactUs = async (req, res) => {
-  //   const { name, phn_num, c_code, email, comments } = req.body;
-
-  try {
-    const validatedData = validateRequest(req.body, contactUsSchema);
-
-    if (validatedData?.success === 0) {
-      return sendResponse(
-        res,
-        200,
-        0,
-        "validation error",
-        [],
-        validatedData?.errorObject?.errors,
-      );
-    }
-
-    const { user_id, name, phn_num, c_code, email, comments } =
-      validatedData?.value;
-
-    const result = await supportMdl.contactUs(
-      user_id,
-      name,
-      phn_num,
-      c_code,
-      email,
-      comments,
-    );
-    //   console.log(result);
-    if (result?.success === 1) {
-      await sendContactUsMail();
-      sendResponse(res, 200, 1, "Query has been submitted", [], "");
-    } else {
-      sendResponse(res, 200, 0, result?.error, [], "");
-    }
-  } catch (error) {
-    sendResponse(res, 500, 0, "Internal Server error", [], error.message);
-  }
-};
-
 export const filterApi = async (req, res) => {
   try {
     const validatedData = validateRequest(req.body, userIdSchema);
