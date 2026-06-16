@@ -182,6 +182,7 @@ export class meetingModel {
     address,
     lat,
     lng,
+    status,
     media_id,
     attnds_id,
     from_date_obj,
@@ -192,7 +193,7 @@ export class meetingModel {
     snooze_at,
     nxt_snooze_at,
   }) {
-    let query = `INSERT INTO meeting (user_id, title, descp, m_type, m_priority, m_link, notes, address, lat, lng, media_id, attnds_id, from_date, to_date, is_remind, remind_tenure, remind_at, snooze_at, nxt_snooze_at) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)`;
+    let query = `INSERT INTO meeting (user_id, title, descp, m_type, m_priority, m_link, notes, address, lat, lng, status, media_id, attnds_id, from_date, to_date, is_remind, remind_tenure, remind_at, snooze_at, nxt_snooze_at) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)`;
     let params = [
       user_id,
       title,
@@ -204,6 +205,7 @@ export class meetingModel {
       address,
       lat,
       lng,
+      status,
       media_id,
       attnds_id,
       from_date_obj,
@@ -219,7 +221,7 @@ export class meetingModel {
 
     const result = await executeQuery(query, params);
 
-    // console.log(result?.error);
+    // console.log(result);
 
     if (result?.success === 1) {
       return {
@@ -269,13 +271,13 @@ export class meetingModel {
     }
 
     if (from_date != null) {
-      query += ` AND from_date >= ?`;
-      params.push(`${from_date} 00:00:00`);
+      query += ` AND from_date <= ?`;
+      params.push(`${to_date} 23:59:59`);
     }
 
     if (to_date != null) {
-      query += ` AND from_date <= ?`;
-      params.push(`${to_date} 23:59:59`);
+      query += ` AND to_date >= ?`;
+      params.push(`${from_date} 00:00:00`);
     }
 
     const result = await executeQuery(query, params);

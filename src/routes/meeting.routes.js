@@ -247,11 +247,11 @@ router.post(
                 example: "10, Skyraan Building"
               },
               lat: {
-                type: "number",
+                type: "string",
                 example: "10.23456"
               },
               lng: {
-                type: "number",
+                type: "string",
                 example: "9.98765"
               },
               media_id: {
@@ -275,11 +275,11 @@ router.post(
                 example: 1
               },
               remind_tenure: {
-                type: "integer",
+                type: "string",
                 example: "300"
               },
               snooze_at: {
-                type: "integer",
+                type: "string",
                 example: "180"
               }
             }

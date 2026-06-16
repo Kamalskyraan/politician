@@ -10,6 +10,7 @@ import dotenv from "dotenv";
 dotenv.config();
 import { sendMail } from "../config/email.js";
 import {
+  accRestoreSchema,
   loginschema,
   requestOtpSchema,
   signUpSchema,
@@ -295,6 +296,10 @@ export const signUp = async (req, res) => {
       const data = {
         user_id: result?.data,
         jwt_token: token,
+        name: name,
+        phn_num: phn_num,
+        c_code: c_code,
+        email: email,
       };
       // console.log(result?.data);
       return sendResponse(res, 200, 1, "user created successfully", [data], "");
@@ -353,7 +358,7 @@ export const login = async (req, res) => {
         name: userLoginResult?.name,
         phn_num: userLoginResult?.phn_num,
         c_code: userLoginResult?.c_code,
-        email: userLoginResult?.email
+        email: userLoginResult?.email,
       };
       data = replaceNullWithEmptyString(data);
       return sendResponse(res, 200, 1, "login successfull", [data], "");
@@ -363,6 +368,42 @@ export const login = async (req, res) => {
       res,
       500,
       1,
+      "Internal server error",
+      [],
+      error.message,
+    );
+  }
+};
+
+export const accountRestore = async (req, res) => {
+  try {
+    const validatedData = validateRequest(req.body, accRestoreSchema);
+
+    if (validatedData?.success === 0) {
+      return sendResponse(
+        res,
+        200,
+        0,
+        "validation error",
+        [],
+        validatedData?.errorObject?.errors,
+      );
+    }
+
+    const { email } = validatedData?.value;
+
+    const result = await AuthMdl.accRestore(email);
+
+    if (result?.success === 1) {
+      return sendResponse(res, 200, 1, "Account restored successfully", [], "");
+    } else if (result?.success === 0) {
+      return sendResponse(res, 200, 0, "Failed to restore account", [], "");
+    }
+  } catch (error) {
+    return sendResponse(
+      res,
+      500,
+      0,
       "Internal server error",
       [],
       error.message,

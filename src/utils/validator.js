@@ -1603,11 +1603,17 @@ export const getcalendarEventSchema = Joi.object({
 });
 export const deleteAccountSchema = Joi.object({
   user_id: Joi.string().required().messages({
-    "string.base": "user id name should be string",
-    "any.required": "user id name is required",
+    "string.base": "user id should be string",
+    "any.required": "user id is required",
   }),
   delete_reason: Joi.string().allow("").messages({
     "string.base": "delete reason should be string",
     "any.required": "delete reason is required",
+  }),
+});
+export const accRestoreSchema = Joi.object({
+  email: Joi.string().required().messages({
+    "string.base": "Email should be string",
+    "any.required": "Email is required",
   }),
 });
