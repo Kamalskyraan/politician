@@ -78,7 +78,7 @@ export const getFinanceData = async (req, res) => {
       from_date,
       to_date,
       page,
-      limit,
+      limit=10,
     } = req.body;
 
     const data = await financeMdl.fetchFinanceData({
@@ -142,7 +142,7 @@ export const removeFinanceData = async (req, res) => {
 
 export const getReportData = async (req, res) => {
   try {
-    const { user_id, type, from_date, to_date, page } = req.body;
+    const { user_id, type, from_date, to_date, page , limit=10 } = req.body;
 
     const data = await financeMdl.fetchReportData({
       user_id,
@@ -150,6 +150,7 @@ export const getReportData = async (req, res) => {
       from_date,
       to_date,
       page,
+      limit,
     });
 
     return sendResponse(
