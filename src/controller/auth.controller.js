@@ -207,6 +207,8 @@ export const requestOtp = async (req, res) => {
   }
 };
 
+
+
 export const verifyOtp = async (req, res) => {
   try {
     const validatedData = validateRequest(req.body, verifyOtpSchema);
