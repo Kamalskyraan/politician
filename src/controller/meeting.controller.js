@@ -1040,7 +1040,7 @@ export const addAppointment = async (req, res) => {
       });
 
       const data = {
-        id: result?.data[0]?.insertId,
+        id: result?.data?.insertId,
         title: title,
         a_type: a_type,
         notes: notes,
@@ -1053,22 +1053,22 @@ export const addAppointment = async (req, res) => {
         from_date: from_date,
         to_date: to_date,
         is_remind: is_remind,
-        remind_status: remind_status,
-        remind_tenure: remind_tenure,
-        remind_at: remind_at,
-        snooze_at: snooze_at,
-        nxt_snooze_at: nxt_snooze_at,
+        remind_status: null,
+        remind_tenure: null,
+        remind_at: null,
+        snooze_at: null,
+        nxt_snooze_at: null,
         media: [],
       };
 
       let media_result;
-      if(media_id != null){
+      if (media_id != null) {
         const ids = media_id.split(",");
         media_result = await sourceMdl.getMedia(ids);
         data[media] = media_result;
       }
-      
-      
+
+      console.log(data);
 
       if (result?.success === 1) {
         return sendResponse(

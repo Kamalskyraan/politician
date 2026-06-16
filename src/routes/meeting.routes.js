@@ -508,12 +508,12 @@ router.post(
                 example: "10, Skyraan 101, FCI Road, Ganapathy"
               },
               lat: {
-                type: "number",
-                example: 10.23456
+                type: "string",
+                example: "10.23456"
               },
               lng: {
-                type: "number",
-                example: 9.98765
+                type: "string",
+                example: "9.98765"
               },
               media_id: {
                 type: "string",
@@ -540,12 +540,12 @@ router.post(
                 example: 1
               },
               remind_tenure: {
-                type: "integer",
-                example: 300
+                type: "string",
+                example: "300"
               },
               snooze_at: {
-                type: "integer",
-                example: 180
+                type: "string",
+                example: "180"
               }
             }
           }

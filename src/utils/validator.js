@@ -598,12 +598,12 @@ export const addAppointSchema = Joi.object({
     "string.base": "address must be a string",
     "any.required": "address is required",
   }),
-  lat: Joi.number().allow("").required().messages({
+  lat: Joi.string().allow("").required().messages({
     "string.base": "lat must be a string",
     "any.required": "lat is required",
   }),
-  lng: Joi.number().allow("").required().messages({
-    "string.base": "lng must be a number",
+  lng: Joi.string().allow("").required().messages({
+    "string.base": "lng must be a string",
     "any.required": "lng is required",
   }),
   media_id: Joi.string().allow("").messages({
@@ -630,10 +630,10 @@ export const addAppointSchema = Joi.object({
     "any.required": "is_remind is required",
   }),
   remind_tenure: Joi.string().allow("").messages({
-    "string.base": "remind_tenure must be a integer",
+    "string.base": "remind_tenure must be a string",
   }),
   snooze_at: Joi.string().allow("").messages({
-    "string.base": "snooze_at must be a integer",
+    "string.base": "snooze_at must be a string",
   }),
 });
 
