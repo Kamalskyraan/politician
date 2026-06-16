@@ -52,7 +52,7 @@ export const sendContactUsMail = async (email, comments) => {
     const mailOptions = {
       from: "political@skyraantech.com",
       to: `${email}`,
-      subject: "OTP Verification",
+      subject: "Query has been submitted",
       html: mailContent,
     };
 

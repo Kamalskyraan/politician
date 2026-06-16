@@ -1,7 +1,7 @@
 import express from "express";
 import {
   getReminderSchema,
-  reminderSchema,
+  updateReminderSchema,
   validateRequest,
 } from "../utils/validator.js";
 import {
@@ -63,9 +63,9 @@ export const getReminder = async (req, res) => {
     );
   }
 };
-export const reminder = async (req, res) => {
+export const updateReminder = async (req, res) => {
   try {
-    const validatedData = validateRequest(req.body, reminderSchema);
+    const validatedData = validateRequest(req.body, updateReminderSchema);
 
     if (validatedData?.success === 0) {
       return sendResponse(
@@ -94,26 +94,34 @@ export const reminder = async (req, res) => {
     }
 
     if (is_remind === 1) {
-      let next_snooze_at = new Date().getTime() + snooze_at * 1000;
-      next_snooze_at = formatDateForSQL(new Date(next_snooze_at));
+      let next_snooze_at = new Date().getTime() + Number(snooze_at) * 1000;
+      next_snooze_at = new Date(next_snooze_at);
+      next_snooze_at.setSeconds(0, 0);
+      next_snooze_at = formatDateForSQL(next_snooze_at);
 
       update_column.push(
-        `UPDATE ${table_name} SET remind_status = ${"snoozed"} nxt_snooze_at = ? WHERE id = ?`,
+        `UPDATE ${table_name} SET remind_status = ?, nxt_snooze_at = ? WHERE id = ?`,
       );
-      params.push(next_snooze_at, id);
+      params.push("snoozed", next_snooze_at, id);
     } else if (is_remind === 2) {
       update_column.push(
-        `UPDATE ${table_name} SET remind_status = ${"completed"} WHERE id = ?`,
+        `UPDATE ${table_name} SET remind_status = ? WHERE id = ?`,
       );
-      params.push(id);
+      params.push("completed", id);
     }
-
 
     const result = await reminderMdl.reminder(update_column, params);
     if (result?.success === 0) {
-      return sendResponse(res, 200, 1, result?.error, [], "");
+      return sendResponse(
+        res,
+        200,
+        0,
+        "Failed to update reminder status",
+        [],
+        result?.error,
+      );
     } else if (result?.success === 1) {
-      return sendResponse(res, 200, 0, "reminder updated successfully", [], "");
+      return sendResponse(res, 200, 1, "reminder updated successfully", [], "");
     }
   } catch (error) {
     return sendResponse(res, 500, 0, "Internal server error", [], "");

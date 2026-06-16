@@ -17,7 +17,7 @@ export class authModel {
         error: "Send either email or phone number",
       };
     } else if (email) {
-      console.log("inside email otp")
+      console.log("inside email otp");
       query = `INSERT INTO otp (otp, email, expired_at) VALUES (?, ?, ?)`;
       params = [otp, email, expired_at];
     } else {
@@ -58,9 +58,8 @@ export class authModel {
     }
     try {
       const otpresult = await executeQuery(query, params);
-      
 
-      if (!otpresult?.data || otpresult?.data.length === 0 ) {
+      if (!otpresult?.data || otpresult?.data.length === 0) {
         return {
           success: 0,
           error: "OTP not found",
@@ -155,13 +154,13 @@ export class authModel {
         userRegisterQuery,
         userRegisterParams,
       );
-      console.log("new register",registerresult);
+      // console.log("new register",registerresult);
 
       let userdevicequery = `INSERT INTO user_device (user_id, device_token, device_id, device_type) VALUES (?, ?, ?, ?)`;
       let userdeviceparams = [userId, device_token, device_id, device_type];
 
       const userdevice = await executeQuery(userdevicequery, userdeviceparams);
-      console.log(userdevice);
+      // console.log(userdevice);
       return {
         success: 1,
         data: userId,
@@ -186,6 +185,11 @@ export class authModel {
         error: "Sign up as a new user to login",
       };
     } else if (result?.data.length === 1) {
+      if (result?.data[0]?.is_deleted === 1) {
+        let query = `UPDATE users SET is_deleted = ?, deleted_at = ?, delete_reason = ? WHERE email = ?`;
+        let params = [0, null, null, email];
+        const change_result = await executeQuery(query, params);
+      }
       const devUserId = result?.data[0]?.user_id;
       // console.log(result?.data[0]?.user_id);
       let updateLoginQuery = `UPDATE user_device SET device_token = ?, device_id = ?, device_type = ? WHERE user_id = ?;`;
@@ -210,87 +214,87 @@ export class authModel {
     }
   }
 
-  async updateProfileDetail({ user_id, name, phn_num, c_code, email }) {
-    let query = "";
-    let params = [];
-    if (name && phn_num && email) {
-      query = `UPDATE users SET name = ?, phn_num = ?, c_code = ?, email = ? WHERE user_id = ? `;
-      params = [name, phn_num, c_code, email, user_id];
+  // async updateProfileDetail({ user_id, name, phn_num, c_code, email }) {
+  //   let query = "";
+  //   let params = [];
+  //   if (name && phn_num && email) {
+  //     query = `UPDATE users SET name = ?, phn_num = ?, c_code = ?, email = ? WHERE user_id = ? `;
+  //     params = [name, phn_num, c_code, email, user_id];
 
-      const result = await executeQuery(query, params);
-      console.log(result?.success);
+  //     const result = await executeQuery(query, params);
+  //     console.log(result?.success);
 
-      if (result?.success === 1) {
-        return {
-          success: 1,
-          message: "profile details updated",
-        };
-      } else {
-        return {
-          success: 0,
-          error: "failed to update profile details",
-        };
-      }
-    } else if (name && phn_num === "" && email === "") {
-      // console.log("i only got name");
+  //     if (result?.success === 1) {
+  //       return {
+  //         success: 1,
+  //         message: "profile details updated",
+  //       };
+  //     } else {
+  //       return {
+  //         success: 0,
+  //         error: "failed to update profile details",
+  //       };
+  //     }
+  //   } else if (name && phn_num === "" && email === "") {
+  //     // console.log("i only got name");
 
-      query = `UPDATE users SET name = ? WHERE user_id = ? `;
-      params = [name, user_id];
+  //     query = `UPDATE users SET name = ? WHERE user_id = ? `;
+  //     params = [name, user_id];
 
-      const result = await executeQuery(query, params);
-      console.log(result?.success);
+  //     const result = await executeQuery(query, params);
+  //     console.log(result?.success);
 
-      if (result?.success === 1) {
-        return {
-          success: 1,
-          message: "profile details updated",
-        };
-      } else {
-        return {
-          success: 0,
-          error: "failed to update profile details",
-        };
-      }
-    } else if (phn_num && c_code && name === "" && email === "") {
-      // console.log("i only got phone number");
+  //     if (result?.success === 1) {
+  //       return {
+  //         success: 1,
+  //         message: "profile details updated",
+  //       };
+  //     } else {
+  //       return {
+  //         success: 0,
+  //         error: "failed to update profile details",
+  //       };
+  //     }
+  //   } else if (phn_num && c_code && name === "" && email === "") {
+  //     // console.log("i only got phone number");
 
-      query = `UPDATE users SET phn_num = ?, c_code = ? WHERE user_id = ? `;
-      params = [phn_num, c_code, user_id];
+  //     query = `UPDATE users SET phn_num = ?, c_code = ? WHERE user_id = ? `;
+  //     params = [phn_num, c_code, user_id];
 
-      const result = await executeQuery(query, params);
-      console.log(result?.success);
+  //     const result = await executeQuery(query, params);
+  //     console.log(result?.success);
 
-      if (result?.success === 1) {
-        return {
-          success: 1,
-          message: "profile details updated",
-        };
-      } else {
-        return {
-          success: 0,
-          error: "failed to update profile details",
-        };
-      }
-    } else if (email && name === "" && phn_num === "") {
-      // console.log("i only got email");
+  //     if (result?.success === 1) {
+  //       return {
+  //         success: 1,
+  //         message: "profile details updated",
+  //       };
+  //     } else {
+  //       return {
+  //         success: 0,
+  //         error: "failed to update profile details",
+  //       };
+  //     }
+  //   } else if (email && name === "" && phn_num === "") {
+  //     // console.log("i only got email");
 
-      query = `UPDATE users SET email = ? WHERE user_id = ? `;
-      params = [email, user_id];
+  //     query = `UPDATE users SET email = ? WHERE user_id = ? `;
+  //     params = [email, user_id];
 
-      const result = await executeQuery(query, params);
-      console.log(result?.success);
+  //     const result = await executeQuery(query, params);
+  //     console.log(result?.success);
 
-      if (result?.success === 1) {
-        return {
-          success: 1,
-          message: "profile details updated",
-        };
-      } else {
-        return {
-          success: 0,
-          error: "failed to update profile details",
-        };
-      }
-    }
-  }
+  //     if (result?.success === 1) {
+  //       return {
+  //         success: 1,
+  //         message: "profile details updated",
+  //       };
+  //     } else {
+  //       return {
+  //         success: 0,
+  //         error: "failed to update profile details",
+  //       };
+  //     }
+  //   }
+  // }
 }

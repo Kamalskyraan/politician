@@ -37,9 +37,7 @@ router.post(
               type: "string"
             },
             example: [
-              "filename1.jpg",
-              "filename2.jpg",
-              "filename3.pdf"
+              "img-20213312"
             ]
           }
         }
@@ -56,9 +54,6 @@ router.post(
   description: 'Internal Server Error',
 }
 */
-  
-
-
 
 upload.array("files"),
   validateFiles,

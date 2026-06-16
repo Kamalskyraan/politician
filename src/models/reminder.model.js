@@ -49,7 +49,9 @@ export class reminderModel {
     }
   }
   async reminder(update_column, params) {
-    const query = update_column;
+    const query = update_column.join("");
+    // console.log(query);
+    // console.log(params);
 
     const result = await executeQuery(query, params);
     if (result?.success === 0) {

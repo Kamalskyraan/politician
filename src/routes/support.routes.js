@@ -7,8 +7,6 @@ router.post("/addfaq", supportController.addFaq);
 router.post("/getfaq", supportController.getFaq);
 router.post("/updatefaq", supportController.updateFaq);
 
-router.post("/contact_us", supportController.contactUs);
-
 router.post(
   "/filterapi",
   /*
@@ -82,7 +80,7 @@ router.post(
 router.post(
   "/statuschange",
   /*
-    #swagger.tags = ['12.Support Api`s']
+    #swagger.tags = ['15.Support Api`s']
     #swagger.summary = 'Change status of Meeting,Appointment,Task,issues and political sumit'
     #swagger.description = 'Change status'
 
@@ -124,7 +122,7 @@ router.post(
 router.post(
   "/issuecategory",
   /*
-    #swagger.tags = ['12.Support Api`s']
+    #swagger.tags = ['15.Support Api`s']
     #swagger.summary = 'Add category for issues and grievance'
     #swagger.description = 'Add category'
 
@@ -157,7 +155,7 @@ router.post(
 router.post(
   "/addsumitcategory",
   /*
-    #swagger.tags = ['12.Support Api`s']
+    #swagger.tags = ['15.Support Api`s']
     #swagger.summary = 'Add category for political sumit'
     #swagger.description = 'Add category'
 

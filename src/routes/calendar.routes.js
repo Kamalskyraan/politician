@@ -1,14 +1,14 @@
 import express from "express";
-import * as remindercontroller from "../controller/reminder.controller.js";
+import * as calendarcontroller from "../controller/calendar.controller.js";
 
 const router = express.Router();
 
 router.post(
-  "/getreminder",
+  "/getcalendarinfo",
   /*
-    #swagger.tags = ['10.REMINDERS']
-    #swagger.summary = 'Get reminders'
-    #swagger.description = 'Get reminders by passing user id and status'
+    #swagger.tags = ['11.Calendar']
+    #swagger.summary = 'Get calendar details'
+    #swagger.description = 'Get calendar details'
 
     #swagger.requestBody = {
       required: true,
@@ -19,11 +19,15 @@ router.post(
             properties: {
               user_id: {
                 type: "string",
-                example: "User_dhh21332"
+                example: "USER_efKL6767"
               },
-              status: {
+              from_date: {
                 type: "string",
-                example: "snoozed"
+                example: "2026-06-10"
+              },
+              to_date: {
+                type: "string",
+                example: "2026-06-12"
               },
             }
           }
@@ -32,20 +36,20 @@ router.post(
     }
 
     #swagger.responses[200] = {
-      description: 'Reminders fetched successfully'
+      description: 'Calendar details fetched successfully'
     }
 
     #swagger.responses[500] = {
       description: 'Internal Server Error'
     }
-*/ remindercontroller.getReminder,
+*/ calendarcontroller.getCalendarInfo,
 );
 router.post(
-  "/updatereminder",
+  "/gettodayevents",
   /*
-    #swagger.tags = ['10.REMINDERS']
-    #swagger.summary = 'Update reminders'
-    #swagger.description = 'Update reminders by passing id and other fields'
+    #swagger.tags = ['11.Calendar']
+    #swagger.summary = 'Get today calendar events'
+    #swagger.description = 'Get today calendar details'
 
     #swagger.requestBody = {
       required: true,
@@ -54,21 +58,13 @@ router.post(
           schema: {
             type: "object",
             properties: {
-              id: {
-                type: "number",
-                example: 12
-              },
-              type: {
+              user_id: {
                 type: "string",
-                example: "meeting"
+                example: "USER_efKL6767"
               },
-              is_remind: {
-                type: "number",
-                example: 2
-              },
-              snooze_at: {
+              event_date: {
                 type: "string",
-                example: "300"
+                example: "2026-06-10"
               },
             }
           }
@@ -77,14 +73,13 @@ router.post(
     }
 
     #swagger.responses[200] = {
-      description: 'Reminders updated successfully'
+      description: 'Calendar details fetched successfully'
     }
 
     #swagger.responses[500] = {
       description: 'Internal Server Error'
     }
-*/
-  remindercontroller.updateReminder,
+*/ calendarcontroller.getTodayEvents,
 );
 
 export default router;

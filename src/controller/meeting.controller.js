@@ -16,7 +16,6 @@ import {
   getAppointSchema,
   getMeetingSchema,
   getMemberschema,
-  reminderSchema,
   updateAppointSchema,
   updateMeetingSchema,
   updateMemberSchema,

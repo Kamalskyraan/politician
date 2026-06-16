@@ -174,9 +174,9 @@ export const loginschema = Joi.object({
 
 export const updateUserProfileschema = Joi.object({
   user_id: Joi.string().required().messages({
-    "string.required": "user Id required",
+    "any.required": "user Id is required",
   }),
-  name: Joi.string().min(2).max(100).messages({
+  name: Joi.string().min(2).max(100).required().messages({
     "any.required": "Name is required",
     "string.empty": "Name is required",
     "string.min": "Name must be at least 2 characters",
@@ -186,6 +186,7 @@ export const updateUserProfileschema = Joi.object({
     .min(10)
     .max(15)
     .pattern(/^(\+91[6-9]\d{9}|[6-9]\d{9})$/)
+    .required()
     .messages({
       "any.required": "Mobile number is required",
       "string.empty": "Mobile number is required",
@@ -195,8 +196,8 @@ export const updateUserProfileschema = Joi.object({
     }),
   c_code: Joi.string()
     .pattern(/^\+\d{2,3}$/)
-    .optional(),
-  email: Joi.string().min(13).max(100).messages({
+    .required(),
+  email: Joi.string().min(13).max(100).required().messages({
     "any.required": "Email is required",
     "string.empty": "Email is required",
     "string.min": "Email must be at least 3 chars",
@@ -211,10 +212,29 @@ export const getUserProfileschema = Joi.object({
 });
 
 export const contactUsSchema = Joi.object({
-  comments: Joi.string().required().min(10).max(250).messages({
-    "string.required": "comments required. cannot be empty",
-    "string.min": "minimum 10 chars needed",
-    "string.max": "max 250 chars allowed",
+  user_id: Joi.string().required().messages({
+    "string.base": "User Id should be a string",
+    "any.required": "User Id cannot be empty",
+  }),
+  name: Joi.string().required().messages({
+    "string.base": "name should be a string",
+    "any.required": "name cannot be empty",
+  }),
+  email: Joi.string().required().messages({
+    "string.base": "email should be a string",
+    "any.required": "email cannot be empty",
+  }),
+  phn_num: Joi.string().required().messages({
+    "string.base": "phn_num should be a string",
+    "any.required": "phn_num cannot be empty",
+  }),
+  c_code: Joi.string().required().messages({
+    "string.base": "c_code should be a string",
+    "any.required": "c_code cannot be empty",
+  }),
+  comments: Joi.string().required().messages({
+    "string.base": "comments should be a string",
+    "any.required": "comments cannot be empty",
   }),
 });
 
@@ -556,19 +576,21 @@ export const userIdSchema = Joi.object({
   }),
 });
 
-export const reminderSchema = Joi.object({
+export const updateReminderSchema = Joi.object({
   id: Joi.number().required().messages({
     "number.base": "Id should be a string",
     "any.required": "Id cannot be empty",
   }),
-  is_remind: Joi.number().optional().valid(1, 2).messages({
+  type: Joi.string().required().messages({
+    "number.base": "type should be a string",
+    "any.required": "type cannot be empty",
+  }),
+  is_remind: Joi.number().required().valid(1, 2).messages({
     "number.base": "is_remind should be an number",
+    "any.only": "is remind should be one of 1 or 2",
   }),
-  snooze_at: Joi.number().optional().messages({
-    "number.base": "is_remind must be a number",
-  }),
-  curr_snooze_at: Joi.string().optional().messages({
-    "string.string": "curretn snooze_at must be string",
+  snooze_at: Joi.string().required().allow("").messages({
+    "string.base": "snooze at must be a string",
   }),
 });
 
@@ -1618,4 +1640,38 @@ export const getReminderSchema = Joi.object({
       "any.required": "status name is required",
       "any.only": "status should be one of pending,snoozed,completed",
     }),
+});
+export const getcalendarSchema = Joi.object({
+  user_id: Joi.string().required().messages({
+    "string.base": "user id name should be string",
+    "any.required": "user id name is required",
+  }),
+  from_date: Joi.string().required().messages({
+    "string.base": "from date name should be string",
+    "any.required": "from date name is required",
+  }),
+  to_date: Joi.string().required().messages({
+    "string.base": "to date name should be string",
+    "any.required": "to date name is required",
+  }),
+});
+export const getcalendarEventSchema = Joi.object({
+  user_id: Joi.string().required().messages({
+    "string.base": "user id name should be string",
+    "any.required": "user id name is required",
+  }),
+  event_date: Joi.string().allow("").messages({
+    "string.base": "event date name should be string",
+    "any.required": "event date name is required",
+  }),
+});
+export const deleteAccountSchema = Joi.object({
+  user_id: Joi.string().required().messages({
+    "string.base": "user id name should be string",
+    "any.required": "user id name is required",
+  }),
+  delete_reason: Joi.string().allow("").messages({
+    "string.base": "delete reason should be string",
+    "any.required": "delete reason is required",
+  }),
 });
