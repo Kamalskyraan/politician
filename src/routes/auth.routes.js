@@ -1,6 +1,7 @@
 import express from "express";
 import * as authcontroller from "../controller/auth.controller.js";
 import { verifyToken } from "../middleware/auth.middleware.js";
+import { deleteAccountCheck } from "../middleware/delAccountCheck.middleware.js";
 
 const router = express.Router();
 // router.get("/check",justCheck)
@@ -41,6 +42,7 @@ router.post(
       description: 'Internal Server Error'
     }
   */
+  deleteAccountCheck,
   authcontroller.requestOtp,
 );
 
@@ -183,6 +185,39 @@ router.post(
       description: 'Internal Server Error'
     }
 */ authcontroller.login,
+);
+router.post(
+  "/accrestore",
+  /*
+    #swagger.tags = ['1.Auth']
+    #swagger.summary = 'Account Restore'
+    #swagger.description = 'Account restore by passing email id'
+
+    #swagger.requestBody = {
+      required: true,
+      content: {
+        "application/json": {
+          schema: {
+            type: "object",
+            properties: {
+              email: {
+                type: "string",
+                example: "skyraan@gmail.com"
+              }
+            }
+          }
+        }
+      }
+    }
+
+    #swagger.responses[200] = {
+      description: 'Account restored successfully'
+    }
+
+    #swagger.responses[500] = {
+      description: 'Internal Server Error'
+    }
+*/ authcontroller.accountRestore,
 );
 
 export default router;

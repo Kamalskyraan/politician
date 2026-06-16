@@ -1,3 +1,4 @@
+import { exec } from "child_process";
 import {
   createUserID,
   executeQuery,
@@ -17,7 +18,6 @@ export class authModel {
         error: "Send either email or phone number",
       };
     } else if (email) {
-      console.log("inside email otp");
       query = `INSERT INTO otp (otp, email, expired_at) VALUES (?, ?, ?)`;
       params = [otp, email, expired_at];
     } else {
@@ -185,11 +185,11 @@ export class authModel {
         error: "Sign up as a new user to login",
       };
     } else if (result?.data.length === 1) {
-      if (result?.data[0]?.is_deleted === 1) {
-        let query = `UPDATE users SET is_deleted = ?, deleted_at = ?, delete_reason = ? WHERE email = ?`;
-        let params = [0, null, null, email];
-        const change_result = await executeQuery(query, params);
-      }
+      // if (result?.data[0]?.is_deleted === 1) {
+      //   let query = `UPDATE users SET is_deleted = ?, deleted_at = ?, delete_reason = ? WHERE email = ?`;
+      //   let params = [0, null, null, email];
+      //   const change_result = await executeQuery(query, params);
+      // }
       const devUserId = result?.data[0]?.user_id;
       // console.log(result?.data[0]?.user_id);
       let updateLoginQuery = `UPDATE user_device SET device_token = ?, device_id = ?, device_type = ? WHERE user_id = ?;`;
@@ -211,6 +211,35 @@ export class authModel {
           data: result?.data,
         };
       }
+    }
+  }
+
+  async accRestore(email) {
+    let query = `UPDATE users SET is_deleted = ?, deleted_at = ?, delete_reason = ? WHERE email = ?`;
+    let params = [0, null, null, email];
+
+    const result = await executeQuery(query, params);
+
+    if (result?.data?.affectedRows === 0) {
+      return {
+        success: 0,
+        error: "user not found",
+      };
+    } else if (result?.data?.changedRows === 0) {
+      return {
+        success: 0,
+        error: "account already active",
+      };
+    } else if (result?.data?.changedRows === 1) {
+      return {
+        success: 1,
+        data: "account restored successfully",
+      };
+    } else {
+      return {
+        success: 0,
+        error: result?.error,
+      };
     }
   }
 

@@ -319,6 +319,7 @@ export const addMeeting = async (req, res) => {
 
     let from_date_obj;
     let to_date_obj;
+    let status = "upcoming";
 
     if (is_remind === 1 && snooze_at) {
       let remind_at;
@@ -351,12 +352,17 @@ export const addMeeting = async (req, res) => {
       // from_date_obj = from_date_obj.getTime();
       // to_date_obj = to_date_obj.getTime();
 
+      const today = new Date();
+      if (from_date_obj.getDate() <= today.getDate()) {
+        status = "pending";
+      }
+
       remind_at = formatDateForSQL(remind_at);
       nxt_snooze_at = formatDateForSQL(nxt_snooze_at);
       from_date_obj = formatDateForSQL(from_date_obj);
       to_date_obj = formatDateForSQL(to_date_obj);
 
-      console.log(from_date_obj);
+      // console.log(from_date_obj);
 
       const result = await meetingMdl.addMeeting({
         user_id,
@@ -369,6 +375,7 @@ export const addMeeting = async (req, res) => {
         address,
         lat,
         lng,
+        status,
         media_id,
         attnds_id,
         from_date_obj,
@@ -380,8 +387,59 @@ export const addMeeting = async (req, res) => {
         nxt_snooze_at,
       });
 
+      let media_result;
+      let attnds_result;
+
+      if (media_id != null) {
+        let media_ids = media_id.split(",");
+        const result = await sourceMdl.getMedia(media_ids);
+        // console.log(result);
+        media_result = result?.data || [];
+      }
+      if (attnds_id != null) {
+        let attnds_ids = attnds_id.split(",");
+        const result = await meetingMdl.getattnds(attnds_ids);
+        // console.log(result);
+        attnds_result = result?.data;
+        const attndsWithRoles = await Promise.all(
+          attnds_result.map(async (attendee) => {
+            const id = attendee?.role_id;
+            let role_name_result = await meetingMdl.getRole(id);
+            let role_name = role_name_result?.data[0]?.role_name;
+            const { role_id, ...rest } = attendee;
+            return { ...rest, role_name };
+          }),
+        );
+        attnds_result = attndsWithRoles;
+      }
+
+      const data = {
+        id: result?.data?.insertId,
+        title: title,
+        descp: descp,
+        m_type: m_type,
+        m_priority: m_priority,
+        m_link: m_link,
+        notes: notes,
+        address: address,
+        lat: lat,
+        lng: lng,
+        status: status,
+        from_date: from_date,
+        to_date: to_date,
+        is_remind: is_remind,
+        remind_tenure: remind_tenure,
+        remind_at: remind_at,
+        snooze_at: snooze_at,
+        nxt_snooze_at: nxt_snooze_at,
+        media_id: media_result,
+        attnds_id: attnds_result,
+      };
+
+      const response = replaceNullWithEmptyString(data);
+
       if (result?.success === 1) {
-        sendResponse(res, 200, 1, "meeting added successfully", [], "");
+        sendResponse(res, 200, 1, "meeting added successfully", [response], "");
       } else {
         sendResponse(res, 200, 0, result?.error, [], "");
       }
@@ -980,6 +1038,37 @@ export const addAppointment = async (req, res) => {
         remind_tenure,
       });
 
+      const data = {
+        id: result?.data?.insertId,
+        title: title,
+        a_type: a_type,
+        notes: notes,
+        address: address,
+        lat: lat,
+        lng: lng,
+        con_name: con_name,
+        con_desg: con_desg,
+        status: status,
+        from_date: from_date,
+        to_date: to_date,
+        is_remind: is_remind,
+        remind_status: null,
+        remind_tenure: null,
+        remind_at: null,
+        snooze_at: null,
+        nxt_snooze_at: null,
+        media: [],
+      };
+
+      let media_result;
+      if (media_id != null) {
+        const ids = media_id.split(",");
+        media_result = await sourceMdl.getMedia(ids);
+        data[media] = media_result;
+      }
+
+      console.log(data);
+
       if (result?.success === 1) {
         return sendResponse(
           res,
@@ -1521,5 +1610,3 @@ export const updateAppointment = async (req, res) => {
     );
   }
 };
-
-
