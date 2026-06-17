@@ -30,7 +30,7 @@ app.get("/abc", (req, res) => {
   res.send("server");
 });
 
-console.log("abc");
+
 const port = process.env.PORT || 3000;
 
 app.listen(port, () =>
