@@ -298,12 +298,12 @@ export const addMeeting = async (req, res) => {
 
     let mediaAllowFive = media_id ? media_id.split(",") : [];
     let attndAllowFive = attnds_id ? attnds_id.split(",") : [];
-    if (mediaAllowFive.length > 5 || attndAllowFive.length > 5) {
+    if (mediaAllowFive.length > 5) {
       return sendResponse(
         res,
         200,
         0,
-        "Too many id's have ben passed in media or attendees id. Only '5' or less than '5' are valid",
+        "Too many id's have ben passed in media Only '5' or less than '5' are valid",
         [],
         "",
       );
@@ -387,8 +387,8 @@ export const addMeeting = async (req, res) => {
         nxt_snooze_at,
       });
 
-      let media_result;
-      let attnds_result;
+      let media_result = [];
+      let attnds_result = [];
 
       if (media_id != null) {
         let media_ids = media_id.split(",");
@@ -422,15 +422,16 @@ export const addMeeting = async (req, res) => {
         m_link: m_link,
         notes: notes,
         address: address,
-        lat: lat,
-        lng: lng,
+        lat: lat === null ? lat : String(lat),
+        lng: lng === null ? lng : String(lng),
         status: status,
         from_date: from_date,
         to_date: to_date,
         is_remind: is_remind,
-        remind_tenure: remind_tenure,
+        remind_tenure:
+          remind_tenure === null ? remind_tenure : String(remind_tenure),
         remind_at: remind_at,
-        snooze_at: snooze_at,
+        snooze_at: snooze_at === null ? snooze_at : String(snooze_at),
         nxt_snooze_at: nxt_snooze_at,
         media_id: media_result,
         attnds_id: attnds_result,
@@ -458,6 +459,7 @@ export const addMeeting = async (req, res) => {
       to_date_obj = formatDateForSQL(to_date_obj);
 
       // console.log(from_date_obj);
+      // console.log(status);
 
       const result = await meetingMdl.addMeeting({
         user_id,
@@ -470,6 +472,7 @@ export const addMeeting = async (req, res) => {
         address,
         lat,
         lng,
+        status,
         media_id,
         attnds_id,
         from_date_obj,
@@ -481,8 +484,67 @@ export const addMeeting = async (req, res) => {
         nxt_snooze_at,
       });
 
+      let media_result = [];
+      let attnds_result = [];
+
+      if (media_id != null) {
+        let media_ids = media_id.split(",");
+        const result = await sourceMdl.getMedia(media_ids);
+        // console.log(result);
+        media_result = result?.data || [];
+      }
+      if (attnds_id != null) {
+        let attnds_ids = attnds_id.split(",");
+        const result = await meetingMdl.getattnds(attnds_ids);
+        // console.log(result);
+        attnds_result = result?.data;
+        const attndsWithRoles = await Promise.all(
+          attnds_result.map(async (attendee) => {
+            const id = attendee?.role_id;
+            let role_name_result = await meetingMdl.getRole(id);
+            let role_name = role_name_result?.data[0]?.role_name;
+            const { role_id, ...rest } = attendee;
+            return { ...rest, role_name };
+          }),
+        );
+        attnds_result = attndsWithRoles;
+      }
+
+      const data = {
+        id: result?.data?.insertId,
+        title: title,
+        descp: descp,
+        m_type: m_type,
+        m_priority: m_priority,
+        m_link: m_link,
+        notes: notes,
+        address: address,
+        lat: lat === null ? lat : String(lat),
+        lng: lng === null ? lng : String(lng),
+        status: status,
+        from_date: from_date,
+        to_date: to_date,
+        is_remind: is_remind,
+        remind_tenure:
+          remind_tenure === null ? remind_tenure : String(remind_tenure),
+        remind_at: remind_at,
+        snooze_at: snooze_at === null ? snooze_at : String(snooze_at),
+        nxt_snooze_at: nxt_snooze_at,
+        media_id: media_result,
+        attnds_id: attnds_result,
+      };
+
+      const response = replaceNullWithEmptyString(data);
+
       if (result?.success === 1) {
-        return sendResponse(res, 200, 1, "meeting added successfully", [], "");
+        return sendResponse(
+          res,
+          200,
+          1,
+          "meeting added successfully",
+          [response],
+          "",
+        );
       } else {
         return sendResponse(res, 200, 0, result?.error, [], "");
       }
@@ -517,6 +579,7 @@ export const addMeeting = async (req, res) => {
         address,
         lat,
         lng,
+        status,
         media_id,
         attnds_id,
         from_date_obj,
@@ -527,8 +590,61 @@ export const addMeeting = async (req, res) => {
         snooze_at,
         nxt_snooze_at,
       });
+
+      let media_result = [];
+      let attnds_result = [];
+
+      if (media_id != null) {
+        let media_ids = media_id.split(",");
+        const result = await sourceMdl.getMedia(media_ids);
+        // console.log(result);
+        media_result = result?.data || [];
+      }
+      if (attnds_id != null) {
+        let attnds_ids = attnds_id.split(",");
+        const result = await meetingMdl.getattnds(attnds_ids);
+        // console.log(result);
+        attnds_result = result?.data;
+        const attndsWithRoles = await Promise.all(
+          attnds_result.map(async (attendee) => {
+            const id = attendee?.role_id;
+            let role_name_result = await meetingMdl.getRole(id);
+            let role_name = role_name_result?.data[0]?.role_name;
+            const { role_id, ...rest } = attendee;
+            return { ...rest, role_name };
+          }),
+        );
+        attnds_result = attndsWithRoles;
+      }
+
+      const data = {
+        id: result?.data?.insertId,
+        title: title,
+        descp: descp,
+        m_type: m_type,
+        m_priority: m_priority,
+        m_link: m_link,
+        notes: notes,
+        address: address,
+        lat: lat === null ? lat : String(lat),
+        lng: lng === null ? lng : String(lng),
+        status: status,
+        from_date: from_date,
+        to_date: to_date,
+        is_remind: is_remind,
+        remind_tenure:
+          remind_tenure === null ? remind_tenure : String(remind_tenure),
+        remind_at: remind_at,
+        snooze_at: snooze_at === null ? snooze_at : String(snooze_at),
+        nxt_snooze_at: nxt_snooze_at,
+        media_id: media_result,
+        attnds_id: attnds_result,
+      };
+
+      const response = replaceNullWithEmptyString(data);
+
       if (result?.success === 1) {
-        sendResponse(res, 200, 1, "meeting added successfully", [], "");
+        sendResponse(res, 200, 1, "meeting added successfully", [response], "");
       } else {
         sendResponse(res, 200, 0, result?.error, [], "");
       }
@@ -565,7 +681,8 @@ export const getMeeting = async (req, res) => {
     let result = [];
     let meetings = [];
 
-    status = status === "" ? null : status;
+    status = status === "" ? null : status.split(",");
+    // console.log(status);
     from_date = from_date === "" ? null : from_date;
     to_date = to_date === "" ? null : to_date;
 
@@ -1038,8 +1155,9 @@ export const addAppointment = async (req, res) => {
         is_remind,
         remind_tenure,
       });
+      // console.log(result);
 
-      const data = {
+      let data = {
         id: result?.data?.insertId,
         title: title,
         a_type: a_type,
@@ -1053,7 +1171,7 @@ export const addAppointment = async (req, res) => {
         from_date: from_date,
         to_date: to_date,
         is_remind: is_remind,
-        remind_status: null,
+        remind_status: "pending",
         remind_tenure: null,
         remind_at: null,
         snooze_at: null,
@@ -1065,10 +1183,10 @@ export const addAppointment = async (req, res) => {
       if (media_id != null) {
         const ids = media_id.split(",");
         media_result = await sourceMdl.getMedia(ids);
-        data[media] = media_result;
+        data.media = media_result?.data || [];
       }
 
-      console.log(data);
+      const response = replaceNullWithEmptyString(data);
 
       if (result?.success === 1) {
         return sendResponse(
@@ -1076,7 +1194,7 @@ export const addAppointment = async (req, res) => {
           200,
           1,
           "Appointment added successfully",
-          [],
+          [response],
           "",
         );
       } else if (result?.success === 0) {
@@ -1133,13 +1251,44 @@ export const addAppointment = async (req, res) => {
         remind_tenure,
         remind_at,
       });
+
+      let data = {
+        id: result?.data?.insertId,
+        title: title,
+        a_type: a_type,
+        notes: notes,
+        address: address,
+        lat: lat,
+        lng: lng,
+        con_name: con_name,
+        con_desg: con_desg,
+        status: status,
+        from_date: from_date,
+        to_date: to_date,
+        is_remind: is_remind,
+        remind_status: "pending",
+        remind_tenure: String(remind_tenure),
+        remind_at: remind_at,
+        snooze_at: null,
+        nxt_snooze_at: null,
+        media: [],
+      };
+
+      let media_result;
+      if (media_id != null) {
+        const ids = media_id.split(",");
+        media_result = await sourceMdl.getMedia(ids);
+        data.media = media_result?.data || [];
+      }
+
+      const response = replaceNullWithEmptyString(data);
       if (result?.success === 1) {
         return sendResponse(
           res,
           200,
           1,
           "Appointment added successfully",
-          [],
+          [response],
           "",
         );
       } else if (result?.success === 0) {
@@ -1195,13 +1344,43 @@ export const addAppointment = async (req, res) => {
         snooze_at,
         nxt_snooze_at,
       });
+      let data = {
+        id: result?.data?.insertId,
+        title: title,
+        a_type: a_type,
+        notes: notes,
+        address: address,
+        lat: lat,
+        lng: lng,
+        con_name: con_name,
+        con_desg: con_desg,
+        status: status,
+        from_date: from_date,
+        to_date: to_date,
+        is_remind: is_remind,
+        remind_status: "pending",
+        remind_tenure: String(remind_tenure),
+        remind_at: remind_at,
+        snooze_at: String(snooze_at),
+        nxt_snooze_at: String(nxt_snooze_at),
+        media: [],
+      };
+
+      let media_result;
+      if (media_id != null) {
+        const ids = media_id.split(",");
+        media_result = await sourceMdl.getMedia(ids);
+        data.media = media_result?.data || [];
+      }
+
+      const response = replaceNullWithEmptyString(data);
       if (result?.success === 1) {
         return sendResponse(
           res,
           200,
           1,
           "Appointment added successfully",
-          [],
+          [response],
           "",
         );
       } else if (result?.success === 0) {
@@ -1285,22 +1464,52 @@ export const getAppointment = async (req, res) => {
       );
     }
 
-    let { user_id, status } = validatedData?.value;
+    let { user_id, status, from_date, to_date } = validatedData?.value;
     let result;
     let appointments;
+    let upt_cols = [];
+    let params = [];
 
-    if (user_id && !status) {
-      result = await meetingMdl.getAppoint({ user_id });
-      // console.log("completed appoint fetching");
-    } else if (user_id && status) {
-      result = await meetingMdl.getAppoint({ user_id, status });
+    // if (user_id && !status) {
+    //   result = await meetingMdl.getAppoint({ user_id });
+    //   // console.log("completed appoint fetching");
+    // } else if (user_id && status) {
+    //   result = await meetingMdl.getAppoint({ user_id, status });
+    // }
+    // if (result?.success === 0) {
+    //   return sendResponse(res, 200, 0, "failed to fetch appointments", [], "");
+    // } else if (result?.success === 1) {
+    //   appointments = result?.data;
+    //   console.log(appointments);
+    // }
+
+    status = status === "" ? null : status.split(",");
+    from_date = from_date === "" ? null : from_date;
+    to_date = to_date === "" ? null : to_date;
+
+    // console.log(status)
+
+    if (user_id) {
+      upt_cols.push("user_id = ?");
+      params.push(user_id);
     }
-    if (result?.success === 0) {
-      return sendResponse(res, 200, 0, "failed to fetch appointments", [], "");
-    } else if (result?.success === 1) {
-      appointments = result?.data;
-      // console.log(appointments);
+    if (status != null) {
+      const placeholders = status.map(() => "?").join(",");
+      upt_cols.push(` AND status IN (${placeholders})`);
+      params.push(...status);
     }
+    if (from_date != null) {
+      upt_cols.push(" AND from_date <= ?");
+      params.push(`${to_date} 23:59:59`);
+    }
+    if (to_date != null) {
+      upt_cols.push(" AND to_date >= ?");
+      params.push(`${from_date} 00:00:00`);
+    }
+    // console.log(upt_cols);
+    result = await meetingMdl.getAppoint(upt_cols, params);
+    // console.log(result);
+    appointments = result?.data;
 
     const formattedAppointments = await Promise.all(
       appointments.map(async (appointment) => {
@@ -1322,8 +1531,6 @@ export const getAppointment = async (req, res) => {
       }),
     );
     const response = replaceNullWithEmptyString(formattedAppointments);
-    // const dateCols = ["from_date", "to_date", "remind_at", "nxt_snooze_at"];
-    // const finalResponse = dateToMillis(response, dateCols);
 
     return sendResponse(
       res,

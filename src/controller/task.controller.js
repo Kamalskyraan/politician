@@ -1,5 +1,9 @@
 import express from "express";
-import { formatDateForSQL, replaceNullWithEmptyString, sendResponse } from "../utils/helper.js";
+import {
+  formatDateForSQL,
+  replaceNullWithEmptyString,
+  sendResponse,
+} from "../utils/helper.js";
 import {
   addTaskSchema,
   deleteTaskSchema,
@@ -98,8 +102,58 @@ export const addTask = async (req, res) => {
       nxt_snooze_at,
     });
 
+    const data = {
+      id: result?.data?.insertId,
+      title: title,
+      descp: descp,
+      t_priority: 1,
+      from_date: from_date,
+      to_date: to_date,
+      t_status: status,
+      is_remind: 0,
+      remind_status: "pending",
+      remind_tenure:
+        remind_tenure === null ? remind_tenure : String(remind_tenure),
+      remind_at: remind_at,
+      snooze_at: snooze_at === null ? snooze_at : String(snooze_at),
+      nxt_snooze_at: nxt_snooze_at,
+      media_result: [],
+      attnds_with_roles: [],
+    };
+
+    if (media_id != null) {
+      const id = media_id.split(",");
+      const result = await sourceMdl.getMedia(id);
+      data.media_result = result?.data;
+    }
+    if (attnds_id != null) {
+      const id = attnds_id.split(",");
+      const result = await meetingMdl.getattnds(id);
+      data.attnds_with_roles = result?.data;
+
+      const attndsWithRoles = await Promise.all(
+        data.attnds_with_roles.map(async (attendee) => {
+          const id = attendee?.role_id;
+          let role_name_result = await meetingMdl.getRole(id);
+          let role_name = role_name_result?.data[0]?.role_name;
+          const { role_id, ...rest } = attendee;
+          return { ...rest, role_name };
+        }),
+      );
+      data.attnds_with_roles = attndsWithRoles;
+    }
+
+    const response = replaceNullWithEmptyString(data);
+
     if (result?.success === 1) {
-      return sendResponse(res, 200, 1, "Task added successfully", [], "");
+      return sendResponse(
+        res,
+        200,
+        1,
+        "Task added successfully",
+        [response],
+        "",
+      );
     } else if (result?.success === 0) {
       return sendResponse(res, 200, 0, "Failed to add task", [], "");
     }
@@ -374,7 +428,7 @@ export const getTask = async (req, res) => {
       }),
     );
 
-   const finalResponse = replaceNullWithEmptyString(response);
+    const finalResponse = replaceNullWithEmptyString(response);
 
     if (result?.success === 1) {
       return sendResponse(

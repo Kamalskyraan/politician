@@ -317,7 +317,7 @@ router.post(
               },
               status: {
                 type: "string",
-                example: "pending"
+                example: "pending,cancelled,completed"
               },
               from_date: {
                 type: "string",
@@ -517,7 +517,7 @@ router.post(
               },
               media_id: {
                 type: "string",
-                example: "1,3,4,5,10,11"
+                example: "1,3,4,5,10"
               },
               con_name: {
                 type: "string",
@@ -529,11 +529,11 @@ router.post(
               },
               from_date: {
                 type: "string",
-                example: "1779787800000"
+                example: "2026-06-16 14:40:32"
               },
               to_date: {
                 type: "string",
-                example: "1779798600000"
+                example: "2026-06-17 14:40:32"
               },
               is_remind: {
                 type: "integer",
@@ -615,8 +615,16 @@ router.post(
               },
               status: {
                 type: "string",
-                example: "pending"
-              }
+                example: "pending,cancelled,completed"
+              },
+              from_date: {
+                type: "string",
+                example: "2026-06-12"
+              },
+              to_date: {
+                type: "string",
+                example: "2026-06-16"
+              },
             }
           }
         }
@@ -721,6 +729,5 @@ router.post(
     }
 */ meetingcontroller.updateAppointment,
 );
-
 
 export default router;

@@ -519,12 +519,26 @@ export const getMeetingSchema = Joi.object({
     "string.required": "user Id cannot be empty",
   }),
   status: Joi.string()
-    .valid("upcoming", "completed", "cancelled", "pending")
     .allow("")
+    .custom((value, helpers) => {
+      if (value === "") return value;
+
+      const validStatuses = ["upcoming", "completed", "cancelled", "pending"];
+
+      const statuses = value.split(",");
+
+      for (const status of statuses) {
+        if (!validStatuses.includes(status.trim())) {
+          return helpers.error("any.invalid");
+        }
+      }
+
+      return value;
+    })
     .messages({
-      "string.string": "status should be a string",
-      "any.only":
-        "status must be one of: upcoming, completed, cancelled, pending, or an empty string",
+      "string.base": "status should be a string",
+      "any.invalid":
+        "status must contain only upcoming, completed, cancelled, pending",
     }),
   from_date: Joi.string().allow("").messages({
     "string.string": "from_date should be a string",
@@ -651,6 +665,14 @@ export const getAppointSchema = Joi.object({
   }),
   status: Joi.string().messages({
     "string.base": "status should be a string",
+  }),
+  from_date: Joi.string().allow("").messages({
+    "string.string": "from_date should be a string",
+    "any.required": "from_date cannot be empty",
+  }),
+  to_date: Joi.string().allow("").messages({
+    "string.string": "to_date should be a string",
+    "any.required": "to_date cannot be empty",
   }),
 });
 

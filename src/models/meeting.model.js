@@ -217,8 +217,6 @@ export class meetingModel {
       nxt_snooze_at ?? null,
     ];
 
-    // console.log("params:", params);
-
     const result = await executeQuery(query, params);
 
     // console.log(result);
@@ -264,10 +262,12 @@ export class meetingModel {
   `;
 
     let params = [user_id];
+    // console.log(status)
 
     if (status != null) {
-      query += ` AND status = ?`;
-      params.push(status);
+      const placeholders = status.map(() => "?").join(",");
+      query += ` AND status IN (${placeholders})`;
+      params.push(...status);
     }
 
     if (from_date != null) {
@@ -281,6 +281,7 @@ export class meetingModel {
     }
 
     const result = await executeQuery(query, params);
+    // console.log(result);
 
     if (result?.success === 1 && result?.data?.length > 0) {
       return {
@@ -384,7 +385,7 @@ export class meetingModel {
     if (result?.success === 1) {
       return {
         success: 1,
-        data: result?.rows,
+        data: result?.data,
       };
     } else if (result?.success === 0) {
       return {
@@ -412,16 +413,19 @@ export class meetingModel {
     }
   }
 
-  async getAppoint({ user_id, status }) {
+  async getAppoint(upt_cols, params) {
     let query;
-    let params;
-    if (status) {
-      query = `SELECT id, title, a_type, notes, address, lat, lng, media_id, con_name, con_desg, status, from_date, to_date, is_remind, remind_status, remind_tenure, remind_at, snooze_at, nxt_snooze_at FROM appointments WHERE user_id = ? AND status = ?`;
-      params = [user_id, status];
-    } else {
-      query = `SELECT id, title, a_type, notes, address, lat, lng, media_id, con_name, con_desg, status, from_date, to_date, is_remind, remind_status, remind_tenure, remind_at, snooze_at, nxt_snooze_at FROM appointments WHERE user_id = ?`;
-      params = [user_id];
-    }
+    // let params;
+    // if (status) {
+    //   query = `SELECT id, title, a_type, notes, address, lat, lng, media_id, con_name, con_desg, status, from_date, to_date, is_remind, remind_status, remind_tenure, remind_at, snooze_at, nxt_snooze_at FROM appointments WHERE user_id = ? AND status = ?`;
+    //   params = [user_id, status];
+    // } else {
+    //   query = `SELECT id, title, a_type, notes, address, lat, lng, media_id, con_name, con_desg, status, from_date, to_date, is_remind, remind_status, remind_tenure, remind_at, snooze_at, nxt_snooze_at FROM appointments WHERE user_id = ?`;
+    //   params = [user_id];
+    // }
+
+    query = `SELECT * FROM appointments WHERE ${upt_cols.join("")}`;
+    // params = params;
     const result = await executeQuery(query, params);
     if (result?.success === 1) {
       return {
