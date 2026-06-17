@@ -7,6 +7,7 @@ export class supportModel {
     let params = [question, answer];
 
     const result = await executeQuery(query, params);
+    // console.log(result)
     if (result?.success === 1) {
       return {
         success: 1,

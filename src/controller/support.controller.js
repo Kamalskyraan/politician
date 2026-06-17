@@ -22,13 +22,21 @@ export const addFaq = async (req, res) => {
     const { question, answer } = req.body;
 
     const faqResult = await supportMdl.addfaq(question, answer);
+    // console.log(faqResult?.success);
     if (faqResult?.success === 1) {
-      sendResponse(res, 200, 1, "faq added successfully", [], "");
-    } else {
-      sendResponse(res, 200, 0, "faq failed to add", [], "");
+      return sendResponse(res, 200, 1, "faq added successfully", [], "");
+    } else if (faqResult?.success === 0) {
+      return sendResponse(res, 200, 0, "faq failed to add", [], "");
     }
   } catch (error) {
-    sendResponse(res, 500, 0, "Internal Server Error", [], error.message);
+    return sendResponse(
+      res,
+      500,
+      0,
+      "Internal Server Error",
+      [],
+      error.message,
+    );
   }
 };
 
