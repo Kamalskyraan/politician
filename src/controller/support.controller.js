@@ -85,7 +85,7 @@ export const filterApi = async (req, res) => {
     let { user_id } = validatedData?.value;
 
     const result = await supportMdl.getLocations(user_id);
-    if(result?.success === 0){
+    if (result?.success === 0) {
       return sendResponse(res, 200, 0, "no data found", [], "");
     }
     const data = result?.data;
@@ -210,7 +210,12 @@ export const getCountries = async (req, res) => {
       // fetched_district = response?.data?.data.map((obj) => obj);
 
       fetched_district = District?.states.filter((obj) => obj.state === state);
-      fetched_district = fetched_district[0].districts;
+      // console.log(fetched_district);
+      if (fetched_district.length < 1) {
+        fetched_district.push(state);
+      } else {
+        fetched_district = fetched_district[0].districts;
+      }
 
       return sendResponse(
         res,
@@ -355,7 +360,14 @@ export const addSumitcategory = async (req, res) => {
         "",
       );
     } else if (result?.success === 0) {
-      return sendResponse(res, 200, 0, "Failed to add political sumit category", [], "");
+      return sendResponse(
+        res,
+        200,
+        0,
+        "Failed to add political sumit category",
+        [],
+        "",
+      );
     }
   } catch (error) {
     return sendResponse(

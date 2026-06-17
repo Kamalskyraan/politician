@@ -21,6 +21,8 @@ export const genarateotp = ({ phn_num, c_code }) => {
 };
 
 export const executeQuery = async (query, params = []) => {
+  // console.log(query)
+  // console.log(params)
   try {
     const [rows] = await db.execute(query, params);
     // console.log("from execute query",rows);
