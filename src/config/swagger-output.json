@@ -1480,7 +1480,7 @@
     "/support/issuecategory": {
       "post": {
         "tags": [
-          "15.Support Api`s"
+          "16.Dashboard Api`s"
         ],
         "summary": "Add category for issues and grievance",
         "description": "Add category",
@@ -1502,6 +1502,76 @@
                   "category": {
                     "type": "string",
                     "example": "Road"
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/support/getissuecategory": {
+      "post": {
+        "tags": [
+          "16.Dashboard Api`s"
+        ],
+        "summary": "Get category for issues and grievance",
+        "description": "get category",
+        "responses": {
+          "200": {
+            "description": "Issue category fetched successfully"
+          },
+          "500": {
+            "description": "Internal Server Error"
+          }
+        },
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "status": {
+                    "type": "string",
+                    "example": "active"
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/support/deleteissuecategory": {
+      "post": {
+        "tags": [
+          "16.Dashboard Api`s"
+        ],
+        "summary": "Delete and retrieve Issue Categories",
+        "description": "Delete and retrieve Issue Categories, id and pass active to retrieve or pass inactive to delete",
+        "responses": {
+          "200": {
+            "description": "issue categories deleted or retrieved successfully"
+          },
+          "500": {
+            "description": "Internal Server Error"
+          }
+        },
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "id": {
+                    "type": "number",
+                    "example": 1
+                  },
+                  "status": {
+                    "type": "string",
+                    "example": "active"
                   }
                 }
               }

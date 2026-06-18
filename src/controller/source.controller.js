@@ -38,9 +38,9 @@ export const uploadMedia = async (req, res) => {
       org_name = org_name[0].split(",").map((name) => name.trim());
     }
     // console.log(org_name);
-    if(files.length !== org_name.length){
-      return sendResponse(res, 200, 0, "files and their original name should be equal", [], "");
-    }
+    // if(files.length !== org_name.length){
+    //   return sendResponse(res, 200, 0, "files and their original name should be equal", [], "");
+    // }
     const uploadedFiles = await Promise.all(
       files.map(async (file, index) => {
         const url = `${file.destination.replace("src", "")}/${file.filename}`;
@@ -57,7 +57,7 @@ export const uploadMedia = async (req, res) => {
         return {
           id: result?.data?.insertId,
           url: url,
-          media_size: file.size,
+          media_size: String(file.size),
           org_name: org_name[index],
         };
       }),

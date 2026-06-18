@@ -264,7 +264,7 @@ router.post(
 router.post(
   "/issuecategory",
   /*
-    #swagger.tags = ['15.Support Api`s']
+    #swagger.tags = ['16.Dashboard Api`s']
     #swagger.summary = 'Add category for issues and grievance'
     #swagger.description = 'Add category'
 
@@ -293,6 +293,109 @@ router.post(
       description: 'Internal Server Error'
     }
 */ supportController.addIssueCat,
+);
+router.post(
+  "/getissuecategory",
+  /*
+    #swagger.tags = ['16.Dashboard Api`s']
+    #swagger.summary = 'Get category for issues and grievance'
+    #swagger.description = 'get category'
+
+    #swagger.requestBody = {
+      required: true,
+      content: {
+        "application/json": {
+          schema: {
+            type: "object",
+            properties: {
+              status: {
+                type: "string",
+                example: "active"
+              },
+            }
+          }
+        }
+      }
+    }
+
+    #swagger.responses[200] = {
+      description: 'Issue category fetched successfully'
+    }
+
+    #swagger.responses[500] = {
+      description: 'Internal Server Error'
+    }
+*/ supportController.getIssueCat,
+);
+router.post(
+  "/deleteissuecategory",
+  /*
+    #swagger.tags = ['16.Dashboard Api`s']
+    #swagger.summary = 'Delete and retrieve Issue Categories'
+    #swagger.description = 'Delete and retrieve Issue Categories, id and pass active to retrieve or pass inactive to delete'
+
+    #swagger.requestBody = {
+      required: true,
+      content: {
+        "application/json": {
+          schema: {
+            type: "object",
+            properties: {
+              id: {
+                type: "number",
+                example: 1
+              },
+              status: {
+                type: "string",
+                example: "active"
+              }
+            }
+          }
+        }
+      }
+    }
+
+    #swagger.responses[200] = {
+      description: 'issue categories deleted or retrieved successfully'
+    }
+
+    #swagger.responses[500] = {
+      description: 'Internal Server Error'
+    }
+*/ supportController.deleteIssueCat,
+);
+router.post(
+  "/deleteissuecategorypermanently",
+  /*
+    #swagger.tags = ['16.Dashboard Api`s']
+    #swagger.summary = 'Delete and retrieve Issue Categories permanently'
+    #swagger.description = 'Delete and retrieve Issue Categories permanently by passing id'
+
+    #swagger.requestBody = {
+      required: true,
+      content: {
+        "application/json": {
+          schema: {
+            type: "object",
+            properties: {
+              id: {
+                type: "number",
+                example: 1
+              }
+            }
+          }
+        }
+      }
+    }
+
+    #swagger.responses[200] = {
+      description: 'issue categories successfully deleted permanently'
+    }
+
+    #swagger.responses[500] = {
+      description: 'Internal Server Error'
+    }
+*/ supportController.deleteIssueCatpermanently,
 );
 router.post(
   "/addsumitcategory",

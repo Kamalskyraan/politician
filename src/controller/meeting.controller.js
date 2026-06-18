@@ -734,7 +734,7 @@ export const getMeeting = async (req, res) => {
                   const roleResult = await meetingMdl.getRole(attnd.role_id);
                   role_name = roleResult?.data?.[0]?.role_name;
                 }
-                const {...rest } = attnd;
+                const { ...rest } = attnd;
                 return { ...rest, role_name };
               }),
             );
@@ -1610,6 +1610,8 @@ export const updateAppointment = async (req, res) => {
       );
     }
 
+    console.log(req.body);
+
     let upt_cols = [];
     let params = [];
 
@@ -1666,7 +1668,7 @@ export const updateAppointment = async (req, res) => {
     }
     if (from_date && is_remind === 0) {
       let today = new Date();
-      let sts;
+      let sts = "pending";
       from_date = new Date(from_date);
       // console.log(from_date);
       if (
@@ -1699,7 +1701,7 @@ export const updateAppointment = async (req, res) => {
     }
     if (from_date && is_remind === 1 && !snooze_at) {
       let today = new Date();
-      let sts;
+      let sts = "pending";
       let remind_at;
       from_date = new Date(from_date);
       remind_at = from_date.getTime() - remind_tenure * 1000;
@@ -1731,7 +1733,7 @@ export const updateAppointment = async (req, res) => {
     }
     if (from_date && is_remind === 1 && snooze_at) {
       let today = new Date();
-      let sts;
+      let sts = "pending";
       let remind_at;
       let nxt_snooze_at;
 
@@ -1782,9 +1784,8 @@ export const updateAppointment = async (req, res) => {
         nxt_snooze_at,
       );
     }
-
-    // console.log(upt_cols);
-    // console.log(params);
+    console.log(upt_cols);
+    console.log(params);
     params.push(id);
 
     const result = await meetingMdl.updateAppointment({ upt_cols, params });
