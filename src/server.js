@@ -26,7 +26,7 @@ app.get("/check", (req, res) => {
   res.send("backend server is running now");
 });
 
-app.get("/abcd", (req, res) => {
+app.get("/abcde", (req, res) => {
   res.send("server");
 });
 
