@@ -97,6 +97,7 @@ export class folderModel {
 
   async getFolderImages({ user_id, folder_id, page = 1, limit = 10 }) {
     const offset = (page - 1) * limit;
+    const BASE_URL = process.env.BASE_URL;
 
     if (folder_id) {
       const [[{ total }]] = await pool.query(
@@ -185,6 +186,10 @@ export class folderModel {
         return {
           ...folder,
           images,
+          images: images.map((img) => ({
+            ...img,
+            url: img.url ? `${BASE_URL}${img.url}` : null,
+          })),
         };
       }),
     );
