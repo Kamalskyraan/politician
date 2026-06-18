@@ -215,7 +215,7 @@ export class folderModel {
   const BASE_URL = process.env.BASE_URL || "";
 
   if (folder_id) {
-    const [[{ total }]]: any = await pool.query(
+    const [[{ total }]] = await pool.query(
       `
       SELECT COUNT(*) AS total
       FROM media
@@ -224,7 +224,7 @@ export class folderModel {
       [folder_id]
     );
 
-    const [rows]: any = await pool.query(
+    const [rows] = await pool.query(
       `
       SELECT
         id,
@@ -241,7 +241,7 @@ export class folderModel {
       [folder_id, Number(limit), Number(offset)]
     );
 
-    const formattedRows = rows.map((item: any) => ({
+    const formattedRows = rows.map((item) => ({
       ...item,
       url: item.url
         ? item.url.startsWith("http")
@@ -261,7 +261,7 @@ export class folderModel {
     };
   }
 
-  const [[{ total }]]: any = await pool.query(
+  const [[{ total }]] = await pool.query(
     `
     SELECT COUNT(*) AS total
     FROM user_folder
@@ -270,7 +270,7 @@ export class folderModel {
     [user_id]
   );
 
-  const [rows]: any = await pool.query(
+  const [rows] = await pool.query(
     `
     SELECT
       f.id,
@@ -289,8 +289,8 @@ export class folderModel {
   );
 
   const foldersWithImages = await Promise.all(
-    rows.map(async (folder: any) => {
-      const [images]: any = await pool.query(
+    rows.map(async (folder) => {
+      const [images] = await pool.query(
         `
         SELECT
           id,
@@ -309,7 +309,7 @@ export class folderModel {
 
       return {
         ...folder,
-        images: images.map((img: any) => ({
+        images: images.map((img) => ({
           ...img,
           url: img.url
             ? img.url.startsWith("http")
