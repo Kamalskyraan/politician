@@ -1314,20 +1314,29 @@
     },
     "/support/getfaq": {
       "post": {
-        "description": "",
+        "tags": [
+          "16.Dashboard Api`s"
+        ],
+        "summary": "Get frequent questions and answers",
+        "description": "Get frequent questions and answers",
         "responses": {
-          "default": {
-            "description": ""
+          "200": {
+            "description": "Filter list fetched successfully"
+          },
+          "500": {
+            "description": "Internal Server Error"
           }
         },
         "requestBody": {
+          "required": true,
           "content": {
             "application/json": {
               "schema": {
                 "type": "object",
                 "properties": {
                   "status": {
-                    "example": "any"
+                    "type": "string",
+                    "example": "active"
                   }
                 }
               }
@@ -1338,29 +1347,107 @@
     },
     "/support/updatefaq": {
       "post": {
-        "description": "",
+        "tags": [
+          "16.Dashboard Api`s"
+        ],
+        "summary": "Udpate frequent questions and answers",
+        "description": "Update frequent questions and answers",
         "responses": {
-          "default": {
-            "description": ""
+          "200": {
+            "description": "Faq updated successfully"
+          },
+          "500": {
+            "description": "Internal Server Error"
           }
         },
         "requestBody": {
+          "required": true,
           "content": {
             "application/json": {
               "schema": {
                 "type": "object",
                 "properties": {
                   "id": {
-                    "example": "any"
+                    "type": "number",
+                    "example": 1
                   },
                   "question": {
-                    "example": "any"
+                    "type": "string",
+                    "example": "faq question"
                   },
                   "answer": {
-                    "example": "any"
+                    "type": "string",
+                    "example": "faq answer"
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/support/deletefaq": {
+      "post": {
+        "tags": [
+          "16.Dashboard Api`s"
+        ],
+        "summary": "Delete and retrieve frequent questions and answers",
+        "description": "Delete and retrieve frequent questions and answers, id and pass active to retrieve or pass inactive to delete",
+        "responses": {
+          "200": {
+            "description": "Faq deleted or retrieved successfully"
+          },
+          "500": {
+            "description": "Internal Server Error"
+          }
+        },
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "id": {
+                    "type": "number",
+                    "example": 1
                   },
                   "status": {
-                    "example": "any"
+                    "type": "string",
+                    "example": "active"
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/support/deletefaqpermanently": {
+      "post": {
+        "tags": [
+          "16.Dashboard Api`s"
+        ],
+        "summary": "Delete faq permanently",
+        "description": "Delete faq permanently",
+        "responses": {
+          "200": {
+            "description": "Faq successfully deleted permanently"
+          },
+          "500": {
+            "description": "Internal Server Error"
+          }
+        },
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "id": {
+                    "type": "number",
+                    "example": 1
                   }
                 }
               }

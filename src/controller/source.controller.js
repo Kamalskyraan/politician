@@ -62,7 +62,7 @@ export const uploadMedia = async (req, res) => {
         return {
           id: result?.data?.insertId,
           url: url,
-          size: file.size,
+          media_size: file.size,
           org_name: org_name[index],
         };
       }),

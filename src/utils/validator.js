@@ -1703,3 +1703,45 @@ export const accRestoreSchema = Joi.object({
     "any.required": "Email is required",
   }),
 });
+export const addFaqSchema = Joi.object({
+  question: Joi.string().required().messages({
+    "string.base": "question should be string",
+    "any.required": "question is required",
+  }),
+  answer: Joi.string().required().messages({
+    "string.base": "answer should be string",
+    "any.required": "answer is required",
+  }),
+});
+export const updateFaqSchema = Joi.object({
+  id: Joi.number().required().messages({
+    "number.base": "id should be number",
+    "any.required": "id is required",
+  }),
+  question: Joi.string().required().messages({
+    "string.base": "question should be string",
+    "any.required": "question is required",
+  }),
+  answer: Joi.string().required().messages({
+    "string.base": "answer should be string",
+    "any.required": "answer is required",
+  }),
+});
+export const deleteFaqSchema = Joi.object({
+  id: Joi.number().required().messages({
+    "number.base": "id should be number",
+    "any.required": "id is required",
+  }),
+});
+export const getFaqSchema = Joi.object({
+  status: Joi.string().required().messages({
+    "string.base": "status should be string",
+    "any.required": "status is required",
+  }),
+});
+export const deleteFaqPermanentlySchema = Joi.object({
+  id: Joi.number().required().messages({
+    "number.base": "id should be number",
+    "any.required": "id is required",
+  }),
+});
