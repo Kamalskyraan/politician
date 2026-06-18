@@ -6,7 +6,10 @@ import {
   addIssueCategorySchema,
   addSumitCategorySchema,
   contactUsSchema,
+  deleteFaqPermanentlySchema,
+  deleteFaqSchema,
   getCountriesSchema,
+  getFaqSchema,
   getMemberschema,
   statusChangeSchema,
   userIdSchema,
@@ -42,7 +45,21 @@ export const addFaq = async (req, res) => {
 
 export const getFaq = async (req, res) => {
   try {
-    const { status } = req.body;
+    const validatedData = validateRequest(req.body, getFaqSchema);
+
+    if (validatedData?.success === 0) {
+      return sendResponse(
+        res,
+        200,
+        0,
+        "validation error",
+        [],
+        validatedData?.errorObject?.errors,
+      );
+    }
+
+    let { status } = validatedData?.value;
+
     const result = await supportMdl.getFaq(status);
     const data = result?.data;
     // console.log(result);
@@ -59,9 +76,10 @@ export const getFaq = async (req, res) => {
 
 export const updateFaq = async (req, res) => {
   try {
-    const { id, question, answer, status } = req.body;
+    const { id, question, answer } = req.body;
+    console.log(id, question, answer);
 
-    const result = await supportMdl.updateFaq(id, question, answer, status);
+    const result = await supportMdl.updateFaq(id, question, answer);
     //   console.log(result)
     const data = result?.data;
 
@@ -72,6 +90,88 @@ export const updateFaq = async (req, res) => {
     }
   } catch (error) {
     sendResponse(res, 500, 0, "Internal server Error", [], error.message);
+  }
+};
+export const deleteFaq = async (req, res) => {
+  try {
+    const validatedData = validateRequest(req.body, deleteFaqSchema);
+
+    if (validatedData?.success === 0) {
+      return sendResponse(
+        res,
+        200,
+        0,
+        "validation error",
+        [],
+        validatedData?.errorObject?.errors,
+      );
+    }
+
+    let { id, status } = validatedData?.value;
+    // console.log(status);
+
+    const result = await supportMdl.deleteFaq(id, status);
+    // console.log(result);
+
+    if (result?.success === 1) {
+      return sendResponse(
+        res,
+        200,
+        1,
+        status === "active"
+          ? "Faq retrieved successfully"
+          : "Faq deleted successfully",
+        [],
+        "",
+      );
+    } else {
+      return sendResponse(res, 200, 0, result?.error, [], "");
+    }
+  } catch (error) {
+    return sendResponse(
+      res,
+      500,
+      0,
+      "Internal server error",
+      [],
+      error.message,
+    );
+  }
+};
+export const deleteFaqPermanently = async (req, res) => {
+  try {
+    const validatedData = validateRequest(req.body, deleteFaqPermanentlySchema);
+
+    if (validatedData?.success === 0) {
+      return sendResponse(
+        res,
+        200,
+        0,
+        "validation error",
+        [],
+        validatedData?.errorObject?.errors,
+      );
+    }
+
+    let { id } = validatedData?.value;
+    console.log(id);
+
+    const result = await supportMdl.deleteFaqPermanently(id);
+
+    if (result?.success === 1) {
+      return sendResponse(res, 200, 1, "faq deleted permanently", [], "");
+    } else {
+      return sendResponse(res, 200, 0, result?.error, [], "");
+    }
+  } catch (error) {
+    return sendResponse(
+      res,
+      500,
+      0,
+      "Internal server error",
+      [],
+      error.message,
+    );
   }
 };
 

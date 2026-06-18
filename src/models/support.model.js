@@ -22,11 +22,11 @@ export class supportModel {
   }
 
   async getFaq(status) {
-    let query = `SELECT id, question, answer, status FROM faq WHERE status = ?`;
+    let query = `SELECT id, question, answer FROM faq WHERE status = ?`;
     let params = [status];
 
     const result = await executeQuery(query, params);
-    console.log(result);
+    // console.log(result);
 
     if (result?.data.length >= 1) {
       return {
@@ -41,9 +41,46 @@ export class supportModel {
     }
   }
 
-  async updateFaq(id, question, answer, status) {
-    let query = `UPDATE faq SET question = ?, answer = ?, status = ? WHERE id = ?`;
-    let params = [question, answer, status, id];
+  async updateFaq(id, question, answer) {
+    let query = `UPDATE faq SET question = ?, answer = ? WHERE id = ?`;
+    let params = [question, answer, id];
+
+    const result = await executeQuery(query, params);
+    // console.log(result);
+    if (result?.success === 1) {
+      return {
+        success: 1,
+        data: result?.data,
+      };
+    } else {
+      return {
+        success: 0,
+        error: result?.error,
+      };
+    }
+  }
+
+  async deleteFaq(id, status) {
+    let query = `UPDATE faq SET status = ? WHERE id = ?`;
+    let params = [status, id];
+
+    const result = await executeQuery(query, params);
+    // console.log(result);
+    if (result?.success === 1) {
+      return {
+        success: 1,
+        data: result?.data,
+      };
+    } else {
+      return {
+        success: 0,
+        error: result?.error,
+      };
+    }
+  }
+  async deleteFaqPermanently(id) {
+    let query = `DELETE FROM faq WHERE id = ?`;
+    let params = [id];
 
     const result = await executeQuery(query, params);
     // console.log(result);

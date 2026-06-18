@@ -734,7 +734,7 @@ export const getMeeting = async (req, res) => {
                   const roleResult = await meetingMdl.getRole(attnd.role_id);
                   role_name = roleResult?.data?.[0]?.role_name;
                 }
-                const { role_id, ...rest } = attnd;
+                const {...rest } = attnd;
                 return { ...rest, role_name };
               }),
             );
