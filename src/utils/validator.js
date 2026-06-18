@@ -1745,3 +1745,25 @@ export const deleteFaqPermanentlySchema = Joi.object({
     "any.required": "id is required",
   }),
 });
+export const getIssueCategorySchema = Joi.object({
+  status: Joi.string().required().messages({
+    "string.base": "status should be string",
+    "any.required": "status is required",
+  }),
+});
+export const deleteIssueCategorySchema = Joi.object({
+  status: Joi.string().required().messages({
+    "string.base": "status should be string",
+    "any.required": "status is required",
+  }),
+  id: Joi.number().required().messages({
+    "number.base": "id should be number",
+    "any.required": "id is required",
+  }),
+});
+export const deleteIssueCategorypermanentlySchema = Joi.object({
+  id: Joi.number().required().messages({
+    "number.base": "id should be number",
+    "any.required": "id is required",
+  }),
+});

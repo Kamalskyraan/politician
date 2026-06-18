@@ -180,6 +180,58 @@ export class supportModel {
       };
     }
   }
+  async getIssueCat(status) {
+    let query = `SELECT id, cat_name FROM issue_category WHERE status = ?`;
+    let params = [status];
+
+    const result = await executeQuery(query, params);
+    if (result?.success === 1) {
+      return {
+        success: 1,
+        data: result?.data,
+      };
+    } else {
+      return {
+        success: 0,
+        error: result?.error,
+      };
+    }
+  }
+  async deleteIssueCat(id, status) {
+    let query = `UPDATE issue_category SET status = ? WHERE id = ?`;
+    let params = [status, id];
+
+    const result = await executeQuery(query, params);
+    if (result?.success === 1) {
+      return {
+        success: 1,
+        data: result?.data,
+      };
+    } else {
+      return {
+        success: 0,
+        error: result?.error,
+      };
+    }
+  }
+  async deleteIssueCatPermanently(id) {
+    let query = `DELETE FROM issue_category WHERE id = ?`;
+    let params = [id];
+
+    const result = await executeQuery(query, params);
+    if (result?.success === 1) {
+      return {
+        success: 1,
+        data: result?.data,
+      };
+    } else {
+      return {
+        success: 0,
+        error: result?.error,
+      };
+    }
+  }
+
   async addSumitCat({ category }) {
     let query = `INSERT INTO political_sumit_category (category_name) VALUES (?)`;
     let params = [category];
