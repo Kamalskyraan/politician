@@ -204,7 +204,7 @@ export class folderModel {
   //     },
   //   };
   // }
-
+// 
   async getFolderImages({
   user_id,
   folder_id,
