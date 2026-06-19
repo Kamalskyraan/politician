@@ -327,6 +327,10 @@ router.post(
                 type: "string",
                 example: "2026-06-13"
               },
+              page: {
+                type: "number",
+                example: 1
+              },
             }
           }
         }

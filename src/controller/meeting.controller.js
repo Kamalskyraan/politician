@@ -677,7 +677,7 @@ export const getMeeting = async (req, res) => {
       );
     }
 
-    let { user_id, status, from_date, to_date } = validatedData?.value;
+    let { user_id, status, from_date, to_date, page } = validatedData?.value;
     let result = [];
     let meetings = [];
 
@@ -691,6 +691,7 @@ export const getMeeting = async (req, res) => {
       status,
       from_date,
       to_date,
+      page,
     });
 
     if (result?.success === 0) {

@@ -102,8 +102,32 @@ export const formatDateForSQL = (dateObj) => {
 //   return new Date(date).getTime();
 // };
 
+// export const replaceNullWithEmptyString = (data) => {
+//   return JSON.parse(JSON.stringify(data, (_, value) => value ?? ""));
+// };
 export const replaceNullWithEmptyString = (data) => {
-  return JSON.parse(JSON.stringify(data, (_, value) => value ?? ""));
+  if (data === null || data === undefined) {
+    return "";
+  }
+
+  if (Array.isArray(data)) {
+    return data.map(replaceNullWithEmptyString);
+  }
+
+  if (data instanceof Date) {
+    return data; // preserve Date exactly as-is
+  }
+
+  if (typeof data === "object") {
+    return Object.fromEntries(
+      Object.entries(data).map(([key, value]) => [
+        key,
+        replaceNullWithEmptyString(value),
+      ]),
+    );
+  }
+
+  return data;
 };
 
 export const dateToMillis = (data, dateCols) => {

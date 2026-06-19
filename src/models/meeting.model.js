@@ -234,7 +234,9 @@ export class meetingModel {
     }
   }
 
-  async getMeeting({ user_id, status, from_date, to_date }) {
+  async getMeeting({ user_id, status, from_date, to_date, page = 1, limit = 10 }) {
+
+    const offset = (page - 1) * limit;
     let query = `
     SELECT
       id,
@@ -258,8 +260,7 @@ export class meetingModel {
       snooze_at,
       nxt_snooze_at
     FROM meeting
-    WHERE user_id = ?
-  `;
+    WHERE user_id = ?`;
 
     let params = [user_id];
     // console.log(status)
@@ -279,6 +280,8 @@ export class meetingModel {
       query += ` AND to_date >= ?`;
       params.push(`${from_date} 00:00:00`);
     }
+    query+= ` LIMIT ? OFFSET ?`;
+    params.push(Number(limit), Number(offset));
 
     const result = await executeQuery(query, params);
     // console.log(result);
@@ -424,7 +427,7 @@ export class meetingModel {
     //   params = [user_id];
     // }
 
-    query = `SELECT * FROM appointments WHERE ${upt_cols.join("")}`;
+    query = `SELECT id, title, a_type, notes, address, lat, lng, media_id, con_name, con_desg, status, from_date, to_date, is_remind, remind_status, remind_tenure, remind_at, snooze_at, nxt_snooze_at FROM appointments WHERE ${upt_cols.join("")}`;
     // params = params;
     const result = await executeQuery(query, params);
     if (result?.success === 1) {
