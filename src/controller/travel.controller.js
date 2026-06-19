@@ -210,20 +210,21 @@ export const addTravel = async (req, res) => {
       remind_at: remind_at,
       snooze_at: snooze_at,
       nxt_snooze_at: nxt_snooze_at,
-      media_id: media_id,
-      hot_media: hot_media,
+      media: media_id,
+      hotel_media: hot_media,
+      travel_daily_plans: [],
     };
     let media_result;
     if (media_id != null) {
       const ids = media_id.split(",");
       media_result = await sourceMdl.getMedia(ids);
-      data.media_id = media_result?.data || [];
+      data.media = media_result?.data || [];
     }
     let hot_media_result;
     if (hot_media != null) {
       const ids = hot_media.split(",");
       hot_media_result = await sourceMdl.getMedia(ids);
-      data.hot_media = hot_media_result?.data || [];
+      data.hotel_media = hot_media_result?.data || [];
     }
     const response = replaceNullWithEmptyString(data);
 
@@ -513,22 +514,26 @@ export const updateTravel = async (req, res) => {
       remind_at: remind_at,
       snooze_at: snooze_at,
       nxt_snooze_at: nxt_snooze_at,
-      media_id: media_id,
-      hot_media: hot_media,
+      media: media_id,
+      hotel_media: hot_media,
+      travel_daily_plans: [],
     };
 
     let media_result;
     if (media_id != null) {
       const ids = media_id.split(",");
       media_result = await sourceMdl.getMedia(ids);
-      data.media_id = media_result?.data || [];
+      data.media = media_result?.data || [];
     }
     let hot_media_result;
     if (hot_media != null) {
       const ids = hot_media.split(",");
       hot_media_result = await sourceMdl.getMedia(ids);
-      data.hot_media = hot_media_result?.data || [];
+      data.hotel_media = hot_media_result?.data || [];
     }
+    let travel_daily_plans;
+    travel_daily_plans = await travelMdl.getDailyplan({id});
+    data.travel_daily_plans = travel_daily_plans?.data;
 
     const response = replaceNullWithEmptyString(data);
 
@@ -579,6 +584,7 @@ export const getTravel = async (req, res) => {
     }
 
     let { user_id, from_date, to_date } = validatedData?.value;
+    // console.log(from_date)
     let result;
     let travels;
     let upt_cols = [];
@@ -606,6 +612,8 @@ export const getTravel = async (req, res) => {
       return sendResponse(res, 200, 0, "failed to fetch travels", [], "");
     } else if (result?.success === 1) {
       travels = result?.data;
+
+      // console.log(typeof(travels[0]?.snooze_at));
 
       const formattedTravels = await Promise.all(
         travels.map(async (travel) => {
@@ -664,18 +672,10 @@ export const getTravel = async (req, res) => {
         }),
       );
       // console.log(travelwithdp);
+      // console.log(travelwithdp[0].from_date instanceof Date);
 
       const response = replaceNullWithEmptyString(travelwithdp);
-      // const date_cols = [
-      //   "from_date",
-      //   "to_date",
-      //   "hot_in",
-      //   "hot_out",
-      //   "remind_at",
-      //   "nxt_snooze_at",
-      //   "departure",
-      // ];
-      // const finalResponse = dateToMillis(response, date_cols);
+      // console.log(typeof(response[0]?.from_date))
 
       return sendResponse(
         res,

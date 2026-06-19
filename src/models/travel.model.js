@@ -136,7 +136,6 @@ export class travelModel {
       hot_out,
       hot_media,
       is_remind,
-      remind_status,
       remind_tenure,
       remind_at,
       snooze_at,
