@@ -39,24 +39,24 @@ router.post(
                 example: "Salem"
               },
               from_lat: {
-                type: "number",
-                example: 25.87575
+                type: "string",
+                example: "25.87575"
               },
               from_lng: {
-                type: "number",
-                example: 67.5443
+                type: "string",
+                example: "67.5443"
               },
               travel_to: {
                 type: "string",
                 example: "Yercaud"
               },
               to_lat: {
-                type: "number",
-                example: 67.544
+                type: "string",
+                example: "67.544"
               },
               to_lng: {
-                type: "number",
-                example: 78.655
+                type: "string",
+                example: "78.655"
               },
               from_date: {
                 type: "string",
@@ -87,12 +87,12 @@ router.post(
                 example: "Near Junction"
               },
               hot_lat: {
-                type: "number",
-                example: 83.333
+                type: "string",
+                example: "83.333"
               },
               hot_lng: {
-                type: "number",
-                example: 43.333
+                type: "string",
+                example: "43.333"
               },
               hot_in: {
                 type: "string",
@@ -111,12 +111,12 @@ router.post(
                 example: 1
               },
               remind_tenure: {
-                type: "integer",
-                example: 600
+                type: "string",
+                example: "600"
               },
               snooze_at: {
-                type: "integer",
-                example: 120
+                type: "string",
+                example: "120"
               }
             }
           }
@@ -201,24 +201,24 @@ router.post(
                 example: "Coimbatore"
               },
               from_lat: {
-                type: "number",
-                example: 70.33234
+                type: "string",
+                example: "70.33234"
               },
               from_lng: {
-                type: "number",
-                example: 60.123
+                type: "string",
+                example: "60.123"
               },
               travel_to: {
                 type: "string",
                 example: "Bangalore"
               },
               to_lat: {
-                type: "number",
-                example: 50.123
+                type: "string",
+                example: "50.123"
               },
               to_lng: {
-                type: "number",
-                example: 50.321
+                type: "string",
+                example: "50.321"
               },
               from_date: {
                 type: "string",
@@ -249,12 +249,12 @@ router.post(
                 example: "Near Junction"
               },
               hot_lat: {
-                type: "number",
-                example: 12.3433
+                type: "string",
+                example: "12.3433"
               },
               hot_lng: {
-                type: "number",
-                example: 10.3322
+                type: "string",
+                example: "10.3322"
               },
               hot_in: {
                 type: "string",
@@ -273,12 +273,12 @@ router.post(
                 example: 1
               },
               remind_tenure: {
-                type: "integer",
-                example: 600
+                type: "string",
+                example: "600"
               },
               snooze_at: {
-                type: "integer",
-                example: 120
+                type: "string",
+                example: "120"
               }
             }
           }
@@ -312,6 +312,14 @@ router.post(
               user_id: {
                 type: "string",
                 example: "USER_ZNLl2665"
+              },
+              from_date: {
+                type: "string",
+                example: "2026-06-12"
+              },
+              to_date: {
+                type: "string",
+                example: "2026-06-19"
               }
             }
           }

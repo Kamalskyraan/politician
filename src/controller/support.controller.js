@@ -476,7 +476,7 @@ export const getIssueCat = async (req, res) => {
         1,
         "Issue category fetched successfully",
         [],
-        "",
+        ""
       );
     } else if (result?.success === 0) {
       return sendResponse(res, 200, 0, "Failed to add issue category", [], "");
