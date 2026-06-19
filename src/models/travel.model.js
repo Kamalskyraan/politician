@@ -112,7 +112,7 @@ export class travelModel {
     }
   }
 
-  async getTravel({ user_id }) {
+  async getTravel(upt_cols, params) {
     let query = `SELECT id,
       title,
       descp,
@@ -140,8 +140,7 @@ export class travelModel {
       remind_tenure,
       remind_at,
       snooze_at,
-      nxt_snooze_at FROM travels WHERE user_id = ? ORDER BY from_date ASC`;
-    let params = [user_id];
+      nxt_snooze_at FROM travels WHERE ${upt_cols.join("")} ORDER BY from_date ASC`;
 
     const result = await executeQuery(query, params);
 

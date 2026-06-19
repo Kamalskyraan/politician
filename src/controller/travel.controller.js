@@ -184,8 +184,58 @@ export const addTravel = async (req, res) => {
       nxt_snooze_at,
     });
 
+    const data = {
+      id: result?.data?.insertId,
+      title: title,
+      descp: descp,
+      purpose: purpose,
+      travel_from: travel_from,
+      from_lat: from_lat,
+      from_lng: from_lng,
+      travel_to: travel_to,
+      to_lat: to_lat,
+      to_lng: to_lng,
+      from_date: from_date,
+      to_date: to_date,
+      vech_mode: vech_mode,
+      in_hotel: in_hotel,
+      hot_name: hot_name,
+      hot_address: hot_address,
+      hot_lat: hot_lat,
+      hot_lng: hot_lng,
+      hot_in: hot_in,
+      hot_out: hot_out,
+      is_remind: is_remind,
+      remind_tenure: remind_tenure,
+      remind_at: remind_at,
+      snooze_at: snooze_at,
+      nxt_snooze_at: nxt_snooze_at,
+      media_id: media_id,
+      hot_media: hot_media,
+    };
+    let media_result;
+    if (media_id != null) {
+      const ids = media_id.split(",");
+      media_result = await sourceMdl.getMedia(ids);
+      data.media_id = media_result?.data || [];
+    }
+    let hot_media_result;
+    if (hot_media != null) {
+      const ids = hot_media.split(",");
+      hot_media_result = await sourceMdl.getMedia(ids);
+      data.hot_media = hot_media_result?.data || [];
+    }
+    const response = replaceNullWithEmptyString(data);
+
     if (result?.success === 1) {
-      return sendResponse(res, 200, 1, "Travel Added Successfully", [], "");
+      return sendResponse(
+        res,
+        200,
+        1,
+        "Travel Added Successfully",
+        [response],
+        "",
+      );
     } else if (result?.success === 0) {
       return sendResponse(
         res,
@@ -431,13 +481,66 @@ export const updateTravel = async (req, res) => {
       );
     }
 
-    console.log(params);
+    // console.log(params);
 
     params.push(id);
 
     const result = await travelMdl.updateTravel({ upt_cols, params });
+
+    const data = {
+      id: id,
+      title: title,
+      descp: descp,
+      purpose: purpose,
+      travel_from: travel_from,
+      from_lat: from_lat,
+      from_lng: from_lng,
+      travel_to: travel_to,
+      to_lat: to_lat,
+      to_lng: to_lng,
+      from_date: from_date,
+      to_date: to_date,
+      vech_mode: vech_mode,
+      in_hotel: in_hotel,
+      hot_name: hot_name,
+      hot_address: hot_address,
+      hot_lat: hot_lat,
+      hot_lng: hot_lng,
+      hot_in: hot_in,
+      hot_out: hot_out,
+      is_remind: is_remind,
+      remind_tenure: remind_tenure,
+      remind_at: remind_at,
+      snooze_at: snooze_at,
+      nxt_snooze_at: nxt_snooze_at,
+      media_id: media_id,
+      hot_media: hot_media,
+    };
+
+    let media_result;
+    if (media_id != null) {
+      const ids = media_id.split(",");
+      media_result = await sourceMdl.getMedia(ids);
+      data.media_id = media_result?.data || [];
+    }
+    let hot_media_result;
+    if (hot_media != null) {
+      const ids = hot_media.split(",");
+      hot_media_result = await sourceMdl.getMedia(ids);
+      data.hot_media = hot_media_result?.data || [];
+    }
+
+    const response = replaceNullWithEmptyString(data);
+
     if (result?.success === 1) {
-      return sendResponse(res, 200, 1, "Travel Updated successfully", [], "");
+      return sendResponse(
+        res,
+        200,
+        1,
+        "Travel Updated successfully",
+        [response],
+        "",
+      );
     } else if (result?.success === 0) {
       return sendResponse(
         res,
@@ -475,20 +578,34 @@ export const getTravel = async (req, res) => {
       );
     }
 
-    let { user_id, status } = validatedData?.value;
+    let { user_id, from_date, to_date } = validatedData?.value;
     let result;
     let travels;
+    let upt_cols = [];
+    let params = [];
 
     if (user_id) {
-      result = await travelMdl.getTravel({ user_id });
+      upt_cols.push("user_id = ?");
+      params.push(user_id);
     }
+    if (from_date) {
+      upt_cols.push(" AND from_date <= ?");
+      params.push(`${to_date} 23:59:59`);
+    }
+    if (to_date) {
+      upt_cols.push(" AND to_date >= ?");
+      params.push(`${from_date} 00:00:00`);
+    }
+
+    result = await travelMdl.getTravel(upt_cols, params);
+
+    // if (user_id) {
+    //   result = await travelMdl.getTravel({ user_id });
+    // }
     if (result?.success === 0) {
       return sendResponse(res, 200, 0, "failed to fetch travels", [], "");
     } else if (result?.success === 1) {
       travels = result?.data;
-      // console.log(appointments);
-
-      // console.log(travels);
 
       const formattedTravels = await Promise.all(
         travels.map(async (travel) => {

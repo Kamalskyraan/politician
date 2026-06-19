@@ -751,18 +751,18 @@ export const addTravelSchema = Joi.object({
     "any.required": "description cannot be empty",
   }),
   purpose: Joi.number().valid(0, 1).messages({
-    "number.base": "title should be a string",
+    "number.base": "title should be a number",
   }),
   travel_from: Joi.string().required().messages({
     "string.base": "travel from should be a string",
     "any.required": "travel from cannot be empty",
   }),
   from_lat: Joi.string().required().messages({
-    "string.base": "lat should be a number",
+    "string.base": "lat should be a string",
     "any.required": "travel from cannot be empty",
   }),
   from_lng: Joi.string().required().messages({
-    "string.base": "lng should be a number",
+    "string.base": "lng should be a string",
     "any.required": "travel from cannot be empty",
   }),
   travel_to: Joi.string().required().messages({
@@ -770,11 +770,11 @@ export const addTravelSchema = Joi.object({
     "any.required": "travel to cannot be empty",
   }),
   to_lat: Joi.string().required().messages({
-    "string.base": "lat should be a number",
+    "string.base": "lat should be a string",
     "any.required": "travel from cannot be empty",
   }),
   to_lng: Joi.string().required().messages({
-    "string.base": "lng should be a number",
+    "string.base": "lng should be a string",
     "any.required": "travel from cannot be empty",
   }),
   from_date: Joi.string().required().messages({
@@ -803,10 +803,10 @@ export const addTravelSchema = Joi.object({
     "string.base": "hot_address to should be a string",
   }),
   hot_lat: Joi.string().allow("").messages({
-    "string.base": "hot_lat should be a number",
+    "string.base": "hot_lat should be a string",
   }),
   hot_lng: Joi.string().allow("").messages({
-    "string.base": "hot_lng should be a number",
+    "string.base": "hot_lng should be a string",
   }),
   hot_in: Joi.string().allow("").messages({
     "string.base": "hot_in to should be a string",
@@ -818,7 +818,7 @@ export const addTravelSchema = Joi.object({
     "string.base": "hot_media to should be a string",
   }),
   is_remind: Joi.number().required().messages({
-    "string.base": "is_remind to should be a string",
+    "string.base": "is_remind to should be a number",
     "any.required": "is_remind to cannot be empty",
   }),
   remind_tenure: Joi.string().allow("").messages({
@@ -850,7 +850,7 @@ export const updateTravelSchema = Joi.object({
     "any.required": "description to cannot be empty",
   }),
   purpose: Joi.number().required().valid(0, 1).messages({
-    "number.base": "title should be a string",
+    "number.base": "title should be a number",
     "any.required": "purpose to cannot be empty",
   }),
   travel_from: Joi.string().required().messages({
@@ -858,11 +858,11 @@ export const updateTravelSchema = Joi.object({
     "any.required": "travel from to cannot be empty",
   }),
   from_lat: Joi.string().required().messages({
-    "string.base": "from lat should be a number",
+    "string.base": "from lat should be a string",
     "any.required": "from lat from cannot be empty",
   }),
   from_lng: Joi.string().required().messages({
-    "string.base": "from lng should be a number",
+    "string.base": "from lng should be a string",
     "any.required": "from lng cannot be empty",
   }),
   travel_to: Joi.string().required().messages({
@@ -870,11 +870,11 @@ export const updateTravelSchema = Joi.object({
     "any.required": "travel to to cannot be empty",
   }),
   to_lat: Joi.string().required().messages({
-    "string.base": "to lat should be a number",
+    "string.base": "to lat should be a string",
     "any.required": "to lat cannot be empty",
   }),
   to_lng: Joi.string().required().messages({
-    "string.base": "to lng should be a number",
+    "string.base": "to lng should be a string",
     "any.required": "to lng from cannot be empty",
   }),
   from_date: Joi.string().required().messages({
@@ -892,8 +892,9 @@ export const updateTravelSchema = Joi.object({
   media_id: Joi.string().allow("").messages({
     "string.base": "media_id to should be a string",
   }),
-  in_hotel: Joi.number().allow("").messages({
-    "number.base": "in_hotel to should be a string",
+  in_hotel: Joi.number().required().messages({
+    "number.base": "in hotel to should be a number",
+    "any.required": "in hotel cannot be empty",
   }),
   hot_name: Joi.string().allow("").messages({
     "string.base": "hot_name to should be a string",
@@ -902,12 +903,10 @@ export const updateTravelSchema = Joi.object({
     "string.base": "hot_address to should be a string",
   }),
   hot_lat: Joi.string().required().allow("").messages({
-    "string.base": "hot lat should be a number",
-    "any.required": "hot lat cannot be empty",
+    "string.base": "hot lat should be a string",
   }),
   hot_lng: Joi.string().required().allow("").messages({
-    "string.base": "hot lng should be a number",
-    "any.required": "hot lng from cannot be empty",
+    "string.base": "hot lng should be a string",
   }),
   hot_in: Joi.string().allow("").messages({
     "string.base": "hot_in to should be a string",
@@ -919,7 +918,7 @@ export const updateTravelSchema = Joi.object({
     "string.base": "hot_media to should be a string",
   }),
   is_remind: Joi.number().required().messages({
-    "string.base": "is_remind to should be a string",
+    "string.base": "is_remind to should be a number",
   }),
   remind_tenure: Joi.string().allow("").messages({
     "string.base": "remind_tenure to should be a string",
@@ -934,9 +933,13 @@ export const getTravelSchema = Joi.object({
     "string.base": "User Id should be a string",
     "any.required": "User Id cannot be empty",
   }),
-  id: Joi.number().messages({
-    "number.base": "Travel Id should be an integer",
-    "any.required": "Travel Id cannot be empty",
+  from_date: Joi.string().allow("").messages({
+    "string.base": "from date should be an string",
+    "any.required": "from date cannot be empty",
+  }),
+  to_date: Joi.string().allow("").messages({
+    "string.base": "to date should be an string",
+    "any.required": "to date cannot be empty",
   }),
 });
 
