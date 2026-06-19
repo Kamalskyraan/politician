@@ -183,6 +183,7 @@ export const addTravel = async (req, res) => {
       snooze_at,
       nxt_snooze_at,
     });
+    // console.log(media_id);
 
     const data = {
       id: result?.data?.insertId,
@@ -210,8 +211,8 @@ export const addTravel = async (req, res) => {
       remind_at: remind_at,
       snooze_at: snooze_at,
       nxt_snooze_at: nxt_snooze_at,
-      media: media_id,
-      hotel_media: hot_media,
+      media: media_id === null ? [] : media_id,
+      hotel_media: hot_media === null ? [] : hot_media,
       travel_daily_plans: [],
     };
     let media_result;
@@ -233,7 +234,7 @@ export const addTravel = async (req, res) => {
         res,
         200,
         1,
-        "Travel Added Successfully",
+        "Travel added Successfully",
         [response],
         "",
       );
@@ -514,8 +515,8 @@ export const updateTravel = async (req, res) => {
       remind_at: remind_at,
       snooze_at: snooze_at,
       nxt_snooze_at: nxt_snooze_at,
-      media: media_id,
-      hotel_media: hot_media,
+      media: media_id === null ? [] : media_id,
+      hotel_media: hot_media === null ? [] : hot_media,
       travel_daily_plans: [],
     };
 
@@ -532,7 +533,7 @@ export const updateTravel = async (req, res) => {
       data.hotel_media = hot_media_result?.data || [];
     }
     let travel_daily_plans;
-    travel_daily_plans = await travelMdl.getDailyplan({id});
+    travel_daily_plans = await travelMdl.getDailyplan({ id });
     data.travel_daily_plans = travel_daily_plans?.data;
 
     const response = replaceNullWithEmptyString(data);
@@ -542,7 +543,7 @@ export const updateTravel = async (req, res) => {
         res,
         200,
         1,
-        "Travel Updated successfully",
+        "Travel updated successfully",
         [response],
         "",
       );
