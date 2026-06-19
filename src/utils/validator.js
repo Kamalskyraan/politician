@@ -426,7 +426,7 @@ export const deleteMeetingSchema = Joi.object({
 
 export const updateMeetingSchema = Joi.object({
   id: Joi.number().required().messages({
-    "number.base": "Id should be a string",
+    "number.base": "Id should be a number",
     "any.required": "Id cannot be empty",
   }),
   title: Joi.string().max(30).optional().messages({
@@ -497,20 +497,24 @@ export const updateMeetingSchema = Joi.object({
     }),
 
   from_date: Joi.string().optional().messages({
-    "string.required": "meeting_date must be required",
+    "string.base": "from date must be a string",
+    "string.required": "from date must be required",
   }),
   to_date: Joi.string().optional().messages({
-    "string.required": "meeting_date must be required",
+    "string.base": "to date must be a string",
+    "string.required": "to date must be required",
   }),
   is_remind: Joi.number().valid(0, 1, 2).optional().messages({
     "number.valid": "0, 1, 2 only allowed to be enter",
     "number.base": "is_remind must be a number",
   }),
-  remind_tenure: Joi.number().optional().allow("").messages({
-    "number.base": "is_remind must be a number",
+  remind_tenure: Joi.string().optional().allow("").messages({
+    "string.base": "remind tenure must be a string",
+    "string.base": "remind tenure must be a string",
   }),
-  snooze_at: Joi.number().optional().allow("").messages({
-    "number.base": "snooze at must be a number",
+  snooze_at: Joi.string().optional().allow("").messages({
+    "string.base": "snooze at must be a string",
+    "string.base": "snooze at must be a string",
   }),
 });
 export const getMeetingSchema = Joi.object({

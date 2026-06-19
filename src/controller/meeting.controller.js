@@ -962,14 +962,14 @@ export const updateMeeting = async (req, res) => {
       update_columns.push("from_date = ?");
       params.push(from_date);
     }
+    let reminder_at;
+    let snzee_at;
 
     if (from_date && is_remind === 1) {
       let date = from_date;
       let status_date = date;
       let sts = "upcoming";
       let today = new Date();
-      let reminder_at;
-      let snzee_at;
       date = new Date(date);
 
       reminder_at = date.getTime() - remind_tenure * 1000;
@@ -981,13 +981,13 @@ export const updateMeeting = async (req, res) => {
         // snzee_at = snzee_at.getTime();
         // console.log(snzee_at);
         snzee_at = formatDateForSQL(snzee_at);
-        update_columns.push("snooze_at = ?");
-        params.push(snooze_at);
+        // update_columns.push("snooze_at = ?");
+        // params.push(snooze_at);
       } else {
         snzee_at = null;
         // snooze_at = null;
-        update_columns.push("snooze_at = ?");
-        params.push(snooze_at);
+        // update_columns.push("snooze_at = ?");
+        // params.push(snooze_at);
       }
 
       reminder_at = new Date(reminder_at);
@@ -1042,13 +1042,70 @@ export const updateMeeting = async (req, res) => {
     // }
 
     params.push(id);
+    // console.log(update_columns);
     const result = await meetingMdl.updateMeeting(update_columns, params);
 
+    let media_result = [];
+    let attnds_result = [];
+
+    if (media_id != null) {
+      let media_ids = media_id.split(",");
+      const result = await sourceMdl.getMedia(media_ids);
+      // console.log(result);
+      media_result = result?.data || [];
+    }
+    if (attnds_id != null) {
+      let attnds_ids = attnds_id.split(",");
+      const result = await meetingMdl.getattnds(attnds_ids);
+      // console.log(result);
+      attnds_result = result?.data;
+      const attndsWithRoles = await Promise.all(
+        attnds_result.map(async (attendee) => {
+          const id = attendee?.role_id;
+          let role_name_result = await meetingMdl.getRole(id);
+          let role_name = role_name_result?.data[0]?.role_name;
+          const { ...rest } = attendee;
+          return { ...rest, role_name };
+        }),
+      );
+      attnds_result = attndsWithRoles;
+    }
+
+    const data = {
+      title: title,
+      descp: descp,
+      m_type: m_type,
+      m_priority: m_priority,
+      m_link: m_link,
+      notes: notes,
+      address: address,
+      lat: lat,
+      lng: lng,
+      from_date: from_date,
+      to_date: to_date,
+      is_remind: is_remind,
+      remind_tenure: remind_tenure === null ? null : String(remind_tenure),
+      remind_at: reminder_at,
+      snooze_at: snooze_at === null ? null : String(snooze_at),
+      nxt_snooze_at: snzee_at,
+      media_id: media_result,
+      attnds_id: attnds_result,
+    };
+
+    const response = replaceNullWithEmptyString(data);
+
     if (result?.success === 0) {
-      console.log(result?.error);
+      // console.log(result?.error);
       return sendResponse(res, 200, 0, result?.error, [], "");
     } else {
-      return sendResponse(res, 200, 1, "meetings updated successfully", [], "");
+      return sendResponse(
+        res,
+        200,
+        1,
+        "meetings updated successfully",
+        [response],
+        "",
+      );
     }
   } catch (error) {
     return sendResponse(
@@ -1510,6 +1567,9 @@ export const getAppointment = async (req, res) => {
     result = await meetingMdl.getAppoint(upt_cols, params);
     // console.log(result);
     appointments = result?.data;
+    // console.log(appointments[0]);
+
+    // console.log(typeof(appointments[0]?.remind_at));
 
     const formattedAppointments = await Promise.all(
       appointments.map(async (appointment) => {
@@ -1531,6 +1591,7 @@ export const getAppointment = async (req, res) => {
       }),
     );
     const response = replaceNullWithEmptyString(formattedAppointments);
+    // console.log(response);
 
     return sendResponse(
       res,
@@ -1610,7 +1671,7 @@ export const updateAppointment = async (req, res) => {
       );
     }
 
-    console.log(req.body);
+    // console.log(req.body);
 
     let upt_cols = [];
     let params = [];
@@ -1699,10 +1760,11 @@ export const updateAppointment = async (req, res) => {
         null,
       );
     }
+    let remind_at;
+
     if (from_date && is_remind === 1 && !snooze_at) {
       let today = new Date();
       let sts = "pending";
-      let remind_at;
       from_date = new Date(from_date);
       remind_at = from_date.getTime() - remind_tenure * 1000;
       remind_at = new Date(remind_at);
@@ -1731,11 +1793,10 @@ export const updateAppointment = async (req, res) => {
       );
       params.push(from_date, sts, is_remind, remind_tenure, remind_at);
     }
+    let nxt_snooze_at;
     if (from_date && is_remind === 1 && snooze_at) {
       let today = new Date();
       let sts = "pending";
-      let remind_at;
-      let nxt_snooze_at;
 
       from_date = new Date(from_date);
 
@@ -1784,19 +1845,49 @@ export const updateAppointment = async (req, res) => {
         nxt_snooze_at,
       );
     }
-    console.log(upt_cols);
-    console.log(params);
+    // console.log(upt_cols);
+    // console.log(params);
     params.push(id);
 
     const result = await meetingMdl.updateAppointment({ upt_cols, params });
     // console.log(result?.data);
+
+    const data = {
+      id: id,
+      title: title,
+      a_type: a_type,
+      notes: notes,
+      address: address,
+      lat: lat,
+      lng: lng,
+      con_name: con_name,
+      con_desg: con_desg,
+      from_date: from_date,
+      to_date: to_date,
+      is_remind: is_remind,
+      remind_tenure: remind_tenure === null ? null : String(remind_tenure),
+      remind_at: remind_at,
+      snooze_at: snooze_at === null ? null : String(snooze_at),
+      nxt_snooze_at: nxt_snooze_at,
+      media_id: media_id,
+    };
+
+    let media_result;
+    if (media_id != null) {
+      const ids = media_id.split(",");
+      media_result = await sourceMdl.getMedia(ids);
+      data.media_id = media_result?.data || [];
+    }
+
+    const response = replaceNullWithEmptyString(data);
+
     if (result?.success === 1) {
       return sendResponse(
         res,
         200,
         1,
         "Appointment updated successfully",
-        [],
+        [response],
         "",
       );
     } else if (result?.success === 0) {

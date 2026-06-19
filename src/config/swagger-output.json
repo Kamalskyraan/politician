@@ -897,11 +897,11 @@
                     "example": "10, Skyraan Building"
                   },
                   "lat": {
-                    "type": "number",
+                    "type": "string",
                     "example": "10.23456"
                   },
                   "lng": {
-                    "type": "number",
+                    "type": "string",
                     "example": "9.98765"
                   },
                   "media_id": {
@@ -925,11 +925,11 @@
                     "example": 1
                   },
                   "remind_tenure": {
-                    "type": "integer",
+                    "type": "string",
                     "example": "300"
                   },
                   "snooze_at": {
-                    "type": "integer",
+                    "type": "string",
                     "example": "180"
                   }
                 }
@@ -1149,12 +1149,12 @@
                     "example": "10, Skyraan 101, FCI Road, Ganapathy"
                   },
                   "lat": {
-                    "type": "number",
-                    "example": 10.23456
+                    "type": "string",
+                    "example": "10.23456"
                   },
                   "lng": {
-                    "type": "number",
-                    "example": 9.98765
+                    "type": "string",
+                    "example": "9.98765"
                   },
                   "media_id": {
                     "type": "string",
@@ -1170,23 +1170,23 @@
                   },
                   "from_date": {
                     "type": "string",
-                    "example": "1779787800000"
+                    "example": "2026-06-19 14:40:32"
                   },
                   "to_date": {
                     "type": "string",
-                    "example": "1779798600000"
+                    "example": "2026-06-19 18:40:32"
                   },
                   "is_remind": {
                     "type": "integer",
                     "example": 1
                   },
                   "remind_tenure": {
-                    "type": "integer",
-                    "example": 300
+                    "type": "string",
+                    "example": "300"
                   },
                   "snooze_at": {
-                    "type": "integer",
-                    "example": 180
+                    "type": "string",
+                    "example": "180"
                   }
                 }
               }
@@ -1572,6 +1572,39 @@
                   "status": {
                     "type": "string",
                     "example": "active"
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/support/deleteissuecategorypermanently": {
+      "post": {
+        "tags": [
+          "16.Dashboard Api`s"
+        ],
+        "summary": "Delete and retrieve Issue Categories permanently",
+        "description": "Delete and retrieve Issue Categories permanently by passing id",
+        "responses": {
+          "200": {
+            "description": "issue categories successfully deleted permanently"
+          },
+          "500": {
+            "description": "Internal Server Error"
+          }
+        },
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "id": {
+                    "type": "number",
+                    "example": 1
                   }
                 }
               }
