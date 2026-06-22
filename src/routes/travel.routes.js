@@ -352,10 +352,6 @@ router.post(
           schema: {
             type: "object",
             properties: {
-              user_id: {
-                type: "string",
-                example: "USER_Z8bn0076"
-              },
               travel_id: {
                 type: "integer",
                 example: 3
@@ -497,17 +493,17 @@ router.post(
           schema: {
             type: "object",
             properties: {
-              user_id: {
-                type: "string",
-                example: "USER_ZNLl2665"
-              },
               travel_id: {
                 type: "integer",
                 example: 3
               },
-              category: {
+              cat_id: {
+                type: "number",
+                example: 2
+              },
+              cat_name: {
                 type: "string",
-                example: "Bus Expense"
+                example: "others"
               },
               notes: {
                 type: "string",
@@ -515,11 +511,11 @@ router.post(
               },
               exp_date: {
                 type: "string",
-                example: "1780230601000"
+                example: "2026-06-22 10:23:31"
               },
               amount: {
-                type: "number",
-                example: 87.89
+                type: "string",
+                example: "87.89"
               }
             }
           }
@@ -587,9 +583,13 @@ router.post(
                 type: "integer",
                 example: 3
               },
-              category: {
+              cat_id: {
+                type: "number",
+                example: 2
+              },
+              cat_name: {
                 type: "string",
-                example: "Bus Expense"
+                example: "others"
               },
               notes: {
                 type: "string",
@@ -600,8 +600,8 @@ router.post(
                 example: "2026-06-10 18:39:38"
               },
               amount: {
-                type: "number",
-                example: 100.00
+                type: "string",
+                example: "100.00"
               }
             }
           }
@@ -667,10 +667,6 @@ router.post(
           schema: {
             type: "object",
             properties: {
-              user_id: {
-                type: "string",
-                example: "USER_ZNLl2665"
-              },
               travel_id: {
                 type: "integer",
                 example: 4
@@ -821,10 +817,6 @@ router.post(
           schema: {
             type: "object",
             properties: {
-              user_id: {
-                type: "string",
-                example: "USER_ZNLl2665"
-              },
               travel_id: {
                 type: "integer",
                 example: 10

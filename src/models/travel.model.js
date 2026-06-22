@@ -156,17 +156,9 @@ export class travelModel {
     }
   }
 
-  async addDailyplan({
-    user_id,
-    travel_id,
-    from,
-    to,
-    departure,
-    vech_mode,
-    media_id,
-  }) {
-    let query = `INSERT INTO travel_daily_plan (user_id, travel_id, plan_from, plan_to, departure, vech_mode, media_id) VALUES (?, ?, ?, ?, ?, ?, ?)`;
-    let params = [user_id, travel_id, from, to, departure, vech_mode, media_id];
+  async addDailyplan({ travel_id, from, to, departure, vech_mode, media_id }) {
+    let query = `INSERT INTO travel_daily_plan (travel_id, plan_from, plan_to, departure, vech_mode, media_id) VALUES (?, ?, ?, ?, ?, ?)`;
+    let params = [travel_id, from, to, departure, vech_mode, media_id];
 
     const result = await executeQuery(query, params);
 
@@ -184,7 +176,6 @@ export class travelModel {
   }
 
   async updateDailyplan({ upt_cols, params }) {
-    console.log(upt_cols, params);
     let query = `UPDATE travel_daily_plan SET ${upt_cols.join(", ")} WHERE id = ?`;
 
     const result = await executeQuery(query, params);
@@ -234,18 +225,31 @@ export class travelModel {
       error: result?.error,
     };
   }
+  async getTravelExpenseCategory(cat_id) {
+    let query;
+    let params;
+    const id = cat_id;
+    if (id) {
+      query = `SELECT id, category_name FROM travel_exp_category WHERE id = ?`;
+      params = [id];
+    }
+    const result = await executeQuery(query, params);
+    if (result?.success === 1) {
+      return {
+        success: 1,
+        data: result?.data,
+      };
+    } else if (result?.success === 0);
+    return {
+      success: 0,
+      error: result?.error,
+    };
+  }
 
-  async addExpense({ user_id, travel_id, category, notes, exp_date, amount }) {
-    let query = `INSERT INTO travel_exp (user_id, travel_id, category, notes, exp_date, amount) VALUES (?, ?, ?, ?, ?, ?)`;
+  async addExpense({ travel_id, cat_id, cat_name, notes, exp_date, amount }) {
+    let query = `INSERT INTO travel_exp (travel_id, cat_id, cat_name, notes, exp_date, amount) VALUES (?, ?, ?, ?, ?, ?)`;
 
-    let params = [
-      user_id,
-      travel_id,
-      category,
-      notes || null,
-      exp_date,
-      amount,
-    ];
+    let params = [travel_id, cat_id, cat_name, notes || null, exp_date, amount];
 
     // console.log(params);
     const result = await executeQuery(query, params);
@@ -298,7 +302,21 @@ export class travelModel {
     }
   }
   async getExpense({ travel_id }) {
-    let query = `SELECT id, user_id, travel_id, category, notes, exp_date, amount FROM travel_exp WHERE travel_id = ?`;
+    let query = `SELECT
+    te.id,
+    te.travel_id,
+    te.cat_id,
+    CASE
+        WHEN te.cat_id = 0 THEN te.cat_name
+        ELSE ec.category_name
+    END AS cat_name,
+    te.notes,
+    te.exp_date,
+    te.amount
+FROM travel_exp te
+LEFT JOIN travel_exp_category ec
+    ON te.cat_id = ec.id
+WHERE te.travel_id = ?;`;
     let params = [travel_id];
 
     const result = await executeQuery(query, params);
@@ -317,8 +335,8 @@ export class travelModel {
   }
 
   async addNotes({ user_id, travel_id, title, descp }) {
-    let query = `INSERT INTO travel_notes (user_id, travel_id, title, descp) VALUES (?, ?, ?, ?)`;
-    let params = [user_id, travel_id, title, descp];
+    let query = `INSERT INTO travel_notes (travel_id, title, descp) VALUES (?, ?, ?)`;
+    let params = [travel_id, title, descp];
 
     const result = await executeQuery(query, params);
     if (result?.success === 1) {
@@ -334,7 +352,7 @@ export class travelModel {
     }
   }
   async getNotes({ travel_id }) {
-    let query = `SELECT id, user_id, travel_id, title, descp FROM travel_notes WHERE travel_id = ?`;
+    let query = `SELECT id, travel_id, title, descp, updated_at AS time_at FROM travel_notes WHERE travel_id = ?`;
     let params = [travel_id];
 
     const result = await executeQuery(query, params);
@@ -385,8 +403,8 @@ export class travelModel {
   }
 
   async addTravelPhotos({ user_id, travel_id, media_id }) {
-    let query = `INSERT INTO travel_photos (user_id, travel_id, media_id) VALUES (?, ?, ?)`;
-    let params = [user_id, travel_id, media_id];
+    let query = `INSERT INTO travel_photos (travel_id, media_id) VALUES (?, ?)`;
+    let params = [travel_id, media_id];
 
     const result = await executeQuery(query, params);
     if (result?.success === 1) {
