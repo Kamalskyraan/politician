@@ -960,10 +960,6 @@ export const getTravelSchema = Joi.object({
 });
 
 export const adddailyplanSchema = Joi.object({
-  user_id: Joi.string().required().messages({
-    "string.base": "User Id should be a string",
-    "any.required": "User Id cannot be empty",
-  }),
   travel_id: Joi.number().required().messages({
     "number.base": "Travel Id should be an integer",
     "any.required": "Travel Id cannot be empty",
@@ -1023,27 +1019,26 @@ export const deleteDailyplanSchema = Joi.object({
 });
 
 export const addExpenseSchema = Joi.object({
-  user_id: Joi.string().required().messages({
-    "string.base": "User Id should be a string",
-    "any.required": "User Id cannot be empty",
-  }),
   travel_id: Joi.number().required().messages({
     "number.base": "Travel Id should be an integer",
     "any.required": "Travel Id cannot be empty",
   }),
-  category: Joi.string().required().messages({
-    "string.base": "category should be a string",
-    "any.required": "category cannot be empty",
+  cat_id: Joi.number().required().messages({
+    "number.base": "category id should be a number",
+    "any.required": "category id cannot be empty",
+  }),
+  cat_name: Joi.string().allow("").messages({
+    "string.base": "category name should be a string",
   }),
   notes: Joi.string().allow("").messages({
     "string.base": "notes should be a string",
   }),
   exp_date: Joi.string().required().messages({
-    "number.base": "exp_date should be a integer",
+    "string.base": "exp_date should be a string",
     "any.required": "exp_date cannot be empty",
   }),
   amount: Joi.string().required().messages({
-    "number.base": "amount should be a string",
+    "string.base": "amount should be a string",
     "any.required": "amount cannot be empty",
   }),
   // amount: Joi.number().precision(2).positive().required().messages({
@@ -1064,9 +1059,12 @@ export const updateExpenseSchema = Joi.object({
     "number.base": "Id should be an integer",
     "any.required": "Id cannot be empty",
   }),
-  category: Joi.string().required().messages({
-    "string.base": "category should be a string",
-    "any.required": "category cannot be empty",
+  cat_id: Joi.number().required().messages({
+    "number.base": "category id should be a number",
+    "any.required": "category id cannot be empty",
+  }),
+  cat_name: Joi.string().allow("").messages({
+    "string.base": "category name should be a string",
   }),
   notes: Joi.string().allow("").messages({
     "string.base": "notes should be a string",
@@ -1088,10 +1086,6 @@ export const getExpenseSchema = Joi.object({
 });
 
 export const addNotesSchema = Joi.object({
-  user_id: Joi.string().required().messages({
-    "string.base": "User Id should be a string",
-    "any.required": "User Id cannot be empty",
-  }),
   travel_id: Joi.number().required().messages({
     "number.base": "Travel Id should be an integer",
     "any.required": "Travel Id cannot be empty",
@@ -1137,10 +1131,6 @@ export const deleteNotesSchema = Joi.object({
   }),
 });
 export const addTravelPhotosSchema = Joi.object({
-  user_id: Joi.string().required().messages({
-    "string.base": "User Id should be a string",
-    "any.required": "User Id cannot be empty",
-  }),
   travel_id: Joi.number().required().messages({
     "number.base": "Travel Id should be an integer",
     "any.required": "Travel Id cannot be empty",
@@ -1151,9 +1141,9 @@ export const addTravelPhotosSchema = Joi.object({
   }),
 });
 export const updateTravelPhotosSchema = Joi.object({
-  travel_id: Joi.number().required().messages({
-    "number.base": "Travel Id should be an integer",
-    "any.required": "Travel Id cannot be empty",
+  id: Joi.number().required().messages({
+    "number.base": "Id should be an integer",
+    "any.required": "Id cannot be empty",
   }),
   media_id: Joi.string().required().messages({
     "string.base": "Media Id should be a string",

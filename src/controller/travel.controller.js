@@ -714,7 +714,7 @@ export const addDailyPlan = async (req, res) => {
       );
     }
 
-    let { user_id, travel_id, from, to, departure, vech_mode, media_id } =
+    let { travel_id, from, to, departure, vech_mode, media_id } =
       validatedData?.value;
 
     media_id = media_id === "" ? null : media_id;
@@ -734,7 +734,6 @@ export const addDailyPlan = async (req, res) => {
     departure = formatDateForSQL(departure);
 
     const result = await travelMdl.addDailyplan({
-      user_id,
       travel_id,
       from,
       to,
@@ -743,10 +742,35 @@ export const addDailyPlan = async (req, res) => {
       media_id,
     });
 
+    const data = {
+      id: result?.data?.insertId,
+      travel_id: travel_id,
+      from: from,
+      to: to,
+      departure: departure,
+      vech_mode: vech_mode,
+      media_id: media_id === null ? [] : media_id,
+    };
+
+    if (media_id != null) {
+      const id = media_id.split(",");
+      const result = await sourceMdl.getMedia(id);
+      data.media_id = result?.data;
+    }
+
+    const response = replaceNullWithEmptyString(data);
+
     if (result?.success === 0) {
       return sendResponse(res, 200, 0, "Failed to add daily Plan", [], "");
     } else if (result?.success === 1) {
-      return sendResponse(res, 200, 1, "Daily Plan added successfully", [], "");
+      return sendResponse(
+        res,
+        200,
+        1,
+        "Daily Plan added successfully",
+        [response],
+        "",
+      );
     }
   } catch (error) {
     return sendResponse(
@@ -819,13 +843,30 @@ export const updatedailyplan = async (req, res) => {
 
     const result = await travelMdl.updateDailyplan({ upt_cols, params });
 
+    const data = {
+      id: id,
+      from: from,
+      to: to,
+      departure: departure,
+      vech_mode: vech_mode,
+      media_id: media_id === null ? [] : media_id,
+    };
+
+    if (media_id != null) {
+      const id = media_id.split(",");
+      const result = await sourceMdl.getMedia(id);
+      data.media_id = result?.data;
+    }
+
+    const response = replaceNullWithEmptyString(data);
+
     if (result?.success === 1) {
       return sendResponse(
         res,
         200,
         1,
         "Daily plan updated successfully",
-        [],
+        [response],
         "",
       );
     } else if (result?.success === 0) {
@@ -901,7 +942,7 @@ export const addExpense = async (req, res) => {
       );
     }
 
-    let { user_id, travel_id, category, notes, exp_date, amount } =
+    let { travel_id, cat_id, cat_name, notes, exp_date, amount } =
       validatedData?.value;
 
     exp_date = new Date(exp_date);
@@ -910,13 +951,29 @@ export const addExpense = async (req, res) => {
     exp_date = formatDateForSQL(exp_date);
 
     const result = await travelMdl.addExpense({
-      user_id,
       travel_id,
-      category,
+      cat_id,
+      cat_name,
       notes,
       exp_date,
       amount,
     });
+
+    let data = {
+      id: result?.data?.insertId,
+      travel_id: travel_id,
+      cat_id: cat_id,
+      cat_name: cat_name,
+      notes: notes,
+      exp_date: exp_date,
+      amount: amount,
+    };
+
+    if (cat_id != 0) {
+      const cat_result = await travelMdl.getTravelExpenseCategory(cat_id);
+      data.cat_name = cat_result?.data[0]?.category_name;
+    }
+    const response = replaceNullWithEmptyString(data);
 
     if (result?.success === 1) {
       return sendResponse(
@@ -924,7 +981,7 @@ export const addExpense = async (req, res) => {
         200,
         1,
         "travel expense added successfully",
-        [],
+        [response],
         "",
       );
     } else if (result?.success === 0) {
@@ -1006,16 +1063,26 @@ export const updateExpense = async (req, res) => {
       );
     }
 
-    let { id, category, notes, exp_date, amount } = validatedData?.value;
+    let { id, cat_id, cat_name, notes, exp_date, amount } =
+      validatedData?.value;
 
     notes = notes === "" ? null : notes;
+    cat_name = cat_name === "" ? null : cat_name;
 
     let upt_cols = [];
     let params = [];
 
-    if (category) {
-      upt_cols.push("category = ?");
-      params.push(category);
+    // if (category) {
+    //   upt_cols.push("category = ?");
+    //   params.push(category);
+    // }
+    if (cat_id != null) {
+      upt_cols.push("cat_id = ?");
+      params.push(cat_id);
+    }
+    if (cat_name) {
+      upt_cols.push("cat_name = ?");
+      params.push(cat_name);
     }
     if (notes !== undefined) {
       upt_cols.push("notes = ?");
@@ -1025,8 +1092,6 @@ export const updateExpense = async (req, res) => {
       exp_date = new Date(exp_date);
       exp_date.setSeconds(0, 0);
       exp_date = formatDateForSQL(exp_date);
-
-      console.log(exp_date);
       upt_cols.push("exp_date = ?");
       params.push(exp_date);
     }
@@ -1038,13 +1103,30 @@ export const updateExpense = async (req, res) => {
     params.push(id);
 
     const result = await travelMdl.updateExpense({ upt_cols, params });
+    // console.log(result);
+
+    const data = {
+      id: id,
+      cat_id: cat_id,
+      cat_name: cat_name,
+      notes: notes,
+      exp_date: exp_date,
+      amount: amount,
+    };
+    if (cat_id != 0) {
+      const cat_result = await travelMdl.getTravelExpenseCategory(cat_id);
+      data.cat_name = cat_result?.data[0]?.category_name;
+    }
+
+    const response = replaceNullWithEmptyString(data);
+
     if (result?.success === 1) {
       return sendResponse(
         res,
         200,
         1,
         "Travel expense updated Successfully",
-        [],
+        [response],
         "",
       );
     } else if (result?.success === 0) {
@@ -1139,14 +1221,25 @@ export const addNotes = async (req, res) => {
       );
     }
 
-    let { user_id, travel_id, title, descp } = validatedData?.value;
+    let { travel_id, title, descp } = validatedData?.value;
 
     const result = await travelMdl.addNotes({
-      user_id,
       travel_id,
       title,
       descp,
     });
+
+    let today = new Date();
+    today = formatDateForSQL(today);
+    const data = {
+      id: result?.data?.insertId,
+      travel_id: travel_id,
+      title: title,
+      descp: descp,
+      time_at: today,
+    };
+
+    const response = replaceNullWithEmptyString(data);
 
     if (result?.success === 1) {
       return sendResponse(
@@ -1154,7 +1247,7 @@ export const addNotes = async (req, res) => {
         200,
         1,
         "Travel notes added successfully",
-        [],
+        [response],
         "",
       );
     } else if (result?.success === 0) {
@@ -1247,13 +1340,25 @@ export const updateNotes = async (req, res) => {
 
     const result = await travelMdl.updateNotes({ upt_cols, params });
 
+    let today = new Date();
+    today = formatDateForSQL(today);
+
+    const data = {
+      id: id,
+      title: title,
+      descp: descp,
+      time_at: today,
+    };
+
+    const response = replaceNullWithEmptyString(data);
+
     if (result?.success === 1) {
       return sendResponse(
         res,
         200,
         1,
         "Travel notes updated successfully",
-        [],
+        [response],
         "",
       );
     } else if (result?.success === 0) {
@@ -1327,7 +1432,7 @@ export const addTravelPhotos = async (req, res) => {
       );
     }
 
-    let { user_id, travel_id, media_id } = validatedData?.value;
+    let { travel_id, media_id } = validatedData?.value;
 
     const allowFive = media_id ? media_id.split(",") : [];
     if (allowFive.length > 5) {
@@ -1342,10 +1447,23 @@ export const addTravelPhotos = async (req, res) => {
     }
 
     const result = await travelMdl.addTravelPhotos({
-      user_id,
       travel_id,
       media_id,
     });
+
+    let data = {
+      id: result?.data?.insertId,
+      travel_id: travel_id,
+      media_id: media_id === null ? [] : media_id,
+    };
+
+    if (media_id != null) {
+      const id = media_id.split(",");
+      const result = await sourceMdl.getMedia(id);
+      data.media_id = result?.data;
+    }
+
+    const response = replaceNullWithEmptyString(data);
 
     if (result?.success === 1) {
       return sendResponse(
@@ -1353,7 +1471,7 @@ export const addTravelPhotos = async (req, res) => {
         200,
         1,
         "Travel photos added successfully",
-        [],
+        [response],
         "",
       );
     } else if (result?.success === 0) {
@@ -1401,6 +1519,7 @@ export const updateTravelPhotos = async (req, res) => {
 
     media_id = media_id.split(",");
     const fetch_result = await travelMdl.getTravelPhotos({ travel_id });
+    console.log(fetch_result);
 
     let fetch_media_id = fetch_result?.data[0]?.media_id;
     fetch_media_id = fetch_media_id.split(",");

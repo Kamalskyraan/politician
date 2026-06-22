@@ -80,6 +80,7 @@ export const generateJwtToken = async (payload) => {
 };
 
 export const formatDateForSQL = (dateObj) => {
+  // console.log(dateObj);
   if (!dateObj) return null;
 
   const year = dateObj.getFullYear();

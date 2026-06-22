@@ -2094,10 +2094,6 @@
               "schema": {
                 "type": "object",
                 "properties": {
-                  "user_id": {
-                    "type": "string",
-                    "example": "USER_Z8bn0076"
-                  },
                   "travel_id": {
                     "type": "integer",
                     "example": 3
@@ -2237,17 +2233,17 @@
               "schema": {
                 "type": "object",
                 "properties": {
-                  "user_id": {
-                    "type": "string",
-                    "example": "USER_ZNLl2665"
-                  },
                   "travel_id": {
                     "type": "integer",
                     "example": 3
                   },
-                  "category": {
+                  "cat_id": {
+                    "type": "number",
+                    "example": 2
+                  },
+                  "cat_name": {
                     "type": "string",
-                    "example": "Bus Expense"
+                    "example": "others"
                   },
                   "notes": {
                     "type": "string",
@@ -2255,11 +2251,11 @@
                   },
                   "exp_date": {
                     "type": "string",
-                    "example": "1780230601000"
+                    "example": "2026-06-22 10:23:31"
                   },
                   "amount": {
-                    "type": "number",
-                    "example": 87.89
+                    "type": "string",
+                    "example": "87.89"
                   }
                 }
               }
@@ -2327,9 +2323,13 @@
                     "type": "integer",
                     "example": 3
                   },
-                  "category": {
+                  "cat_id": {
+                    "type": "number",
+                    "example": 2
+                  },
+                  "cat_name": {
                     "type": "string",
-                    "example": "Bus Expense"
+                    "example": "others"
                   },
                   "notes": {
                     "type": "string",
@@ -2340,8 +2340,8 @@
                     "example": "2026-06-10 18:39:38"
                   },
                   "amount": {
-                    "type": "number",
-                    "example": 100
+                    "type": "string",
+                    "example": "100.00"
                   }
                 }
               }
@@ -2405,10 +2405,6 @@
               "schema": {
                 "type": "object",
                 "properties": {
-                  "user_id": {
-                    "type": "string",
-                    "example": "USER_ZNLl2665"
-                  },
                   "travel_id": {
                     "type": "integer",
                     "example": 4
@@ -2557,10 +2553,6 @@
               "schema": {
                 "type": "object",
                 "properties": {
-                  "user_id": {
-                    "type": "string",
-                    "example": "USER_ZNLl2665"
-                  },
                   "travel_id": {
                     "type": "integer",
                     "example": 10
