@@ -162,3 +162,8 @@ export const dateToMillis = (data, dateCols) => {
 
 export const getDaysDiff = (date) =>
   Math.floor((Date.now() - new Date(date)) / 86400000);
+
+
+export const addNotification = () => {
+  
+}

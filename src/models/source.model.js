@@ -115,7 +115,8 @@ export class sourceModel {
       id,
       url,
       org_name,
-      media_size
+      media_size,
+      created_at
     FROM media
     WHERE id IN (${placeHolders})
   `;
