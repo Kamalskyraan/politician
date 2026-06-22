@@ -109,7 +109,7 @@ export class sourceModel {
 
   async getMedia(id) {
     let placeHolders = id.map(() => "?").join(", ");
-    let query = `SELECT id, url, org_name, media_size FROM media WHERE id IN (${placeHolders})`;
+    let query = `SELECT id, url, org_name, media_size, created_at FROM media WHERE id IN (${placeHolders})`;
     let params = id;
 
     // console.log("params:", id);
@@ -156,8 +156,11 @@ export class sourceModel {
     let query = `DELETE FROM media where id IN (${placeHolders})`;
     let params = id;
 
+    // console.log(id)
+    // console.log(placeHolders);
+    // console.log(query);
+
     const result = await executeQuery(query, params);
-    // console.log(result);
 
     if (result?.success === 1) {
       return {

@@ -651,6 +651,23 @@ router.post(
     }
 */ travelcontroller.getExpense,
 );
+router.post(
+  "/gettravelexpensecategories",
+  /*
+    #swagger.tags = ['16.Dashboard Api`s']
+    #swagger.summary = 'Get travel expense categories'
+    #swagger.description = 'Get travel expense categories'
+
+    #swagger.responses[200] = {
+      description: 'travel expense categories fetched successfully'
+    }
+
+    #swagger.responses[500] = {
+      description: 'Internal Server Error'
+    }
+*/
+  travelcontroller.travelExpenseCategory,
+);
 
 // this is to add travel notes for specific travel
 router.post(

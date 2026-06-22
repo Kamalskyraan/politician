@@ -1417,6 +1417,82 @@ export const deleteNotes = async (req, res) => {
   }
 };
 
+// export const addTravelPhotos = async (req, res) => {
+//   try {
+//     const validatedData = validateRequest(req.body, addTravelPhotosSchema);
+
+//     if (validatedData?.success === 0) {
+//       return sendResponse(
+//         res,
+//         validatedData?.errorObject?.status,
+//         0,
+//         "validation Error",
+//         [],
+//         validatedData?.errorObject?.errors,
+//       );
+//     }
+
+//     let { travel_id, media_id } = validatedData?.value;
+
+//     const allowFive = media_id ? media_id.split(",") : [];
+//     if (allowFive.length > 5) {
+//       return sendResponse(
+//         res,
+//         200,
+//         0,
+//         "media id cannot be greater than 5",
+//         [],
+//         "",
+//       );
+//     }
+
+//     const result = await travelMdl.addTravelPhotos({
+//       travel_id,
+//       media_id,
+//     });
+
+//     let today = new Date();
+//     today = formatDateForSQL(today);
+
+//     let data = {
+//       id: result?.data?.insertId,
+//       travel_id: travel_id,
+//       media_id: media_id === null ? [] : media_id,
+//       created_at: today,
+//     };
+
+//     if (media_id != null) {
+//       const id = media_id.split(",");
+//       const result = await sourceMdl.getMedia(id);
+//       data.media_id = result?.data;
+//     }
+
+//     const response = replaceNullWithEmptyString(data);
+
+//     if (result?.success === 1) {
+//       return sendResponse(
+//         res,
+//         200,
+//         1,
+//         "Travel photos added successfully",
+//         [response],
+//         "",
+//       );
+//     } else if (result?.success === 0) {
+//       return sendResponse(res, 200, 0, "Failed to add travel photos", [], "");
+//     }
+//   } catch (error) {
+//     return sendResponse(
+//       res,
+//       500,
+//       0,
+//       "Internal server error",
+//       [],
+//       "error.message",
+//     );
+//   }
+// };
+
 export const addTravelPhotos = async (req, res) => {
   try {
     const validatedData = validateRequest(req.body, addTravelPhotosSchema);
@@ -1433,9 +1509,8 @@ export const addTravelPhotos = async (req, res) => {
     }
 
     let { travel_id, media_id } = validatedData?.value;
-
-    const allowFive = media_id ? media_id.split(",") : [];
-    if (allowFive.length > 5) {
+    let result;
+    if (media_id.split(",").length > 5) {
       return sendResponse(
         res,
         200,
@@ -1446,36 +1521,50 @@ export const addTravelPhotos = async (req, res) => {
       );
     }
 
-    const result = await travelMdl.addTravelPhotos({
-      travel_id,
-      media_id,
-    });
+    const existingPhotos = await travelMdl.getTravelPhotos({ travel_id });
+    // console.log(existingPhotos);
 
-    let data = {
-      id: result?.data?.insertId,
-      travel_id: travel_id,
-      media_id: media_id === null ? [] : media_id,
-    };
+    if (existingPhotos?.success === 1 && existingPhotos?.data.length > 0) {
+      let oldMediaIds = existingPhotos.data[0].media_id
+        ? existingPhotos.data[0].media_id.split(",")
+        : [];
+      // console.log(oldMediaIds);
 
-    if (media_id != null) {
-      const id = media_id.split(",");
-      const result = await sourceMdl.getMedia(id);
-      data.media_id = result?.data;
+      const newMediaIds = media_id ? media_id.split(",") : [];
+
+      // media_id = [...new Set([...oldMediaIds, ...newMediaIds])].join(",");
+      media_id = [...oldMediaIds, ...newMediaIds].join(",");
+      // console.log(media_id);
+
+      result = await travelMdl.updateTravelPhotos({
+        travel_id,
+        media_id,
+      });
+    } else {
+      result = await travelMdl.addTravelPhotos({
+        travel_id,
+        media_id,
+      });
     }
-
-    const response = replaceNullWithEmptyString(data);
 
     if (result?.success === 1) {
       return sendResponse(
         res,
         200,
         1,
-        "Travel photos added successfully",
-        [response],
+        "Travel photos saved successfully",
+        [],
         "",
       );
     } else if (result?.success === 0) {
-      return sendResponse(res, 200, 0, "Failed to add travel photos", [], "");
+      return sendResponse(
+        res,
+        200,
+        0,
+        "failed to save travel photos",
+        [],
+        result?.error,
+      );
     }
   } catch (error) {
     return sendResponse(
@@ -1484,7 +1573,7 @@ export const addTravelPhotos = async (req, res) => {
       0,
       "Internal server error",
       [],
-      "error.message",
+      error.message,
     );
   }
 };
@@ -1504,7 +1593,7 @@ export const updateTravelPhotos = async (req, res) => {
       );
     }
 
-    let { travel_id, media_id } = validatedData?.value;
+    let { id, media_id } = validatedData?.value;
     const allowFive = media_id ? media_id.split(",") : [];
     if (allowFive.length > 5) {
       return sendResponse(
@@ -1518,8 +1607,7 @@ export const updateTravelPhotos = async (req, res) => {
     }
 
     media_id = media_id.split(",");
-    const fetch_result = await travelMdl.getTravelPhotos({ travel_id });
-    console.log(fetch_result);
+    const fetch_result = await travelMdl.getTravelPhotos({ id });
 
     let fetch_media_id = fetch_result?.data[0]?.media_id;
     fetch_media_id = fetch_media_id.split(",");
@@ -1529,9 +1617,22 @@ export const updateTravelPhotos = async (req, res) => {
     // console.log(fetch_media_id);
 
     const result = await travelMdl.updateTravelPhotos({
-      travel_id,
+      id,
       fetch_media_id,
     });
+
+    const data = {
+      id: id,
+      media_id: fetch_media_id,
+    };
+
+    if (fetch_media_id != null) {
+      const id = fetch_media_id.split(",");
+      const result = await sourceMdl.getMedia(id);
+      data.media_id = result?.data;
+    }
+
+    const response = replaceNullWithEmptyString(data);
 
     if (result?.success === 1) {
       return sendResponse(
@@ -1539,7 +1640,7 @@ export const updateTravelPhotos = async (req, res) => {
         200,
         1,
         "Travel photos updated successfully",
-        [],
+        [response],
         "",
       );
     } else if (result?.success === 0) {
@@ -1591,7 +1692,7 @@ export const getTravelPhotos = async (req, res) => {
         let media_result = [];
         if (data?.media_id) {
           const media_id = data?.media_id.split(",");
-          console.log(media_id);
+          // console.log(media_id);
           media_result = await sourceMdl.getMedia(media_id);
           // console.log(media_result?.data)
           media_result = media_result?.data;
@@ -1643,6 +1744,7 @@ export const deleteTravelPhotos = async (req, res) => {
     }
 
     let { media_id, travel_id } = validatedData?.value;
+    // console.log(media_id)
 
     // need to get media by media and delete physically
 
@@ -1651,11 +1753,13 @@ export const deleteTravelPhotos = async (req, res) => {
     const delete_result = await sourceMdl.getDeleteMedia(media_id);
 
     let delete_media_result = delete_result?.data;
-
-    let deleted_id = delete_media_result.map((media) => {
-      fs.unlinkSync(media.path_name);
-      return String(media.id);
-    });
+    let deleted_id;
+    if (delete_media_result.length > 0) {
+      deleted_id = await delete_media_result.map((media) => {
+        fs.unlinkSync(media.path_name);
+        return String(media.id);
+      });
+    }
     // console.log(deleted_id);
 
     const delete_media_table = await sourceMdl.deleteMedia(deleted_id);
@@ -1669,11 +1773,15 @@ export const deleteTravelPhotos = async (req, res) => {
     );
 
     // console.log(existing_media_id);
-    let fetch_media_id = existing_media_id.join(",");
+    media_id = existing_media_id.join(",");
+    // console.log(media_id);
+    if (existing_media_id.length === 0) {
+      media_id = null;
+    }
 
     const result = await travelMdl.updateTravelPhotos({
       travel_id,
-      fetch_media_id,
+      media_id,
     });
 
     if (result?.success === 1) {
@@ -1692,7 +1800,7 @@ export const deleteTravelPhotos = async (req, res) => {
         0,
         "Failed to delete travel photos",
         [],
-        "",
+        result?.error,
       );
     }
   } catch (error) {
@@ -1723,6 +1831,7 @@ export const addTravelDocs = async (req, res) => {
     }
 
     let { user_id, travel_id, media_id } = validatedData?.value;
+    media_id = media_id === "" ? null : media_id;
 
     const result = await travelMdl.addTravelDocs({
       user_id,
@@ -1730,13 +1839,29 @@ export const addTravelDocs = async (req, res) => {
       media_id,
     });
 
+    let today = new Date();
+    today = formatDateForSQL(today);
+    const data = {
+      id: id,
+      travel_id: travel_id,
+      media_id: media_id === null ? [] : media_id,
+      created_at: today,
+    };
+
+    if (media_id != null) {
+      const id = media_id.split(",");
+      const result = sourceMdl.getMedia(id);
+      data.media_id = result?.data;
+    }
+
+    const response = replaceNullWithEmptyString(data);
     if (result?.success === 1) {
       return sendResponse(
         res,
         200,
         1,
         "Travel Documents added successfully",
-        [],
+        [response],
         "",
       );
     } else if (result?.success === 0) {
@@ -1802,6 +1927,21 @@ export const updateTravelDocs = async (req, res) => {
       travel_id,
       fetch_media_id,
     });
+
+    const data = {
+      id: id,
+      travel_id: travel_id,
+      media_id: media_id === null ? [] : media_id,
+      created_at: today,
+    };
+
+    if (media_id != null) {
+      const id = media_id.split(",");
+      const result = sourceMdl.getMedia(id);
+      data.media_id = result?.data;
+    }
+
+    const response = replaceNullWithEmptyString(data);
 
     if (result?.success === 1) {
       return sendResponse(
@@ -1964,6 +2104,42 @@ export const deleteTravelDocs = async (req, res) => {
         200,
         0,
         "Failed to delete travel photos",
+        [],
+        "",
+      );
+    }
+  } catch (error) {
+    return sendResponse(
+      res,
+      500,
+      0,
+      "Internal server error",
+      [],
+      error.message,
+    );
+  }
+};
+
+export const travelExpenseCategory = async (req, res) => {
+  try {
+    const result = await travelMdl.getTravelExpenseCategory();
+    // console.log(result);
+    const data = result?.data;
+    if (result?.success === 1) {
+      return sendResponse(
+        res,
+        200,
+        1,
+        "Travel expense categories fetched successfully",
+        data,
+        "",
+      );
+    } else if (result?.success === 0) {
+      return sendResponse(
+        res,
+        200,
+        0,
+        "Failed to fetch travel expense categories",
         [],
         "",
       );

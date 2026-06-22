@@ -227,19 +227,30 @@ export class travelModel {
   }
   async getTravelExpenseCategory(cat_id) {
     let query;
-    let params;
-    const id = cat_id;
-    if (id) {
-      query = `SELECT id, category_name FROM travel_exp_category WHERE id = ?`;
-      params = [id];
+    let params = [];
+
+    if (cat_id != null) {
+      // handles both undefined and null
+      query = `
+    SELECT id, category_name
+    FROM travel_exp_category
+    WHERE id = ?`;
+      params = [cat_id];
+    } else {
+      query = `
+    SELECT id, category_name
+    FROM travel_exp_category`;
     }
+
     const result = await executeQuery(query, params);
+
     if (result?.success === 1) {
       return {
         success: 1,
-        data: result?.data,
+        data: result.data,
       };
-    } else if (result?.success === 0);
+    }
+
     return {
       success: 0,
       error: result?.error,
@@ -419,9 +430,9 @@ WHERE te.travel_id = ?;`;
       };
     }
   }
-  async updateTravelPhotos({ travel_id, fetch_media_id }) {
+  async updateTravelPhotos({ travel_id, media_id }) {
     let query = `UPDATE travel_photos SET media_id = ? WHERE travel_id = ?`;
-    let params = [fetch_media_id, travel_id];
+    let params = [media_id, travel_id];
     // console.log(params);
 
     const result = await executeQuery(query, params);

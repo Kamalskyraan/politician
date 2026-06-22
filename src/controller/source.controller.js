@@ -1,6 +1,6 @@
 import express from "express";
 import { sourceModel } from "../models/source.model.js";
-import { sendResponse } from "../utils/helper.js";
+import { formatDateForSQL, sendResponse } from "../utils/helper.js";
 import { addMediaSchema, validateRequest } from "../utils/validator.js";
 
 const sourceMdl = new sourceModel();
@@ -54,11 +54,14 @@ export const uploadMedia = async (req, res) => {
           org_name: org_name[index],
         });
 
+        let today = new Date();
+        today = formatDateForSQL(today);
         return {
           id: result?.data?.insertId,
           url: url,
           media_size: String(file.size),
           org_name: org_name[index],
+          created_at: today,
         };
       }),
     );

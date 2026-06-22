@@ -2293,6 +2293,23 @@
         }
       }
     },
+    "/travel/gettravelexpensecategories": {
+      "post": {
+        "tags": [
+          "16.Dashboard Api`s"
+        ],
+        "summary": "Get travel expense categories",
+        "description": "Get travel expense categories",
+        "responses": {
+          "200": {
+            "description": "travel expense categories fetched successfully"
+          },
+          "500": {
+            "description": "Internal Server Error"
+          }
+        }
+      }
+    },
     "/travel/addnotes": {
       "post": {
         "tags": [
