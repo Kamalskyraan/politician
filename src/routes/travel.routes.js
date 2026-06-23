@@ -979,10 +979,6 @@ router.post(
       schema: {
         type: "object",
         properties: {
-          user_id: {
-            type: "string",
-            example: "USER_ZNLl2665"
-          },
           travel_id: {
             type: "integer",
             example: 10
