@@ -210,7 +210,7 @@ export class travelModel {
     }
   }
   async getDailyplan({ id }) {
-    let query = `SELECT id, travel_id, plan_from, plan_to, departure, vech_mode, media_id FROM travel_daily_plan WHERE travel_id = ? ORDER BY departure ASC`;
+    let query = `SELECT id, travel_id, plan_from AS \`from\`, plan_to AS \`to\`, departure, vech_mode, media_id FROM travel_daily_plan WHERE travel_id = ? ORDER BY departure ASC`;
     let params = [id];
 
     const result = await executeQuery(query, params);

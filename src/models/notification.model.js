@@ -1,8 +1,21 @@
 import express from "express";
+import { executeQuery } from "../utils/helper.js";
 
 export class notificationModel {
   async addNotification(data) {
-    const {receiver_id, title, message, type, extra} = data;
-    console.log(receiver_id, title, message, type, extra);
+    const { receiver_id, title, message, type, reference_type, reference_id } =
+      data;
+    console.log(receiver_id, title, message, type, reference_type, reference_id);
+    let query = `INSERT INTO notifications (receiver_id, title, message, reference_type, reference_id, type) VALUES (?, ?, ?, ?, ?, ?)`;
+    let params = [
+      receiver_id,
+      title,
+      message,
+      reference_type,
+      reference_id,
+      type,
+    ];
+
+    const result = await executeQuery(query, params);
   }
 }

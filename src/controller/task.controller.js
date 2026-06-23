@@ -84,6 +84,8 @@ export const addTask = async (req, res) => {
       remind_at.setSeconds(0, 0);
       remind_at = formatDateForSQL(remind_at);
     }
+    from_date = formatDateForSQL(from_date);
+    to_date = formatDateForSQL(to_date);
 
     const result = await taskMdl.addTask({
       user_id,
@@ -137,7 +139,7 @@ export const addTask = async (req, res) => {
           let role_name_result = await meetingMdl.getRole(id);
           let role_name = role_name_result?.data[0]?.role_name;
           const { role_id, ...rest } = attendee;
-          return { ...rest, role_name };
+          return { ...rest, role_name, role_id };
         }),
       );
       data.attnds_with_roles = attndsWithRoles;
@@ -338,8 +340,57 @@ export const updateTask = async (req, res) => {
 
     const result = await taskMdl.updateTask({ upt_cols, params });
 
+    const data = {
+      id: result?.data?.insertId,
+      title: title,
+      descp: descp,
+      t_priority: 1,
+      from_date: from_date,
+      to_date: to_date,
+      t_status: status,
+      is_remind: 0,
+      remind_status: "pending",
+      remind_tenure:
+        remind_tenure === null ? remind_tenure : String(remind_tenure),
+      remind_at: remind_at,
+      snooze_at: snooze_at === null ? snooze_at : String(snooze_at),
+      nxt_snooze_at: nxt_snooze_at,
+      media_result: [],
+      attnds_with_roles: [],
+    };
+
+    if (media_id != null) {
+      const id = media_id.split(",");
+      const result = await sourceMdl.getMedia(id);
+      data.media_result = result?.data;
+    }
+    if (attnds_id != null) {
+      const id = attnds_id.split(",");
+      const result = await meetingMdl.getattnds(id);
+      data.attnds_with_roles = result?.data;
+
+      const attndsWithRoles = await Promise.all(
+        data.attnds_with_roles.map(async (attendee) => {
+          const id = attendee?.role_id;
+          let role_name_result = await meetingMdl.getRole(id);
+          let role_name = role_name_result?.data[0]?.role_name;
+          const { role_id, ...rest } = attendee;
+          return { ...rest, role_name, role_id };
+        }),
+      );
+      data.attnds_with_roles = attndsWithRoles;
+    }
+    const response = replaceNullWithEmptyString(data);
+
     if (result?.success === 1) {
-      return sendResponse(res, 200, 1, "Task updated successfully", [], "");
+      return sendResponse(
+        res,
+        200,
+        1,
+        "Task updated successfully",
+        [response],
+        "",
+      );
     } else if (result?.success === 0) {
       return sendResponse(
         res,
@@ -376,9 +427,9 @@ export const getTask = async (req, res) => {
     }
     let { user_id, status } = validatedData?.value;
 
-    status = status === "" ? null : status;
+    status = status === "" ? null : status.split(",");
     let result;
-
+    // console.log(status);
     if (status != null) {
       // if status has value
       result = await taskMdl.getTask({ user_id, status });
@@ -388,16 +439,18 @@ export const getTask = async (req, res) => {
     }
 
     let data = result?.data;
-
-    let media_result;
-    let attnds_result;
+    // console.log(data);
 
     const response = await Promise.all(
       data.map(async (obj) => {
+        let media_result;
+        let attnds_result;
+
         if (obj.media_id != null) {
           let media_id = obj.media_id.split(",");
           media_result = await sourceMdl.getMedia(media_id);
           media_result = media_result?.data;
+          // console.log(media_result)
         }
         let attnds_with_roles = [];
         if (obj.attnds_id != null) {
@@ -412,7 +465,7 @@ export const getTask = async (req, res) => {
                 let role_name = await meetingMdl.getRole(id);
                 role_name = role_name?.data[0]?.role_name;
                 const { role_id, ...rest } = attnd_obj;
-                return { ...rest, role_name };
+                return { ...rest, role_name, role_id };
               }),
             );
           } catch (error) {
@@ -422,7 +475,7 @@ export const getTask = async (req, res) => {
             }));
           }
         }
-
+        // console.log(media_result)
         const { media_id, attnds_id, ...rest } = obj;
         return { ...rest, media_result, attnds_with_roles };
       }),
