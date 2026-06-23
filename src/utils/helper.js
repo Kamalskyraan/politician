@@ -2,6 +2,10 @@ import dotenv from "dotenv";
 import db from "../config/db.js";
 import { nanoid } from "nanoid";
 import jwt from "jsonwebtoken";
+import { NOTIFICATION_TEMPLATES } from "../service/notification.template.js";
+import { notificationModel } from "../models/notification.model.js";
+
+const notificationMdl = new notificationModel();
 
 dotenv.config();
 
@@ -163,7 +167,17 @@ export const dateToMillis = (data, dateCols) => {
 export const getDaysDiff = (date) =>
   Math.floor((Date.now() - new Date(date)) / 86400000);
 
+export const addNotification = async (templateKey, receiver_id, extra = {}) => {
+  const template = NOTIFICATION_TEMPLATES[templateKey];
+  console.log("called function")
 
-export const addNotification = () => {
-  
-}
+  const notificationData = {
+    receiver_id,
+    title: template.title,
+    message: template.message,
+    type: template.type,
+    extra: JSON.stringify(extra),
+  };
+
+  return await notificationMdl.addNotification(notificationData);
+};

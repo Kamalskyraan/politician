@@ -25,6 +25,7 @@ import {
 import { format } from "path";
 import { send } from "process";
 import { sourceModel } from "../models/source.model.js";
+import { addNotification } from "../utils/helper.js";
 
 const sourceMdl = new sourceModel();
 
@@ -438,6 +439,7 @@ export const addMeeting = async (req, res) => {
       };
 
       const response = replaceNullWithEmptyString(data);
+      await addNotification("MEETING_CREATED", user_id, { id: data.id });
 
       if (result?.success === 1) {
         sendResponse(res, 200, 1, "meeting added successfully", [response], "");

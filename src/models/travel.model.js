@@ -210,7 +210,7 @@ export class travelModel {
     }
   }
   async getDailyplan({ id }) {
-    let query = `SELECT id, user_id, travel_id, plan_from, plan_to, departure, vech_mode, media_id FROM travel_daily_plan WHERE travel_id = ? ORDER BY departure ASC`;
+    let query = `SELECT id, travel_id, plan_from, plan_to, departure, vech_mode, media_id FROM travel_daily_plan WHERE travel_id = ? ORDER BY departure ASC`;
     let params = [id];
 
     const result = await executeQuery(query, params);
@@ -260,7 +260,7 @@ export class travelModel {
   async addExpense({ travel_id, cat_id, cat_name, notes, exp_date, amount }) {
     let query = `INSERT INTO travel_exp (travel_id, cat_id, cat_name, notes, exp_date, amount) VALUES (?, ?, ?, ?, ?, ?)`;
 
-    let params = [travel_id, cat_id, cat_name, notes || null, exp_date, amount];
+    let params = [travel_id, cat_id, cat_name, notes, exp_date, amount];
 
     // console.log(params);
     const result = await executeQuery(query, params);
@@ -363,7 +363,7 @@ WHERE te.travel_id = ?;`;
     }
   }
   async getNotes({ travel_id }) {
-    let query = `SELECT id, travel_id, title, descp, updated_at AS time_at FROM travel_notes WHERE travel_id = ?`;
+    let query = `SELECT id, travel_id, title, descp, DATE_FORMAT(updated_at, '%Y-%m-%d %H:%i:%s') AS created_at FROM travel_notes WHERE travel_id = ?`;
     let params = [travel_id];
 
     const result = await executeQuery(query, params);
@@ -490,9 +490,9 @@ WHERE te.travel_id = ?;`;
     }
   }
 
-  async addTravelDocs({ user_id, travel_id, media_id }) {
-    let query = `INSERT INTO travel_docs (user_id, travel_id, media_id) VALUES (?, ?, ?)`;
-    let params = [user_id, travel_id, media_id];
+  async addTravelDocs({ travel_id, media_id }) {
+    let query = `INSERT INTO travel_docs (travel_id, media_id) VALUES (?, ?)`;
+    let params = [travel_id, media_id];
 
     const result = await executeQuery(query, params);
     if (result?.success === 1) {
@@ -507,11 +507,14 @@ WHERE te.travel_id = ?;`;
       };
     }
   }
-  async updateTravelDocs({ travel_id, fetch_media_id }) {
+  async updateTravelDocs({ travel_id, media_id }) {
+    // console.log("inside update");
     let query = `UPDATE travel_docs SET media_id = ? WHERE travel_id = ?`;
-    let params = [fetch_media_id, travel_id];
+    let params = [media_id, travel_id];
+    // console.log(params);
 
     const result = await executeQuery(query, params);
+    // console.log(result);
     // console.log(result?.data.affectedRows);
     if (result?.success === 0) {
       return {

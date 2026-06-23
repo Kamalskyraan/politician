@@ -613,6 +613,7 @@ export const getTravel = async (req, res) => {
       return sendResponse(res, 200, 0, "failed to fetch travels", [], "");
     } else if (result?.success === 1) {
       travels = result?.data;
+      // console.log(travels)
 
       // console.log(typeof(travels[0]?.snooze_at));
 
@@ -650,11 +651,12 @@ export const getTravel = async (req, res) => {
             const id = formattedTravel?.id;
             const dpResult = await travelMdl.getDailyplan({ id });
             const dailyPlan = dpResult?.data;
-            // console.log(dailyPlan);
+            // console.log(dpResult);
 
             let planMediaResult;
             const dpMedia = await Promise.all(
               dailyPlan.map(async (plan) => {
+                // console.log("dailyplan")
                 if (plan?.media_id) {
                   let dpMediaId = plan.media_id.split(",");
 
@@ -676,6 +678,7 @@ export const getTravel = async (req, res) => {
       // console.log(travelwithdp[0].from_date instanceof Date);
 
       const response = replaceNullWithEmptyString(travelwithdp);
+      // console.log(response)
       // console.log(typeof(response[0]?.from_date))
 
       return sendResponse(
@@ -958,7 +961,7 @@ export const addExpense = async (req, res) => {
       exp_date,
       amount,
     });
-
+    // console.log(result);
     let data = {
       id: result?.data?.insertId,
       travel_id: travel_id,
@@ -985,7 +988,14 @@ export const addExpense = async (req, res) => {
         "",
       );
     } else if (result?.success === 0) {
-      return sendResponse(res, 200, 0, "Failed to add travel expense", [], "");
+      return sendResponse(
+        res,
+        200,
+        0,
+        "Failed to add travel expense",
+        [],
+        result?.error,
+      );
     }
   } catch (error) {
     return sendResponse(
@@ -1236,7 +1246,7 @@ export const addNotes = async (req, res) => {
       travel_id: travel_id,
       title: title,
       descp: descp,
-      time_at: today,
+      created_at: today,
     };
 
     const response = replaceNullWithEmptyString(data);
@@ -1282,7 +1292,8 @@ export const getNotes = async (req, res) => {
 
     let { travel_id } = validatedData?.value;
     const result = await travelMdl.getNotes({ travel_id });
-    const data = result?.data;
+    let data = result?.data;
+
     if (result?.success === 1) {
       return sendResponse(
         res,
@@ -1347,7 +1358,7 @@ export const updateNotes = async (req, res) => {
       id: id,
       title: title,
       descp: descp,
-      time_at: today,
+      created_at: today,
     };
 
     const response = replaceNullWithEmptyString(data);
@@ -1815,6 +1826,61 @@ export const deleteTravelPhotos = async (req, res) => {
   }
 };
 
+// export const addTravelDocs = async (req, res) => {
+//   try {
+//     const validatedData = validateRequest(req.body, addTravelPhotosSchema);
+
+//     if (validatedData?.success === 0) {
+//       return sendResponse(
+//         res,
+//         validatedData?.errorObject?.status,
+//         0,
+//         "validation Error",
+//         [],
+//         validatedData?.errorObject?.errors,
+//       );
+//     }
+
+//     let { travel_id, media_id } = validatedData?.value;
+//     media_id = media_id === "" ? null : media_id;
+
+//     const result = await travelMdl.addTravelDocs({
+//       travel_id,
+//       media_id,
+//     });
+
+//     const response = replaceNullWithEmptyString(data);
+//     if (result?.success === 1) {
+//       return sendResponse(
+//         res,
+//         200,
+//         1,
+//         "Travel Documents added successfully",
+//         [response],
+//         "",
+//       );
+//     } else if (result?.success === 0) {
+//       return sendResponse(
+//         res,
+//         200,
+//         0,
+//         "Failed to add travel Documents",
+//         [],
+//         "",
+//       );
+//     }
+//   } catch (error) {
+//     return sendResponse(
+//       res,
+//       500,
+//       0,
+//       "Internal server error",
+//       [],
+//       error.message,
+//     );
+//   }
+// };
+
 export const addTravelDocs = async (req, res) => {
   try {
     const validatedData = validateRequest(req.body, addTravelPhotosSchema);
@@ -1830,49 +1896,53 @@ export const addTravelDocs = async (req, res) => {
       );
     }
 
-    let { user_id, travel_id, media_id } = validatedData?.value;
-    media_id = media_id === "" ? null : media_id;
+    let { travel_id, media_id } = validatedData?.value;
+    let result;
 
-    const result = await travelMdl.addTravelDocs({
-      user_id,
-      travel_id,
-      media_id,
-    });
-
-    let today = new Date();
-    today = formatDateForSQL(today);
-    const data = {
-      id: id,
-      travel_id: travel_id,
-      media_id: media_id === null ? [] : media_id,
-      created_at: today,
-    };
-
-    if (media_id != null) {
-      const id = media_id.split(",");
-      const result = sourceMdl.getMedia(id);
-      data.media_id = result?.data;
+    if (media_id.split(",").length > 5) {
+      return sendResponse(
+        res,
+        200,
+        0,
+        "media id cannot be greater than 5",
+        [],
+        "",
+      );
     }
 
-    const response = replaceNullWithEmptyString(data);
+    const existingDocs = await travelMdl.getTravelDocs({ travel_id });
+
+    if (existingDocs?.success === 1 && existingDocs?.data.length > 0) {
+      let oldMediaIds = existingDocs.data[0].media_id
+        ? existingDocs.data[0].media_id.split(",")
+        : [];
+
+      const newMediaIds = media_id ? media_id.split(",") : [];
+
+      media_id = [...oldMediaIds, ...newMediaIds].join(",");
+
+      result = await travelMdl.updateTravelDocs({
+        travel_id,
+        media_id,
+      });
+    } else {
+      result = await travelMdl.addTravelDocs({
+        travel_id,
+        media_id,
+      });
+    }
+
     if (result?.success === 1) {
       return sendResponse(
         res,
         200,
         1,
-        "Travel Documents added successfully",
-        [response],
-        "",
-      );
-    } else if (result?.success === 0) {
-      return sendResponse(
-        res,
-        200,
-        0,
-        "Failed to add travel Documents",
+        "Travel docs saved successfully",
         [],
         "",
       );
+    } else if (result?.success === 0) {
+      return sendResponse(res, 200, 0, "failed to save travel docs", [], "");
     }
   } catch (error) {
     return sendResponse(
@@ -1881,10 +1951,11 @@ export const addTravelDocs = async (req, res) => {
       0,
       "Internal server error",
       [],
-      "error.message",
+      error.message,
     );
   }
 };
+
 export const updateTravelDocs = async (req, res) => {
   try {
     const validatedData = validateRequest(req.body, updateTravelPhotosSchema);
@@ -2073,8 +2144,8 @@ export const deleteTravelDocs = async (req, res) => {
 
     const delete_media_table = await sourceMdl.deleteMedia(deleted_id);
 
-    const travel_photos = await travelMdl.getTravelDocs({ travel_id });
-    let existing_media_id = travel_photos?.data[0]?.media_id;
+    const travel_docs = await travelMdl.getTravelDocs({ travel_id });
+    let existing_media_id = travel_docs?.data[0]?.media_id;
     // console.log(existing_media_id);
     existing_media_id = existing_media_id.split(",");
     existing_media_id = existing_media_id.filter(
@@ -2083,10 +2154,15 @@ export const deleteTravelDocs = async (req, res) => {
 
     // console.log(existing_media_id);
     let fetch_media_id = existing_media_id.join(",");
+    // console.log(fetch_media_id);
+    media_id = fetch_media_id;
+    if (existing_media_id.length === 0) {
+      media_id = null;
+    }
 
     const result = await travelMdl.updateTravelDocs({
       travel_id,
-      fetch_media_id,
+      media_id,
     });
 
     if (result?.success === 1) {
