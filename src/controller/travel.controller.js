@@ -666,7 +666,7 @@ export const getTravel = async (req, res) => {
                 }
 
                 const { media_id, ...rest } = plan;
-                return { ...rest, planMediaResult };
+                return { ...rest, media_id: planMediaResult };
               }),
             );
             let travel_daily_plans = dpMedia;

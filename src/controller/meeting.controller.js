@@ -439,7 +439,7 @@ export const addMeeting = async (req, res) => {
       };
 
       const response = replaceNullWithEmptyString(data);
-      await addNotification("MEETING_CREATED", user_id, { id: data.id });
+      await addNotification("MEETING_CREATED", user_id, "meeting", data.id);
 
       if (result?.success === 1) {
         sendResponse(res, 200, 1, "meeting added successfully", [response], "");
@@ -537,6 +537,7 @@ export const addMeeting = async (req, res) => {
       };
 
       const response = replaceNullWithEmptyString(data);
+      await addNotification("MEETING_CREATED", user_id, "meeting", data.id);
 
       if (result?.success === 1) {
         return sendResponse(
@@ -644,6 +645,7 @@ export const addMeeting = async (req, res) => {
       };
 
       const response = replaceNullWithEmptyString(data);
+      await addNotification("MEETING_CREATED", user_id, "meeting", data.id);
 
       if (result?.success === 1) {
         sendResponse(res, 200, 1, "meeting added successfully", [response], "");

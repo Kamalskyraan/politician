@@ -1277,11 +1277,21 @@ export const getTaskSchema = Joi.object({
     "any.required": "task id cannot be empty",
   }),
   status: Joi.string()
-    .valid("pending", "inprogress", "completed", "cancelled")
     .allow("")
-    .messages({
-      "string.base": "status should be a string",
-      "any.only": "status must be pending, upcoming, completed, or cancelled",
+    .custom((value, helpers) => {
+      if (value === "") return value;
+
+      const validStatuses = ["inprogress", "completed", "cancelled", "pending"];
+
+      const statuses = value.split(",");
+
+      for (const status of statuses) {
+        if (!validStatuses.includes(status.trim())) {
+          return helpers.error("any.invalid");
+        }
+      }
+
+      return value;
     }),
 });
 
