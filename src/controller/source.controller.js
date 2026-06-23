@@ -93,7 +93,7 @@ export const addUserrole = async (req, res) => {
     const result = await sourceMdl.addRole({ role_name });
     const data = (await result?.data) || "";
     const error = (await result?.error) || "";
-// 
+
     
     if (result?.success === 0) {
       return sendResponse(res, 200, 0, error, [], "");
