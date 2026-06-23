@@ -264,7 +264,7 @@ export const getIssue = async (req, res) => {
     const response = replaceNullWithEmptyString(data);
 
     const finalResponse = await Promise.all(
-  response.map(async (issue) => {
+  response?.map(async (issue) => {
     let media_result = [];
     let incharge_with_role_names = [];
     let member_with_role_names = [];

@@ -182,12 +182,12 @@ export const addNotification = async (
   const template = NOTIFICATION_TEMPLATES[templateKey];
 
   const notificationData = {
-    receiver_id,
+    receiver_id: receiver_id,
     title: template.title,
     message: template.message,
     type: template.type,
     reference_type: reference_type,
-    receiver_id: reference_id,
+    reference_id: reference_id,
   };
 
   return await notificationMdl.addNotification(notificationData);

@@ -442,7 +442,7 @@ export const getTask = async (req, res) => {
     // console.log(data);
 
     const response = await Promise.all(
-      data.map(async (obj) => {
+      [data]?.map(async (obj) => {
         let media_result;
         let attnds_result;
 
