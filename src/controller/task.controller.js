@@ -442,15 +442,16 @@ export const getTask = async (req, res) => {
     // console.log(data);
 
     const response = await Promise.all(
-      [data]?.map(async (obj) => {
+      data?.map(async (obj) => {
         let media_result;
         let attnds_result;
 
         if (obj.media_id != null) {
           let media_id = obj.media_id.split(",");
+         
           media_result = await sourceMdl.getMedia(media_id);
           media_result = media_result?.data;
-          // console.log(media_result)
+          
         }
         let attnds_with_roles = [];
         if (obj.attnds_id != null) {
