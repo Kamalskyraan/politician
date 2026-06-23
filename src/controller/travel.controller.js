@@ -661,12 +661,12 @@ export const getTravel = async (req, res) => {
                   let dpMediaId = plan.media_id.split(",");
 
                   const result = await sourceMdl.getMedia(dpMediaId);
-
+                  // console.log(result)
                   planMediaResult = result?.data || [];
                 }
-
+                // console.log(planMediaResult)
                 const { media_id, ...rest } = plan;
-                return { ...rest, media_id: planMediaResult };
+                return { ...rest, media_id: planMediaResult || [] };
               }),
             );
             let travel_daily_plans = dpMedia;

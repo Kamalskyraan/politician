@@ -5,7 +5,7 @@ export class notificationModel {
   async addNotification(data) {
     const { receiver_id, title, message, type, reference_type, reference_id } =
       data;
-    console.log(receiver_id, title, message, type, reference_type, reference_id);
+    // console.log(receiver_id, title, message, type, reference_type, reference_id);
     let query = `INSERT INTO notifications (receiver_id, title, message, reference_type, reference_id, type) VALUES (?, ?, ?, ?, ?, ?)`;
     let params = [
       receiver_id,

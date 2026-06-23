@@ -439,6 +439,8 @@ export const addMeeting = async (req, res) => {
       };
 
       const response = replaceNullWithEmptyString(data);
+      const currentDate = new Date();
+      // if()
       await addNotification("MEETING_CREATED", user_id, "meeting", data.id);
 
       if (result?.success === 1) {
