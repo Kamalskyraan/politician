@@ -94,7 +94,7 @@ export const addUserrole = async (req, res) => {
     const data = (await result?.data) || "";
     const error = (await result?.error) || "";
 
-    // console.log(result);
+    
     if (result?.success === 0) {
       return sendResponse(res, 200, 0, error, [], "");
     } else {
