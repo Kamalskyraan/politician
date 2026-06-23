@@ -47,6 +47,7 @@ export const uploadMedia = async (req, res) => {
     // if(files.length !== org_name.length){
     //   return sendResponse(res, 200, 0, "files and their original name should be equal", [], "");
     // }
+    // 
     const uploadedFiles = await Promise.all(
       files.map(async (file, index) => {
         const url = `${file.destination.replace("src", "")}/${file.filename}`;
