@@ -439,7 +439,7 @@ export const getTask = async (req, res) => {
     }
 
     let data = result?.data;
-    // console.log(data);
+    console.log(data , "data");
 
     const response = await Promise.all(
       [data]?.map(async (obj) => {
