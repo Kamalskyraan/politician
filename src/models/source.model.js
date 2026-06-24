@@ -253,6 +253,67 @@ export class sourceModel {
       rows,
     };
   }
-  
-  // 
+
+  async getDeleteMedia(id) {
+    let placeHolders = id.map(() => "?").join(", ");
+    let query = `SELECT id, url, path_name, org_name, media_size FROM media WHERE id IN (${placeHolders})`;
+    let params = id;
+
+    // console.log("params:", id);
+
+    const result = await executeQuery(query, params);
+    // console.log(result);
+
+    if (result?.success === 1) {
+      return {
+        success: 1,
+        data: result?.data,
+      };
+    } else {
+      return {
+        success: 0,
+        error: result?.error,
+      };
+    }
+  }
+  async deleteMedia(id) {
+    let placeHolders = id.map(() => "?").join(", ");
+    let query = `DELETE FROM media where id IN (${placeHolders})`;
+    let params = id;
+
+    // console.log(id)
+    // console.log(placeHolders);
+    // console.log(query);
+
+    const result = await executeQuery(query, params);
+
+    if (result?.success === 1) {
+      return {
+        success: 1,
+        data: result?.data,
+      };
+    } else {
+      return {
+        success: 0,
+        error: result?.error,
+      };
+    }
+  }
+
+  async getCatName(id) {
+    let query = `SELECT cat_name FROM issue_category where id = ?`;
+
+    const result = await executeQuery(query, [id]);
+    if (result?.success === 1) {
+      return {
+        success: 1,
+        data: result?.data,
+      };
+    } else {
+      return {
+        success: 0,
+        error: result?.error,
+      };
+    }
+  }
 }
