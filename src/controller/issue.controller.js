@@ -6,7 +6,11 @@ import {
   updateIssueschema,
   validateRequest,
 } from "../utils/validator.js";
-import { formatDateForSQL, replaceNullWithEmptyString, sendResponse } from "../utils/helper.js";
+import {
+  formatDateForSQL,
+  replaceNullWithEmptyString,
+  sendResponse,
+} from "../utils/helper.js";
 import { issueModel } from "../models/issue.model.js";
 import { sourceModel } from "../models/source.model.js";
 import { meetingModel } from "../models/meeting.model.js";
@@ -66,8 +70,75 @@ export const addIssue = async (req, res) => {
       member_id,
     });
 
+    const data = {
+      id: result?.data?.insertId,
+      cat_id: cat_id,
+      cat_name: cat_name,
+      descp: descp,
+      address: address,
+      lat: lat,
+      lng: lng,
+      media_id: media_id === null ? [] : media_id,
+      report_date: report_date,
+      incharge_id: incharge_id === null ? [] : incharge_id,
+      member_id: member_id === null ? [] : member_id,
+    };
+    if (cat_id > 0) {
+      const cat_name = await issueMdl.getCatName(cat_id);
+      data.cat_name = cat_name?.data[0]?.cat_name;
+    }
+
+    if (media_id != null) {
+      const id = media_id.split(",");
+      const media_result = await sourceMdl.getMedia(id);
+      // console.log(media_result?.data);
+      data.media_id = media_result?.data;
+    }
+    if (incharge_id != null) {
+      const id = incharge_id.split(",");
+      let incharge_result = await meetingMdl.getattnds(id);
+      incharge_result = incharge_result?.data;
+      // console.log(incharge_result);
+      let incharge_result_with_roles = await Promise.all(
+        incharge_result.map(async (obj) => {
+          const role_id = obj.role_id;
+          const roles = await meetingMdl.getRole(role_id);
+          // console.log(roles);
+          const { ...rest } = obj;
+          return { ...rest, role_name: roles?.data[0]?.role_name };
+        }),
+      );
+      // const {...rest, incharge_id: incharge_result_with_roles} = obj;
+      data.incharge_id = incharge_result_with_roles;
+    }
+    if (member_id != null) {
+      const id = member_id.split(",");
+      let member_result = await meetingMdl.getattnds(id);
+      member_result = member_result?.data;
+      // console.log(incharge_result);
+      let member_result_with_roles = await Promise.all(
+        member_result.map(async (obj) => {
+          const role_id = obj.role_id;
+          const roles = await meetingMdl.getRole(role_id);
+          // console.log(roles);
+          const { ...rest } = obj;
+          return { ...rest, role_name: roles?.data[0]?.role_name };
+        }),
+      );
+      // const {...rest, incharge_id: incharge_result_with_roles} = obj;
+      data.member_id = member_result_with_roles;
+    }
+    const response = replaceNullWithEmptyString(data);
+
     if (result?.success === 1) {
-      return sendResponse(res, 200, 1, "Issue added successfully", [], "");
+      return sendResponse(
+        res,
+        200,
+        1,
+        "Issue added successfully",
+        [response],
+        "",
+      );
     } else if (result?.success === 0) {
       return sendResponse(
         res,
@@ -164,7 +235,7 @@ export const updateIssue = async (req, res) => {
     let upt_cols = [];
     let params = [];
 
-    if (cat_id) {
+    if (cat_id != null) {
       upt_cols.push("cat_id = ?");
       params.push(cat_id);
     }
@@ -208,8 +279,77 @@ export const updateIssue = async (req, res) => {
 
     const result = await issueMdl.updateIssue({ upt_cols, params });
 
+    const data = {
+      id: id,
+      cat_id: cat_id,
+      cat_name: cat_name,
+      descp: descp,
+      address: address,
+      lat: lat,
+      lng: lng,
+      media_id: media_id === null ? [] : media_id,
+      report_date: report_date,
+      incharge_id: incharge_id === null ? [] : incharge_id,
+      member_id: member_id === null ? [] : member_id,
+    };
+
+    if (cat_id > 0) {
+      const cat_name = await issueMdl.getCatName(cat_id);
+      data.cat_name = cat_name?.data[0]?.cat_name;
+    }
+
+    if (media_id != null) {
+      const id = media_id.split(",");
+      const media_result = await sourceMdl.getMedia(id);
+      // console.log(media_result?.data);
+      data.media_id = media_result?.data;
+    }
+
+    if (incharge_id != null) {
+      const id = incharge_id.split(",");
+      let incharge_result = await meetingMdl.getattnds(id);
+      incharge_result = incharge_result?.data;
+      // console.log(incharge_result);
+      let incharge_result_with_roles = await Promise.all(
+        incharge_result.map(async (obj) => {
+          const role_id = obj.role_id;
+          const roles = await meetingMdl.getRole(role_id);
+          // console.log(roles);
+          const { ...rest } = obj;
+          return { ...rest, role_name: roles?.data[0]?.role_name };
+        }),
+      );
+      // const {...rest, incharge_id: incharge_result_with_roles} = obj;
+      data.incharge_id = incharge_result_with_roles;
+    }
+    if (member_id != null) {
+      const id = member_id.split(",");
+      let member_result = await meetingMdl.getattnds(id);
+      member_result = member_result?.data;
+      // console.log(incharge_result);
+      let member_result_with_roles = await Promise.all(
+        member_result.map(async (obj) => {
+          const role_id = obj.role_id;
+          const roles = await meetingMdl.getRole(role_id);
+          // console.log(roles);
+          const { ...rest } = obj;
+          return { ...rest, role_name: roles?.data[0]?.role_name };
+        }),
+      );
+      // const {...rest, incharge_id: incharge_result_with_roles} = obj;
+      data.member_id = member_result_with_roles;
+    }
+
+    const response = replaceNullWithEmptyString(data);
     if (result?.success === 1) {
-      return sendResponse(res, 200, 1, "Issue updated successfully", [], "");
+      return sendResponse(
+        res,
+        200,
+        1,
+        "Issue updated successfully",
+        [response],
+        "",
+      );
     } else if (result?.success === 0) {
       return sendResponse(
         res,
@@ -247,7 +387,7 @@ export const getIssue = async (req, res) => {
     let { user_id, status, assigned, from_date, to_date } =
       validatedData?.value;
 
-    status = status === "" ? null : status;
+    status = status === "" ? null : status.split(",");
     assigned = assigned === "" ? null : Number(assigned);
     from_date = from_date === "" ? null : from_date;
     to_date = to_date === "" ? null : to_date;
@@ -264,90 +404,92 @@ export const getIssue = async (req, res) => {
     const response = replaceNullWithEmptyString(data);
 
     const finalResponse = await Promise.all(
-  response?.map(async (issue) => {
-    let media_result = [];
-    let incharge_with_role_names = [];
-    let member_with_role_names = [];
-    let cat_name = issue.cat_name;
+      response?.map(async (issue) => {
+        let media_result = [];
+        let incharge_with_role_names = [];
+        let member_with_role_names = [];
+        let cat_name = issue.cat_name;
 
-    if(issue.cat_id !== 0){
-        const id = issue.cat_id;
-        const result = await sourceMdl.getCatName(id);
-        cat_name = result?.data[0]?.cat_name;
-    }
+        if (issue.cat_id !== 0) {
+          const id = issue.cat_id;
+          const result = await sourceMdl.getCatName(id);
+          cat_name = result?.data[0]?.cat_name;
+        }
 
-    if (issue.media_id != null && issue.media_id !== "") {
-      const media_id = issue.media_id.split(",");
-      const result = await sourceMdl.getMedia(media_id);
-      media_result = result?.data || [];
-    }
+        if (issue.media_id != null && issue.media_id !== "") {
+          const media_id = issue.media_id.split(",");
+          const result = await sourceMdl.getMedia(media_id);
+          media_result = result?.data || [];
+        }
 
-    if (issue.incharge_id != null && issue.incharge_id !== "") {
-      const incharge_id = issue.incharge_id.split(",");
-      const result = await meetingMdl.getattnds(incharge_id);
-      const incharge_result = result?.data || [];
+        if (issue.incharge_id != null && issue.incharge_id !== "") {
+          const incharge_id = issue.incharge_id.split(",");
+          const result = await meetingMdl.getattnds(incharge_id);
+          const incharge_result = result?.data || [];
 
-      incharge_with_role_names = await Promise.all(
-        incharge_result.map(async (incharge) => {
-          let role_name = null;
+          incharge_with_role_names = await Promise.all(
+            incharge_result.map(async (incharge) => {
+              let role_name = null;
 
-          if (incharge.role_id) {
-            const roleResult = await meetingMdl.getRole(incharge.role_id);
-            role_name = roleResult?.data?.[0]?.role_name || null;
-          }
+              if (incharge.role_id) {
+                const roleResult = await meetingMdl.getRole(incharge.role_id);
+                role_name = roleResult?.data?.[0]?.role_name || null;
+              }
 
-          const { role_id, ...rest } = incharge;
+              const { ...rest } = incharge;
 
-          return {
-            ...rest,
-            role_name,
-          };
-        })
-      );
-    }
+              return {
+                ...rest,
+                role_name,
+              };
+            }),
+          );
+        }
 
-    if (issue.member_id != null && issue.member_id !== "") {
-      const member_id = issue.member_id.split(",");
-      const result = await meetingMdl.getattnds(member_id);
-      const member_result = result?.data || [];
+        if (issue.member_id != null && issue.member_id !== "") {
+          const member_id = issue.member_id.split(",");
+          const result = await meetingMdl.getattnds(member_id);
+          const member_result = result?.data || [];
 
-      member_with_role_names = await Promise.all(
-        member_result.map(async (member) => {
-          let role_name = null;
+          member_with_role_names = await Promise.all(
+            member_result.map(async (member) => {
+              let role_name = null;
 
-          if (member.role_id) {
-            const roleResult = await meetingMdl.getRole(member.role_id);
-            role_name = roleResult?.data?.[0]?.role_name || null;
-          }
+              if (member.role_id) {
+                const roleResult = await meetingMdl.getRole(member.role_id);
+                role_name = roleResult?.data?.[0]?.role_name || null;
+              }
 
-          const { role_id, ...rest } = member;
+              const { ...rest } = member;
 
-          return {
-            ...rest,
-            role_name,
-          };
-        })
-      );
-    }
+              return {
+                ...rest,
+                role_name,
+              };
+            }),
+          );
+        }
 
-    const {
-      media_id,
-      incharge_id,
-      member_id,
-      ...rest
-    } = issue;
+        const { media_id, incharge_id, member_id, ...rest } = issue;
 
-    return {
-      ...rest,
-      cat_name,
-      media_result,
-      incharge_with_role_names,
-      member_with_role_names,
-    };
-  })
-);
+        return {
+          ...rest,
+          cat_name,
+          media_result,
+          incharge_with_role_names,
+          member_with_role_names,
+        };
+      }),
+    );
     if (result?.success === 1) {
-      return sendResponse(res, 200, 1, "Issue fetched successfully", finalResponse, "");
+      return sendResponse(
+        res,
+        200,
+        1,
+        "Issue fetched successfully",
+        finalResponse,
+        "",
+      );
     } else if (result?.success === 0) {
       return sendResponse(
         res,

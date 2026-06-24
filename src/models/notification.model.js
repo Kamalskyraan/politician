@@ -18,4 +18,12 @@ export class notificationModel {
 
     const result = await executeQuery(query, params);
   }
+  async deleteNotification(data) {
+    const { receiver_id, reference_type, reference_id } = data;
+
+    let query = `DELETE FROM notifications WHERE receiver_id = ? AND reference_type = ? AND reference_id = ?`;
+    let params = [receiver_id, reference_type, reference_type];
+
+    const result = await executeQuery(query, params);
+  }
 }

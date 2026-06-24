@@ -2075,6 +2075,7 @@ export const getTravelDocs = async (req, res) => {
           media_result = await sourceMdl.getMedia(media_id);
           // console.log(media_result?.data)
           media_result = media_result?.data;
+          // console.log(media_result)
         }
         const { media_id, ...rest } = data;
         return { ...rest, media_result };
