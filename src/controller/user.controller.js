@@ -36,19 +36,20 @@ export const updateProfileDetail = async (req, res) => {
       );
     }
 
-    const { user_id, name, phn_num, c_code, email } = validatedData?.value;
+    let { user_id, name, phn_num, c_code, email } = validatedData?.value;
 
-    name === "" ? null : name;
-    phn_num === "" ? null : phn_num;
-    c_code === "" ? null : c_code;
-    email === "" ? null : email;
+    name = name === "" ? null : name;
+    phn_num = phn_num === "" ? null : phn_num;
+    c_code = c_code === "" ? null : c_code;
+    email = email === "" ? null : email;
 
     const userResult = await userMdl.getProfileDetails(user_id);
     if (userResult?.success === 0) {
-      return sendResponse(res, 200, 0, userResult?.error, [], "");
+      return sendResponse(res, 200, 0, "failed to fetch user result", [], "");
     }
 
     const user = userResult.data;
+    // console.log(user);
 
     let upt_cols = [];
     let params = [];
@@ -80,8 +81,9 @@ export const updateProfileDetail = async (req, res) => {
     }
     // EMAIL
     if (email !== user.email && email != null) {
+      // console.log("inside email")
       const diffDays = getDaysDiff(user.email_upt_at);
-      console.log("email", diffDays);
+      // console.log("email", diffDays);
 
       if (diffDays <= 30) {
         return sendResponse(
@@ -101,11 +103,9 @@ export const updateProfileDetail = async (req, res) => {
     }
     // PHONE NUMBER
     if (
-      String(phn_num) !== String(user.phn_num) ||
-      (c_code !== user.c_code && phn_num != null && c_code != null)
-    ) {
+      phn_num != null && c_code != null && (String(phn_num) !== String(user.phn_num) || c_code !== user.c_code)) {
       const diffDays = getDaysDiff(user.phnnum_upt_at);
-      console.log("phone number", diffDays);
+      // console.log("phone number", diffDays);
 
       if (diffDays <= 30) {
         return sendResponse(

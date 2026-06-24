@@ -181,7 +181,7 @@ export class supportModel {
     }
   }
   async getIssueCat(status) {
-    let query = `SELECT id, cat_name FROM issue_category WHERE status = ?`;
+    let query = `SELECT id, cat_name AS category_name FROM issue_category WHERE status = ?`;
     let params = [status];
 
     const result = await executeQuery(query, params);
