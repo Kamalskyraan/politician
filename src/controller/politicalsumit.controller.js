@@ -297,7 +297,7 @@ export const getSumit = async (req, res) => {
           name: row.name,
           type: row.type,
           designation: row.cat_id === 0 ? row.cat_name : row.designation,
-          designation: row.dept_id === 0 ? row.dept_name : row.department,
+          department: row.dept_id === 0 ? row.dept_name : row.department,
         };
 
         if (row.type === "vip") {
