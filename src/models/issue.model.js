@@ -88,11 +88,11 @@ export class issueModel {
     }
   }
   async getIssue({ user_id, status, assigned, from_date, to_date }) {
-    let query = `SELECT * FROM issues WHERE user_id = ?`;
+    let query = `SELECT id, cat_id, cat_name, descp, address, lat, lng, status, report_date, media_id, incharge_id, member_id FROM issues WHERE user_id = ?`;
     let params = [user_id];
 
     if (status != null) {
-      const placeholders = status.map(()=> "?").join(", ")
+      const placeholders = status.map(() => "?").join(", ");
       query += ` AND status IN (${placeholders})`;
       params.push(...status);
     }

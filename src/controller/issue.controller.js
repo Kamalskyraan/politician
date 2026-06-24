@@ -70,6 +70,8 @@ export const addIssue = async (req, res) => {
       member_id,
     });
 
+    const status = "inprogress"
+
     const data = {
       id: result?.data?.insertId,
       cat_id: cat_id,
@@ -78,6 +80,7 @@ export const addIssue = async (req, res) => {
       address: address,
       lat: lat,
       lng: lng,
+      status: status,
       media_id: media_id === null ? [] : media_id,
       report_date: report_date,
       incharge_id: incharge_id === null ? [] : incharge_id,
@@ -279,6 +282,8 @@ export const updateIssue = async (req, res) => {
 
     const result = await issueMdl.updateIssue({ upt_cols, params });
 
+    const status = "inprogress"
+
     const data = {
       id: id,
       cat_id: cat_id,
@@ -287,6 +292,7 @@ export const updateIssue = async (req, res) => {
       address: address,
       lat: lat,
       lng: lng,
+      status: status,
       media_id: media_id === null ? [] : media_id,
       report_date: report_date,
       incharge_id: incharge_id === null ? [] : incharge_id,
@@ -475,9 +481,9 @@ export const getIssue = async (req, res) => {
         return {
           ...rest,
           cat_name,
-          media_result,
-          incharge_with_role_names,
-          member_with_role_names,
+          media_id: media_result,
+          incharge_id: incharge_with_role_names,
+          member_id: member_with_role_names,
         };
       }),
     );

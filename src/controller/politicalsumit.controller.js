@@ -8,8 +8,10 @@ import {
 } from "../utils/validator.js";
 import { replaceNullWithEmptyString, sendResponse } from "../utils/helper.js";
 import { politicalSumitModel } from "../models/politicalsumit.model.js";
+import { meetingModel } from "../models/meeting.model.js";
 
 const sumitMdl = new politicalSumitModel();
+const meetingMdl = new meetingModel();
 
 export const addSumit = async (req, res) => {
   try {
@@ -62,13 +64,98 @@ export const addSumit = async (req, res) => {
       dept_incharge,
     });
 
+    const data = {
+      id: result?.data?.insertId,
+      title: title,
+      location: location,
+      lat: lat,
+      lng: lng,
+      sumit_date: sumit_date,
+      sts: sts,
+      vip: vip,
+      member: member,
+      sumit_incharge: sumit_incharge,
+      dept_incharge: dept_incharge,
+    };
+
+    if (data.vip.length > 0) {
+      const vip_data = await Promise.all(
+        data.vip.map(async (obj) => {
+          const id = obj.cat_id;
+          if (id > 0) {
+            const result = await meetingMdl.getRole(id);
+            // console.log(result)
+            obj.cat_name = result?.data[0]?.role_name;
+            return obj;
+          } else {
+            return obj;
+          }
+        }),
+      );
+      data.vip = vip_data || [];
+    }
+    if (data.member.length > 0) {
+      const member_data = await Promise.all(
+        data.member.map(async (obj) => {
+          const id = obj.cat_id;
+          if (id > 0) {
+            const result = await meetingMdl.getRole(id);
+            // console.log(result)
+            obj.cat_name = result?.data[0]?.role_name;
+            return obj;
+          } else {
+            return obj;
+          }
+        }),
+      );
+      data.member = member_data || [];
+    }
+    if (data.sumit_incharge.length > 0) {
+      const sumit_data = await Promise.all(
+        data.sumit_incharge.map(async (obj) => {
+          const id = obj.cat_id;
+          if (id > 0) {
+            const result = await meetingMdl.getRole(id);
+            // console.log(result)
+            obj.cat_name = result?.data[0]?.role_name;
+            return obj;
+          } else {
+            return obj;
+          }
+        }),
+      );
+      data.sumit_incharge = sumit_data || [];
+    }
+    if (data.dept_incharge.length > 0) {
+      const dept_data = await Promise.all(
+        data.dept_incharge.map(async (obj) => {
+          const id = obj.cat_id;
+          const dept_id = obj.dept_id;
+          if (id > 0) {
+            const result = await meetingMdl.getRole(id);
+            obj.cat_name = result?.data[0]?.role_name;
+            // return obj;
+          }
+          if (dept_id > 0) {
+            const result = await sumitMdl.getDeptRole(dept_id);
+            obj.dept_name = result?.data[0]?.category_name;
+            // return obj;
+          }
+          return obj;
+        }),
+      );
+      data.dept_incharge = dept_data || [];
+    }
+
+    const response = replaceNullWithEmptyString(data);
+
     if (result?.success === 1) {
       return sendResponse(
         res,
         200,
         1,
         "Political sumit added successfully",
-        [],
+        [response],
         "",
       );
     } else if (result?.success === 0) {
@@ -153,8 +240,9 @@ export const getSumit = async (req, res) => {
       );
     }
     let { user_id, status, from_date, to_date, id } = validatedData?.value;
+    // console.log("entered");
 
-    status = status === "" ? null : status;
+    status = status === "" ? null : status.split(",");
     from_date = from_date === "" ? null : from_date;
     to_date = to_date === "" ? null : to_date;
     id = id === "" ? null : Number(id);
@@ -170,8 +258,9 @@ export const getSumit = async (req, res) => {
         params.push(user_id);
       }
       if (status != null) {
-        upt_cols.push(" AND status = ?");
-        params.push(status);
+        const placeholders = status.map(() => "?").join(", ");
+        upt_cols.push(` AND status IN (${placeholders})`);
+        params.push(...status);
       }
       if (from_date != null) {
         upt_cols.push(" AND sumit_date >= ?");
@@ -186,6 +275,7 @@ export const getSumit = async (req, res) => {
     } else if (id != null) {
       result = await sumitMdl.getSumitPeopleDetails(id);
       data = result?.data;
+      // console.log("got data")
 
       let response = {
         id: data[0]?.sumit_id,
@@ -243,7 +333,7 @@ export const getSumit = async (req, res) => {
         0,
         "Failed to fetch political sumit",
         [],
-        result?.error,
+        "",
       );
     }
   } catch (error) {
@@ -319,7 +409,7 @@ export const updateSumit = async (req, res) => {
     // console.log("done summit details")
     let params = [];
     let updateResult = {
-      success: 1
+      success: 1,
     };
 
     if (vip.length > 0) {
@@ -377,7 +467,7 @@ export const updateSumit = async (req, res) => {
     }
     // console.log("done members updated")
     let deleteMemberResult = {
-      success: 1
+      success: 1,
     };
     if (del_people.length > 0) {
       deleteMemberResult = await sumitMdl.deleteSumitMember({ del_people });

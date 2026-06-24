@@ -463,11 +463,11 @@ export const getIssueCat = async (req, res) => {
     const data = result?.data;
     // console.log(result);
 
-    if (result?.success === 1) {
-      sendResponse(res, 200, 1, "faq fetched successfully", data, "");
-    } else {
-      sendResponse(res, 200, 0, result?.error, [], "");
-    }
+    // if (result?.success === 1) {
+    //   return sendResponse(res, 200, 1, "faq fetched successfully", data, "");
+    // } else {
+    //   return sendResponse(res, 200, 0, result?.error, [], "");
+    // }
 
     if (result?.success === 1) {
       return sendResponse(
@@ -475,11 +475,11 @@ export const getIssueCat = async (req, res) => {
         200,
         1,
         "Issue category fetched successfully",
-        [],
+        data,
         ""
       );
     } else if (result?.success === 0) {
-      return sendResponse(res, 200, 0, "Failed to add issue category", [], "");
+      return sendResponse(res, 200, 0, "Failed to fetch issue category", [], "");
     }
   } catch (error) {
     return sendResponse(

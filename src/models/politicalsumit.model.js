@@ -170,7 +170,7 @@ export class politicalSumitModel {
       let params2 = params;
       result = await executeQuery(query2, params2);
     }
-// console.log(result?.success);
+    // console.log(result?.success);
     if (result?.success === 1) {
       return {
         success: 1,
@@ -184,7 +184,7 @@ export class politicalSumitModel {
     }
   }
   async deleteSumitMember({ del_people }) {
-    const placeholder = del_people.map(()=> "?").join(", ");
+    const placeholder = del_people.map(() => "?").join(", ");
     let query = `DELETE FROM political_sumit_peoples WHERE id IN (${placeholder})`;
     let params = del_people;
 
@@ -199,6 +199,23 @@ export class politicalSumitModel {
       return {
         success: 0,
         error: del_result?.error,
+      };
+    }
+  }
+  async getDeptRole(id) {
+    let query = `SELECT category_name FROM political_sumit_category WHERE id = ?`;
+    let params = [id];
+
+    const result = await executeQuery(query, params);
+    if (result?.success === 1) {
+      return {
+        success: 1,
+        data: result?.data,
+      };
+    } else if (result?.success === 0) {
+      return {
+        success: 0,
+        error: result?.error,
       };
     }
   }
