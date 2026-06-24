@@ -249,4 +249,22 @@ export class supportModel {
       };
     }
   }
+
+  async getMeetingDate(id) {
+    let query = `SELECT from_date FROM meeting WHERE id = ?`;
+    let params = [id];
+
+    const result = await executeQuery(query, params);
+    if (result?.success === 1) {
+      return {
+        success: 1,
+        data: result?.data,
+      };
+    } else if (result?.success === 0) {
+      return {
+        success: 0,
+        error: result?.error,
+      };
+    }
+  }
 }

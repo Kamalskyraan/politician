@@ -92,8 +92,9 @@ export class issueModel {
     let params = [user_id];
 
     if (status != null) {
-      query += ` AND status = ?`;
-      params.push(status);
+      const placeholders = status.map(()=> "?").join(", ")
+      query += ` AND status IN (${placeholders})`;
+      params.push(...status);
     }
     if (assigned != null && assigned === 0) {
       query += ` AND incharge_id IS NULL AND member_id IS NULL`;
@@ -113,6 +114,22 @@ export class issueModel {
         data: result?.data,
       };
     } else {
+      return {
+        success: 0,
+        error: result?.error,
+      };
+    }
+  }
+  async getCatName(id) {
+    let query = `SELECT cat_name FROM issue_category WHERE id = ?`;
+    let params = [id];
+    const result = await executeQuery(query, params);
+    if (result?.success === 1) {
+      return {
+        success: 1,
+        data: result?.data,
+      };
+    } else if (result?.success === 0) {
       return {
         success: 0,
         error: result?.error,

@@ -5,6 +5,7 @@ import {
   formatDateForSQL,
   replaceNullWithEmptyString,
   dateToMillis,
+  getCurrentDateTime,
 } from "../utils/helper.js";
 import {
   addAppointSchema,
@@ -25,9 +26,11 @@ import {
 import { format } from "path";
 import { send } from "process";
 import { sourceModel } from "../models/source.model.js";
+import { supportModel } from "../models/support.model.js";
 import { addNotification } from "../utils/helper.js";
 
 const sourceMdl = new sourceModel();
+const supportMdl = new supportModel();
 
 const meetingMdl = new meetingModel();
 
@@ -439,9 +442,12 @@ export const addMeeting = async (req, res) => {
       };
 
       const response = replaceNullWithEmptyString(data);
-      const currentDate = new Date();
-      // if()
-      await addNotification("MEETING_CREATED", user_id, "meeting", data.id);
+
+      // notification will add if the from date is today's date
+      const currentDate = await getCurrentDateTime();
+      if (currentDate.slice(0, 10) === from_date.slice(0, 10)) {
+        await addNotification("MEETING_CREATED", user_id, "meeting", data.id);
+      }
 
       if (result?.success === 1) {
         sendResponse(res, 200, 1, "meeting added successfully", [response], "");
@@ -539,8 +545,12 @@ export const addMeeting = async (req, res) => {
       };
 
       const response = replaceNullWithEmptyString(data);
-      await addNotification("MEETING_CREATED", user_id, "meeting", data.id);
 
+      // notification will add if the from date is today's date
+      const currentDate = await getCurrentDateTime();
+      if (currentDate.slice(0, 10) === from_date.slice(0, 10)) {
+        await addNotification("MEETING_CREATED", user_id, "meeting", data.id);
+      }
       if (result?.success === 1) {
         return sendResponse(
           res,
@@ -647,8 +657,12 @@ export const addMeeting = async (req, res) => {
       };
 
       const response = replaceNullWithEmptyString(data);
-      await addNotification("MEETING_CREATED", user_id, "meeting", data.id);
 
+      // notification will add if the from date is today's date
+      const currentDate = await getCurrentDateTime();
+      if (currentDate.slice(0, 10) === from_date.slice(0, 10)) {
+        await addNotification("MEETING_CREATED", user_id, "meeting", data.id);
+      }
       if (result?.success === 1) {
         sendResponse(res, 200, 1, "meeting added successfully", [response], "");
       } else {
@@ -656,7 +670,7 @@ export const addMeeting = async (req, res) => {
       }
     }
   } catch (error) {
-    console.log(error);
+    // console.log(error);
     return sendResponse(
       res,
       500,
@@ -1050,6 +1064,9 @@ export const updateMeeting = async (req, res) => {
 
     params.push(id);
     // console.log(update_columns);
+    let meeting_from_date = await supportMdl.getMeetingDate(id);
+    meeting_from_date = meeting_from_date?.data[0]?.from_date;
+
     const result = await meetingMdl.updateMeeting(update_columns, params);
 
     let media_result = [];
@@ -1100,6 +1117,11 @@ export const updateMeeting = async (req, res) => {
     };
 
     const response = replaceNullWithEmptyString(data);
+
+    // notification section
+    if (meeting_from_date < today) {
+      //delete notification and add update notification
+    } else if(meeting_from_date )
 
     if (result?.success === 0) {
       // console.log(result?.error);

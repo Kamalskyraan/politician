@@ -174,34 +174,20 @@ export const loginschema = Joi.object({
 
 export const updateUserProfileschema = Joi.object({
   user_id: Joi.string().required().messages({
-    "any.required": "user Id is required",
+    "string.base": "User id is should be string",
+    "any.required": "User id is required",
   }),
-  name: Joi.string().min(2).max(100).required().messages({
-    "any.required": "Name is required",
-    "string.empty": "Name is required",
-    "string.min": "Name must be at least 2 characters",
-    "string.max": "Name must not exceed 100 characters",
+  name: Joi.string().allow("").messages({
+    "string.base": "Name should be a string",
   }),
-  phn_num: Joi.string()
-    .min(10)
-    .max(15)
-    .pattern(/^(\+91[6-9]\d{9}|[6-9]\d{9})$/)
-    .required()
-    .messages({
-      "any.required": "Mobile number is required",
-      "string.empty": "Mobile number is required",
-      "string.min": "Mobile number must be at least 10 digits",
-      "string.max": "Mobile number must not exceed 15 digits",
-      "string.pattern.base": "Mobile number must start with 6-9",
-    }),
-  c_code: Joi.string()
-    .pattern(/^\+\d{2,3}$/)
-    .required(),
-  email: Joi.string().min(13).max(100).required().messages({
-    "any.required": "Email is required",
-    "string.empty": "Email is required",
-    "string.min": "Email must be at least 3 chars",
-    "string.max": "Email must not exceed 100 chars",
+  phn_num: Joi.string().allow("").messages({
+    "string.base": "phn num should be string",
+  }),
+  c_code: Joi.string().allow("").messages({
+    "string.base": "c_code should be string",
+  }),
+  email: Joi.string().allow("").messages({
+    "string.base": "email should be string",
   }),
 });
 
@@ -1468,10 +1454,21 @@ export const getIssueSchema = Joi.object({
     "any.required": "User id cannot be empty",
   }),
   status: Joi.string()
-    .valid("pending", "inprogress", "completed")
     .allow("")
-    .messages({
-      "string.base": "status should be a string",
+    .custom((value, helpers) => {
+      if (value === "") return value;
+
+      const validStatuses = ["inprogress", "completed", "pending"];
+
+      const statuses = value.split(",");
+
+      for (const status of statuses) {
+        if (!validStatuses.includes(status.trim())) {
+          return helpers.error("any.invalid");
+        }
+      }
+
+      return value;
     }),
   assigned: Joi.number().valid(0, 1).allow("").messages({
     "string.base": "assigned should be a number",

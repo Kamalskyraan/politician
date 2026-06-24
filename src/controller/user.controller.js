@@ -38,6 +38,11 @@ export const updateProfileDetail = async (req, res) => {
 
     const { user_id, name, phn_num, c_code, email } = validatedData?.value;
 
+    name === "" ? null : name;
+    phn_num === "" ? null : phn_num;
+    c_code === "" ? null : c_code;
+    email === "" ? null : email;
+
     const userResult = await userMdl.getProfileDetails(user_id);
     if (userResult?.success === 0) {
       return sendResponse(res, 200, 0, userResult?.error, [], "");
@@ -52,7 +57,7 @@ export const updateProfileDetail = async (req, res) => {
     // console.log(user?.c_code);
 
     // NAME
-    if (name !== user.name) {
+    if (name !== user.name && name != null) {
       const diffDays = getDaysDiff(user.name_upt_at);
       // console.log(user.name_upt_at);
       // console.log("name",diffDays);
@@ -74,7 +79,7 @@ export const updateProfileDetail = async (req, res) => {
       upt_cols.push("name_upt_at = NOW()");
     }
     // EMAIL
-    if (email !== user.email) {
+    if (email !== user.email && email != null) {
       const diffDays = getDaysDiff(user.email_upt_at);
       console.log("email", diffDays);
 
@@ -95,7 +100,10 @@ export const updateProfileDetail = async (req, res) => {
       upt_cols.push("email_upt_at = NOW()");
     }
     // PHONE NUMBER
-    if (String(phn_num) !== String(user.phn_num) || c_code !== user.c_code) {
+    if (
+      String(phn_num) !== String(user.phn_num) ||
+      (c_code !== user.c_code && phn_num != null && c_code != null)
+    ) {
       const diffDays = getDaysDiff(user.phnnum_upt_at);
       console.log("phone number", diffDays);
 

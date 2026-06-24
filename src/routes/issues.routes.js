@@ -207,7 +207,7 @@ router.post(
                 example: "pending"
               },
               assigned: {
-                type: "number",
+                type: "string",
                 example: "0"
               },
               from_date: {

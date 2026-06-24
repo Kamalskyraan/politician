@@ -443,7 +443,7 @@ export const getTask = async (req, res) => {
 
     const response = await Promise.all(
       data?.map(async (obj) => {
-        let media_result;
+        let media_result = [];
         let attnds_result;
 
         if (obj.media_id != null) {
