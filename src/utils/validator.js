@@ -1517,12 +1517,21 @@ export const getSumitSchema = Joi.object({
     "any.required": "User id cannot be empty",
   }),
   status: Joi.string()
-    .valid("upcoming", "completed", "cancelled", "inprogress")
     .allow("")
-    .messages({
-      "string.base": "status should be a string",
-      "any.only":
-        "status must be one of: pending, completed, cancelled, inprogress",
+    .custom((value, helpers) => {
+      if (value === "") return value;
+
+      const validStatuses = ["upcoming", "completed", "cancelled", "inprogress"];
+
+      const statuses = value.split(",");
+
+      for (const status of statuses) {
+        if (!validStatuses.includes(status.trim())) {
+          return helpers.error("any.invalid");
+        }
+      }
+
+      return value;
     }),
   from_date: Joi.string().allow("").messages({
     "string.base": "from date should be a string",
@@ -1531,7 +1540,7 @@ export const getSumitSchema = Joi.object({
     "string.base": "from date should be a string",
   }),
   id: Joi.string().allow("").messages({
-    "number.base": "sumit id should be a number",
+    "number.base": "sumit id should be a string",
   }),
 });
 export const updateSumitSchema = Joi.object({
