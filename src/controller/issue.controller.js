@@ -7,7 +7,10 @@ import {
   validateRequest,
 } from "../utils/validator.js";
 import {
+  addNotification,
+  deleteNotification,
   formatDateForSQL,
+  getCurrentDateTime,
   replaceNullWithEmptyString,
   sendResponse,
 } from "../utils/helper.js";
@@ -70,7 +73,7 @@ export const addIssue = async (req, res) => {
       member_id,
     });
 
-    const status = "inprogress"
+    const status = "inprogress";
 
     const data = {
       id: result?.data?.insertId,
@@ -132,6 +135,13 @@ export const addIssue = async (req, res) => {
       data.member_id = member_result_with_roles;
     }
     const response = replaceNullWithEmptyString(data);
+
+    if (result?.success === 1) {
+      const currentDate = await getCurrentDateTime();
+      if (currentDate.slice(0, 10) === report_date.slice(0, 10)) {
+        await addNotification("ISSUE_CREATED", user_id, "issue", data.id);
+      }
+    }
 
     if (result?.success === 1) {
       return sendResponse(
@@ -280,9 +290,16 @@ export const updateIssue = async (req, res) => {
     }
     params.push(id);
 
+    let issue_from_info = await issueMdl.getIssueInfo(id);
+    let issue_from_date = issue_from_info?.data[0]?.report_date;
+    let user_id = issue_from_info?.data[0]?.user_id;
+    let today = new Date();
+    today = formatDateForSQL(today);
+    today = String(today);
+
     const result = await issueMdl.updateIssue({ upt_cols, params });
 
-    const status = "inprogress"
+    const status = "inprogress";
 
     const data = {
       id: id,
@@ -347,6 +364,22 @@ export const updateIssue = async (req, res) => {
     }
 
     const response = replaceNullWithEmptyString(data);
+
+    if (
+      result?.success === 1 &&
+      issue_from_date.slice(0, 10) !== report_date.slice(0, 10)
+    ) {
+      if (report_date.slice(0, 10) === today.slice(0, 10)) {
+        // delete and add
+        await deleteNotification(user_id, "issue", id);
+        await addNotification("ISSUE_UPDATED", user_id, "issue", id);
+      }
+      if (report_date.slice(0, 10) > today.slice(0, 10)) {
+        //delete alone
+        await deleteNotification(user_id, "issue", id);
+      }
+    }
+
     if (result?.success === 1) {
       return sendResponse(
         res,

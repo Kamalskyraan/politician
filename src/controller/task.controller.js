@@ -1,6 +1,9 @@
 import express from "express";
 import {
+  addNotification,
+  deleteNotification,
   formatDateForSQL,
+  getCurrentDateTime,
   replaceNullWithEmptyString,
   sendResponse,
 } from "../utils/helper.js";
@@ -146,6 +149,13 @@ export const addTask = async (req, res) => {
     }
 
     const response = replaceNullWithEmptyString(data);
+
+    if (result?.success === 1) {
+      const currentDate = await getCurrentDateTime();
+      if (currentDate.slice(0, 10) === from_date.slice(0, 10)) {
+        await addNotification("TASK_CREATED", user_id, "task", data.id);
+      }
+    }
 
     if (result?.success === 1) {
       return sendResponse(
@@ -338,10 +348,17 @@ export const updateTask = async (req, res) => {
 
     params.push(id);
 
+    let task_from_info = await taskMdl.getTaskInfo(id);
+    let task_from_date = task_from_info?.data[0]?.from_date;
+    let user_id = task_from_info?.data[0]?.user_id;
+    let today = new Date();
+    today = formatDateForSQL(today);
+    today = String(today);
+
     const result = await taskMdl.updateTask({ upt_cols, params });
 
     const data = {
-      id: result?.data?.insertId,
+      id: id,
       title: title,
       descp: descp,
       t_priority: 1,
@@ -381,6 +398,21 @@ export const updateTask = async (req, res) => {
       data.attnds_with_roles = attndsWithRoles;
     }
     const response = replaceNullWithEmptyString(data);
+
+    if (
+      result?.success === 1 &&
+      task_from_date.slice(0, 10) !== from_date.slice(0, 10)
+    ) {
+      if (from_date.slice(0, 10) === today.slice(0, 10)) {
+        // delete and add
+        await deleteNotification(user_id, "task", id);
+        await addNotification("TASK_UPDATED", user_id, "task", id);
+      }
+      if (from_date.slice(0, 10) > today.slice(0, 10)) {
+        //delete alone
+        await deleteNotification(user_id, "task", id);
+      }
+    }
 
     if (result?.success === 1) {
       return sendResponse(
@@ -448,10 +480,9 @@ export const getTask = async (req, res) => {
 
         if (obj.media_id != null) {
           let media_id = obj.media_id.split(",");
-         
+
           media_result = await sourceMdl.getMedia(media_id);
           media_result = media_result?.data;
-          
         }
         let attnds_with_roles = [];
         if (obj.attnds_id != null) {

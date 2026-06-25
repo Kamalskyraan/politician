@@ -3480,8 +3480,9 @@
                   "del_people": {
                     "type": "array",
                     "example": [
-                      "1",
-                      "2"
+                      1,
+                      2,
+                      3
                     ]
                   }
                 }
@@ -3815,6 +3816,109 @@
                   "delete_reason": {
                     "type": "string",
                     "example": "Not interested"
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/notification/getnotification": {
+      "post": {
+        "tags": [
+          "13.Notification"
+        ],
+        "summary": "Get Notification",
+        "description": "Get Notifications by passing user_id.",
+        "responses": {
+          "200": {
+            "description": "Notifications fetched successfully"
+          },
+          "500": {
+            "description": "Internal Server Error"
+          }
+        },
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "user_id": {
+                    "type": "string",
+                    "example": "USER__-zw9853"
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/notification/notificationviewchange": {
+      "post": {
+        "tags": [
+          "13.Notification"
+        ],
+        "summary": "Set notification view changes, from unseen to seen",
+        "description": "Set Notifications view by passing id.",
+        "responses": {
+          "200": {
+            "description": "Notifications view changed from unseen to seen successfully"
+          },
+          "500": {
+            "description": "Internal Server Error"
+          }
+        },
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "user_id": {
+                    "type": "string",
+                    "example": "USER__-zw9853"
+                  },
+                  "id": {
+                    "type": "number",
+                    "example": 129
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/notification/notificationreadchange": {
+      "post": {
+        "tags": [
+          "13.Notification"
+        ],
+        "summary": "Set notification read changes, from unread to read",
+        "description": "Set Notifications read by passing id.",
+        "responses": {
+          "200": {
+            "description": "Notifications read changed from unread to read successfully"
+          },
+          "500": {
+            "description": "Internal Server Error"
+          }
+        },
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "id": {
+                    "type": "number",
+                    "example": 129
                   }
                 }
               }

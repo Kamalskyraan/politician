@@ -250,21 +250,21 @@ export class supportModel {
     }
   }
 
-  async getMeetingDate(id) {
-    let query = `SELECT from_date FROM meeting WHERE id = ?`;
-    let params = [id];
+  async processDailyStatusChange(today) {
+    let query_1 = `UPDATE meeting SET status = ? WHERE DATE(from_date) = ?`;
+    let params_1 = ["pending", today];
+    const result_1 = await executeQuery(query_1, params_1);
 
-    const result = await executeQuery(query, params);
-    if (result?.success === 1) {
-      return {
-        success: 1,
-        data: result?.data,
-      };
-    } else if (result?.success === 0) {
-      return {
-        success: 0,
-        error: result?.error,
-      };
-    }
+    let query_2 = `UPDATE appointments SET status = ? WHERE DATE(from_date) = ?`;
+    let params_2 = ["pending", today];
+    const result_2 = await executeQuery(query_2, params_2);
+
+    let query_3 = `UPDATE tasks SET t_status = ? WHERE DATE(from_date) = ?`;
+    let params_3 = ["inprogress", today];
+    const result_3 = await executeQuery(query_3, params_3);
+
+    let query_4 = `UPDATE political_sumit SET status = ? WHERE DATE(sumit_date) = ?`;
+    let params_4 = ["inprogress", today];
+    const result_4 = await executeQuery(query_4, params_4);
   }
 }

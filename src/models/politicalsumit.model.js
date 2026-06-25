@@ -219,4 +219,58 @@ export class politicalSumitModel {
       };
     }
   }
+
+  async getSumitInfo(id) {
+    let query = `SELECT sumit_date, user_id FROM political_sumit WHERE id = ?`;
+    let params = [id];
+
+    const result = await executeQuery(query, params);
+    // console.log(result);
+    if (result?.success === 1) {
+      return {
+        success: 1,
+        data: result?.data,
+      };
+    } else if (result?.success === 0) {
+      return {
+        success: 0,
+        error: result?.error,
+      };
+    }
+  }
+
+  async getTodaySumits(today) {
+    let query = `SELECT id, user_id FROM political_sumit WHERE DATE(sumit_date) = ?`;
+    let params = [today];
+
+    const result = await executeQuery(query, params);
+    if (result?.success === 1) {
+      return {
+        success: 1,
+        data: result?.data,
+      };
+    } else if (result?.success === 0) {
+      return {
+        success: 0,
+        error: result?.error,
+      };
+    }
+  }
+  async getOverdueSumits(today) {
+    let query = `SELECT id, user_id FROM political_sumit WHERE DATE(sumit_date) < ? AND status = ?`;
+    let params = [today, "inprogress"];
+
+    const result = await executeQuery(query, params);
+    if (result?.success === 1) {
+      return {
+        success: 1,
+        data: result?.data,
+      };
+    } else if (result?.success === 0) {
+      return {
+        success: 0,
+        error: result?.error,
+      };
+    }
+  }
 }

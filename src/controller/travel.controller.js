@@ -23,8 +23,11 @@ import {
   validateRequest,
 } from "../utils/validator.js";
 import {
+  addNotification,
   dateToMillis,
+  deleteNotification,
   formatDateForSQL,
+  getCurrentDateTime,
   replaceNullWithEmptyString,
   sendResponse,
 } from "../utils/helper.js";
@@ -228,6 +231,13 @@ export const addTravel = async (req, res) => {
       data.hotel_media = hot_media_result?.data || [];
     }
     const response = replaceNullWithEmptyString(data);
+
+    if (result?.success === 1) {
+      const currentDate = await getCurrentDateTime();
+      if (currentDate.slice(0, 10) === from_date.slice(0, 10)) {
+        await addNotification("TRAVEL_CREATED", user_id, "travel", data.id);
+      }
+    }
 
     if (result?.success === 1) {
       return sendResponse(
@@ -487,6 +497,13 @@ export const updateTravel = async (req, res) => {
 
     params.push(id);
 
+    let travel_from_info = await travelMdl.getTravelInfo(id);
+    let travel_from_date = travel_from_info?.data[0]?.from_date;
+    let user_id = travel_from_info?.data[0]?.user_id;
+    let today = new Date();
+    today = formatDateForSQL(today);
+    today = String(today);
+
     const result = await travelMdl.updateTravel({ upt_cols, params });
 
     const data = {
@@ -537,6 +554,21 @@ export const updateTravel = async (req, res) => {
     data.travel_daily_plans = travel_daily_plans?.data;
 
     const response = replaceNullWithEmptyString(data);
+
+    if (
+      result?.success === 1 &&
+      travel_from_date.slice(0, 10) !== from_date.slice(0, 10)
+    ) {
+      if (from_date.slice(0, 10) === today.slice(0, 10)) {
+        // delete and add
+        await deleteNotification(user_id, "travel", id);
+        await addNotification("TRAVEL_UPDATED", user_id, "travel", id);
+      }
+      if (from_date.slice(0, 10) > today.slice(0, 10)) {
+        //delete alone
+        await deleteNotification(user_id, "travel", id);
+      }
+    }
 
     if (result?.success === 1) {
       return sendResponse(

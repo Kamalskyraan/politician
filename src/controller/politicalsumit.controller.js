@@ -6,7 +6,14 @@ import {
   updateSumitSchema,
   validateRequest,
 } from "../utils/validator.js";
-import { replaceNullWithEmptyString, sendResponse } from "../utils/helper.js";
+import {
+  addNotification,
+  deleteNotification,
+  formatDateForSQL,
+  getCurrentDateTime,
+  replaceNullWithEmptyString,
+  sendResponse,
+} from "../utils/helper.js";
 import { politicalSumitModel } from "../models/politicalsumit.model.js";
 import { meetingModel } from "../models/meeting.model.js";
 
@@ -148,6 +155,13 @@ export const addSumit = async (req, res) => {
     }
 
     const response = replaceNullWithEmptyString(data);
+
+    if (result?.success === 1) {
+      const currentDate = await getCurrentDateTime();
+      if (currentDate.slice(0, 10) === sumit_date.slice(0, 10)) {
+        await addNotification("SUMIT_CREATED", user_id, "sumit", data.id);
+      }
+    }
 
     if (result?.success === 1) {
       return sendResponse(
@@ -386,6 +400,13 @@ export const updateSumit = async (req, res) => {
       sts = "inprogress";
     }
 
+    let sumit_from_info = await sumitMdl.getSumitInfo(id);
+    let sumit_from_date = sumit_from_info?.data[0]?.sumit_date;
+    let user_id = sumit_from_info?.data[0]?.user_id;
+    let curr_today = new Date();
+    curr_today = formatDateForSQL(today);
+    curr_today = String(curr_today);
+
     const sumitResult = await sumitMdl.updateSumit({
       id,
       title,
@@ -472,7 +493,24 @@ export const updateSumit = async (req, res) => {
     if (del_people.length > 0) {
       deleteMemberResult = await sumitMdl.deleteSumitMember({ del_people });
     }
-    // console.log("deleted removed members")
+
+    if (
+      sumitResult?.success === 1 &&
+      updateResult?.success === 1 &&
+      deleteMemberResult?.success === 1 &&
+      sumit_from_date.slice(0, 10) !== sumit_date.slice(0, 10)
+    ) {
+      if (sumit_date.slice(0, 10) === curr_today.slice(0, 10)) {
+        // delete and add
+        await deleteNotification(user_id, "sumit", id);
+        await addNotification("SUMIT_UPDATED", user_id, "sumit", id);
+      }
+      if (sumit_date.slice(0, 10) > curr_today.slice(0, 10)) {
+        //delete alone
+        await deleteNotification(user_id, "sumit", id);
+      }
+    }
+
     if (
       sumitResult?.success === 1 &&
       updateResult?.success === 1 &&

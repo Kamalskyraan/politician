@@ -22,8 +22,59 @@ export class notificationModel {
     const { receiver_id, reference_type, reference_id } = data;
 
     let query = `DELETE FROM notifications WHERE receiver_id = ? AND reference_type = ? AND reference_id = ?`;
-    let params = [receiver_id, reference_type, reference_type];
+    let params = [receiver_id, reference_type, reference_id];
 
     const result = await executeQuery(query, params);
+  }
+  async getNotification(user_id) {
+    let query = `SELECT id, receiver_id, title, message, reference_type, reference_id, is_view, is_read, type FROM notifications WHERE receiver_id = ? ORDER BY id DESC`;
+    let params = [user_id];
+
+    const result = await executeQuery(query, params);
+    if (result?.success === 1) {
+      return {
+        success: 1,
+        data: result?.data,
+      };
+    } else if (result?.success === 0) {
+      return {
+        success: 0,
+        error: result?.error,
+      };
+    }
+  }
+  async notificationViewChange(user_id, id) {
+    let query = `UPDATE notifications SET is_view = ? WHERE receiver_id = ? AND id <= ?`;
+    let params = [1, user_id, id];
+
+    const result = await executeQuery(query, params);
+    if (result?.success === 1) {
+      return {
+        success: 1,
+        data: result?.data,
+      };
+    } else if (result?.success === 0) {
+      return {
+        success: 0,
+        error: result?.error,
+      };
+    }
+  }
+  async notificationReadChange(id) {
+    let query = `UPDATE notifications SET is_read = ? WHERE id = ?`;
+    let params = [1, id];
+
+    const result = await executeQuery(query, params);
+    if (result?.success === 1) {
+      return {
+        success: 1,
+        data: result?.data,
+      };
+    } else if (result?.success === 0) {
+      return {
+        success: 0,
+        error: result?.error,
+      };
+    }
   }
 }

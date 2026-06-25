@@ -286,7 +286,7 @@ router.post(
                 },
                 del_people: {
                 type: "array",
-                example: ["1","2"]
+                example: [1,2,3]
                 }
             }
           }
