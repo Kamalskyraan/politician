@@ -24,11 +24,8 @@
     "multer": "^2.1.1",
     "mysql2": "^3.22.3",
     "nanoid": "^5.1.11",
-<<<<<<< HEAD
-=======
     "node-cron": "^4.5.0",
     "node-fetch": "^3.3.2",
->>>>>>> c00d5951aa6ef42b003a793f520f53958aa8dfbf
     "nodemailer": "^8.0.7",
     "nodemon": "^3.1.14",
     "path": "^0.12.7",

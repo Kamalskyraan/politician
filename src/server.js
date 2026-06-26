@@ -5,7 +5,6 @@ import router from "./routes/index.js";
 dotenv.config();
 import fs from "fs";
 import { startCronJobs } from "./config/cron.js";
-
 import swaggerUi from "swagger-ui-express";
 import pool from "./config/db.js";
 
