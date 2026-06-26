@@ -1334,11 +1334,14 @@ export const statusChangeSchema = Joi.object({
     "string.base": "id should be a number",
     "any.required": "id cannot be empty",
   }),
-  status: Joi.string().valid("completed", "cancelled").required().messages({
-    "string.base": "id should be a number",
-    "any.only": "status should be either completed or cancelled",
-    "any.required": "id cannot be empty",
-  }),
+  status: Joi.string()
+    .valid("completed", "cancelled", "pending")
+    .required()
+    .messages({
+      "string.base": "id should be a number",
+      "any.only": "status should be either completed or cancelled",
+      "any.required": "id cannot be empty",
+    }),
   type: Joi.string().required().messages({
     "string.base": "type should be a number",
     "any.required": "type cannot be empty",
@@ -1585,7 +1588,12 @@ export const getSumitSchema = Joi.object({
     .custom((value, helpers) => {
       if (value === "") return value;
 
-      const validStatuses = ["upcoming", "completed", "cancelled", "inprogress"];
+      const validStatuses = [
+        "upcoming",
+        "completed",
+        "cancelled",
+        "inprogress",
+      ];
 
       const statuses = value.split(",");
 
@@ -1634,8 +1642,8 @@ export const updateSumitSchema = Joi.object({
   }),
   del_people: Joi.array()
     .items(
-      Joi.string().messages({
-        "string.base": "array items should be a string",
+      Joi.number().messages({
+        "number.base": "array items should be a number",
       }),
     )
     .required()
@@ -1778,5 +1786,27 @@ export const deleteIssueCategorypermanentlySchema = Joi.object({
   id: Joi.number().required().messages({
     "number.base": "id should be number",
     "any.required": "id is required",
+  }),
+});
+export const getNotificationSchema = Joi.object({
+  user_id: Joi.string().required().messages({
+    "string.base": "user id name should be string",
+    "any.required": "user id name is required",
+  }),
+});
+export const notificationIsViewChangeSchema = Joi.object({
+  user_id: Joi.string().required().messages({
+    "string.base": "user id name should be string",
+    "any.required": "user id name is required",
+  }),
+  id: Joi.number().required().messages({
+    "number.base": "id name should be number",
+    "any.required": "id name is required",
+  }),
+});
+export const notificationIsReadChangeSchema = Joi.object({
+  id: Joi.number().required().messages({
+    "number.base": "id name should be number",
+    "any.required": "id name is required",
   }),
 });

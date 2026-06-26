@@ -234,8 +234,14 @@ export class meetingModel {
     }
   }
 
-  async getMeeting({ user_id, status, from_date, to_date, page = 1, limit = 10 }) {
-
+  async getMeeting({
+    user_id,
+    status,
+    from_date,
+    to_date,
+    page = 1,
+    limit = 10,
+  }) {
     const offset = (page - 1) * limit;
     let query = `
     SELECT
@@ -280,7 +286,7 @@ export class meetingModel {
       query += ` AND to_date >= ?`;
       params.push(`${from_date} 00:00:00`);
     }
-    query+= ` LIMIT ? OFFSET ?`;
+    query += ` LIMIT ? OFFSET ?`;
     params.push(Number(limit), Number(offset));
 
     const result = await executeQuery(query, params);
@@ -447,6 +453,113 @@ export class meetingModel {
     let query = `UPDATE appointments SET ${upt_cols.join(", ")} WHERE id = ?`;
 
     // console.log(params);
+
+    const result = await executeQuery(query, params);
+    if (result?.success === 1) {
+      return {
+        success: 1,
+        data: result?.data,
+      };
+    } else if (result?.success === 0) {
+      return {
+        success: 0,
+        error: result?.error,
+      };
+    }
+  }
+
+  async getMeetingInfo(id) {
+    let query = `SELECT from_date, user_id FROM meeting WHERE id = ?`;
+    let params = [id];
+
+    const result = await executeQuery(query, params);
+    if (result?.success === 1) {
+      return {
+        success: 1,
+        data: result?.data,
+      };
+    } else if (result?.success === 0) {
+      return {
+        success: 0,
+        error: result?.error,
+      };
+    }
+  }
+  async getAppointmentInfo(id) {
+    let query = `SELECT from_date, user_id FROM appointments WHERE id = ?`;
+    let params = [id];
+
+    const result = await executeQuery(query, params);
+    // console.log(result);
+    if (result?.success === 1) {
+      return {
+        success: 1,
+        data: result?.data,
+      };
+    } else if (result?.success === 0) {
+      return {
+        success: 0,
+        error: result?.error,
+      };
+    }
+  }
+
+  async getTodayMeetings(today) {
+    let query = `SELECT id, user_id FROM meeting WHERE DATE(from_date) = ?`;
+    let params = [today];
+
+    const result = await executeQuery(query, params);
+    if (result?.success === 1) {
+      return {
+        success: 1,
+        data: result?.data,
+      };
+    } else if (result?.success === 0) {
+      return {
+        success: 0,
+        error: result?.error,
+      };
+    }
+  }
+  async getTodayAppointments(today) {
+    let query = `SELECT id, user_id FROM appointments WHERE DATE(from_date) = ?`;
+    let params = [today];
+
+    const result = await executeQuery(query, params);
+    if (result?.success === 1) {
+      return {
+        success: 1,
+        data: result?.data,
+      };
+    } else if (result?.success === 0) {
+      return {
+        success: 0,
+        error: result?.error,
+      };
+    }
+  }
+
+  async getOverdueMeetings(today) {
+    let query = `SELECT id, user_id FROM meeting WHERE DATE(to_date) < ? AND status = ?`;
+    let params = [today, "pending"];
+
+    const result = await executeQuery(query, params);
+    if (result?.success === 1) {
+      return {
+        success: 1,
+        data: result?.data,
+      };
+    } else if (result?.success === 0) {
+      return {
+        success: 0,
+        error: result?.error,
+      };
+    }
+  }
+
+  async getOverdueAppointments(today) {
+    let query = `SELECT id, user_id FROM appointments WHERE DATE(to_date) < ? AND status = ?`;
+    let params = [today, "pending"];
 
     const result = await executeQuery(query, params);
     if (result?.success === 1) {

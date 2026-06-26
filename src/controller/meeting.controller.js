@@ -6,6 +6,8 @@ import {
   replaceNullWithEmptyString,
   dateToMillis,
   getCurrentDateTime,
+  addNotification,
+  deleteNotification,
 } from "../utils/helper.js";
 import {
   addAppointSchema,
@@ -27,7 +29,6 @@ import { format } from "path";
 import { send } from "process";
 import { sourceModel } from "../models/source.model.js";
 import { supportModel } from "../models/support.model.js";
-import { addNotification } from "../utils/helper.js";
 
 const sourceMdl = new sourceModel();
 const supportMdl = new supportModel();
@@ -547,10 +548,13 @@ export const addMeeting = async (req, res) => {
       const response = replaceNullWithEmptyString(data);
 
       // notification will add if the from date is today's date
-      const currentDate = await getCurrentDateTime();
-      if (currentDate.slice(0, 10) === from_date.slice(0, 10)) {
-        await addNotification("MEETING_CREATED", user_id, "meeting", data.id);
+      if (result?.success === 1) {
+        const currentDate = await getCurrentDateTime();
+        if (currentDate.slice(0, 10) === from_date.slice(0, 10)) {
+          await addNotification("MEETING_CREATED", user_id, "meeting", data.id);
+        }
       }
+
       if (result?.success === 1) {
         return sendResponse(
           res,
@@ -978,10 +982,22 @@ export const updateMeeting = async (req, res) => {
     if (from_date && is_remind === 0) {
       from_date = new Date(from_date);
       from_date.setSeconds(0, 0);
+      let meeting_date = from_date;
       from_date = formatDateForSQL(from_date);
-      console.log(from_date);
-      update_columns.push("from_date = ?");
-      params.push(from_date);
+      // console.log(from_date);
+      let sts = "upcoming";
+      let today = new Date();
+      today.setHours(0, 0, 0, 0);
+      meeting_date.setHours(0, 0, 0, 0);
+      if (
+        meeting_date.getFullYear() === today.getFullYear() &&
+        meeting_date.getMonth() === today.getMonth() &&
+        meeting_date.getDate() === today.getDate()
+      ) {
+        sts = "pending";
+      }
+      update_columns.push("status = ?, from_date = ?");
+      params.push(sts, from_date);
     }
     let reminder_at;
     let snzee_at;
@@ -1035,12 +1051,6 @@ export const updateMeeting = async (req, res) => {
       // snzee_at = formatDateForSQL(snzee_at);
       // console.log(nxt_snooze_at);
 
-      // console.log(sts);
-      // console.log(remind_tenure);
-      // console.log(reminder_at);
-      // console.log(snooze_at);
-      // console.log(snzee_at)
-
       update_columns.push(
         "status = ?, from_date = ?, is_remind = ?, remind_tenure = ?, remind_at = ?, snooze_at = ?,nxt_snooze_at = ?",
       );
@@ -1064,8 +1074,12 @@ export const updateMeeting = async (req, res) => {
 
     params.push(id);
     // console.log(update_columns);
-    let meeting_from_date = await supportMdl.getMeetingDate(id);
-    meeting_from_date = meeting_from_date?.data[0]?.from_date;
+    let meeting_from_info = await meetingMdl.getMeetingInfo(id);
+    let meeting_from_date = meeting_from_info?.data[0]?.from_date;
+    let user_id = meeting_from_info?.data[0]?.user_id;
+    let today = new Date();
+    today = formatDateForSQL(today);
+    today = String(today);
 
     const result = await meetingMdl.updateMeeting(update_columns, params);
 
@@ -1118,14 +1132,35 @@ export const updateMeeting = async (req, res) => {
 
     const response = replaceNullWithEmptyString(data);
 
-    // notification section
-    if (meeting_from_date < today) {
-      //delete notification and add update notification
-    } else if(meeting_from_date )
+    // iff 24 = 24 ---> delete old notify + in progress + notification trigger
+    //if 25 > 24 --> delete old one + status upcoming
+    // console.log(meeting_from_date, today);
+
+    if (
+      result?.success === 1 &&
+      meeting_from_date.slice(0, 10) !== from_date.slice(0, 10)
+    ) {
+      if (from_date.slice(0, 10) === today.slice(0, 10)) {
+        // delete and add
+        await deleteNotification(user_id, "meeting", id);
+        await addNotification("MEETING_UPDATED", user_id, "meeting", id);
+      }
+      if (from_date.slice(0, 10) > today.slice(0, 10)) {
+        //delete alone
+        await deleteNotification(user_id, "meeting", id);
+      }
+    }
 
     if (result?.success === 0) {
       // console.log(result?.error);
-      return sendResponse(res, 200, 0, result?.error, [], "");
+      return sendResponse(
+        res,
+        200,
+        0,
+        "failed to update meeting successfully",
+        [],
+        "",
+      );
     } else {
       return sendResponse(
         res,
@@ -1459,6 +1494,19 @@ export const addAppointment = async (req, res) => {
       }
 
       const response = replaceNullWithEmptyString(data);
+
+      if (result?.success === 1) {
+        const currentDate = await getCurrentDateTime();
+        if (currentDate.slice(0, 10) === from_date.slice(0, 10)) {
+          await addNotification(
+            "APPOINTMENT_CREATED",
+            user_id,
+            "appointment",
+            data.id,
+          );
+        }
+      }
+
       if (result?.success === 1) {
         return sendResponse(
           res,
@@ -1876,6 +1924,13 @@ export const updateAppointment = async (req, res) => {
     // console.log(params);
     params.push(id);
 
+    let appointment_from_info = await meetingMdl.getAppointmentInfo(id);
+    let appointment_from_date = appointment_from_info?.data[0]?.from_date;
+    let user_id = appointment_from_info?.data[0]?.user_id;
+    let today = new Date();
+    today = formatDateForSQL(today);
+    today = String(today);
+
     const result = await meetingMdl.updateAppointment({ upt_cols, params });
     // console.log(result?.data);
 
@@ -1907,6 +1962,26 @@ export const updateAppointment = async (req, res) => {
     }
 
     const response = replaceNullWithEmptyString(data);
+
+    if (
+      result?.success === 1 &&
+      appointment_from_date.slice(0, 10) !== from_date.slice(0, 10)
+    ) {
+      if (from_date.slice(0, 10) === today.slice(0, 10)) {
+        // delete and add
+        await deleteNotification(user_id, "appointment", id);
+        await addNotification(
+          "APPOINTMENT_UPDATED",
+          user_id,
+          "appointment",
+          id,
+        );
+      }
+      if (from_date.slice(0, 10) > today.slice(0, 10)) {
+        //delete alone
+        await deleteNotification(user_id, "appointment", id);
+      }
+    }
 
     if (result?.success === 1) {
       return sendResponse(

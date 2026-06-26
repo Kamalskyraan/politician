@@ -4,8 +4,19 @@ import { customAlphabet } from "nanoid";
 import jwt from "jsonwebtoken";
 import { NOTIFICATION_TEMPLATES } from "../service/notification.template.js";
 import { notificationModel } from "../models/notification.model.js";
-
+import { meetingModel } from "../models/meeting.model.js";
+import { taskModel } from "../models/task.model.js";
+import { travelModel } from "../models/travel.model.js";
+import { issueModel } from "../models/issue.model.js";
+import { politicalSumitModel } from "../models/politicalsumit.model.js";
+import { supportModel } from "../models/support.model.js";
 const notificationMdl = new notificationModel();
+const meetingMdl = new meetingModel();
+const taskMdl = new taskModel();
+const travelMdl = new travelModel();
+const issueMdl = new issueModel();
+const sumitMdl = new politicalSumitModel();
+const supportMdl = new supportModel();
 
 dotenv.config();
 
@@ -191,4 +202,234 @@ export const addNotification = async (
   };
 
   return await notificationMdl.addNotification(notificationData);
+};
+
+export const deleteNotification = async (
+  receiver_id,
+  reference_type,
+  reference_id,
+) => {
+  // console.log(receiver_id, reference_type, reference_id);
+
+  const data = {
+    receiver_id: receiver_id,
+    reference_type: reference_type,
+    reference_id: reference_id,
+  };
+  await notificationMdl.deleteNotification(data);
+};
+
+export const processMeetingNotifications = async () => {
+  try {
+    const today = formatDateForSQL(new Date()).slice(0, 10);
+
+    const meetings = await meetingMdl.getTodayMeetings(today);
+    if (meetings?.success === 1) {
+      for (const meeting of meetings.data) {
+        await addNotification(
+          "MEETING_CREATED",
+          meeting.user_id,
+          "meeting",
+          meeting.id,
+        );
+      }
+    }
+  } catch (error) {
+    console.log("Meeting Notification Error:", error);
+  }
+};
+export const processAppointmentNotifications = async () => {
+  try {
+    const today = formatDateForSQL(new Date()).slice(0, 10);
+
+    const appointments = await meetingMdl.getTodayAppointments(today);
+    if (appointments?.success === 1) {
+      for (const appointment of appointments.data) {
+        await addNotification(
+          "APPOINTMENT_CREATED",
+          appointment.user_id,
+          "appointment",
+          appointment.id,
+        );
+      }
+    }
+  } catch (error) {
+    console.log("Appointment Notification Error:", error);
+  }
+};
+export const processTaskNotifications = async () => {
+  try {
+    const today = formatDateForSQL(new Date()).slice(0, 10);
+
+    const tasks = await taskMdl.getTodayTasks(today);
+    if (tasks?.success === 1) {
+      for (const task of tasks.data) {
+        await addNotification("TASK_CREATED", task.user_id, "task", task.id);
+      }
+    }
+  } catch (error) {
+    console.log("Task Notification Error:", error);
+  }
+};
+export const processTravelNotifications = async () => {
+  try {
+    const today = formatDateForSQL(new Date()).slice(0, 10);
+
+    const travels = await travelMdl.getTodayTravels(today);
+    if (travels?.success === 1) {
+      for (const travel of travels.data) {
+        await addNotification(
+          "TRAVEL_CREATED",
+          travel.user_id,
+          "travel",
+          travel.id,
+        );
+      }
+    }
+  } catch (error) {
+    console.log("Travel Notification Error:", error);
+  }
+};
+export const processIssueNotifications = async () => {
+  try {
+    const today = formatDateForSQL(new Date()).slice(0, 10);
+
+    const issues = await issueMdl.getTodayIssues(today);
+    if (issues?.success === 1) {
+      for (const issue of issues.data) {
+        await addNotification(
+          "ISSUE_CREATED",
+          issue.user_id,
+          "issue",
+          issue.id,
+        );
+      }
+    }
+  } catch (error) {
+    console.log("Issue Notification Error:", error);
+  }
+};
+export const processSumitNotifications = async () => {
+  try {
+    const today = formatDateForSQL(new Date()).slice(0, 10);
+
+    const sumits = await sumitMdl.getTodaySumits(today);
+    if (sumits?.success === 1) {
+      for (const sumit of sumits.data) {
+        await addNotification(
+          "SUMIT_CREATED",
+          sumit.user_id,
+          "sumit",
+          sumit.id,
+        );
+      }
+    }
+  } catch (error) {
+    console.log("Sumit Notification Error:", error);
+  }
+};
+
+export const processOverdueMeetingNotifications = async () => {
+  try {
+    const today = formatDateForSQL(new Date()).slice(0, 10);
+
+    const results = await meetingMdl.getOverdueMeetings(today);
+    if (results?.success === 1) {
+      for (const result of results.data) {
+        await addNotification(
+          "MEETING_OVERDUE",
+          result.user_id,
+          "meeting",
+          result.id,
+        );
+      }
+    }
+  } catch (error) {
+    console.log("Overdue Meeting Notification Error:", error);
+  }
+};
+export const processOverdueAppointmentNotifications = async () => {
+  try {
+    const today = formatDateForSQL(new Date()).slice(0, 10);
+
+    const results = await meetingMdl.getOverdueAppointments(today);
+    if (results?.success === 1) {
+      for (const result of results.data) {
+        await addNotification(
+          "APPOINTMENT_OVERDUE",
+          result.user_id,
+          "appointment",
+          result.id,
+        );
+      }
+    }
+  } catch (error) {
+    console.log("Overdue Appointment Notification Error:", error);
+  }
+};
+export const processOverdueTaskNotifications = async () => {
+  try {
+    const today = formatDateForSQL(new Date()).slice(0, 10);
+
+    const results = await taskMdl.getOverdueTasks(today);
+    if (results?.success === 1) {
+      for (const result of results.data) {
+        await addNotification(
+          "TASK_OVERDUE",
+          result.user_id,
+          "task",
+          result.id,
+        );
+      }
+    }
+  } catch (error) {
+    console.log("Overdue Task Notification Error:", error);
+  }
+};
+export const processOverdueIssueNotifications = async () => {
+  try {
+    const today = formatDateForSQL(new Date()).slice(0, 10);
+
+    const results = await issueMdl.getOverdueIssues(today);
+    if (results?.success === 1) {
+      for (const result of results.data) {
+        await addNotification(
+          "ISSUE_OVERDUE",
+          result.user_id,
+          "issue",
+          result.id,
+        );
+      }
+    }
+  } catch (error) {
+    console.log("Overdue issue Notification Error:", error);
+  }
+};
+export const processOverdueSumitNotifications = async () => {
+  try {
+    const today = formatDateForSQL(new Date()).slice(0, 10);
+
+    const results = await sumitMdl.getOverdueSumits(today);
+    if (results?.success === 1) {
+      for (const result of results.data) {
+        await addNotification(
+          "SUMIT_OVERDUE",
+          result.user_id,
+          "sumit",
+          result.id,
+        );
+      }
+    }
+  } catch (error) {
+    console.log("Overdue sumit Notification Error:", error);
+  }
+};
+
+export const processDailyStatusChange = async () => {
+  try {
+    const today = formatDateForSQL(new Date()).slice(0, 10);
+    const result = await supportMdl.processDailyStatusChange(today);
+  } catch (error) {
+    console.log("status change error:", error);
+  }
 };

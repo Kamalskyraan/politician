@@ -551,4 +551,40 @@ WHERE te.travel_id = ?;`;
       };
     }
   }
+
+  async getTravelInfo(id) {
+    let query = `SELECT from_date, user_id FROM travels WHERE id = ?`;
+    let params = [id];
+
+    const result = await executeQuery(query, params);
+    // console.log(result);
+    if (result?.success === 1) {
+      return {
+        success: 1,
+        data: result?.data,
+      };
+    } else if (result?.success === 0) {
+      return {
+        success: 0,
+        error: result?.error,
+      };
+    }
+  }
+  async getTodayTravels(today) {
+    let query = `SELECT id, user_id FROM travels WHERE DATE(from_date) = ?`;
+    let params = [today];
+
+    const result = await executeQuery(query, params);
+    if (result?.success === 1) {
+      return {
+        success: 1,
+        data: result?.data,
+      };
+    } else if (result?.success === 0) {
+      return {
+        success: 0,
+        error: result?.error,
+      };
+    }
+  }
 }

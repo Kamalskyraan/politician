@@ -113,4 +113,58 @@ export class taskModel {
       };
     }
   }
+
+  async getTaskInfo(id) {
+    let query = `SELECT from_date, user_id FROM tasks WHERE id = ?`;
+    let params = [id];
+
+    const result = await executeQuery(query, params);
+    // console.log(result);
+    if (result?.success === 1) {
+      return {
+        success: 1,
+        data: result?.data,
+      };
+    } else if (result?.success === 0) {
+      return {
+        success: 0,
+        error: result?.error,
+      };
+    }
+  }
+  async getTodayTasks(today) {
+    let query = `SELECT id, user_id FROM tasks WHERE DATE(from_date) = ?`;
+    let params = [today];
+
+    const result = await executeQuery(query, params);
+    if (result?.success === 1) {
+      return {
+        success: 1,
+        data: result?.data,
+      };
+    } else if (result?.success === 0) {
+      return {
+        success: 0,
+        error: result?.error,
+      };
+    }
+  }
+
+  async getOverdueTasks(today) {
+    let query = `SELECT id, user_id FROM tasks WHERE DATE(to_date) < ? AND status = ?`;
+    let params = [today, "inprogress"];
+
+    const result = await executeQuery(query, params);
+    if (result?.success === 1) {
+      return {
+        success: 1,
+        data: result?.data,
+      };
+    } else if (result?.success === 0) {
+      return {
+        success: 0,
+        error: result?.error,
+      };
+    }
+  }
 }

@@ -4,6 +4,11 @@ import cors from "cors";
 import router from "./routes/index.js";
 dotenv.config();
 import fs from "fs";
+<<<<<<< HEAD
+=======
+import { startCronJobs } from "./config/cron.js";
+
+>>>>>>> c00d5951aa6ef42b003a793f520f53958aa8dfbf
 import swaggerUi from "swagger-ui-express";
 import pool from "./config/db.js";
 
@@ -12,6 +17,8 @@ const swaggerDocument = JSON.parse(
 );
 
 const app = express();
+
+startCronJobs();
 
 app.use(cors());
 app.use(express.json());

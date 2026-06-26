@@ -16,6 +16,10 @@ export class politicalSumitModel {
     sumit_incharge,
     dept_incharge,
   }) {
+    const vipIds = [];
+    const memberIds = [];
+    const sumit_Incharge_Ids = [];
+    const dept_Incharge_Ids = [];
     let connection = await db.getConnection();
 
     try {
@@ -37,7 +41,8 @@ export class politicalSumitModel {
           sumitvip.cat_id,
           sumitvip.cat_name || null,
         ];
-        await connection.execute(query, params);
+        const [result] = await connection.execute(query, params);
+        vipIds.push(result?.insertId);
       }
       //MEMBER
       for (const sumitmember of member) {
@@ -48,7 +53,8 @@ export class politicalSumitModel {
           sumitmember.cat_id,
           sumitmember.cat_name || null,
         ];
-        await connection.execute(query, params);
+        const [result] = await connection.execute(query, params);
+        memberIds.push(result?.insertId);
       }
 
       //SUMIT INCHARGE
@@ -60,7 +66,8 @@ export class politicalSumitModel {
           sumit_incharger.cat_id,
           sumit_incharger.cat_name || null,
         ];
-        await connection.execute(query, params);
+        const [result] = await connection.execute(query, params);
+        sumit_Incharge_Ids.push(result?.insertId);
       }
 
       query = `INSERT INTO political_sumit_peoples (sumit_id, type, name, cat_id, cat_name, dept_id, dept_name) VALUES (?, ?, ?, ?, ?, ?, ?)`;
@@ -75,12 +82,17 @@ export class politicalSumitModel {
           dept_incharger.dept_id,
           dept_incharger.dept_name || null,
         ];
-        await connection.execute(query, params);
+        const [result] = await connection.execute(query, params);
+        dept_Incharge_Ids.push(result?.insertId);
       }
       await connection.commit();
       return {
         success: 1,
         data: result,
+        vipIds,
+        memberIds,
+        sumit_Incharge_Ids,
+        dept_Incharge_Ids,
       };
     } catch (error) {
       await connection.rollback();
@@ -159,18 +171,39 @@ export class politicalSumitModel {
       };
     }
   }
-  async updateSumitPeople({ type, params }) {
+  async updateSumitPeople({ type, params, action }) {
     let result;
-    if (type === 1) {
-      let query1 = `INSERT INTO political_sumit_peoples (sumit_id, type, name, cat_id, cat_name) VALUES (?, ?, ?, ?, ?)`;
-      let params1 = params;
-      result = await executeQuery(query1, params1);
-    } else if (type === 2) {
-      let query2 = `INSERT INTO political_sumit_peoples (sumit_id, type, name, cat_id, cat_name, dept_id, dept_name) VALUES (?, ?, ?, ?, ?, ?, ?)`;
-      let params2 = params;
-      result = await executeQuery(query2, params2);
+
+    if (type === 1 && action === "update") {
+      let query_1 = `UPDATE political_sumit_peoples SET name = ?, cat_id = ?, cat_name = ? WHERE id = ?`;
+      let params_1 = params;
+      result = await executeQuery(query_1, params_1);
+    } else if (type === 1 && action === "insert") {
+      let query_2 = `INSERT INTO political_sumit_peoples (sumit_id, type, name, cat_id, cat_name) VALUES (?, ?, ?, ?, ?)`;
+      let params_2 = params;
+      result = await executeQuery(query_2, params_2);
     }
-    // console.log(result?.success);
+
+    if (type === 2 && action === "update") {
+      let query_1 = `UPDATE political_sumit_peoples SET name = ?, cat_id = ?, cat_name = ?, dept_id = ?, dept_name = ? WHERE id = ?`;
+      let params_1 = params;
+      result = await executeQuery(query_1, params_1);
+    } else if (type === 2 && action === "insert") {
+      let query_2 = `INSERT INTO political_sumit_peoples (sumit_id, type, name, cat_id, cat_name, dept_id, dept_name) VALUES (?, ?, ?,  ?, ?, ?, ?)`;
+      let params_2 = params;
+      result = await executeQuery(query_2, params_2);
+    }
+
+    // if (type === 1) {
+    //   let query1 = `INSERT INTO political_sumit_peoples (sumit_id, type, name, cat_id, cat_name) VALUES (?, ?, ?, ?, ?)`;
+    //   let params1 = params;
+    //   result = await executeQuery(query1, params1);
+    // } else if (type === 2) {
+    //   let query2 = `INSERT INTO political_sumit_peoples (sumit_id, type, name, cat_id, cat_name, dept_id, dept_name) VALUES (?, ?, ?, ?, ?, ?, ?)`;
+    //   let params2 = params;
+    //   result = await executeQuery(query2, params2);
+    // }
+    // // console.log(result?.success);
     if (result?.success === 1) {
       return {
         success: 1,
@@ -205,6 +238,60 @@ export class politicalSumitModel {
   async getDeptRole(id) {
     let query = `SELECT category_name FROM political_sumit_category WHERE id = ?`;
     let params = [id];
+
+    const result = await executeQuery(query, params);
+    if (result?.success === 1) {
+      return {
+        success: 1,
+        data: result?.data,
+      };
+    } else if (result?.success === 0) {
+      return {
+        success: 0,
+        error: result?.error,
+      };
+    }
+  }
+
+  async getSumitInfo(id) {
+    let query = `SELECT sumit_date, user_id FROM political_sumit WHERE id = ?`;
+    let params = [id];
+
+    const result = await executeQuery(query, params);
+    // console.log(result);
+    if (result?.success === 1) {
+      return {
+        success: 1,
+        data: result?.data,
+      };
+    } else if (result?.success === 0) {
+      return {
+        success: 0,
+        error: result?.error,
+      };
+    }
+  }
+
+  async getTodaySumits(today) {
+    let query = `SELECT id, user_id FROM political_sumit WHERE DATE(sumit_date) = ?`;
+    let params = [today];
+
+    const result = await executeQuery(query, params);
+    if (result?.success === 1) {
+      return {
+        success: 1,
+        data: result?.data,
+      };
+    } else if (result?.success === 0) {
+      return {
+        success: 0,
+        error: result?.error,
+      };
+    }
+  }
+  async getOverdueSumits(today) {
+    let query = `SELECT id, user_id FROM political_sumit WHERE DATE(sumit_date) < ? AND status = ?`;
+    let params = [today, "inprogress"];
 
     const result = await executeQuery(query, params);
     if (result?.success === 1) {
