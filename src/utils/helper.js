@@ -209,7 +209,7 @@ export const deleteNotification = async (
   reference_type,
   reference_id,
 ) => {
-  // console.log(receiver_id, reference_type, reference_id);
+  console.log(receiver_id, reference_type, reference_id);
 
   const data = {
     receiver_id: receiver_id,
