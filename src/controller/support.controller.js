@@ -14,6 +14,7 @@ import {
   getFaqSchema,
   getIssueCategorySchema,
   getMemberschema,
+  getSumitCategorySchema,
   statusChangeSchema,
   userIdSchema,
   validateRequest,
@@ -476,10 +477,17 @@ export const getIssueCat = async (req, res) => {
         1,
         "Issue category fetched successfully",
         data,
-        ""
+        "",
       );
     } else if (result?.success === 0) {
-      return sendResponse(res, 200, 0, "Failed to fetch issue category", [], "");
+      return sendResponse(
+        res,
+        200,
+        0,
+        "Failed to fetch issue category",
+        [],
+        "",
+      );
     }
   } catch (error) {
     return sendResponse(
@@ -578,7 +586,7 @@ export const deleteIssueCatpermanently = async (req, res) => {
   }
 };
 
-export const addSumitcategory = async (req, res) => {
+export const addSumitCategory = async (req, res) => {
   try {
     const validatedData = validateRequest(req.body, addSumitCategorySchema);
     if (validatedData?.success === 0) {
@@ -609,6 +617,52 @@ export const addSumitcategory = async (req, res) => {
         200,
         0,
         "Failed to add political sumit category",
+        [],
+        "",
+      );
+    }
+  } catch (error) {
+    return sendResponse(
+      res,
+      500,
+      0,
+      "Internal server error",
+      [],
+      error.message,
+    );
+  }
+};
+export const getSumitCategory = async (req, res) => {
+  try {
+    const validatedData = validateRequest(req.body, getSumitCategorySchema);
+    if (validatedData?.success === 0) {
+      return sendResponse(
+        res,
+        200,
+        0,
+        "validation error",
+        [],
+        validatedData?.errorObject?.errors,
+      );
+    }
+    const {status} = validatedData?.value;
+    const result = await supportMdl.getSumitCat(status);
+    const data = result?.data;
+    if (result?.success === 1) {
+      return sendResponse(
+        res,
+        200,
+        1,
+        "political sumit category fetched successfully",
+        data,
+        "",
+      );
+    } else if (result?.success === 0) {
+      return sendResponse(
+        res,
+        200,
+        0,
+        "Failed to fetch political sumit category",
         [],
         "",
       );
