@@ -1710,7 +1710,7 @@
     "/support/addsumitcategory": {
       "post": {
         "tags": [
-          "15.Support Api`s"
+          "16.Dashboard Api`s"
         ],
         "summary": "Add category for political sumit",
         "description": "Add category",
@@ -1732,6 +1732,39 @@
                   "category": {
                     "type": "string",
                     "example": "Road"
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/support/getsumitcategory": {
+      "post": {
+        "tags": [
+          "16.Dashboard Api`s"
+        ],
+        "summary": "Get category for political sumit",
+        "description": "get category",
+        "responses": {
+          "200": {
+            "description": "political sumit category added successfully"
+          },
+          "500": {
+            "description": "Internal Server Error"
+          }
+        },
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "status": {
+                    "type": "string",
+                    "example": "active"
                   }
                 }
               }

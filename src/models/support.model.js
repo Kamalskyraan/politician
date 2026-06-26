@@ -249,6 +249,22 @@ export class supportModel {
       };
     }
   }
+  async getSumitCat(status) {
+    let query = `SELECT id, category_name FROM political_sumit_category WHERE status = ?`;
+    let params = [status];
+    const result = await executeQuery(query, params);
+    if (result?.success === 1) {
+      return {
+        success: 1,
+        data: result?.data,
+      };
+    } else {
+      return {
+        success: 0,
+        error: result?.error,
+      };
+    }
+  }
 
   async processDailyStatusChange(today) {
     let query_1 = `UPDATE meeting SET status = ? WHERE DATE(from_date) = ?`;

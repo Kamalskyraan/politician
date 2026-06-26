@@ -1788,6 +1788,12 @@ export const deleteIssueCategorypermanentlySchema = Joi.object({
     "any.required": "id is required",
   }),
 });
+export const getSumitCategorySchema = Joi.object({
+  status: Joi.string().required().messages({
+    "string.base": "status should be string",
+    "any.required": "status is required",
+  }),
+});
 export const getNotificationSchema = Joi.object({
   user_id: Joi.string().required().messages({
     "string.base": "user id name should be string",
