@@ -645,8 +645,9 @@ export const getSumitCategory = async (req, res) => {
         validatedData?.errorObject?.errors,
       );
     }
-    const {status} = validatedData?.value;
+    const { status } = validatedData?.value;
     const result = await supportMdl.getSumitCat(status);
+    // console.log(result);
     const data = result?.data;
     if (result?.success === 1) {
       return sendResponse(

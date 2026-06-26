@@ -59,6 +59,11 @@ export const addIssue = async (req, res) => {
     report_date.setSeconds(0, 0);
     report_date = formatDateForSQL(report_date);
 
+    let status = "not assigned";
+    if(incharge_id != null && member_id != null){
+      status = "inprogress"
+    }
+
     const result = await issueMdl.addIssue({
       user_id,
       cat_id,
@@ -67,13 +72,12 @@ export const addIssue = async (req, res) => {
       address,
       lat,
       lng,
+      status,
       media_id,
       report_date,
       incharge_id,
       member_id,
     });
-
-    const status = "inprogress";
 
     const data = {
       id: result?.data?.insertId,
@@ -245,6 +249,11 @@ export const updateIssue = async (req, res) => {
     incharge_id = incharge_id === "" ? null : incharge_id;
     member_id = member_id === "" ? null : member_id;
 
+    let status = "not assigned";
+    if(incharge_id != null && member_id != null){
+      status = "inprogress"
+    }
+
     let upt_cols = [];
     let params = [];
 
@@ -272,6 +281,10 @@ export const updateIssue = async (req, res) => {
       upt_cols.push("lng = ?");
       params.push(lng);
     }
+    if(status){
+      upt_cols.push("status = ?");
+      params.push(status);
+    }
     if (report_date) {
       upt_cols.push("report_date = ?");
       params.push(report_date);
@@ -298,9 +311,7 @@ export const updateIssue = async (req, res) => {
     today = String(today);
 
     const result = await issueMdl.updateIssue({ upt_cols, params });
-
-    const status = "inprogress";
-
+    
     const data = {
       id: id,
       cat_id: cat_id,

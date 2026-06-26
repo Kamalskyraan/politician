@@ -10,6 +10,7 @@ export class issueModel {
     address,
     lat,
     lng,
+    status,
     media_id,
     report_date,
     incharge_id,
@@ -22,10 +23,11 @@ export class issueModel {
     address,
     lat,
     lng,
+    status,
     media_id,
     report_date,
     incharge_id,
-    member_id) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)`;
+    member_id) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)`;
     let params = [
       user_id,
       cat_id,
@@ -34,6 +36,7 @@ export class issueModel {
       address,
       lat,
       lng,
+      status,
       media_id,
       report_date,
       incharge_id,
