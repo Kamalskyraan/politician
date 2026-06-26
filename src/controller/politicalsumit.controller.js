@@ -79,15 +79,16 @@ export const addSumit = async (req, res) => {
       lng: lng,
       sumit_date: sumit_date,
       sts: sts,
-      vip: vip,
-      member: member,
-      sumit_incharge: sumit_incharge,
-      dept_incharge: dept_incharge,
+      vip: vip || [],
+      member: member || [],
+      sumit_incharge: sumit_incharge || [],
+      dept_incharge: dept_incharge || [],
     };
 
     if (data.vip.length > 0) {
       const vip_data = await Promise.all(
-        data.vip.map(async (obj) => {
+        data.vip.map(async (obj, index) => {
+          obj.id = result?.vipIds[index];
           const id = obj.cat_id;
           if (id > 0) {
             const result = await meetingMdl.getRole(id);
@@ -103,7 +104,8 @@ export const addSumit = async (req, res) => {
     }
     if (data.member.length > 0) {
       const member_data = await Promise.all(
-        data.member.map(async (obj) => {
+        data.member.map(async (obj, index) => {
+          obj.id = result?.memberIds[index];
           const id = obj.cat_id;
           if (id > 0) {
             const result = await meetingMdl.getRole(id);
@@ -119,7 +121,8 @@ export const addSumit = async (req, res) => {
     }
     if (data.sumit_incharge.length > 0) {
       const sumit_data = await Promise.all(
-        data.sumit_incharge.map(async (obj) => {
+        data.sumit_incharge.map(async (obj, index) => {
+          obj.id = result?.sumit_Incharge_Ids[index];
           const id = obj.cat_id;
           if (id > 0) {
             const result = await meetingMdl.getRole(id);
@@ -135,7 +138,8 @@ export const addSumit = async (req, res) => {
     }
     if (data.dept_incharge.length > 0) {
       const dept_data = await Promise.all(
-        data.dept_incharge.map(async (obj) => {
+        data.dept_incharge.map(async (obj, index) => {
+          obj.id = result?.dept_Incharge_Ids[index];
           const id = obj.cat_id;
           const dept_id = obj.dept_id;
           if (id > 0) {
@@ -432,47 +436,157 @@ export const updateSumit = async (req, res) => {
     let updateResult = {
       success: 1,
     };
+    let insertResult = {
+      success: 1,
+    };
+
+    let newVipIds = [];
+    let newMemberIds = [];
+    let newSumitInchargeIds = [];
+    let newDeptInchargeIds = [];
 
     if (vip.length > 0) {
       for (const value of vip) {
-        params = [id, "vip", value?.name, value?.cat_id, value?.cat_name];
-        const type = 1;
-        updateResult = await sumitMdl.updateSumitPeople({ type, params });
+        if (value.id != null) {
+          params = [value?.name, value?.cat_id, value?.cat_name, value?.id];
+          let type = 1;
+          let action = "update";
+          updateResult = await sumitMdl.updateSumitPeople({
+            type,
+            params,
+            action,
+          });
+        } else {
+          params = [id, "vip", value?.name, value?.cat_id, value?.cat_name];
+          let type = 1;
+          let action = "insert";
+          insertResult = await sumitMdl.updateSumitPeople({
+            type,
+            params,
+            action,
+          });
+          newVipIds.push(insertResult?.data?.insertId);
+        }
+        // params = [id, "vip", value?.name, value?.cat_id, value?.cat_name];
+        // const type = 1;
+        // updateResult = await sumitMdl.updateSumitPeople({ type, params });
       }
     }
     if (member.length > 0) {
       for (const value of member) {
-        params = [id, "member", value?.name, value?.cat_id, value?.cat_name];
-        const type = 1;
-        updateResult = await sumitMdl.updateSumitPeople({ type, params });
+        if (value.id != null) {
+          params = [value?.name, value?.cat_id, value?.cat_name, value?.id];
+          let type = 1;
+          let action = "update";
+          updateResult = await sumitMdl.updateSumitPeople({
+            type,
+            params,
+            action,
+          });
+        } else {
+          params = [id, "member", value?.name, value?.cat_id, value?.cat_name];
+          let type = 1;
+          let action = "insert";
+          insertResult = await sumitMdl.updateSumitPeople({
+            type,
+            params,
+            action,
+          });
+          newMemberIds.push(insertResult?.data?.insertId);
+        }
+        // params = [id, "member", value?.name, value?.cat_id, value?.cat_name];
+        // const type = 1;
+        // updateResult = await sumitMdl.updateSumitPeople({ type, params });
       }
     }
     if (sumit_incharge.length > 0) {
       for (const value of sumit_incharge) {
-        params = [
-          id,
-          "sumit incharge",
-          value?.name,
-          value?.cat_id,
-          value?.cat_name,
-        ];
-        const type = 1;
-        updateResult = await sumitMdl.updateSumitPeople({ type, params });
+        if (value.id != null) {
+          params = [value?.name, value?.cat_id, value?.cat_name, value?.id];
+          let type = 1;
+          let action = "update";
+          updateResult = await sumitMdl.updateSumitPeople({
+            type,
+            params,
+            action,
+          });
+        } else {
+          params = [
+            id,
+            "sumit incharge",
+            value?.name,
+            value?.cat_id,
+            value?.cat_name,
+          ];
+          let type = 1;
+          let action = "insert";
+          insertResult = await sumitMdl.updateSumitPeople({
+            type,
+            params,
+            action,
+          });
+          newSumitInchargeIds.push(insertResult?.data?.insertId);
+        }
+        // params = [
+        //   id,
+        //   "sumit incharge",
+        //   value?.name,
+        //   value?.cat_id,
+        //   value?.cat_name,
+        // ];
+        // const type = 1;
+        // updateResult = await sumitMdl.updateSumitPeople({ type, params });
       }
     }
     if (dept_incharge.length > 0) {
       for (const value of dept_incharge) {
-        params = [
-          id,
-          "dept incharge",
-          value?.name,
-          value?.cat_id,
-          value?.cat_name,
-          value?.dept_id,
-          value?.dept_name,
-        ];
-        const type = 2;
-        updateResult = await sumitMdl.updateSumitPeople({ type, params });
+        if (value.id != null) {
+          params = [
+            value?.name,
+            value?.cat_id,
+            value?.cat_name,
+            value?.dept_id,
+            value?.dept_name,
+            value?.id,
+          ];
+          let type = 2;
+          let action = "update";
+          updateResult = await sumitMdl.updateSumitPeople({
+            type,
+            params,
+            action,
+          });
+        } else {
+          params = [
+            id,
+            "dept incharge",
+            value?.name,
+            value?.cat_id,
+            value?.cat_name,
+            value?.dept_id,
+            value?.dept_name,
+          ];
+          let type = 2;
+          let action = "insert";
+          insertResult = await sumitMdl.updateSumitPeople({
+            type,
+            params,
+            action,
+          });
+          newDeptInchargeIds.push(insertResult?.data?.insertId);
+        }
+
+        // params = [
+        //   id,
+        //   "dept incharge",
+        //   value?.name,
+        //   value?.cat_id,
+        //   value?.cat_name,
+        //   value?.dept_id,
+        //   value?.dept_name,
+        // ];
+        // const type = 2;
+        // updateResult = await sumitMdl.updateSumitPeople({ type, params });
       }
     }
     // console.log(updateResult?.success);
@@ -511,6 +625,112 @@ export const updateSumit = async (req, res) => {
       }
     }
 
+    const data = {
+      id: id,
+      title: title,
+      location: location,
+      lat: lat,
+      lng: lng,
+      sumit_date: sumit_date,
+      sts: sts,
+      vip: vip || [],
+      member: member || [],
+      sumit_incharge: sumit_incharge || [],
+      dept_incharge: dept_incharge || [],
+    };
+
+    let newVipIndex = 0;
+    let newMemberIndex = 0;
+    let newSumitInchargeIndex = 0;
+    let newDeptInchargeIndex = 0;
+    if (data.vip.length > 0) {
+      const vip_data = await Promise.all(
+        data.vip.map(async (obj) => {
+          if (obj.id == null) {
+            obj.id = newVipIds[newVipIndex];
+            newVipIndex++;
+          }
+          const id = obj.cat_id;
+          if (id > 0) {
+            const result = await meetingMdl.getRole(id);
+            // console.log(result)
+            obj.cat_name = result?.data[0]?.role_name;
+            return obj;
+          } else {
+            return obj;
+          }
+        }),
+      );
+      data.vip = vip_data || [];
+    }
+    if (data.member.length > 0) {
+      const member_data = await Promise.all(
+        data.member.map(async (obj) => {
+          if (obj.id == null) {
+            obj.id = newMemberIds[newMemberIndex];
+            newMemberIndex++;
+          }
+          const id = obj.cat_id;
+          if (id > 0) {
+            const result = await meetingMdl.getRole(id);
+            // console.log(result)
+            obj.cat_name = result?.data[0]?.role_name;
+            return obj;
+          } else {
+            return obj;
+          }
+        }),
+      );
+      data.member = member_data || [];
+    }
+    if (data.sumit_incharge.length > 0) {
+      const sumit_data = await Promise.all(
+        data.sumit_incharge.map(async (obj) => {
+          if (obj.id == null) {
+            obj.id = newSumitInchargeIds[newSumitInchargeIndex];
+            newSumitInchargeIndex++;
+          }
+          const id = obj.cat_id;
+          if (id > 0) {
+            const result = await meetingMdl.getRole(id);
+            // console.log(result)
+            obj.cat_name = result?.data[0]?.role_name;
+            return obj;
+          } else {
+            return obj;
+          }
+        }),
+      );
+      data.sumit_incharge = sumit_data || [];
+    }
+    if (data.dept_incharge.length > 0) {
+      const dept_data = await Promise.all(
+        data.dept_incharge.map(async (obj) => {
+          if (obj.id == null) {
+            obj.id = newDeptInchargeIds[newDeptInchargeIndex];
+            newDeptInchargeIndex++;
+          }
+          const id = obj.cat_id;
+          const dept_id = obj.dept_id;
+          if (id > 0) {
+            const result = await meetingMdl.getRole(id);
+            obj.cat_name = result?.data[0]?.role_name;
+            // return obj;
+          }
+          if (dept_id > 0) {
+            const result = await sumitMdl.getDeptRole(dept_id);
+            obj.dept_name = result?.data[0]?.category_name;
+            // return obj;
+          }
+          return obj;
+        }),
+      );
+      // console.log(dept_data)
+      data.dept_incharge = dept_data || [];
+    }
+
+    const response = replaceNullWithEmptyString(data);
+
     if (
       sumitResult?.success === 1 &&
       updateResult?.success === 1 &&
@@ -521,7 +741,7 @@ export const updateSumit = async (req, res) => {
         200,
         1,
         "Political sumit updated successfully",
-        [],
+        [data],
         "",
       );
     }

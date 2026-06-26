@@ -174,8 +174,8 @@ router.post(
                 example: "2026-06-10"
               },
               id: {
-                type: "number",
-                example: 3
+                type: "string",
+                example: "3"
               },
             }
           }
@@ -235,6 +235,7 @@ router.post(
                 type: "array",
                 example: [
                     {
+                    id: 2,
                     name: "Minister A",
                     cat_id: 1,
                     cat_name: ""
@@ -254,6 +255,7 @@ router.post(
                 type: "array",
                 example: [
                     {
+                    id: 27,
                     name: "Minister A",
                     cat_id: 1,
                     cat_name: ""
@@ -269,6 +271,7 @@ router.post(
                 type: "array",
                 example: [
                     {
+                    id: 20,
                     name: "Minister A",
                     cat_id: 1,
                     cat_name: "",
@@ -286,7 +289,7 @@ router.post(
                 },
                 del_people: {
                 type: "array",
-                example: [1,2,3]
+                example: [11,12,13]
                 }
             }
           }
