@@ -77,4 +77,21 @@ export class notificationModel {
       };
     }
   }
+  async getNotificationActiveCount(user_id) {
+    let query = `SELECT COUNT(*) AS count FROM notifications WHERE receiver_id = ? AND is_view = 0`;
+    let params = [user_id];
+
+    const result = await executeQuery(query, params);
+    if (result?.success === 1) {
+      return {
+        success: 1,
+        data: result?.data,
+      };
+    } else if (result?.success === 0) {
+      return {  
+        success: 0,
+        error: result?.error,
+      };
+    }
+  }
 }

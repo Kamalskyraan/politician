@@ -1752,3 +1752,9 @@ export const notificationIsReadChangeSchema = Joi.object({
     "any.required": "id name is required",
   }),
 });
+export const getNotificationActiveCountSchema = Joi.object({
+  user_id: Joi.string().required().messages({
+    "string.base": "user id name should be string",
+    "any.required": "user id name is required",
+  })
+});

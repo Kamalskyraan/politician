@@ -240,7 +240,7 @@ export class meetingModel {
     from_date,
     to_date,
     page = 1,
-    limit = 10,
+    limit = 3,
   }) {
     const offset = (page - 1) * limit;
     let query = `
