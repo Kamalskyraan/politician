@@ -11,7 +11,7 @@ admin.initializeApp({
     require("./political-app-70f93-bac165acf56c"),
   ),
 });
- 
+//  
 export const sendPushNotification = async ({
   user_id,
   payload,
