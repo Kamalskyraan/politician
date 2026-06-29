@@ -126,6 +126,7 @@ export const formatDateForSQL = (dateObj) => {
 // export const replaceNullWithEmptyString = (data) => {
 //   return JSON.parse(JSON.stringify(data, (_, value) => value ?? ""));
 // };
+// 
 export const replaceNullWithEmptyString = (data) => {
   if (data === null || data === undefined) {
     return "";

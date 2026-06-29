@@ -95,9 +95,6 @@ export class folderModel {
     }
   }
 
-
-  
-  
   async getFolderImages({ user_id, folder_id, page = 1, limit = 10 }) {
     const offset = (page - 1) * limit;
     const BASE_URL = process.env.MEDIA_BASE_URL || "";
@@ -123,7 +120,7 @@ export class folderModel {
         created_at
       FROM media
       WHERE folder_id = ?
-      ORDER BY id DESC
+      ORDER BY id ASC
       LIMIT ? OFFSET ?
       `,
         [folder_id, Number(limit), Number(offset)],

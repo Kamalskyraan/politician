@@ -8,7 +8,6 @@ import {
 } from "../utils/validator.js";
 import { formatDateForSQL, sendResponse } from "../utils/helper.js";
 
-
 const sourceMdl = new sourceModel();
 
 export const uploadMedia = async (req, res) => {
@@ -47,7 +46,7 @@ export const uploadMedia = async (req, res) => {
     // if(files.length !== org_name.length){
     //   return sendResponse(res, 200, 0, "files and their original name should be equal", [], "");
     // }
-    // 
+    //
     const uploadedFiles = await Promise.all(
       files.map(async (file, index) => {
         const url = `${file.destination.replace("src", "")}/${file.filename}`;
@@ -94,7 +93,6 @@ export const addUserrole = async (req, res) => {
     const data = (await result?.data) || "";
     const error = (await result?.error) || "";
 
-    
     if (result?.success === 0) {
       return sendResponse(res, 200, 0, error, [], "");
     } else {
@@ -200,6 +198,39 @@ export const getFinCategory = async (req, res) => {
       500,
       0,
       "Internal server error",
+      [],
+      err.errors || err.message || err,
+    );
+  }
+};
+
+export const getDeleteReasons = async (req, res) => {
+  try {
+    const result = await sourceMdl.getDeleteReasons();
+
+    const data = [
+      ...result,
+      {
+        id: 0,
+        reason: "Others",
+        status: "active",
+      },
+    ];
+
+    return sendResponse(
+      res,
+      200,
+      1,
+      "Delete reasons fetched successfully",
+      data,
+      "",
+    );
+  } catch (err) {
+    return sendResponse(
+      res,
+      500,
+      0,
+      "Internal Server Error",
       [],
       err.errors || err.message || err,
     );

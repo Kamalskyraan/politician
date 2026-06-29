@@ -316,4 +316,21 @@ export class sourceModel {
       };
     }
   }
+
+  async getDeleteReasons() {
+    const query = `
+    SELECT
+      id,
+      reason,
+      status,
+      created_at
+    FROM delete_reasons
+    WHERE status = 'active'
+    ORDER BY id ASC
+  `;
+
+    const result = await executeQuery(query);
+
+    return result.data;
+  }
 }

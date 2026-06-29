@@ -139,7 +139,7 @@ router.post(
 */ usercontroller.contactUs,
 );
 router.post(
-  "/deleteaccount",
+  "/remove-account",
   /*
     #swagger.tags = ['12.User Details']
     #swagger.summary = 'Delete Account'

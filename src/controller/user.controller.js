@@ -103,7 +103,10 @@ export const updateProfileDetail = async (req, res) => {
     }
     // PHONE NUMBER
     if (
-      phn_num != null && c_code != null && (String(phn_num) !== String(user.phn_num) || c_code !== user.c_code)) {
+      phn_num != null &&
+      c_code != null &&
+      (String(phn_num) !== String(user.phn_num) || c_code !== user.c_code)
+    ) {
       // const diffDays = getDaysDiff(user.phnnum_upt_at);
       // console.log("phone number", diffDays);
 

@@ -562,6 +562,23 @@
         }
       }
     },
+    "/source/get-delete-reasons": {
+      "get": {
+        "tags": [
+          "9.Source"
+        ],
+        "summary": "Get Delete Reasons",
+        "description": "Fetch all active delete reasons.",
+        "responses": {
+          "200": {
+            "description": "Delete reasons fetched successfully"
+          },
+          "500": {
+            "description": "Internal Server Error"
+          }
+        }
+      }
+    },
     "/meeting/addmember": {
       "post": {
         "tags": [
@@ -4314,7 +4331,7 @@
         }
       }
     },
-    "/user/deleteaccount": {
+    "/user/remove-account": {
       "post": {
         "tags": [
           "12.User Details"

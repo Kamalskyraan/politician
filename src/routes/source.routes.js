@@ -55,7 +55,7 @@ router.post(
 }
 */
 
-upload.array("files"),
+  upload.array("files"),
   validateFiles,
   sourcecontroller.uploadMedia,
 );
@@ -285,6 +285,24 @@ router.post(
     }
   */
   sourcecontroller.getFinCategory,
+);
+router.get(
+  "/get-delete-reasons",
+  /*
+    #swagger.tags = ['9.Source']
+    #swagger.summary = 'Get Delete Reasons'
+
+    #swagger.description = 'Fetch all active delete reasons.'
+
+    #swagger.responses[200] = {
+      description: 'Delete reasons fetched successfully'
+    }
+
+    #swagger.responses[500] = {
+      description: 'Internal Server Error'
+    }
+  */
+  sourcecontroller.getDeleteReasons,
 );
 
 export default router;
