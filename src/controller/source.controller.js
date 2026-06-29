@@ -124,8 +124,9 @@ export const uploadMedia = async (req, res) => {
     const uploadedFiles = await Promise.all(
       files.map(async (file, index) => {
         const file_type = file.mimetype.split("/");
+        const url = `${file.destination.replace("src", "")}/${file.filename}`;
         const result = await sourceMdl.addMedia({
-          url: `${process.env.MEDIA_BASE_URL}${file.path}`,
+          url,
           path: file.path,
           size: file.size,
           mime_type: file.mimetype,
@@ -137,7 +138,7 @@ export const uploadMedia = async (req, res) => {
         today = formatDateForSQL(today);
         return {
           id: result?.data?.insertId,
-
+          url: url,
           media_size: String(file.size),
           org_name: org_name[index],
           created_at: today,
