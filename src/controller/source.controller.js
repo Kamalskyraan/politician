@@ -10,6 +10,81 @@ import { formatDateForSQL, sendResponse } from "../utils/helper.js";
 
 const sourceMdl = new sourceModel();
 
+// export const uploadMedia = async (req, res) => {
+//   try {
+//     const validatedData = validateRequest(req.body, addMediaSchema);
+
+//     if (validatedData?.success === 0) {
+//       return sendResponse(
+//         res,
+//         validatedData?.errorObject?.status,
+//         0,
+//         "validation error",
+//         [],
+//         validatedData?.errorObject?.errors,
+//       );
+//     }
+
+//     let { org_name } = validatedData?.value;
+//     const files = req.files;
+//     // console.log(files);
+
+//     if (!files || files.length < 1) {
+//       return sendResponse(res, 200, 0, "No files uploaded", [], "");
+//     }
+//     if (!Array.isArray(org_name)) {
+//       org_name = [org_name];
+//     }
+//     if (
+//       org_name.length === 1 &&
+//       typeof org_name[0] === "string" &&
+//       org_name[0].includes(",")
+//     ) {
+//       org_name = org_name[0].split(",").map((name) => name.trim());
+//     }
+//     // console.log(org_name);
+//     // if(files.length !== org_name.length){
+//     //   return sendResponse(res, 200, 0, "files and their original name should be equal", [], "");
+//     // }
+//     //
+//     const uploadedFiles = await Promise.all(
+//       files.map(async (file, index) => {
+//         const url = `${file.destination.replace("src", "")}/${file.filename}`;
+//         const file_type = file.mimetype.split("/");
+//         const result = await sourceMdl.addMedia({
+//           url,
+//           path: file.path,
+//           size: file.size,
+//           mime_type: file.mimetype,
+//           type: file_type[1],
+//           org_name: org_name[index],
+//         });
+
+//         let today = new Date();
+//         today = formatDateForSQL(today);
+//         return {
+//           id: result?.data?.insertId,
+//           url: url,
+//           media_size: String(file.size),
+//           org_name: org_name[index],
+//           created_at: today,
+//         };
+//       }),
+//     );
+
+//     return sendResponse(
+//       res,
+//       200,
+//       1,
+//       "Files uploaded successfully",
+//       uploadedFiles,
+//       "",
+//     );
+//   } catch (error) {
+//     return sendResponse(res, 500, "Internal Server error", [], error.message);
+//   }
+// };
+
 export const uploadMedia = async (req, res) => {
   try {
     const validatedData = validateRequest(req.body, addMediaSchema);
@@ -46,7 +121,6 @@ export const uploadMedia = async (req, res) => {
     // if(files.length !== org_name.length){
     //   return sendResponse(res, 200, 0, "files and their original name should be equal", [], "");
     // }
-    //
     const uploadedFiles = await Promise.all(
       files.map(async (file, index) => {
         const url = `${file.destination.replace("src", "")}/${file.filename}`;
