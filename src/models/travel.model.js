@@ -112,7 +112,8 @@ export class travelModel {
     }
   }
 
-  async getTravel(upt_cols, params) {
+  async getTravel(upt_cols, params, page, limit = 10) {
+    const offset = (page - 1) * limit;
     let query = `SELECT id,
       title,
       descp,
@@ -139,14 +140,26 @@ export class travelModel {
       remind_tenure,
       remind_at,
       snooze_at,
-      nxt_snooze_at FROM travels WHERE ${upt_cols.join("")} ORDER BY from_date ASC`;
+      nxt_snooze_at FROM travels WHERE ${upt_cols.join("")} ORDER BY from_date ASC LIMIT ? OFFSET ?`;
 
+    const countQuery = `SELECT COUNT(*) AS total FROM travels WHERE ${upt_cols.join("")}`;
+    const countParams = params;
+    const countResult = await executeQuery(countQuery, countParams);
+    const total = countResult?.data[0]?.total;
+
+    params.push(limit, offset);
     const result = await executeQuery(query, params);
 
     if (result?.success === 1) {
       return {
         success: 1,
         data: result?.data,
+        pagination: {
+          total,
+          page: Number(page),
+          limit: Number(limit),
+          total_pages: Math.ceil(total / limit),
+        },
       };
     } else if (result?.success === 0) {
       return {

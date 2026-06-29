@@ -457,21 +457,23 @@ export const getTask = async (req, res) => {
         validatedData?.errorObject?.errors,
       );
     }
-    let { user_id, status } = validatedData?.value;
+    let { user_id, status, page } = validatedData?.value;
 
     status = status === "" ? null : status.split(",");
     let result;
     // console.log(status);
     if (status != null) {
       // if status has value
-      result = await taskMdl.getTask({ user_id, status });
+      result = await taskMdl.getTask({ user_id, status, page });
     } else {
       // if status has not value
-      result = await taskMdl.getTask({ user_id, status });
+      result = await taskMdl.getTask({ user_id, status, page });
     }
 
     let data = result?.data;
     console.log(data , "data");
+    let pagination = result ?.pagination
+    // console.log(data);
 
     const response = await Promise.all(
       data?.map(async (obj) => {
@@ -521,7 +523,7 @@ export const getTask = async (req, res) => {
         200,
         1,
         "Task fetched successfully",
-        finalResponse,
+        [{ data: finalResponse, pagination }],
         "",
       );
     } else if (result?.success === 0) {

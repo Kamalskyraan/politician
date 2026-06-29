@@ -86,24 +86,42 @@ export class taskModel {
       };
     }
   }
-  async getTask({ user_id, status }) {
+  async getTask({ user_id, status, page, limit = 10 }) {
+    const offset = (page - 1) * limit;
     let query;
     let params = [];
+    let countQuery;
+    let countParams = [];
     if (status != null) {
       const placeholders = status.map(() => "?").join(",");
 
-      query = `SELECT id, title, descp, t_priority, from_date, to_date, media_id, attnds_id, t_status, is_remind, remind_status, remind_tenure, remind_at, snooze_at, nxt_snooze_at FROM tasks WHERE user_id = ? AND t_status IN (${placeholders})`;
-      params.push(user_id, ...status);
+      countQuery = `SELECT COUNT(*) AS total FROM tasks WHERE user_id = ? AND t_status IN (${placeholders})`;
+      countParams.push(user_id, ...status);
+
+      query = `SELECT id, title, descp, t_priority, from_date, to_date, media_id, attnds_id, t_status, is_remind, remind_status, remind_tenure, remind_at, snooze_at, nxt_snooze_at FROM tasks WHERE user_id = ? AND t_status IN (${placeholders}) LIMIT ? OFFSET ?`;
+      params.push(user_id, ...status, limit, offset);
     } else {
+      countQuery = `SELECT FROM tasks WHERE user_id = ? LIMIT ? OFFSET ?`;
+      countParams.push(user_id);
+
       query = `SELECT id, title, descp, t_priority, from_date, to_date, media_id, attnds_id, t_status, is_remind, remind_status, remind_tenure, remind_at, snooze_at, nxt_snooze_at FROM tasks WHERE user_id = ?`;
-      params.push(user_id);
+      params.push(user_id, limit, offset);
     }
+
+    const countResult = await executeQuery(countQuery, countParams);
+    const total = countResult?.data[0]?.total;
 
     const result = await executeQuery(query, params);
     if (result?.success === 1) {
       return {
         success: 1,
         data: result?.data,
+        pagination: {
+          total,
+          page: Number(page),
+          limit: Number(limit),
+          total_pages: Math.ceil(total / limit),
+        },
       };
     } else if (result?.success === 0) {
       console.log(result?.error);

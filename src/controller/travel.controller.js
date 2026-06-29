@@ -616,7 +616,7 @@ export const getTravel = async (req, res) => {
       );
     }
 
-    let { user_id, from_date, to_date } = validatedData?.value;
+    let { user_id, from_date, to_date, page } = validatedData?.value;
     // console.log(from_date)
     let result;
     let travels;
@@ -636,7 +636,7 @@ export const getTravel = async (req, res) => {
       params.push(`${from_date} 00:00:00`);
     }
 
-    result = await travelMdl.getTravel(upt_cols, params);
+    result = await travelMdl.getTravel(upt_cols, params, page);
 
     // if (user_id) {
     //   result = await travelMdl.getTravel({ user_id });
@@ -645,6 +645,7 @@ export const getTravel = async (req, res) => {
       return sendResponse(res, 200, 0, "failed to fetch travels", [], "");
     } else if (result?.success === 1) {
       travels = result?.data;
+      const pagination = result?.pagination;
       // console.log(travels)
 
       // console.log(typeof(travels[0]?.snooze_at));
@@ -718,7 +719,7 @@ export const getTravel = async (req, res) => {
         200,
         1,
         "Travels fetched successfully",
-        response,
+        [{ data: response, pagination: pagination }],
         "",
       );
     }

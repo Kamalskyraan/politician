@@ -208,8 +208,6 @@ export const requestOtp = async (req, res) => {
   }
 };
 
-
-
 export const verifyOtp = async (req, res) => {
   try {
     const validatedData = validateRequest(req.body, verifyOtpSchema);
@@ -303,8 +301,15 @@ export const signUp = async (req, res) => {
         c_code: c_code,
         email: email,
       };
-      
-      return sendResponse(res, 200, 1, "user created successfullyy", [data], "");
+
+      return sendResponse(
+        res,
+        200,
+        1,
+        "user created successfullyy",
+        [data],
+        "",
+      );
     }
   } catch (error) {
     return sendResponse(

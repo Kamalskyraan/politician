@@ -35,7 +35,8 @@ export class calendarModel {
       };
     }
   }
-  async getEvent({ user_id, event_date }) {
+  async getEvent({ user_id, event_date, page, limit = 10 }) {
+    const offset = (page - 1) * limit;
     let query = `SELECT
     id,
     title,
@@ -130,7 +131,32 @@ WHERE user_id = ?
 AND DATE(from_date) <= ?
 AND DATE(to_date) >= ?
 
-ORDER BY from_date ASC;`;
+ORDER BY from_date ASC LIMIT ? OFFSET ?;`;
+
+    const countQuery = `SELECT COUNT(*) AS total
+FROM (
+    SELECT id
+    FROM meeting
+    WHERE user_id = ?
+      AND DATE(from_date) <= ?
+      AND DATE(to_date) >= ?
+
+    UNION ALL
+
+    SELECT id
+    FROM appointments
+    WHERE user_id = ?
+      AND DATE(from_date) <= ?
+      AND DATE(to_date) >= ?
+
+    UNION ALL
+
+    SELECT id
+    FROM tasks
+    WHERE user_id = ?
+      AND DATE(from_date) <= ?
+      AND DATE(to_date) >= ?
+) AS combined`;
     let params = [
       user_id,
       event_date,
@@ -142,13 +168,23 @@ ORDER BY from_date ASC;`;
       event_date,
       event_date,
     ];
+    const countResult = await executeQuery(countQuery, params);
+    const total = countResult?.data[0]?.total;
+    // console.log(total);
 
+    params.push(limit, offset);
     const result = await executeQuery(query, params);
 
     if (result?.success === 1) {
       return {
         success: 1,
         data: result?.data,
+        pagination: {
+          total,
+          page: Number(page),
+          limit: Number(limit),
+          total_pages: Number(Math.ceil(total / limit)),
+        },
       };
     } else if (result?.success === 0) {
       return {

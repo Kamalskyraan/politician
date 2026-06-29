@@ -1209,6 +1209,10 @@
                   "to_date": {
                     "type": "string",
                     "example": "2026-06-16"
+                  },
+                  "page": {
+                    "type": "number",
+                    "example": 1
                   }
                 }
               }
@@ -2114,6 +2118,10 @@
                   "to_date": {
                     "type": "string",
                     "example": "2026-06-19"
+                  },
+                  "page": {
+                    "type": "number",
+                    "example": 1
                   }
                 }
               }
@@ -3094,6 +3102,10 @@
                   "status": {
                     "type": "string",
                     "example": "inprogress"
+                  },
+                  "page": {
+                    "type": "number",
+                    "example": 1
                   }
                 }
               }
@@ -4188,6 +4200,10 @@
                   "event_date": {
                     "type": "string",
                     "example": "2026-06-10"
+                  },
+                  "page": {
+                    "type": "number",
+                    "example": 1
                   }
                 }
               }

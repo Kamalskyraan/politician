@@ -234,14 +234,7 @@ export class meetingModel {
     }
   }
 
-  async getMeeting({
-    user_id,
-    status,
-    from_date,
-    to_date,
-    page = 1,
-    limit = 3,
-  }) {
+  async getMeeting({ user_id, status, from_date, to_date, page, limit = 10 }) {
     const offset = (page - 1) * limit;
     let query = `
     SELECT
@@ -268,24 +261,37 @@ export class meetingModel {
     FROM meeting
     WHERE user_id = ?`;
 
+    let countQuery = `SELECT COUNT(*) AS total FROM meeting WHERE user_id = ?`;
+
     let params = [user_id];
+    let countParams = [user_id];
     // console.log(status)
 
     if (status != null) {
       const placeholders = status.map(() => "?").join(",");
       query += ` AND status IN (${placeholders})`;
+      countQuery += ` AND status IN (${placeholders})`;
       params.push(...status);
+      countParams.push(...status);
     }
 
     if (from_date != null) {
       query += ` AND from_date <= ?`;
+      countQuery += ` AND from_date <= ?`;
       params.push(`${to_date} 23:59:59`);
+      countParams.push(`${to_date} 23:59:59`);
     }
 
     if (to_date != null) {
       query += ` AND to_date >= ?`;
-      params.push(`${from_date} 00:00:00`);
+      countQuery += ` AND to_date >= ?`;
+      countParams.push(`${from_date} 00:00:00`);
     }
+
+    const countResult = await executeQuery(countQuery, countParams);
+    const total = countResult?.data[0]?.total;
+    // console.log(total);
+
     query += ` LIMIT ? OFFSET ?`;
     params.push(Number(limit), Number(offset));
 
@@ -296,6 +302,12 @@ export class meetingModel {
       return {
         success: 1,
         data: result.data,
+        pagination: {
+          total,
+          page: Number(page),
+          limit: Number(limit),
+          total_pages: Math.ceil(total / limit),
+        },
       };
     }
 
@@ -422,7 +434,8 @@ export class meetingModel {
     }
   }
 
-  async getAppoint(upt_cols, params) {
+  async getAppoint(upt_cols, params, page, limit = 10) {
+    const offset = (page - 1) * limit;
     let query;
     // let params;
     // if (status) {
@@ -433,13 +446,24 @@ export class meetingModel {
     //   params = [user_id];
     // }
 
-    query = `SELECT id, title, a_type, notes, address, lat, lng, media_id, con_name, con_desg, status, from_date, to_date, is_remind, remind_status, remind_tenure, remind_at, snooze_at, nxt_snooze_at FROM appointments WHERE ${upt_cols.join("")}`;
-    // params = params;
+    query = `SELECT id, title, a_type, notes, address, lat, lng, media_id, con_name, con_desg, status, from_date, to_date, is_remind, remind_status, remind_tenure, remind_at, snooze_at, nxt_snooze_at FROM appointments WHERE ${upt_cols.join("")} LIMIT ? OFFSET ?`;
+
+    const countQuery = `SELECT COUNT(*) AS total FROM appointments WHERE ${upt_cols.join("")}`;
+    const countResult = await executeQuery(countQuery, params);
+    const total = countResult?.data[0]?.total;
+    params.push(page, offset);
+
     const result = await executeQuery(query, params);
     if (result?.success === 1) {
       return {
         success: 1,
         data: result?.data,
+        pagination: {
+          total,
+          page: Number(page),
+          limit: Number(limit),
+          total_pages: Math.ceil(total / limit),
+        },
       };
     } else if (result?.success === 0) {
       return {
