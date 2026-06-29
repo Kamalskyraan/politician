@@ -137,7 +137,7 @@ export const uploadMedia = async (req, res) => {
         today = formatDateForSQL(today);
         return {
           id: result?.data?.insertId,
-          url: url,
+
           media_size: String(file.size),
           org_name: org_name[index],
           created_at: today,
