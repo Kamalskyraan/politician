@@ -30,7 +30,7 @@ export class authModel {
     if (result?.success === 1) {
       return {
         success: 1,
-        data: result?.data, // for insert query i dont get array as a result so need to give - rows?.data becoz insert query will give insertion details
+        data: result?.data, 
       };
     } else {
       return {
