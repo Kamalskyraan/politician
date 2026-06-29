@@ -1828,3 +1828,10 @@ export const fetchAnalyticsSchema = Joi.object({
     "any.required": "Current status is required ",
   }),
 });
+
+export const getNotificationActiveCountSchema = Joi.object({
+  user_id: Joi.string().required().messages({
+    "string.base": "user id name should be string",
+    "any.required": "user id name is required",
+  }),
+});

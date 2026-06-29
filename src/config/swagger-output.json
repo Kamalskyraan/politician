@@ -4454,6 +4454,39 @@
         }
       }
     },
+    "/notification/notificationactivecount": {
+      "post": {
+        "tags": [
+          "13.Notification"
+        ],
+        "summary": "Get active notification count",
+        "description": "Get notification active count by passing user id.",
+        "responses": {
+          "200": {
+            "description": "Notifications active count fetched successfully"
+          },
+          "500": {
+            "description": "Internal Server Error"
+          }
+        },
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "user_id": {
+                    "type": "string",
+                    "example": "USER__-zw9853"
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
     "/analytics/get-analytics-data": {
       "post": {
         "tags": [

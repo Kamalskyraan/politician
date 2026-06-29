@@ -1,6 +1,7 @@
 import express from "express";
 import { sendResponse } from "../utils/helper.js";
 import {
+  getNotificationActiveCountSchema,
   getNotificationSchema,
   notificationIsReadChangeSchema,
   notificationIsViewChangeSchema,
@@ -134,6 +135,56 @@ export const notificationIsReadChange = async (req, res) => {
         200,
         0,
         "failed to update notification read",
+        [],
+        result?.error,
+      );
+    }
+  } catch (error) {
+    return sendResponse(
+      res,
+      500,
+      0,
+      "Internal server error",
+      [],
+      error.message,
+    );
+  }
+};
+export const getNotificationActiveCount = async (req, res) => {
+  try {
+    const validatedData = validateRequest(
+      req.body,
+      getNotificationActiveCountSchema,
+    );
+    if (validatedData?.success === 0) {
+      return sendResponse(
+        res,
+        200,
+        0,
+        "validation error",
+        [],
+        validatedData?.errorObject?.errors,
+      );
+    }
+    const { user_id } = validatedData?.value;
+    const result = await notificationMdl.getNotificationActiveCount(user_id);
+
+    const data = result?.data;
+    if (result?.success === 1) {
+      return sendResponse(
+        res,
+        200,
+        1,
+        "Fetched active notifications successfully",
+        data,
+        "",
+      );
+    } else if (result?.success === 0) {
+      return sendResponse(
+        res,
+        200,
+        0,
+        "Failed to fetch active notifications",
         [],
         result?.error,
       );
