@@ -99,14 +99,15 @@ export class sourceModel {
       )
       VALUES (?, ?, ?, ?, ?, ?)
     `;
-
+ 
     const params = [url, path, size, type, mime_type, org_name];
-
+ 
     const result = await executeQuery(query, params);
     // console.log(result?.data?.insertId);
-    console.log(result);
+    console.log(result)
     return result;
   }
+ 
 
   async getMedia(id) {
     let placeHolders = id.map(() => "?").join(", ");
