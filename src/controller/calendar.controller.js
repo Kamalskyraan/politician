@@ -124,7 +124,7 @@ export const getTodayEvents = async (req, res) => {
         validatedData?.errorObject?.errors,
       );
     }
-    let { user_id, event_date } = validatedData?.value;
+    let { user_id, event_date, page } = validatedData?.value;
 
     event_date = event_date === "" ? null : event_date;
 
@@ -137,7 +137,9 @@ export const getTodayEvents = async (req, res) => {
       event_date = `${event_date}`;
     }
 
-    result = await calendarMdl.getEvent({ user_id, event_date });
+    result = await calendarMdl.getEvent({ user_id, event_date, page });
+
+    const pagination = result?.pagination
 
     let data = result?.data;
     data = replaceNullWithEmptyString(data);
@@ -147,7 +149,7 @@ export const getTodayEvents = async (req, res) => {
         200,
         1,
         "Event info fetched successfully",
-        data,
+        [{data, pagination}],
         "",
       );
     } else if (result?.success === 0) {
@@ -157,7 +159,7 @@ export const getTodayEvents = async (req, res) => {
         0,
         "Failed to get Event info",
         [],
-        result?.error,
+        "",
       );
     }
   } catch (error) {

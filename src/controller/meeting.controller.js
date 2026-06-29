@@ -789,17 +789,13 @@ export const getMeeting = async (req, res) => {
     const response = await replaceNullWithEmptyString(formattedMeetings);
     // console.log(response[0].to_date);
 
-    // dateDate has columns to convert to millis & dateToMillis is to convert to utc to millis
-    // const dateData = ["from_date", "to_date", "remind_at", "nxt_snooze_at"];
-    // const finalResponse = await dateToMillis(response, dateData);
-
     if (result?.success === 1) {
       return sendResponse(
         res,
         200,
         1,
         "meetings fetched successfully",
-        response,
+        [{ data: response, pagination: result?.pagination }],
         "",
       );
     } else {
@@ -1598,7 +1594,7 @@ export const getAppointment = async (req, res) => {
       );
     }
 
-    let { user_id, status, from_date, to_date } = validatedData?.value;
+    let { user_id, status, from_date, to_date, page } = validatedData?.value;
     let result;
     let appointments;
     let upt_cols = [];
@@ -1640,9 +1636,9 @@ export const getAppointment = async (req, res) => {
       upt_cols.push(" AND to_date >= ?");
       params.push(`${from_date} 00:00:00`);
     }
-    // console.log(upt_cols);
-    result = await meetingMdl.getAppoint(upt_cols, params);
-    // console.log(result);
+
+    result = await meetingMdl.getAppoint(upt_cols, params, page);
+
     appointments = result?.data;
     // console.log(appointments[0]);
 
@@ -1669,13 +1665,14 @@ export const getAppointment = async (req, res) => {
     );
     const response = replaceNullWithEmptyString(formattedAppointments);
     // console.log(response);
+    const pagination = result?.pagination;
 
     return sendResponse(
       res,
       200,
       1,
       "Appointments fetched successfully",
-      response,
+      [{ data: response, pagination: pagination }],
       "",
     );
   } catch (error) {

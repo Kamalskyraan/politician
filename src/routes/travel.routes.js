@@ -320,6 +320,10 @@ router.post(
               to_date: {
                 type: "string",
                 example: "2026-06-19"
+              },
+              page: {
+                type: "number",
+                example: 1
               }
             }
           }

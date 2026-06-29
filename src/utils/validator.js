@@ -531,12 +531,16 @@ export const getMeetingSchema = Joi.object({
         "status must contain only upcoming, completed, cancelled, pending",
     }),
   from_date: Joi.string().allow("").messages({
-    "string.string": "from_date should be a string",
+    "string.base": "from_date should be a string",
     "any.required": "from_date cannot be empty",
   }),
   to_date: Joi.string().allow("").messages({
-    "string.string": "to_date should be a string",
+    "string.base": "to_date should be a string",
     "any.required": "to_date cannot be empty",
+  }),
+  page: Joi.number().required().messages({
+    "number.base": "page should be a number",
+    "any.required": "page cannot be empty",
   }),
 });
 
@@ -663,6 +667,10 @@ export const getAppointSchema = Joi.object({
   to_date: Joi.string().allow("").messages({
     "string.string": "to_date should be a string",
     "any.required": "to_date cannot be empty",
+  }),
+  page: Joi.number().required().messages({
+    "number.base": "page should be a number",
+    "any.required": "page cannot be empty",
   }),
 });
 
@@ -926,6 +934,10 @@ export const getTravelSchema = Joi.object({
   to_date: Joi.string().allow("").messages({
     "string.base": "to date should be an string",
     "any.required": "to date cannot be empty",
+  }),
+  page: Joi.number().required().messages({
+    "number.base": "page should be an number",
+    "any.required": "page cannot be empty",
   }),
 });
 
@@ -1263,6 +1275,10 @@ export const getTaskSchema = Joi.object({
 
       return value;
     }),
+  page: Joi.number().required().messages({
+    "number.base": "page should be a number",
+    "any.required": "page cannot be empty",
+  }),
 });
 
 export const statusChangeSchema = Joi.object({
@@ -1643,6 +1659,10 @@ export const getcalendarEventSchema = Joi.object({
     "string.base": "event date name should be string",
     "any.required": "event date name is required",
   }),
+  page: Joi.number().required().messages({
+    "number.base": "page should be a number",
+    "any.required": "page cannot be empty",
+  }),
 });
 export const deleteAccountSchema = Joi.object({
   user_id: Joi.string().required().messages({
@@ -1756,5 +1776,5 @@ export const getNotificationActiveCountSchema = Joi.object({
   user_id: Joi.string().required().messages({
     "string.base": "user id name should be string",
     "any.required": "user id name is required",
-  })
+  }),
 });
