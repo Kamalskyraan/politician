@@ -1,57 +1,256 @@
+<!doctype html>
 <html>
-  <div class="header">
-    <h1>Finance Report</h1>
-    <div class="report-date">Generated on: 11/06/2026</div>
-  </div>
+  <head>
+    <meta charset="UTF-8" />
 
-  <table class="summary">
-    <tr>
-      <td>
-        <div class="card">
-          <div class="card-title">TOTAL INCOME</div>
-          <div class="card-value">₹ 50000</div>
-        </div>
-      </td>
+    <style>
+      * {
+        box-sizing: border-box;
+      }
 
-      <td>
-        <div class="card">
-          <div class="card-title">TOTAL EXPENSE</div>
-          <div class="card-value">₹ 25000</div>
-        </div>
-      </td>
-    </tr>
-  </table>
+      body {
+        font-family: Arial, Helvetica, sans-serif;
+        color: #333;
+        font-size: 12px;
+        margin: 0;
+        padding: 25px;
+        background: #fff;
+      }
 
-  <table>
-    <thead>
+      /* ================= HEADER ================= */
+
+      .header {
+        margin-bottom: 20px;
+      }
+
+      .header h1 {
+        margin: 0;
+        text-align: center;
+        color: #003468;
+        font-size: 28px;
+        letter-spacing: 1px;
+      }
+
+      .report-date {
+        text-align: center;
+        margin-top: 5px;
+        color: #777;
+        font-size: 11px;
+      }
+
+      .user-info {
+        margin-top: 15px;
+        border-collapse: collapse;
+      }
+
+      .user-info td {
+        border: none;
+        padding: 4px 0;
+        text-align: left;
+      }
+
+      .summary {
+        width: 100%;
+        margin: 20px 0 25px;
+        border-collapse: separate;
+        border-spacing: 12px 0;
+      }
+
+      .summary td {
+        width: 50%;
+        border: none;
+        padding: 0;
+      }
+
+      .card {
+        border: 1px solid #d9d9d9;
+        border-radius: 6px;
+        background: #f8f8f8;
+        padding: 15px;
+        text-align: center;
+      }
+
+      .card-title {
+        font-size: 12px;
+        color: #666;
+        font-weight: bold;
+        margin-bottom: 6px;
+      }
+
+      .card-value {
+        font-size: 22px;
+        color: #003468;
+        font-weight: bold;
+      }
+
+      /* ================= TABLE ================= */
+
+      .report-table {
+        width: 100%;
+        border-collapse: collapse;
+        table-layout: fixed;
+      }
+
+      .report-table thead th {
+        background: #2a9d8f;
+        color: #fff;
+        padding: 10px;
+        text-align: center;
+        font-size: 12px;
+        border: 1px solid #ddd;
+      }
+
+      .report-table tbody td {
+        border: 1px solid #ddd;
+        padding: 10px 8px;
+        vertical-align: middle;
+        font-size: 11px;
+        line-height: 18px;
+        word-break: break-word;
+      }
+
+      .report-table tbody tr:nth-child(even) {
+        background: #fafafa;
+      }
+
+      .center {
+        text-align: center;
+      }
+
+      .right {
+        text-align: right;
+      }
+
+      .income {
+        color: #198754;
+        font-weight: bold;
+        text-transform: uppercase;
+      }
+
+      .expense {
+        color: #dc3545;
+        font-weight: bold;
+        text-transform: uppercase;
+      }
+
+      .footer {
+        margin-top: 20px;
+        text-align: center;
+        font-size: 10px;
+        color: #888;
+      }
+    </style>
+  </head>
+
+  <body>
+    <!-- HEADER -->
+
+    <div class="header">
+      <h1>Finance Report</h1>
+
+      <div class="report-date">
+        Generated On : <%= new Date().toLocaleDateString() %>
+      </div>
+
+      <% if(data.length){ %>
+
+      <table class="user-info">
+        <tr>
+          <td>
+            <strong>User ID :</strong>
+            <%= data[0].user_id %>
+          </td>
+
+          <td>
+            <strong>User Name :</strong>
+            <%= data[0].user_name %>
+          </td>
+        </tr>
+      </table>
+
+      <% } %>
+    </div>
+
+    <!-- SUMMARY -->
+
+    <table class="summary">
       <tr>
-        <th width="5%">S.NO</th>
-        <th width="12%">Type</th>
-        <th width="20%">Category</th>
-        <th width="18%">Date</th>
-        <th width="15%">Amount</th>
-        <th width="30%">Notes</th>
-      </tr>
-    </thead>
+        <td>
+          <div class="card">
+            <div class="card-title">TOTAL INCOME</div>
 
-    <tbody>
-      <tr>
-        <td class="text-center">1</td>
-        <td><span class="income">income</span></td>
-        <td>Salary</td>
-        <td>2026-06-11</td>
-        <td class="amount">₹ 50000</td>
-        <td>Monthly Salary</td>
-      </tr>
+            <div class="card-value">
+              ₹ <%= Number(summary.income_total).toLocaleString("en-IN") %>
+            </div>
+          </div>
+        </td>
 
-      <tr>
-        <td class="text-center">2</td>
-        <td><span class="expense">expense</span></td>
-        <td>Food</td>
-        <td>2026-06-11</td>
-        <td class="amount">₹ 5000</td>
-        <td>Restaurant Bill</td>
+        <td>
+          <div class="card">
+            <div class="card-title">TOTAL EXPENSE</div>
+
+            <div class="card-value">
+              ₹ <%= Number(summary.expense_total).toLocaleString("en-IN") %>
+            </div>
+          </div>
+        </td>
       </tr>
-    </tbody>
-  </table>
+    </table>
+
+    <!-- REPORT TABLE -->
+
+    <table class="report-table">
+      <thead>
+        <tr>
+          <th style="width: 7%">S.No</th>
+
+          <th style="width: 12%">Type</th>
+
+          <th style="width: 24%">Category</th>
+
+          <th style="width: 18%">Date</th>
+
+          <th style="width: 15%">Amount</th>
+
+          <th style="width: 24%">Notes</th>
+        </tr>
+      </thead>
+
+      <tbody>
+        <% if(data.length){ %> <% data.forEach((item,index)=>{ %>
+
+        <tr>
+          <td class="center"><%= index+1 %></td>
+
+          <td class="center">
+            <span class="<%= item.type %>">
+              <%= item.type.toUpperCase() %>
+            </span>
+          </td>
+
+          <td><%= item.category_name || item.cat_name || "-" %></td>
+
+          <td class="center"><%= item.trans_date %></td>
+
+          <td class="right">
+            ₹ <%= Number(item.amount).toLocaleString("en-IN") %>
+          </td>
+
+          <td><%= item.notes || "-" %></td>
+        </tr>
+
+        <% }) %> <% } else { %>
+
+        <tr>
+          <td colspan="6" class="center" style="padding: 20px">
+            No Records Found
+          </td>
+        </tr>
+
+        <% } %>
+      </tbody>
+    </table>
+
+    <div class="footer">End of Finance Report</div>
+  </body>
 </html>

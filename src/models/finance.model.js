@@ -377,119 +377,6 @@ export class financeModel {
     const [result] = await pool.query(`DELETE FROM finance WHERE id =?`, [id]);
   }
 
-  // async fetchReportData({
-  //   type,
-  //   user_id,
-  //   from_date,
-  //   to_date,
-  //   page = 1,
-  //   limit = 10,
-  // }) {
-  //   let query = `
-  //   SELECT
-  //     f.id,
-  //     f.type,
-  //     f.user_id,
-  //     COALESCE(f.category_id, 0) AS category_id,
-  //     COALESCE(f.category_name, '') AS category_name,
-  //     COALESCE(fc.cat_name, '') AS cat_name,
-  //     COALESCE(fc.cat_img, 0) AS cat_img,
-  //     f.trans_date,
-  //     f.amount,
-  //     f.notes,
-  //     f.attachment AS attachment_ids
-  //   FROM finance f
-  //   LEFT JOIN finance_category fc
-  //     ON f.category_id = fc.id
-  //   WHERE 1 = 1
-  // `;
-
-  //   const params = [];
-
-  //   if (user_id) {
-  //     query += ` AND f.user_id = ?`;
-  //     params.push(user_id);
-  //   }
-
-  //   if (from_date && to_date) {
-  //     query += ` AND DATE(f.trans_date) BETWEEN ? AND ?`;
-  //     params.push(from_date, to_date);
-  //   } else if (from_date) {
-  //     query += ` AND DATE(f.trans_date) >= ?`;
-  //     params.push(from_date);
-  //   } else if (to_date) {
-  //     query += ` AND DATE(f.trans_date) <= ?`;
-  //     params.push(to_date);
-  //   }
-
-  //   query += ` ORDER BY f.trans_date DESC`;
-
-  //   const [rows] = await pool.query(query, params);
-
-  //   for (const row of rows) {
-  //     if (row.cat_img) {
-  //       const catMedia = await srcMdl.getMedia([Number(row.cat_img)]);
-  //       row.cat_icon = catMedia?.success ? catMedia.data[0] : {};
-  //     } else {
-  //       row.cat_icon = {};
-  //     }
-
-  //     if (row.attachment_ids) {
-  //       const attachmentIds = row.attachment_ids
-  //         .split(",")
-  //         .map((id) => Number(id.trim()))
-  //         .filter(Boolean);
-
-  //       const media = await srcMdl.getMedia(attachmentIds);
-
-  //       row.attachment = media?.success ? media.data : [];
-  //     } else {
-  //       row.attachment = [];
-  //     }
-
-  //     delete row.cat_img;
-  //     delete row.attachment_ids;
-  //   }
-
-  //   const income_total = rows
-  //     .filter((row) => row.type === "income")
-  //     .reduce((sum, row) => sum + Number(row.amount || 0), 0);
-
-  //   const expense_total = rows
-  //     .filter((row) => row.type === "expense")
-  //     .reduce((sum, row) => sum + Number(row.amount || 0), 0);
-
-  //   const chartRows = type ? rows.filter((row) => row.type === type) : rows;
-
-  //   const chartMap = {};
-
-  //   chartRows.forEach((row) => {
-  //     const key = row.category_id || 0;
-
-  //     if (!chartMap[key]) {
-  //       chartMap[key] = {
-  //         category_id: Number(row.category_id) || 0,
-  //         category_name: row.category_name || row.cat_name || "",
-  //         category_icon: row.cat_icon || {},
-  //         total_amount: 0,
-  //       };
-  //     }
-
-  //     chartMap[key].total_amount += Number(row.amount || 0);
-  //   });
-
-  //   const chart_data = Object.values(chartMap);
-
-  //   return {
-  //     summary: {
-  //       income_total,
-  //       expense_total,
-  //     },
-  //     chart_data: replaceNullWithEmptyString(chart_data),
-  //     data: replaceNullWithEmptyString(rows),
-  //   };
-  // }
-
   async fetchReportData({
     type,
     user_id,
@@ -500,10 +387,7 @@ export class financeModel {
   }) {
     const offset = (page - 1) * limit;
 
-    let whereClause = `
-    WHERE 1 = 1
-  `;
-
+    let whereClause = `WHERE 1 = 1`;
     const params = [];
 
     if (user_id) {
@@ -522,47 +406,69 @@ export class financeModel {
       params.push(to_date);
     }
 
-    // Total Count
+    // User Details
+    let user = {};
+
+    if (user_id) {
+      const [userRows] = await pool.query(
+        `
+      SELECT
+        id,
+        user_id,
+        name,
+        c_code,
+        phn_num
+      FROM users
+      WHERE user_id = ?
+      `,
+        [user_id],
+      );
+
+      if (userRows.length) {
+        user = userRows[0];
+      }
+    }
+
     const [[{ total }]] = await pool.query(
       `
     SELECT COUNT(*) AS total
     FROM finance f
     LEFT JOIN finance_category fc
-      ON f.category_id = fc.id
+      ON fc.id = f.category_id
     ${whereClause}
     `,
       params,
     );
 
-    // Get all rows for summary & chart
+    // All rows (Summary & Chart)
     const [allRows] = await pool.query(
       `
     SELECT
       f.id,
       f.type,
       f.user_id,
-      COALESCE(f.category_id, 0) AS category_id,
-      COALESCE(f.category_name, '') AS category_name,
-      COALESCE(fc.cat_name, '') AS cat_name,
-      COALESCE(fc.cat_img, 0) AS cat_img,
+      COALESCE(f.category_id,0) AS category_id,
+      COALESCE(f.category_name,'') AS category_name,
+      COALESCE(fc.cat_name,'') AS cat_name,
+      COALESCE(fc.cat_img,0) AS cat_img,
       f.trans_date,
       f.amount,
       f.notes,
       f.attachment AS attachment_ids
     FROM finance f
     LEFT JOIN finance_category fc
-      ON f.category_id = fc.id
+      ON fc.id = f.category_id
     ${whereClause}
     ORDER BY f.trans_date DESC
     `,
       params,
     );
 
-    // Process media for chart & summary
+    // Category Icons
     for (const row of allRows) {
       if (row.cat_img) {
-        const catMedia = await srcMdl.getMedia([Number(row.cat_img)]);
-        row.cat_icon = catMedia?.success ? catMedia.data[0] : {};
+        const media = await srcMdl.getMedia([Number(row.cat_img)]);
+        row.cat_icon = media?.success ? media.data[0] : {};
       } else {
         row.cat_icon = {};
       }
@@ -570,55 +476,49 @@ export class financeModel {
 
     // Summary
     const income_total = allRows
-      .filter((row) => row.type === "income")
-      .reduce((sum, row) => sum + Number(row.amount || 0), 0);
+      .filter((x) => x.type === "income")
+      .reduce((a, b) => a + Number(b.amount), 0);
 
     const expense_total = allRows
-      .filter((row) => row.type === "expense")
-      .reduce((sum, row) => sum + Number(row.amount || 0), 0);
+      .filter((x) => x.type === "expense")
+      .reduce((a, b) => a + Number(b.amount), 0);
 
-    // Chart Data
-    const chartRows = type
-      ? allRows.filter((row) => row.type === type)
-      : allRows;
+    // Chart
+    const chartRows = type ? allRows.filter((x) => x.type === type) : allRows;
 
     const chartMap = {};
 
     chartRows.forEach((row) => {
-      const key = row.category_id || 0;
-
-      if (!chartMap[key]) {
-        chartMap[key] = {
-          category_id: Number(row.category_id) || 0,
-          category_name: row.category_name || row.cat_name || "",
-          category_icon: row.cat_icon || {},
+      if (!chartMap[row.category_id]) {
+        chartMap[row.category_id] = {
+          category_id: row.category_id,
+          category_name: row.category_name || row.cat_name,
+          category_icon: row.cat_icon,
           total_amount: 0,
         };
       }
 
-      chartMap[key].total_amount += Number(row.amount || 0);
+      chartMap[row.category_id].total_amount += Number(row.amount);
     });
 
-    const chart_data = Object.values(chartMap);
-
-    // Paginated Data
+    // Paginated rows
     const [rows] = await pool.query(
       `
     SELECT
       f.id,
       f.type,
       f.user_id,
-      COALESCE(f.category_id, 0) AS category_id,
-      COALESCE(f.category_name, '') AS category_name,
-      COALESCE(fc.cat_name, '') AS cat_name,
-      COALESCE(fc.cat_img, 0) AS cat_img,
+      COALESCE(f.category_id,0) AS category_id,
+      COALESCE(f.category_name,'') AS category_name,
+      COALESCE(fc.cat_name,'') AS cat_name,
+      COALESCE(fc.cat_img,0) AS cat_img,
       f.trans_date,
       f.amount,
       f.notes,
       f.attachment AS attachment_ids
     FROM finance f
     LEFT JOIN finance_category fc
-      ON f.category_id = fc.id
+      ON fc.id = f.category_id
     ${whereClause}
     ORDER BY f.trans_date DESC
     LIMIT ? OFFSET ?
@@ -626,22 +526,20 @@ export class financeModel {
       [...params, Number(limit), Number(offset)],
     );
 
-    // Process media for paginated rows
     for (const row of rows) {
+      // Category Icon
       if (row.cat_img) {
-        const catMedia = await srcMdl.getMedia([Number(row.cat_img)]);
-        row.cat_icon = catMedia?.success ? catMedia.data[0] : {};
+        const media = await srcMdl.getMedia([Number(row.cat_img)]);
+        row.cat_icon = media?.success ? media.data[0] : {};
       } else {
         row.cat_icon = {};
       }
 
+      // Attachments
       if (row.attachment_ids) {
-        const attachmentIds = row.attachment_ids
-          .split(",")
-          .map((id) => Number(id.trim()))
-          .filter(Boolean);
+        const ids = row.attachment_ids.split(",").map(Number).filter(Boolean);
 
-        const media = await srcMdl.getMedia(attachmentIds);
+        const media = await srcMdl.getMedia(ids);
 
         row.attachment = media?.success ? media.data : [];
       } else {
@@ -652,14 +550,26 @@ export class financeModel {
       delete row.attachment_ids;
     }
 
+  
     return {
+      user: {
+        id: user?.id ?? "",
+        user_id: user?.user_id ?? "",
+        user_name: user?.name ?? "",
+        c_code : user?.c_code ?? "",
+        phn_num : user?.phn_num ?? ""
+      },
+
       summary: {
         income_total,
         expense_total,
         balance: income_total - expense_total,
       },
-      chart_data: replaceNullWithEmptyString(chart_data),
+
+      chart_data: replaceNullWithEmptyString(Object.values(chartMap)),
+
       data: replaceNullWithEmptyString(rows),
+
       pagination: {
         total,
         page: Number(page),

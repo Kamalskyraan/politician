@@ -7,6 +7,7 @@ import meetingRoutes from "./meeting.routes.js";
 import travelRoutes from "./travel.routes.js";
 import taskRoutes from "./task.route.js";
 import finaceRoutes from "./finance.routes.js";
+import analyticsRoutes from "./analytic.routes.js";
 
 import politicalsumitRoutes from "./politicalSumit.routes.js";
 import folderRoutes from "./folder.routes.js";
@@ -35,5 +36,6 @@ router.use("/reminder", reminderRoutes);
 router.use("/calendar", calendarRoutes);
 router.use("/user", userRoutes);
 router.use("/notification", notificationRoutes);
+router.use("/analytics" , analyticsRoutes)
 
 export default router;

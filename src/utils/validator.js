@@ -1281,7 +1281,7 @@ export const getTaskSchema = Joi.object({
     }),
 });
 
-// 
+//
 
 export const financeSchema = Joi.object({
   id: Joi.number().optional(),
@@ -1814,5 +1814,17 @@ export const notificationIsReadChangeSchema = Joi.object({
   id: Joi.number().required().messages({
     "number.base": "id name should be number",
     "any.required": "id name is required",
+  }),
+});
+export const fetchAnalyticsSchema = Joi.object({
+  id: Joi.number().optional(),
+  user_id: Joi.string().required().messages({
+    "any.required": "User Id is required",
+  }),
+  type: Joi.string().required().messages({
+    "any.requiered": "Type is required",
+  }),
+  c_status: Joi.string().required().messages({
+    "any.required": "Current status is required ",
   }),
 });
