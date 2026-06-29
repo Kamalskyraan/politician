@@ -97,16 +97,19 @@ export class taskModel {
 
       countQuery = `SELECT COUNT(*) AS total FROM tasks WHERE user_id = ? AND t_status IN (${placeholders})`;
       countParams.push(user_id, ...status);
+
       query = `SELECT id, title, descp, t_priority, from_date, to_date, media_id, attnds_id, t_status, is_remind, remind_status, remind_tenure, remind_at, snooze_at, nxt_snooze_at FROM tasks WHERE user_id = ? AND t_status IN (${placeholders}) LIMIT ? OFFSET ?`;
       params.push(user_id, ...status, limit, offset);
     } else {
       countQuery = `SELECT FROM tasks WHERE user_id = ? LIMIT ? OFFSET ?`;
       countParams.push(user_id);
+
       query = `SELECT id, title, descp, t_priority, from_date, to_date, media_id, attnds_id, t_status, is_remind, remind_status, remind_tenure, remind_at, snooze_at, nxt_snooze_at FROM tasks WHERE user_id = ?`;
       params.push(user_id, limit, offset);
     }
 
     const countResult = await executeQuery(countQuery, countParams);
+    const total = countResult?.data[0]?.total;
 
     const result = await executeQuery(query, params);
     if (result?.success === 1) {

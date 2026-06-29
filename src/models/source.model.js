@@ -104,7 +104,7 @@ export class sourceModel {
 
     const result = await executeQuery(query, params);
     // console.log(result?.data?.insertId);
-    console.log(result)
+    // console.log(result)
     return result;
   }
 
