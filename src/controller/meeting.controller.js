@@ -137,25 +137,26 @@ export const getMembers = async (req, res) => {
     const result = await meetingMdl.getMember({ upt_cols, params });
     const data = (await result?.data) || [];
 
-    if (result?.data.length >= 1) {
-      await addNotification("MEETING_CREATED", user_id, "meeting", 1);
+    // if (result?.data.length >= 1) {
 
-      await sendPushNotification(user_id, {
-        title: "Meeting created",
-        message: "New meeting has been created",
-      });
-      console.log("first");
-      return sendResponse(res, 200, 1, "Member fetched successfully", data, "");
-    } else {
-      return sendResponse(
-        res,
-        200,
-        0,
-        "no member found for this user Id",
-        [],
-        "",
-      );
-    }
+    // } else {
+    //   return sendResponse(
+    //     res,
+    //     200,
+    //     0,
+    //     "no member found for this user Id",
+    //     [],
+    //     "",
+    //   );
+    // }
+
+    await addNotification("MEETING_CREATED", user_id, "meeting", 1);
+    await sendPushNotification(user_id, {
+      title: "Meeting created",
+      message: "New meeting has been created",
+    });
+    console.log("first");
+    return sendResponse(res, 200, 1, "Member fetched successfully", data, "");
   } catch (error) {
     return sendResponse(
       res,
