@@ -32,10 +32,8 @@ export const sendPushNotification = async ({ user_id, payload }) => {
        AND device_token IS NOT NULL`,
       [user_id],
     );
-
-    console.log("Devices:", devices);
-
-    if (!devices.length) {
+    const devicess = devices?.data;
+    if (!devicess.length) {
       console.log("No registered devices");
       return;
     }
@@ -43,7 +41,7 @@ export const sendPushNotification = async ({ user_id, payload }) => {
     const androidTokens = [];
     const iosTokens = [];
 
-    for (const d of devices) {
+    for (const d of devicess) {
       console.log(d.device_type, d.device_token);
 
       if (d.device_type?.toLowerCase() === "android") {
