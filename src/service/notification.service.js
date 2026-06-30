@@ -4,7 +4,7 @@ import fs from "fs";
 import { fileURLToPath } from "url";
 import { apnProvider } from "./apnProvider.js";
 import { executeQuery } from "../utils/helper.js";
-
+import apn from "apn";
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
 
@@ -97,7 +97,6 @@ export const sendFCMNotification = async ({ token, title, body, data }) => {
 
 export const sendAPNSNotification = async ({ tokens, title, body }) => {
   try {
-    console.log("from ios notification");
     const notification = new apn.Notification();
 
     notification.alert = { title, body };
