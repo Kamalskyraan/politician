@@ -552,6 +552,7 @@ export const addMeeting = async (req, res) => {
       const response = replaceNullWithEmptyString(data);
 
       // notification will add if the from date is today's date
+      // 
       if (result?.success === 1) {
         const currentDate = await getCurrentDateTime();
         if (currentDate.slice(0, 10) === from_date.slice(0, 10)) {
