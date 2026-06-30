@@ -80,6 +80,8 @@ export const sendFCMNotification = async ({ token, title, body, data }) => {
 
 export const sendAPNSNotification = async ({ tokens, title, body }) => {
   try {
+
+    console.log("from ios notification")
     const notification = new apn.Notification();
 
     notification.alert = { title, body };
@@ -88,8 +90,8 @@ export const sendAPNSNotification = async ({ tokens, title, body }) => {
     const result = await apnProvider.send(notification, tokens);
 
     result.failed.forEach((f) => {
-      console.error("❌ Token:", f.device);
-      console.error("❌ Error:", f.response?.reason || f.error);
+      console.error(" Token:", f.device);
+      console.error(" Error:", f.response?.reason || f.error);
     });
 
     return result;
