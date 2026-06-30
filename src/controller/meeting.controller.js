@@ -496,10 +496,7 @@ export const addMeeting = async (req, res) => {
         nxt_snooze_at,
       });
 
-      await sendPushNotification(user_id, {
-        title: "Meeting created",
-        message: "New meeting has been created",
-      });
+      
       // return;
 
       let media_result = [];
@@ -692,6 +689,8 @@ export const addMeeting = async (req, res) => {
     );
   }
 };
+
+
 
 export const getMeeting = async (req, res) => {
   try {
