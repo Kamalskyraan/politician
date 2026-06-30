@@ -218,6 +218,10 @@ router.post(
                 type: "string",
                 example: "2026-06-14"
               },
+              page: {
+                type: "number",
+                example: 1
+              },
             }
           }
         }

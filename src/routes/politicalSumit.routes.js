@@ -177,6 +177,10 @@ router.post(
                 type: "string",
                 example: "3"
               },
+              page: {
+                type: "number",
+                example: 3
+              },
             }
           }
         }

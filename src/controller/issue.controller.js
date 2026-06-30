@@ -60,8 +60,8 @@ export const addIssue = async (req, res) => {
     report_date = formatDateForSQL(report_date);
 
     let status = "not assigned";
-    if(incharge_id != null && member_id != null){
-      status = "inprogress"
+    if (incharge_id != null && member_id != null) {
+      status = "inprogress";
     }
 
     const result = await issueMdl.addIssue({
@@ -250,8 +250,8 @@ export const updateIssue = async (req, res) => {
     member_id = member_id === "" ? null : member_id;
 
     let status = "not assigned";
-    if(incharge_id != null && member_id != null){
-      status = "inprogress"
+    if (incharge_id != null && member_id != null) {
+      status = "inprogress";
     }
 
     let upt_cols = [];
@@ -281,7 +281,7 @@ export const updateIssue = async (req, res) => {
       upt_cols.push("lng = ?");
       params.push(lng);
     }
-    if(status){
+    if (status) {
       upt_cols.push("status = ?");
       params.push(status);
     }
@@ -311,7 +311,7 @@ export const updateIssue = async (req, res) => {
     today = String(today);
 
     const result = await issueMdl.updateIssue({ upt_cols, params });
-    
+
     const data = {
       id: id,
       cat_id: cat_id,
@@ -434,7 +434,7 @@ export const getIssue = async (req, res) => {
         validatedData?.errorObject?.errors,
       );
     }
-    let { user_id, status, assigned, from_date, to_date } =
+    let { user_id, status, assigned, from_date, to_date, page } =
       validatedData?.value;
 
     status = status === "" ? null : status.split(",");
@@ -448,7 +448,10 @@ export const getIssue = async (req, res) => {
       assigned,
       from_date,
       to_date,
+      page,
     });
+
+    const pagination = result?.pagination;
 
     const data = result?.data;
     const response = replaceNullWithEmptyString(data);
@@ -537,7 +540,7 @@ export const getIssue = async (req, res) => {
         200,
         1,
         "Issue fetched successfully",
-        finalResponse,
+        [{data: finalResponse, pagination}],
         "",
       );
     } else if (result?.success === 0) {
