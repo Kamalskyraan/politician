@@ -382,6 +382,10 @@ export const updateStatus = async (req, res) => {
       table_name = "issues";
       col_name = "status";
     }
+    if (type === "sumit"){
+      table_name = "political_sumit";
+      col_name = "status"
+    }
 
     const result = await supportMdl.updateStatus({
       id,
