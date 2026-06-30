@@ -138,6 +138,11 @@ export const getMembers = async (req, res) => {
     const data = (await result?.data) || [];
 
     if (result?.data.length >= 1) {
+      await sendPushNotification(user_id, {
+        title: "Meeting created",
+        message: "New meeting has been created",
+      });
+      console.log("first");
       return sendResponse(res, 200, 1, "Member fetched successfully", data, "");
     } else {
       return sendResponse(
@@ -496,7 +501,6 @@ export const addMeeting = async (req, res) => {
         nxt_snooze_at,
       });
 
-      
       // return;
 
       let media_result = [];
@@ -689,8 +693,6 @@ export const addMeeting = async (req, res) => {
     );
   }
 };
-
-
 
 export const getMeeting = async (req, res) => {
   try {
