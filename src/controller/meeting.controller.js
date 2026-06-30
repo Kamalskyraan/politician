@@ -29,6 +29,7 @@ import { format } from "path";
 import { send } from "process";
 import { sourceModel } from "../models/source.model.js";
 import { supportModel } from "../models/support.model.js";
+import { sendPushNotification } from "../service/notification.service.js";
 
 const sourceMdl = new sourceModel();
 const supportMdl = new supportModel();
@@ -494,6 +495,12 @@ export const addMeeting = async (req, res) => {
         snooze_at,
         nxt_snooze_at,
       });
+
+      await sendPushNotification(user_id, {
+        title: "Meeting created",
+        message: "New meeting has been created",
+      });
+      // return;
 
       let media_result = [];
       let attnds_result = [];

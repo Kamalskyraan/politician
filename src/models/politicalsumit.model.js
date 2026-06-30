@@ -122,13 +122,27 @@ export class politicalSumitModel {
       };
     }
   }
-  async getSumit({ upt_cols, params }) {
-    let query = `SELECT id, title, sumit_date, status FROM political_sumit WHERE ${upt_cols.join("")}`;
+  async getSumit({ upt_cols, params, page, limit = 10 }) {
+    const offset = (page - 1) * limit;
+    let query = `SELECT id, title, sumit_date, status FROM political_sumit WHERE ${upt_cols.join("")} LIMIT ? OFFSET ?`;
+
+    const countQuery = `SELECT COUNT(*) AS total FROM political_sumit WHERE ${upt_cols.join("")}`;
+    const countResult = await executeQuery(countQuery, params);
+    const total = countResult?.data[0]?.total;
+
+    params.push(limit, offset);
+
     const result = await executeQuery(query, params);
     if (result?.success === 1) {
       return {
         success: 1,
         data: result?.data,
+        pagination: {
+          total,
+          page: Number(page),
+          limit: Number(limit),
+          total_pages: Number(Math.ceil(total / limit)),
+        },
       };
     } else if (result?.success === 0) {
       return {

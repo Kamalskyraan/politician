@@ -257,7 +257,8 @@ export const getSumit = async (req, res) => {
         validatedData?.errorObject?.errors,
       );
     }
-    let { user_id, status, from_date, to_date, id } = validatedData?.value;
+    let { user_id, status, from_date, to_date, id, page } =
+      validatedData?.value;
     // console.log("entered");
 
     status = status === "" ? null : status.split(",");
@@ -269,6 +270,7 @@ export const getSumit = async (req, res) => {
     let params = [];
     let data;
     let result;
+    let pagination;
 
     if (id == null) {
       if (user_id != null) {
@@ -288,8 +290,9 @@ export const getSumit = async (req, res) => {
         upt_cols.push(" AND sumit_date <= ?");
         params.push(`${to_date} 23:59:59`);
       }
-      result = await sumitMdl.getSumit({ upt_cols, params });
+      result = await sumitMdl.getSumit({ upt_cols, params, page });
       data = result?.data;
+      pagination = result?.pagination;
     } else if (id != null) {
       result = await sumitMdl.getSumitPeopleDetails(id);
       data = result?.data;
@@ -313,9 +316,22 @@ export const getSumit = async (req, res) => {
         const person = {
           id: row.people_id,
           name: row.name,
-          type: row.type,
-          designation: row.cat_id === 0 ? row.cat_name : row.designation,
-          department: row.dept_id === 0 ? row.dept_name : row.department,
+          // type: row.type,
+          // designation: row.cat_id === 0 ? row.cat_name : row.designation,
+          // department: row.dept_id === 0 ? row.dept_name : row.department,
+          cat_id: row.cat_id,
+          cat_name: row.cat_id === 0 ? row.cat_name : row.designation,
+        };
+        const dept_person = {
+          id: row.people_id,
+          name: row.name,
+          // type: row.type,
+          // designation: row.cat_id === 0 ? row.cat_name : row.designation,
+          // department: row.dept_id === 0 ? row.dept_name : row.department,
+          cat_id: row.cat_id,
+          cat_name: row.cat_id === 0 ? row.cat_name : row.designation,
+          dept_id: row.dept_id,
+          dept_name: row.dept_id === 0 ? row.dept_name : row.department,
         };
 
         if (row.type === "vip") {
@@ -328,7 +344,7 @@ export const getSumit = async (req, res) => {
           response.sumit_incharge.push(person);
         }
         if (row.type === "dept incharge") {
-          response.dept_incharge.push(person);
+          response.dept_incharge.push(dept_person);
         }
       }
       data = await response;
@@ -341,7 +357,7 @@ export const getSumit = async (req, res) => {
         200,
         1,
         "Political Sumit fetched successfully",
-        data,
+        [{ data, pagination }],
         "",
       );
     } else if (result?.success === 0) {

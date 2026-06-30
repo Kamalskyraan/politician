@@ -33,7 +33,7 @@ export class authModel {
         data: result?.data, 
       };
     } else {
-      return {
+      return { 
         success: 0,
         error: result?.error,
       };

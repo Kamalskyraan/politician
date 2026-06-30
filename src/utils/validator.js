@@ -1498,6 +1498,10 @@ export const getIssueSchema = Joi.object({
   to_date: Joi.string().allow("").messages({
     "string.base": "to_date should be a string",
   }),
+  page: Joi.number().required().messages({
+    "number.base": "page should be a number",
+    "any.required": "page cannot be empty",
+  }),
 });
 
 export const addSumitCategorySchema = Joi.object({
@@ -1629,6 +1633,10 @@ export const getSumitSchema = Joi.object({
   }),
   id: Joi.string().allow("").messages({
     "number.base": "sumit id should be a string",
+  }),
+  page: Joi.number().required().messages({
+    "number.base": "page should be a number",
+    "any.required": "page cannot be empty",
   }),
 });
 export const updateSumitSchema = Joi.object({
