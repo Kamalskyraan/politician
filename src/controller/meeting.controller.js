@@ -138,6 +138,8 @@ export const getMembers = async (req, res) => {
     const data = (await result?.data) || [];
 
     if (result?.data.length >= 1) {
+      await addNotification("MEETING_CREATED", user_id, "meeting", 1);
+
       await sendPushNotification(user_id, {
         title: "Meeting created",
         message: "New meeting has been created",
@@ -556,7 +558,7 @@ export const addMeeting = async (req, res) => {
       const response = replaceNullWithEmptyString(data);
 
       // notification will add if the from date is today's date
-      // 
+      //
       if (result?.success === 1) {
         const currentDate = await getCurrentDateTime();
         if (currentDate.slice(0, 10) === from_date.slice(0, 10)) {
