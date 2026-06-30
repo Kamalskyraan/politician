@@ -132,7 +132,7 @@ export const getMembers = async (req, res) => {
     upt_cols.push("m.status = ?");
     params.push("active");
     // console.log(upt_cols);
-    // console.log(params);
+    console.log(params);
 
     const result = await meetingMdl.getMember({ upt_cols, params });
     const data = (await result?.data) || [];
