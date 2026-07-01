@@ -41,6 +41,7 @@ export const executeQuery = async (query, params = []) => {
   try {
     const [rows] = await db.execute(query, params);
     // console.log("from execute query",rows);
+
     return {
       success: 1,
       data: rows,

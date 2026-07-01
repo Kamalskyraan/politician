@@ -24,18 +24,20 @@ export const getNotification = async (req, res) => {
         validatedData?.errorObject?.errors,
       );
     }
-    const { user_id } = validatedData?.value;
+    const { user_id, page } = validatedData?.value;
 
-    const result = await notificationMdl.getNotification(user_id);
+    const result = await notificationMdl.getNotification(user_id, page);
 
     const data = result?.data;
+    // console.log(data)
+    const pagination = result?.pagination;
     if (result?.success === 1) {
       return sendResponse(
         res,
         200,
         1,
         "notifications fetched successfully",
-        data,
+        [{ data, pagination }],
         "",
       );
     } else if (result?.success === 0) {

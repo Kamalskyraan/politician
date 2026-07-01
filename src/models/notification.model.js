@@ -26,15 +26,27 @@ export class notificationModel {
 
     const result = await executeQuery(query, params);
   }
-  async getNotification(user_id) {
-    let query = `SELECT id, receiver_id, title, message, reference_type, reference_id, is_view, is_read, type, created_at FROM notifications WHERE receiver_id = ? ORDER BY id DESC`;
-    let params = [user_id];
+  async getNotification(user_id, page, limit = 10) {
+    const offset = (page - 1) * limit;
+    let query = `SELECT id, receiver_id, title, message, reference_type, reference_id, is_view, is_read, type, created_at FROM notifications WHERE receiver_id = ? ORDER BY id DESC LIMIT ? OFFSET ?`;
+    let params = [user_id, limit, offset];
+
+    const countQuery = `SELECT COUNT(*) AS total FROM notifications WHERE receiver_id = ? ORDER BY id DESC`;
+    const countParams = [user_id];
+    const countResult = await executeQuery(countQuery, countParams);
+    const total = countResult?.data[0]?.total;
 
     const result = await executeQuery(query, params);
     if (result?.success === 1) {
       return {
         success: 1,
         data: result?.data,
+        pagination: {
+          total,
+          page: Number(page),
+          limit: Number(limit),
+          total_pages: Number(Math.ceil(total / limit)),
+        },
       };
     } else if (result?.success === 0) {
       return {
@@ -88,7 +100,7 @@ export class notificationModel {
         data: result?.data,
       };
     } else if (result?.success === 0) {
-      return {  
+      return {
         success: 0,
         error: result?.error,
       };
