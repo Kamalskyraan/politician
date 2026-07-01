@@ -19,7 +19,7 @@ const tableMap = {
   summit: {
     table: "political_sumit",
     statusColumn: null,
-    statuses: ["assigned"],
+    statuses: ["upcoming", "inprogress", "completed", "cancelled"],
   },
 };
 
