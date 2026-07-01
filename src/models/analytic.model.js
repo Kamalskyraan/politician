@@ -96,8 +96,6 @@ export class analyticsModel {
       Number(offset),
     ]);
 
-    console.log(listResult);
-
     if (type === "task") {
       for (const task of listResult.data) {
         if (task.attnds_id) {
@@ -117,7 +115,6 @@ export class analyticsModel {
       }
     } else if (type === "summit") {
       for (const summit of listResult.data) {
-        // Get people associated with this summit
         const people = await executeQuery(
           `
           SELECT
@@ -125,7 +122,7 @@ export class analyticsModel {
             p.name,
             p.type
           FROM political_sumit_peoples p
-          WHERE p.summit_id = ?
+          WHERE p.sumit_id = ?
           `,
           [summit.id],
         );
