@@ -29,8 +29,9 @@ export const getNotification = async (req, res) => {
     const result = await notificationMdl.getNotification(user_id, page);
 
     const data = result?.data;
-    // console.log(data)
     const pagination = result?.pagination;
+    // console.log(pagination)
+
     if (result?.success === 1) {
       return sendResponse(
         res,
