@@ -23,7 +23,7 @@ app.use("/api-docs", swaggerUi.serve, swaggerUi.setup(swaggerDocument));
 
 app.use("/api", router);
 
-console.log("first")
+// console.log("first")
 
 app.use("/uploads", express.static("src/uploads"));
 

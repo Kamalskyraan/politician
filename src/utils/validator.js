@@ -1708,6 +1708,12 @@ export const getReminderSchema = Joi.object({
       "any.only": "status should be one of pending,snoozed,completed",
     }),
 });
+export const getUpcomingReminderschema = Joi.object({
+  user_id: Joi.string().required().messages({
+    "string.base": "user id name should be string",
+    "any.required": "user id name is required",
+  }),
+});
 export const getcalendarSchema = Joi.object({
   user_id: Joi.string().required().messages({
     "string.base": "user id name should be string",
@@ -1734,6 +1740,12 @@ export const getcalendarEventSchema = Joi.object({
   page: Joi.number().required().messages({
     "number.base": "page should be a number",
     "any.required": "page cannot be empty",
+  }),
+});
+export const getTodayEventsCountsSchema = Joi.object({
+  user_id: Joi.string().required().messages({
+    "string.base": "user id name should be string",
+    "any.required": "user id name is required",
   }),
 });
 export const deleteAccountSchema = Joi.object({

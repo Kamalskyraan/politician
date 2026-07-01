@@ -27,7 +27,7 @@ export class notificationModel {
     const result = await executeQuery(query, params);
   }
   async getNotification(user_id) {
-    let query = `SELECT id, receiver_id, title, message, reference_type, reference_id, is_view, is_read, type FROM notifications WHERE receiver_id = ? ORDER BY id DESC`;
+    let query = `SELECT id, receiver_id, title, message, reference_type, reference_id, is_view, is_read, type, created_at FROM notifications WHERE receiver_id = ? ORDER BY id DESC`;
     let params = [user_id];
 
     const result = await executeQuery(query, params);

@@ -4138,6 +4138,39 @@
         }
       }
     },
+    "/reminder/upcomingreminder": {
+      "post": {
+        "tags": [
+          "10.REMINDERS"
+        ],
+        "summary": "Upcoming reminders",
+        "description": "Upcoming reminders by passing id",
+        "responses": {
+          "200": {
+            "description": "Upcoming Reminders fetched successfully"
+          },
+          "500": {
+            "description": "Internal Server Error"
+          }
+        },
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "user_id": {
+                    "type": "string",
+                    "example": "USER_ZNLl2665"
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
     "/calendar/getcalendarinfo": {
       "post": {
         "tags": [
@@ -4212,6 +4245,39 @@
                   "page": {
                     "type": "number",
                     "example": 1
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/calendar/gettodayeventcounts": {
+      "post": {
+        "tags": [
+          "11.Calendar"
+        ],
+        "summary": "Get today events counts",
+        "description": "Get today events counts",
+        "responses": {
+          "200": {
+            "description": "Today events counts fetched successfully"
+          },
+          "500": {
+            "description": "Internal Server Error"
+          }
+        },
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "user_id": {
+                    "type": "string",
+                    "example": "USER_efKL6767"
                   }
                 }
               }

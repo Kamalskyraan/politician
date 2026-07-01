@@ -85,5 +85,38 @@ router.post(
     }
 */ calendarcontroller.getTodayEvents,
 );
+router.post(
+  "/gettodayeventcounts",
+  /*
+    #swagger.tags = ['11.Calendar']
+    #swagger.summary = 'Get today events counts'
+    #swagger.description = 'Get today events counts'
+
+    #swagger.requestBody = {
+      required: true,
+      content: {
+        "application/json": {
+          schema: {
+            type: "object",
+            properties: {
+              user_id: {
+                type: "string",
+                example: "USER_efKL6767"
+              },
+            }
+          }
+        }
+      }
+    }
+
+    #swagger.responses[200] = {
+      description: 'Today events counts fetched successfully'
+    }
+
+    #swagger.responses[500] = {
+      description: 'Internal Server Error'
+    }
+*/ calendarcontroller.getTodayEventsCounts,
+);
 
 export default router;

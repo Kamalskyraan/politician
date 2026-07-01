@@ -1,6 +1,7 @@
 import express from "express";
 import {
   getReminderSchema,
+  getUpcomingReminderschema,
   updateReminderSchema,
   validateRequest,
 } from "../utils/validator.js";
@@ -125,5 +126,56 @@ export const updateReminder = async (req, res) => {
     }
   } catch (error) {
     return sendResponse(res, 500, 0, "Internal server error", [], "");
+  }
+};
+export const upcomingReminder = async (req, res) => {
+  try {
+    const validatedData = validateRequest(req.body, getUpcomingReminderschema);
+
+    if (validatedData?.success === 0) {
+      return sendResponse(
+        res,
+        validatedData?.errorObject?.status,
+        0,
+        "validation error",
+        [],
+        validatedData?.errorObject?.errors,
+      );
+    }
+
+    const { user_id } = validatedData?.value;
+
+    const result = await reminderMdl.getUpcomingReminder(user_id);
+    // console.log(result);
+    const dataResult = result?.data;
+
+    if (result?.success === 1) {
+      return sendResponse(
+        res,
+        200,
+        1,
+        "Upcoming Reminders fetched successfully",
+        dataResult,
+        "",
+      );
+    } else if (result?.success === 0) {
+      return sendResponse(
+        res,
+        200,
+        0,
+        "Failed to fetch upcoming reminders",
+        [],
+        "",
+      );
+    }
+  } catch (error) {
+    return sendResponse(
+      res,
+      500,
+      0,
+      "Internal server error",
+      [],
+      error.message,
+    );
   }
 };

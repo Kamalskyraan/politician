@@ -3,6 +3,7 @@ import { replaceNullWithEmptyString, sendResponse } from "../utils/helper.js";
 import {
   getcalendarEventSchema,
   getcalendarSchema,
+  getTodayEventsCountsSchema,
   validateRequest,
 } from "../utils/validator.js";
 import { calendarModel } from "../models/calendar.model.js";
@@ -161,6 +162,47 @@ export const getTodayEvents = async (req, res) => {
         [],
         "",
       );
+    }
+  } catch (error) {
+    return sendResponse(
+      res,
+      500,
+      0,
+      "Internal server error",
+      [],
+      error.message,
+    );
+  }
+};
+export const getTodayEventsCounts = async (req, res) => {
+  try {
+    const validatedData = validateRequest(req.body, getTodayEventsCountsSchema);
+    if (validatedData?.success === 0) {
+      return sendResponse(
+        res,
+        200,
+        0,
+        "validation error",
+        [],
+        validatedData?.errorObject?.errors,
+      );
+    }
+    const { user_id } = validatedData?.value;
+
+    const result = await calendarMdl.getTodayEventsCounts(user_id);
+    const data = result?.data;
+
+    if (result?.success === 1) {
+      return sendResponse(
+        res,
+        200,
+        1,
+        "Today events fetched successfully",
+        data,
+        "",
+      );
+    } else if (result?.success === 0) {
+      return sendResponse(res, 200, 0, "Failed to fetch today events", [], "");
     }
   } catch (error) {
     return sendResponse(
