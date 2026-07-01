@@ -130,8 +130,9 @@ export class sourceModel {
     if (result?.success === 1) {
       const sourceData = result.data.map((item) => ({
         ...item,
-        media: item.media ? `${process.env.MEDIA_URL}/${item.media}` : null,
+        url: item.url ? `${process.env.MEDIA_BASE_URL}${item.url}` : null,
       }));
+      // console.log(sourceData)
       return {
         success: 1,
         data: sourceData,
