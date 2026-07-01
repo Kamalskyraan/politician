@@ -50,7 +50,7 @@ export class analyticsModel {
           COUNT(p.id) AS people_count
         FROM political_sumit t
         LEFT JOIN political_sumit_peoples p
-          ON p.summit_id = t.id
+          ON p.sumit_id = t.id
         ${where}
         GROUP BY t.id
         ORDER BY t.created_at DESC
@@ -87,60 +87,77 @@ export class analyticsModel {
       ${where}
     `;
 
-    const totalResult = await executeQuery(totalQuery, params);
-    const total = totalResult?.data?.[0]?.total || 0;
+    try {
+      const totalResult = await executeQuery(totalQuery, params);
+      const total = totalResult?.data?.[0]?.total || 0;
 
-    const listResult = await executeQuery(query, [
-      ...params,
-      Number(limit),
-      Number(offset),
-    ]);
+      const listResult = await executeQuery(query, [
+        ...params,
+        Number(limit),
+        Number(offset),
+      ]);
 
-    if (type === "task") {
-      for (const task of listResult.data) {
-        if (task.attnds_id) {
-          const members = await executeQuery(
-            `SELECT id, name
-             FROM members
-             WHERE FIND_IN_SET(id, ?)`,
-            [task.attnds_id],
+      // Ensure listResult.data is always an array
+      const listData = Array.isArray(listResult?.data) ? listResult.data : [];
+
+      if (type === "task") {
+        for (const task of listData) {
+          if (task.attnds_id) {
+            const members = await executeQuery(
+              `SELECT id, name
+               FROM members
+               WHERE FIND_IN_SET(id, ?)`,
+              [task.attnds_id],
+            );
+
+            task.members = Array.isArray(members?.data) ? members.data : [];
+            task.people_count = task.members.length;
+          } else {
+            task.members = [];
+            task.people_count = 0;
+          }
+        }
+      } else if (type === "summit") {
+        for (const summit of listData) {
+          const people = await executeQuery(
+            `
+            SELECT
+              p.id,
+              p.name,
+              p.type
+            FROM political_sumit_peoples p
+            WHERE p.sumit_id = ?
+            `,
+            [summit.id],
           );
 
-          task.members = members.data || [];
-          task.people_count = task.members.length;
-        } else {
-          task.members = [];
-          task.people_count = 0;
+          summit.people = Array.isArray(people?.data) ? people.data : [];
+          summit.people_count = summit.people.length;
         }
       }
-    } else if (type === "summit") {
-      for (const summit of listResult.data) {
-        const people = await executeQuery(
-          `
-          SELECT
-            p.id,
-            p.name,
-            p.type
-          FROM political_sumit_peoples p
-          WHERE p.sumit_id = ?
-          `,
-          [summit.id],
-        );
 
-        summit.people = people.data || [];
-        summit.people_count = summit.people.length;
-      }
+      return {
+        list: listData,
+        pagination: {
+          total,
+          page: Number(page),
+          limit: Number(limit),
+          totalPages: Math.ceil(total / limit),
+        },
+      };
+    } catch (error) {
+      console.error("Error in fetchAnalytics:", error);
+      // Return empty data on error
+      return {
+        list: [],
+        pagination: {
+          total: 0,
+          page: Number(page),
+          limit: Number(limit),
+          totalPages: 0,
+        },
+      };
     }
-
-    return {
-      list: listResult?.data || [],
-      pagination: {
-        total,
-        page: Number(page),
-        limit: Number(limit),
-        totalPages: Math.ceil(total / limit),
-      },
-    };
   }
 
   async fetchAnalticCount({ user_id, type }) {
@@ -150,53 +167,61 @@ export class analyticsModel {
       throw new Error("Invalid analytics type");
     }
 
-    // Summit doesn't have status
-    if (!config.statusColumn) {
+    try {
+      // Summit doesn't have status
+      if (!config.statusColumn) {
+        const result = await executeQuery(
+          `
+          SELECT COUNT(*) AS count
+          FROM ${config.table}
+          WHERE user_id = ?
+          `,
+          [user_id],
+        );
+
+        return {
+          success: 1,
+          data: [
+            {
+              count: result?.data?.[0]?.count || 0,
+            },
+          ],
+        };
+      }
+
       const result = await executeQuery(
         `
-        SELECT COUNT(*) AS count
+        SELECT
+          ${config.statusColumn} AS status,
+          COUNT(*) AS count
         FROM ${config.table}
         WHERE user_id = ?
+        GROUP BY ${config.statusColumn}
         `,
         [user_id],
       );
 
+      const dbData = Array.isArray(result?.data) ? result.data : [];
+
+      const counts = config.statuses.map((status) => {
+        const row = dbData.find((item) => item.status === status);
+
+        return {
+          status,
+          count: row ? Number(row.count) : 0,
+        };
+      });
+
       return {
         success: 1,
-        data: [
-          {
-            count: result?.data?.[0]?.count || 0,
-          },
-        ],
+        data: counts,
+      };
+    } catch (error) {
+      console.error("Error in fetchAnalticCount:", error);
+      return {
+        success: 0,
+        data: [],
       };
     }
-
-    const result = await executeQuery(
-      `
-      SELECT
-        ${config.statusColumn} AS status,
-        COUNT(*) AS count
-      FROM ${config.table}
-      WHERE user_id = ?
-      GROUP BY ${config.statusColumn}
-      `,
-      [user_id],
-    );
-
-    const dbData = Array.isArray(result?.data) ? result.data : [];
-
-    const counts = config.statuses.map((status) => {
-      const row = dbData.find((item) => item.status === status);
-
-      return {
-        status,
-        count: row ? Number(row.count) : 0,
-      };
-    });
-
-    return {
-      success: 1,
-      data: counts,
-    };
   }
 }
