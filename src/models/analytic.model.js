@@ -49,7 +49,7 @@ export class analyticsModel {
           t.*,
           COUNT(psp.id) AS people_count
         FROM political_sumit t
-        LEFT JOIN political_submit_people psp
+        LEFT JOIN political_submit_peoples psp
           ON psp.submit_id = t.id
         ${where}
         GROUP BY t.id
@@ -115,7 +115,6 @@ export class analyticsModel {
       }
     } else if (type === "summit") {
       for (const summit of listResult.data) {
-        // Get summit people from the people table using summit_id
         const people = await executeQuery(
           `
         SELECT
