@@ -115,21 +115,21 @@ export class analyticsModel {
       }
     } else if (type === "summit") {
       for (const summit of listResult.data) {
-        const members = await executeQuery(
+        // Get summit people from the people table using summit_id
+        const people = await executeQuery(
           `
-      SELECT
-        m.id,
-        m.name
-      FROM political_submit_people psp
-      JOIN members m
-        ON m.id = psp.member_id
-      WHERE psp.submit_id = ?
-      `,
+        SELECT
+            p.id,
+            p.name,
+            p.type
+        FROM political_sumit_peoples p
+        WHERE p.summit_id = ?
+        `,
           [summit.id],
         );
 
-        summit.members = members.data || [];
-        summit.people_count = summit.members.length;
+        summit.people = people.data || [];
+        summit.people_count = summit.people.length;
       }
     }
 
