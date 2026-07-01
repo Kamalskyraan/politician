@@ -28,7 +28,7 @@ export class notificationModel {
   }
   async getNotification(user_id, page, limit = 10) {
     const offset = (page - 1) * limit;
-    let query = `SELECT id, receiver_id, title, message, reference_type, reference_id, is_view, is_read, type, DATE(created_at) FROM notifications WHERE receiver_id = ? ORDER BY id DESC LIMIT ? OFFSET ?`;
+    let query = `SELECT id, receiver_id, title, message, reference_type, reference_id, is_view, is_read, type, DATE(created_at) AS created_at FROM notifications WHERE receiver_id = ? ORDER BY id DESC LIMIT ? OFFSET ?`;
     let params = [user_id, limit, offset];
 
     const countQuery = `SELECT COUNT(*) AS total FROM notifications WHERE receiver_id = ? ORDER BY id DESC`;
