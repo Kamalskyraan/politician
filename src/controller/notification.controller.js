@@ -173,6 +173,9 @@ export const getNotificationActiveCount = async (req, res) => {
     const result = await notificationMdl.getNotificationActiveCount(user_id);
 
     const data = result?.data;
+    if (data[1]) {
+      data[1].reminder_count = Number(data[1]?.reminder_count);
+    }
     if (result?.success === 1) {
       return sendResponse(
         res,

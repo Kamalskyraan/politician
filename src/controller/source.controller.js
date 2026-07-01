@@ -45,7 +45,7 @@ export const uploadMedia = async (req, res) => {
     // }
     const uploadedFiles = await Promise.all(
       files.map(async (file, index) => {
-        const url = `${process.env.MEDIA_BASE_URL}${file.destination.replace("src", "")}/${file.filename}`;
+        const url = `${file.destination.replace("src", "")}/${file.filename}`;
         const file_type = file.mimetype.split("/");
         const result = await sourceMdl.addMedia({
           url,

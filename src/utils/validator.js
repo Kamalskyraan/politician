@@ -569,13 +569,17 @@ export const userIdSchema = Joi.object({
 });
 
 export const updateReminderSchema = Joi.object({
-  id: Joi.number().required().messages({
-    "number.base": "Id should be a string",
-    "any.required": "Id cannot be empty",
+  user_id: Joi.string().required().messages({
+    "string.string": "user Id should be a string",
+    "string.required": "user Id cannot be empty",
   }),
-  type: Joi.string().required().messages({
-    "number.base": "type should be a string",
-    "any.required": "type cannot be empty",
+  remind_time: Joi.string().required().messages({
+    "string.base": "remind time should be a string",
+    "any.required": "remind time cannot be empty",
+  }),
+  current_time: Joi.string().allow("").messages({
+    "string.base": "current time should be a string",
+    "any.required": "current time cannot be empty",
   }),
   is_remind: Joi.number().required().valid(1, 2).messages({
     "number.base": "is_remind should be an number",

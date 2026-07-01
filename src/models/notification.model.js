@@ -90,14 +90,55 @@ export class notificationModel {
     }
   }
   async getNotificationActiveCount(user_id) {
-    let query = `SELECT COUNT(*) AS count FROM notifications WHERE receiver_id = ? AND is_view = 0`;
+    const is_remind = 1;
+    let query = `SELECT COUNT(*) AS notification_count FROM notifications WHERE receiver_id = ? AND is_view = 0`;
     let params = [user_id];
 
+    let reminderQuery = `SELECT SUM(reminder_count) AS reminder_count
+    FROM (
+    SELECT COUNT(*) AS reminder_count
+    FROM meeting
+    WHERE user_id = ?
+      AND is_remind = ?
+      AND DATE(remind_at) = CURDATE()
+
+    UNION ALL
+
+    SELECT COUNT(*) AS reminder_count
+    FROM appointments
+    WHERE user_id = ?
+      AND is_remind = ?
+      AND DATE(remind_at) = CURDATE()
+
+    UNION ALL
+
+    SELECT COUNT(*) AS reminder_count
+    FROM tasks
+    WHERE user_id = ?
+      AND is_remind = ?
+      AND DATE(remind_at) = CURDATE()
+  ) AS reminders;
+    `;
+    let reminderParams = [
+      user_id,
+      is_remind,
+      user_id,
+      is_remind,
+      user_id,
+      is_remind,
+    ];
+
+    const reminderCountResult = await executeQuery(
+      reminderQuery,
+      reminderParams,
+    );
     const result = await executeQuery(query, params);
+
+    const data = [result?.data[0], reminderCountResult?.data[0]];
     if (result?.success === 1) {
       return {
         success: 1,
-        data: result?.data,
+        data: data,
       };
     } else if (result?.success === 0) {
       return {

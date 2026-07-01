@@ -1,5 +1,7 @@
 import pool from "../config/db.js";
 import { executeQuery, sendResponse } from "../utils/helper.js";
+import dotenv from "dotenv";
+dotenv.config();
 
 // export const insertmedia = async (files) => {
 //   const values = files.map((f) => [
@@ -119,9 +121,13 @@ export class sourceModel {
     // console.log(result);
 
     if (result?.success === 1) {
+      const sourceData = result.data.map((item) => ({
+        ...item,
+        media: item.media ? `${process.env.MEDIA_URL}/${item.media}` : null,
+      }));
       return {
         success: 1,
-        data: result?.data,
+        data: sourceData,
       };
     } else {
       return {
@@ -192,5 +198,4 @@ export class sourceModel {
       };
     }
   }
-  
 }
