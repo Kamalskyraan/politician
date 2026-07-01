@@ -22,7 +22,7 @@ const tableMap = {
     statuses: ["upcoming", "inprogress", "completed", "cancelled"],
   },
 };
-
+// 
 export class analyticsModel {
   async fetchAnalytics({ user_id, type, c_status, page = 1, limit = 10 }) {
     const config = tableMap[type];
