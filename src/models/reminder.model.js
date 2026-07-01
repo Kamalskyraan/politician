@@ -48,12 +48,42 @@ export class reminderModel {
       };
     }
   }
-  async reminder(update_column, params) {
-    const query = update_column.join("");
-    // console.log(query);
-    // console.log(params);
+  async reminder(
+    user_id,
+    remind_time,
+    is_remind,
+    snooze_at,
+    next_snooze_at,
+    table_name,
+  ) {
+    let result;
+    if (is_remind === 1) {
+      for (const table of table_name) {
+        let query = `UPDATE ${table}
+     SET remind_status = ?, snooze_at = ?, nxt_snooze_at = ?
+     WHERE user_id = ? AND remind_at = ? AND is_remind = ?`;
+        let params = [
+          "snoozed",
+          snooze_at,
+          next_snooze_at,
+          user_id,
+          remind_time,
+          1,
+        ];
+        result = await executeQuery(query, params);
+      }
+    } else if (is_remind === 2) {
+      for (const table of table_name) {
+        let query = `UPDATE ${table}
+     SET remind_status = ?, is_remind = ?
+     WHERE user_id = ? AND remind_at = ? AND is_remind = ?`;
+        let params = ["completed", 2, user_id, remind_time, 1];
+        result = await executeQuery(query, params);
+      }
+    }
+    // console.log(result);
 
-    const result = await executeQuery(query, params);
+    // const result = await executeQuery(query, params);
     if (result?.success === 0) {
       return {
         success: 0,

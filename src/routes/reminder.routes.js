@@ -54,13 +54,17 @@ router.post(
           schema: {
             type: "object",
             properties: {
-              id: {
-                type: "number",
-                example: 12
-              },
-              type: {
+            user_id: {
                 type: "string",
-                example: "meeting"
+                example: "User_dhh21332"
+              },
+              remind_time: {
+                type: "string",
+                example: "2026-07-01 15:20:00"
+              },
+              current_time: {
+                type: "string",
+                example: "2026-07-01 15:21:00"
               },
               is_remind: {
                 type: "number",

@@ -1,5 +1,7 @@
 import pool from "../config/db.js";
 import { executeQuery, sendResponse } from "../utils/helper.js";
+import dotenv from "dotenv";
+dotenv.config();
 
 // export const insertmedia = async (files) => {
 //   const values = files.map((f) => [
@@ -126,14 +128,18 @@ export class sourceModel {
     const result = await executeQuery(query, id);
 
     if (result?.success === 1) {
-      const mediaData = result.data.map((item) => ({
+      const sourceData = result.data.map((item) => ({
         ...item,
-        url: `${process.env.MEDIA_BASE_URL}${item.url}`,
+        media: item.media ? `${process.env.MEDIA_URL}/${item.media}` : null,
       }));
-
       return {
         success: 1,
-        data: mediaData,
+        data: sourceData,
+      };
+    } else {
+      return {
+        success: 0,
+        error: result?.error,
       };
     }
 

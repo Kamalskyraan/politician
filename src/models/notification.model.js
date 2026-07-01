@@ -26,15 +26,27 @@ export class notificationModel {
 
     const result = await executeQuery(query, params);
   }
-  async getNotification(user_id) {
-    let query = `SELECT id, receiver_id, title, message, reference_type, reference_id, is_view, is_read, type, created_at FROM notifications WHERE receiver_id = ? ORDER BY id DESC`;
-    let params = [user_id];
+  async getNotification(user_id, page, limit = 10) {
+    const offset = (page - 1) * limit;
+    let query = `SELECT id, receiver_id, title, message, reference_type, reference_id, is_view, is_read, type, DATE(created_at) AS created_at FROM notifications WHERE receiver_id = ? ORDER BY id DESC LIMIT ? OFFSET ?`;
+    let params = [user_id, limit, offset];
+
+    const countQuery = `SELECT COUNT(*) AS total FROM notifications WHERE receiver_id = ? ORDER BY id DESC`;
+    const countParams = [user_id];
+    const countResult = await executeQuery(countQuery, countParams);
+    const total = countResult?.data[0]?.total;
 
     const result = await executeQuery(query, params);
     if (result?.success === 1) {
       return {
         success: 1,
         data: result?.data,
+        pagination: {
+          total,
+          page: Number(page),
+          limit: Number(limit),
+          total_pages: Number(Math.ceil(total / limit)),
+        },
       };
     } else if (result?.success === 0) {
       return {
@@ -78,17 +90,58 @@ export class notificationModel {
     }
   }
   async getNotificationActiveCount(user_id) {
-    let query = `SELECT COUNT(*) AS count FROM notifications WHERE receiver_id = ? AND is_view = 0`;
+    const is_remind = 1;
+    let query = `SELECT COUNT(*) AS notification_count FROM notifications WHERE receiver_id = ? AND is_view = 0`;
     let params = [user_id];
 
+    let reminderQuery = `SELECT SUM(reminder_count) AS reminder_count
+    FROM (
+    SELECT COUNT(*) AS reminder_count
+    FROM meeting
+    WHERE user_id = ?
+      AND is_remind = ?
+      AND DATE(remind_at) = CURDATE()
+
+    UNION ALL
+
+    SELECT COUNT(*) AS reminder_count
+    FROM appointments
+    WHERE user_id = ?
+      AND is_remind = ?
+      AND DATE(remind_at) = CURDATE()
+
+    UNION ALL
+
+    SELECT COUNT(*) AS reminder_count
+    FROM tasks
+    WHERE user_id = ?
+      AND is_remind = ?
+      AND DATE(remind_at) = CURDATE()
+  ) AS reminders;
+    `;
+    let reminderParams = [
+      user_id,
+      is_remind,
+      user_id,
+      is_remind,
+      user_id,
+      is_remind,
+    ];
+
+    const reminderCountResult = await executeQuery(
+      reminderQuery,
+      reminderParams,
+    );
     const result = await executeQuery(query, params);
+
+    const data = [result?.data[0], reminderCountResult?.data[0]];
     if (result?.success === 1) {
       return {
         success: 1,
-        data: result?.data,
+        data: data,
       };
     } else if (result?.success === 0) {
-      return {  
+      return {
         success: 0,
         error: result?.error,
       };

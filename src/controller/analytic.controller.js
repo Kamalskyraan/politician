@@ -44,7 +44,7 @@ export const getAnalyticsData = async (req, res) => {
           pagination: replaceNullWithEmptyString(analyticsData.pagination),
         },
       ],
-      [],
+      "",
     );
   } catch (error) {
     return sendResponse(

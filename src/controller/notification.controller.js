@@ -24,18 +24,21 @@ export const getNotification = async (req, res) => {
         validatedData?.errorObject?.errors,
       );
     }
-    const { user_id } = validatedData?.value;
+    const { user_id, page } = validatedData?.value;
 
-    const result = await notificationMdl.getNotification(user_id);
+    const result = await notificationMdl.getNotification(user_id, page);
 
     const data = result?.data;
+    const pagination = result?.pagination;
+    // console.log(pagination)
+
     if (result?.success === 1) {
       return sendResponse(
         res,
         200,
         1,
         "notifications fetched successfully",
-        data,
+        [{ data, pagination }],
         "",
       );
     } else if (result?.success === 0) {
@@ -170,6 +173,9 @@ export const getNotificationActiveCount = async (req, res) => {
     const result = await notificationMdl.getNotificationActiveCount(user_id);
 
     const data = result?.data;
+    if (data[1]) {
+      data[1].reminder_count = Number(data[1]?.reminder_count);
+    }
     if (result?.success === 1) {
       return sendResponse(
         res,

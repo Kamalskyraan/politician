@@ -20,6 +20,10 @@ router.post(
               user_id: {
                 type: "string",
                 example: "USER__-zw9853"
+              },
+              page: {
+                type: "number",
+                example: 1
               }
             }
           }

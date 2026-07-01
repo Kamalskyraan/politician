@@ -79,39 +79,48 @@ export const updateReminder = async (req, res) => {
       );
     }
 
-    const { id, type, is_remind, snooze_at } = validatedData?.value;
-    let update_column = [];
-    let params = [];
-    let table_name;
+    let { user_id, remind_time, current_time, is_remind, snooze_at } =
+      validatedData?.value;
+    // let update_column = [];
+    // let params = [];
+    let table_name = ["meeting", "appointments", "tasks", "travels"];
+    let next_snooze_at;
 
-    if (type === "meeting") {
-      table_name = "meeting";
-    } else if (type === "appointment") {
-      table_name = "appointments";
-    } else if (type === "task") {
-      table_name = "tasks";
-    } else {
-      table_name = "travels";
-    }
+    // if (type === "meeting") {
+    //   table_name = "meeting";
+    // } else if (type === "appointment") {
+    //   table_name = "appointments";
+    // } else if (type === "task") {
+    //   table_name = "tasks";
+    // } else {
+    //   table_name = "travels";
+    // }
 
     if (is_remind === 1) {
-      let next_snooze_at = new Date().getTime() + Number(snooze_at) * 1000;
+      next_snooze_at = new Date(current_time).getTime() + Number(snooze_at) * 1000;
       next_snooze_at = new Date(next_snooze_at);
       next_snooze_at.setSeconds(0, 0);
       next_snooze_at = formatDateForSQL(next_snooze_at);
 
-      update_column.push(
-        `UPDATE ${table_name} SET remind_status = ?, nxt_snooze_at = ? WHERE id = ?`,
-      );
-      params.push("snoozed", next_snooze_at, id);
-    } else if (is_remind === 2) {
-      update_column.push(
-        `UPDATE ${table_name} SET remind_status = ? WHERE id = ?`,
-      );
-      params.push("completed", id);
+      // update_column.push(
+      //   `UPDATE ${table_name} SET remind_status = ?, nxt_snooze_at = ? WHERE remind_at = ?`,
+      // );
+      // params.push("snoozed", next_snooze_at, remind_time);
     }
-
-    const result = await reminderMdl.reminder(update_column, params);
+    // else if (is_remind === 2) {
+    // update_column.push(
+    //   `UPDATE ${table_name} SET remind_status = ? WHERE remind_at = ?`,
+    // );
+    // params.push("completed", id);
+    // }
+    const result = await reminderMdl.reminder(
+      user_id,
+      remind_time,
+      is_remind,
+      snooze_at,
+      next_snooze_at,
+      table_name,
+    );
     if (result?.success === 0) {
       return sendResponse(
         res,
@@ -125,7 +134,14 @@ export const updateReminder = async (req, res) => {
       return sendResponse(res, 200, 1, "reminder updated successfully", [], "");
     }
   } catch (error) {
-    return sendResponse(res, 500, 0, "Internal server error", [], "");
+    return sendResponse(
+      res,
+      500,
+      0,
+      "Internal server error",
+      [],
+      error.message,
+    );
   }
 };
 export const upcomingReminder = async (req, res) => {
