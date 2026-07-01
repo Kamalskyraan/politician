@@ -22,7 +22,7 @@ const tableMap = {
     statuses: ["upcoming", "inprogress", "completed", "cancelled"],
   },
 };
-// 
+//
 export class analyticsModel {
   async fetchAnalytics({ user_id, type, c_status, page = 1, limit = 10 }) {
     const config = tableMap[type];
@@ -96,20 +96,40 @@ export class analyticsModel {
       Number(offset),
     ]);
 
-    for (const task of listResult.data) {
-      if (task.attnds_id) {
+    if (type === "task") {
+      for (const task of listResult.data) {
+        if (task.attnds_id) {
+          const members = await executeQuery(
+            `SELECT id, name
+         FROM members
+         WHERE FIND_IN_SET(id, ?)`,
+            [task.attnds_id],
+          );
+
+          task.members = members.data || [];
+          task.people_count = task.members.length;
+        } else {
+          task.members = [];
+          task.people_count = 0;
+        }
+      }
+    } else if (type === "summit") {
+      for (const summit of listResult.data) {
         const members = await executeQuery(
-          `SELECT id, name
-       FROM members
-       WHERE FIND_IN_SET(id, ?)`,
-          [task.attnds_id],
+          `
+      SELECT
+        m.id,
+        m.name
+      FROM political_submit_people psp
+      JOIN members m
+        ON m.id = psp.member_id
+      WHERE psp.submit_id = ?
+      `,
+          [summit.id],
         );
 
-        task.members = members.data;
-        task.people_count = members.data.length;
-      } else {
-        task.members = [];
-        task.people_count = 0;
+        summit.members = members.data || [];
+        summit.people_count = summit.members.length;
       }
     }
 
