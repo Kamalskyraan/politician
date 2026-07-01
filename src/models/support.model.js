@@ -283,4 +283,5 @@ export class supportModel {
     let params_4 = ["inprogress", today];
     const result_4 = await executeQuery(query_4, params_4);
   }
+  
 }

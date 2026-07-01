@@ -86,5 +86,39 @@ router.post(
 */
   remindercontroller.updateReminder,
 );
+router.post(
+  "/upcomingreminder",
+  /*
+    #swagger.tags = ['10.REMINDERS']
+    #swagger.summary = 'Upcoming reminders'
+    #swagger.description = 'Upcoming reminders by passing id'
+
+    #swagger.requestBody = {
+      required: true,
+      content: {
+        "application/json": {
+          schema: {
+            type: "object",
+            properties: {
+              user_id: {
+                type: "string",
+                example: "USER_ZNLl2665"
+              },
+            }
+          }
+        }
+      }
+    }
+
+    #swagger.responses[200] = {
+      description: 'Upcoming Reminders fetched successfully'
+    }
+
+    #swagger.responses[500] = {
+      description: 'Internal Server Error'
+    }
+*/
+  remindercontroller.upcomingReminder,
+);
 
 export default router;

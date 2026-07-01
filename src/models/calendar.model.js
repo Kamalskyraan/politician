@@ -193,4 +193,25 @@ FROM (
       };
     }
   }
+  async getTodayEventsCounts(user_id) {
+    let query = `SELECT 'meeting' AS type, COUNT(*) AS total FROM meeting WHERE user_id = ? AND DATE(from_date) <= CURDATE() AND DATE(to_date) >= CURDATE()
+    UNION ALL
+    SELECT 'appointment' AS type, COUNT(*) AS total FROM appointments WHERE user_id = ? AND DATE(from_date) <= CURDATE() AND DATE(to_date) >= CURDATE()
+    UNION ALL
+    SELECT 'task' AS type, COUNT(*) AS total FROM tasks WHERE user_id = ? AND DATE(from_date) <= CURDATE() AND DATE(to_date) >= CURDATE()`;
+    let params = [user_id, user_id, user_id];
+
+    const result = await executeQuery(query, params);
+    if (result?.success === 1) {
+      return {
+        success: 1,
+        data: result?.data,
+      };
+    } else {
+      return {
+        success: 0,
+        error: result?.error,
+      };
+    }
+  }
 }
