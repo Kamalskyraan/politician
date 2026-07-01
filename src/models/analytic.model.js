@@ -18,7 +18,7 @@ const tableMap = {
   },
   summit: {
     table: "political_sumit",
-    statusColumn: null,
+    statusColumn: "status",
     statuses: ["upcoming", "inprogress", "completed", "cancelled"],
   },
 };
@@ -166,7 +166,6 @@ export class analyticsModel {
         success: 1,
         data: [
           {
-            status: "assigned",
             count: result?.data?.[0]?.count || 0,
           },
         ],
