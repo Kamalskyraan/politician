@@ -48,8 +48,8 @@ export class analyticsModel {
         SELECT
           t.*,
           COUNT(p.id) AS people_count
-        FROM political_summit t
-        LEFT JOIN political_summit_peoples p
+        FROM political_sumit t
+        LEFT JOIN political_sumit_peoples p
           ON p.summit_id = t.id
         ${where}
         GROUP BY t.id
@@ -124,7 +124,7 @@ export class analyticsModel {
             p.id,
             p.name,
             p.type
-          FROM political_summit_peoples p
+          FROM political_sumit_peoples p
           WHERE p.summit_id = ?
           `,
           [summit.id],
