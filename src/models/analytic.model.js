@@ -47,10 +47,10 @@ export class analyticsModel {
       query = `
         SELECT
           t.*,
-          COUNT(psp.id) AS people_count
-        FROM political_sumit t
-        LEFT JOIN political_submit_peoples psp
-          ON psp.submit_id = t.id
+          COUNT(p.id) AS people_count
+        FROM political_summit t
+        LEFT JOIN political_summit_peoples p
+          ON p.summit_id = t.id
         ${where}
         GROUP BY t.id
         ORDER BY t.created_at DESC
@@ -96,13 +96,15 @@ export class analyticsModel {
       Number(offset),
     ]);
 
+    console.log(listResult);
+
     if (type === "task") {
       for (const task of listResult.data) {
         if (task.attnds_id) {
           const members = await executeQuery(
             `SELECT id, name
-         FROM members
-         WHERE FIND_IN_SET(id, ?)`,
+             FROM members
+             WHERE FIND_IN_SET(id, ?)`,
             [task.attnds_id],
           );
 
@@ -115,15 +117,16 @@ export class analyticsModel {
       }
     } else if (type === "summit") {
       for (const summit of listResult.data) {
+        // Get people associated with this summit
         const people = await executeQuery(
           `
-        SELECT
+          SELECT
             p.id,
             p.name,
             p.type
-        FROM political_sumit_peoples p
-        WHERE p.summit_id = ?
-        `,
+          FROM political_summit_peoples p
+          WHERE p.summit_id = ?
+          `,
           [summit.id],
         );
 
@@ -157,7 +160,7 @@ export class analyticsModel {
         SELECT COUNT(*) AS count
         FROM ${config.table}
         WHERE user_id = ?
-      `,
+        `,
         [user_id],
       );
 
@@ -179,7 +182,7 @@ export class analyticsModel {
       FROM ${config.table}
       WHERE user_id = ?
       GROUP BY ${config.statusColumn}
-    `,
+      `,
       [user_id],
     );
 
