@@ -131,6 +131,23 @@ export class taskModel {
       };
     }
   }
+  async getIndividualTask(id) {
+    let query = `SELECT id, title, descp, t_priority, from_date, to_date, media_id, attnds_id, t_status, is_remind, remind_status, remind_tenure, remind_at, snooze_at, nxt_snooze_at FROM tasks WHERE id = ?`;
+    let params = [id];
+
+    const result = await executeQuery(query, params);
+    if (result?.success === 1) {
+      return {
+        success: 1,
+        data: result?.data,
+      };
+    } else if (result?.success === 0) {
+      return {
+        success: 1,
+        error: result?.error,
+      };
+    }
+  }
 
   async getTaskInfo(id) {
     let query = `SELECT from_date, user_id FROM tasks WHERE id = ?`;

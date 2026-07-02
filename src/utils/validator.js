@@ -94,7 +94,7 @@ export const signUpSchema = Joi.object({
     .min(10)
     .max(15)
     .pattern(/^(\+91[6-9]\d{9}|[6-9]\d{9})$/)
-    .required()
+    .allow("")
     .messages({
       "any.required": "Mobile number is required",
       "string.empty": "Mobile number is required",
@@ -104,7 +104,7 @@ export const signUpSchema = Joi.object({
     }),
   c_code: Joi.string()
     .pattern(/^\+\d{2,3}$/)
-    .required(),
+    .allow(""),
   email: Joi.string().min(13).max(100).required().messages({
     "any.required": "Email is required",
     "string.empty": "Email is required",
@@ -508,10 +508,6 @@ export const getMeetingSchema = Joi.object({
     "string.string": "user Id should be a string",
     "string.required": "user Id cannot be empty",
   }),
-  id: Joi.string().allow("").messages({
-    "string.base": "Id should be a string",
-    "string.required": "Id cannot be empty",
-  }),
   status: Joi.string()
     .allow("")
     .custom((value, helpers) => {
@@ -545,6 +541,12 @@ export const getMeetingSchema = Joi.object({
   page: Joi.number().required().messages({
     "number.base": "page should be a number",
     "any.required": "page cannot be empty",
+  }),
+});
+export const getIndividualMeetingSchema = Joi.object({
+  id: Joi.number().required().messages({
+    "number.base": "Id should be a number",
+    "number.required": "Id cannot be empty",
   }),
 });
 
@@ -679,6 +681,13 @@ export const getAppointSchema = Joi.object({
   page: Joi.number().required().messages({
     "number.base": "page should be a number",
     "any.required": "page cannot be empty",
+  }),
+});
+
+export const getIndividualAppointmentSchema = Joi.object({
+  id: Joi.number().required().messages({
+    "number.base": "Id should be a number",
+    "number.required": "Id cannot be empty",
   }),
 });
 
@@ -946,6 +955,13 @@ export const getTravelSchema = Joi.object({
   page: Joi.number().required().messages({
     "number.base": "page should be an number",
     "any.required": "page cannot be empty",
+  }),
+});
+
+export const getIndividualTravelSchema = Joi.object({
+  id: Joi.number().required().messages({
+    "number.base": "Id should be a number",
+    "number.required": "Id cannot be empty",
   }),
 });
 
@@ -1288,6 +1304,12 @@ export const getTaskSchema = Joi.object({
     "any.required": "page cannot be empty",
   }),
 });
+export const getIndividualTaskSchema = Joi.object({
+  id: Joi.number().required().messages({
+    "number.base": "Id should be a number",
+    "number.required": "Id cannot be empty",
+  }),
+});
 
 export const statusChangeSchema = Joi.object({
   id: Joi.number().required().messages({
@@ -1445,6 +1467,12 @@ export const getIssueSchema = Joi.object({
   page: Joi.number().required().messages({
     "number.base": "page should be a number",
     "any.required": "page cannot be empty",
+  }),
+});
+export const getIndividualIssueSchema = Joi.object({
+  id: Joi.number().required().messages({
+    "number.base": "Id should be a number",
+    "number.required": "Id cannot be empty",
   }),
 });
 

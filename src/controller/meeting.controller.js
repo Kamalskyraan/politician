@@ -17,6 +17,8 @@ import {
   deleteMeetingSchema,
   deleteMemberSchema,
   getAppointSchema,
+  getIndividualAppointmentSchema,
+  getIndividualMeetingSchema,
   getMeetingSchema,
   getMemberschema,
   updateAppointSchema,
@@ -709,12 +711,10 @@ export const getMeeting = async (req, res) => {
       );
     }
 
-    let { user_id, id, status, from_date, to_date, page } =
-      validatedData?.value;
+    let { user_id, status, from_date, to_date, page } = validatedData?.value;
     let result = [];
     let meetings = [];
 
-    id = id === "" ? null : id;
     status = status === "" ? null : status.split(",");
     // console.log(status);
     from_date = from_date === "" ? null : from_date;
@@ -727,7 +727,6 @@ export const getMeeting = async (req, res) => {
       to_date,
       page,
     });
-
 
     if (result?.success === 0) {
       return sendResponse(
@@ -807,6 +806,106 @@ export const getMeeting = async (req, res) => {
         1,
         "meetings fetched successfully",
         [{ data: response, pagination: result?.pagination }],
+        "",
+      );
+    } else {
+      return sendResponse(res, 200, 0, error, [], "");
+    }
+  } catch (error) {
+    return sendResponse(
+      res,
+      500,
+      0,
+      "Internal server error",
+      [],
+      error.message,
+    );
+  }
+};
+
+export const getIndividualMeeting = async (req, res) => {
+  try {
+    const validatedData = validateRequest(req.body, getIndividualMeetingSchema);
+
+    if (validatedData?.success === 0) {
+      sendResponse(
+        res,
+        validatedData?.errorObject?.status,
+        0,
+        "validation Error",
+        [],
+        validatedData?.errorObject?.errors,
+      );
+    }
+
+    let { id } = validatedData?.value;
+
+    const result = await meetingMdl.getIndividualMeeting(id);
+    let meetings = result?.data;
+
+    let attendeesWithRoles = [];
+
+    const formattedMeetings = await Promise.all(
+      meetings.map(async (meeting) => {
+        let media = [];
+        let attendees = [];
+
+        // MEDIA
+        if (meeting.media_id) {
+          const mediaIds = meeting.media_id.split(","); // or JSON.parse
+          const mediaResult = await sourceMdl.getMedia(mediaIds);
+          media = mediaResult?.data || [];
+        }
+
+        // ATTENDEES
+        if (meeting.attnds_id) {
+          const attendeeIds = meeting.attnds_id.split(","); // or JSON.parse
+          const attndResult = await meetingMdl.getattnds(attendeeIds);
+          attendees = attndResult?.data || [];
+
+          try {
+            attendeesWithRoles = await Promise.all(
+              attendees.map(async (attnd) => {
+                let role_name;
+                if (attnd?.role_id) {
+                  const roleResult = await meetingMdl.getRole(attnd.role_id);
+                  role_name = roleResult?.data?.[0]?.role_name;
+                }
+                const { ...rest } = attnd;
+                return { ...rest, role_name };
+              }),
+            );
+          } catch (error) {
+            console.error("Role lookup failed:", error);
+            // fallback: return attendees without role enrichment
+            attendeesWithRoles = attendees.map(({ role_id, ...rest }) => ({
+              ...rest,
+              role_name: null,
+            }));
+          }
+        }
+
+        // REMOVE RAW IDS
+        const { media_id, attnds_id, ...rest } = meeting;
+
+        // RETURN UPDATED MEETING
+        return {
+          ...rest,
+          media,
+          attendees: attendeesWithRoles,
+        };
+      }),
+    );
+
+    const finalResponse = replaceNullWithEmptyString(formattedMeetings);
+
+    if (result?.success === 1) {
+      return sendResponse(
+        res,
+        200,
+        1,
+        "Individual meeting fetched successfully",
+        finalResponse,
         "",
       );
     } else {
@@ -1678,20 +1777,95 @@ export const getAppointment = async (req, res) => {
     // console.log(response);
     const pagination = result?.pagination;
 
-    return sendResponse(
-      res,
-      200,
-      1,
-      "Appointments fetched successfully",
-      [{ data: response, pagination: pagination }],
-      "",
-    );
+    if (result?.success === 1) {
+      return sendResponse(
+        res,
+        200,
+        1,
+        "Appointments fetched successfully",
+        [{ data: response, pagination: pagination }],
+        "",
+      );
+    } else if (result?.success === 0) {
+      return sendResponse(res, 200, 0, "Failed to fetch Appointments", [], "");
+    }
   } catch (error) {
     return sendResponse(
       res,
       500,
       0,
       "Internal Server Error",
+      [],
+      error.message,
+    );
+  }
+};
+export const getIndividualAppointment = async (req, res) => {
+  try {
+    const validatedData = validateRequest(
+      req.body,
+      getIndividualAppointmentSchema,
+    );
+
+    if (validatedData?.success === 0) {
+      return sendResponse(
+        res,
+        validatedData?.errorObject?.status,
+        0,
+        "validation Error",
+        [],
+        validatedData?.errorObject?.errors,
+      );
+    }
+
+    let { id } = validatedData?.value;
+    const result = await meetingMdl.getIndividualAppointment(id);
+    // console.log(result);
+
+    let appointments = result?.data;
+    // console.log(appointments[0]);
+
+    // console.log(typeof(appointments[0]?.remind_at));
+
+    const formattedAppointments = await Promise.all(
+      appointments.map(async (appointment) => {
+        // console.log(appointment);
+
+        let mediaIds = [];
+        let mediaResult = [];
+        let media = [];
+
+        if (appointment.media_id) {
+          mediaIds = appointment.media_id.split(",");
+          // console.log(mediaIds);
+          mediaResult = await sourceMdl.getMedia(mediaIds);
+          // console.log(mediaResult?.data);
+          media = mediaResult?.data || [];
+        }
+        const { media_id, ...rest } = appointment;
+        return { ...rest, media };
+      }),
+    );
+    const response = replaceNullWithEmptyString(formattedAppointments);
+
+    if (result?.success === 1) {
+      return sendResponse(
+        res,
+        200,
+        1,
+        "Individual appointment fetched successfully",
+        response,
+        "",
+      );
+    } else if (result?.success === 0) {
+      return sendResponse(res, 200, 0, "failed to fetch appointment", [], "");
+    }
+  } catch (error) {
+    return sendResponse(
+      res,
+      500,
+      0,
+      "Internal Server error",
       [],
       error.message,
     );

@@ -347,6 +347,39 @@ router.post(
 */ meetingcontroller.getMeeting,
 );
 router.post(
+  "/getmeetingbyid",
+  /*
+    #swagger.tags = ['4.Meeting']
+    #swagger.summary = 'Get Meeting by id'
+    #swagger.description = 'Get meetings by passing id.'
+
+    #swagger.requestBody = {
+      required: true,
+      content: {
+        "application/json": {
+          schema: {
+            type: "object",
+            properties: {
+              id: {
+                type: "string",
+                example: 1
+              }
+            }
+          }
+        }
+      }
+    }
+
+    #swagger.responses[200] = {
+      description: 'Individual Meeting fetched successfully'
+    }
+
+    #swagger.responses[500] = {
+      description: 'Internal Server Error'
+    }
+*/ meetingcontroller.getIndividualMeeting,
+);
+router.post(
   "/deletemeeting",
   /*
     #swagger.tags = ['4.Meeting']
@@ -647,6 +680,39 @@ router.post(
       description: 'Internal Server Error'
     }
 */ meetingcontroller.getAppointment,
+);
+router.post(
+  "/getappointmentbyid",
+  /*
+    #swagger.tags = ['5.Appointment']
+    #swagger.summary = 'Get Appointment by id'
+    #swagger.description = 'Get appointments by passing id.'
+
+    #swagger.requestBody = {
+      required: true,
+      content: {
+        "application/json": {
+          schema: {
+            type: "object",
+            properties: {
+              id: {
+                type: "number",
+                example: 1
+              },
+            }
+          }
+        }
+      }
+    }
+
+    #swagger.responses[200] = {
+      description: 'Individual Appointments fetched successfully'
+    }
+
+    #swagger.responses[500] = {
+      description: 'Internal Server Error'
+    }
+*/ meetingcontroller.getIndividualAppointment,
 );
 router.post(
   "/updateappointment",

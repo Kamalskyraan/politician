@@ -97,7 +97,8 @@ export const updateReminder = async (req, res) => {
     // }
 
     if (is_remind === 1) {
-      next_snooze_at = new Date(current_time).getTime() + Number(snooze_at) * 1000;
+      next_snooze_at =
+        new Date(current_time).getTime() + Number(snooze_at) * 1000;
       next_snooze_at = new Date(next_snooze_at);
       next_snooze_at.setSeconds(0, 0);
       next_snooze_at = formatDateForSQL(next_snooze_at);
@@ -165,6 +166,7 @@ export const upcomingReminder = async (req, res) => {
     const result = await reminderMdl.getUpcomingReminder(user_id);
     // console.log(result);
     const dataResult = result?.data;
+    const data = replaceNullWithEmptyString(dataResult);
 
     if (result?.success === 1) {
       return sendResponse(
@@ -172,7 +174,7 @@ export const upcomingReminder = async (req, res) => {
         200,
         1,
         "Upcoming Reminders fetched successfully",
-        dataResult,
+        data,
         "",
       );
     } else if (result?.success === 0) {

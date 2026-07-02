@@ -264,15 +264,11 @@ export const signUp = async (req, res) => {
       );
     }
 
-    const {
-      name,
-      phn_num,
-      c_code,
-      email,
-      device_token,
-      device_id,
-      device_type,
-    } = validatedData?.value;
+    let { name, phn_num, c_code, email, device_token, device_id, device_type } =
+      validatedData?.value;
+
+    phn_num = phn_num === "" ? null : phn_num;
+    c_code = c_code === "" ? null : c_code;
 
     const result = await AuthMdl.userSignUp({
       name,
@@ -297,8 +293,8 @@ export const signUp = async (req, res) => {
         user_id: result?.data,
         jwt_token: token,
         name: name,
-        phn_num: phn_num,
-        c_code: c_code,
+        phn_num: phn_num || "",
+        c_code: c_code || "",
         email: email,
       };
       // console.log(result?.data);
