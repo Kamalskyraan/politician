@@ -11,7 +11,7 @@ const pool = mysql.createPool({
   connectionLimit: Number(process.env.DB_CONNECTION_LIMIT) || 10,
   queueLimit: Number(process.env.DB_QUEUE_LIMIT) || 0,
   // timezone: "Z",
-  dateStrings : true
+  dateStrings: true,
 });
 
 // const pool = mysql.createPool({
@@ -24,5 +24,17 @@ const pool = mysql.createPool({
 //   queueLimit: Number(process.env.DB_QUEUE_LIMIT) || 0,
 //   timezone: "Z",
 // });
-// 
+//
+
+const pool = mysql.createPool({
+  host: "localhost",
+  user: "skyraancloud_political_db",
+  password: "c]dx5#=DL)%36.b}",
+  database: "skyraancloud_kamalesh_sky",
+  waitForConnections: process.env.DB_WAIT_FOR_CONNECTIONS,
+  connectionLimit: Number(process.env.DB_CONNECTION_LIMIT) || 10,
+  queueLimit: Number(process.env.DB_QUEUE_LIMIT) || 0,
+  // timezone: "Z",
+  dateStrings: true,
+});
 export default pool;
