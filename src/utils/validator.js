@@ -91,20 +91,17 @@ export const signUpSchema = Joi.object({
     "string.max": "Name must not exceed 100 characters",
   }),
   phn_num: Joi.string()
-    .min(10)
-    .max(15)
-    .pattern(/^(\+91[6-9]\d{9}|[6-9]\d{9})$/)
+    .pattern(/^\d{6,14}$/)
     .allow("")
     .messages({
-      "any.required": "Mobile number is required",
-      "string.empty": "Mobile number is required",
-      "string.min": "Mobile number must be at least 10 digits",
-      "string.max": "Mobile number must not exceed 15 digits",
-      "string.pattern.base": "Mobile number must start with 6-9",
+      "string.pattern.base": "Phone number must contain 6 to 14 digits",
     }),
   c_code: Joi.string()
-    .pattern(/^\+\d{2,3}$/)
-    .allow(""),
+    .pattern(/^\+[1-9]\d{0,2}$/)
+    .allow("")
+    .messages({
+      "string.pattern.base": "Invalid country code",
+    }),
   email: Joi.string().min(13).max(100).required().messages({
     "any.required": "Email is required",
     "string.empty": "Email is required",
@@ -1682,8 +1679,11 @@ export const getReminderSchema = Joi.object({
 });
 export const getUpcomingReminderschema = Joi.object({
   user_id: Joi.string().required().messages({
-    "string.base": "user id name should be string",
-    "any.required": "user id name is required",
+    "string.base": "user id should be string",
+    "any.required": "user id is required",
+  }),
+  current_date: Joi.string().allow("").messages({
+    "string.base": "current date id should be string",
   }),
 });
 export const getcalendarSchema = Joi.object({

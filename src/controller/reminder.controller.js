@@ -161,9 +161,16 @@ export const upcomingReminder = async (req, res) => {
       );
     }
 
-    const { user_id } = validatedData?.value;
+    let { user_id, current_date } = validatedData?.value;
+    current_date = current_date === "" ? null : current_date;
 
-    const result = await reminderMdl.getUpcomingReminder(user_id);
+    if (current_date != null) {
+      current_date = new Date(current_date);
+      current_date.setSeconds(0, 0);
+      current_date = formatDateForSQL(current_date);
+    }
+
+    const result = await reminderMdl.getUpcomingReminder(user_id, current_date);
     // console.log(result);
     const dataResult = result?.data;
     const data = replaceNullWithEmptyString(dataResult);
