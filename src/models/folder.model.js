@@ -120,7 +120,7 @@ export class folderModel {
         created_at
       FROM media
       WHERE folder_id = ?
-      ORDER BY id ASC
+      ORDER BY id DESC
       LIMIT ? OFFSET ?
       `,
         [folder_id, Number(limit), Number(offset)],
