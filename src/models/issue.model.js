@@ -103,7 +103,7 @@ export class issueModel {
     let query = `SELECT id, cat_id, cat_name, descp, address, lat, lng, status, report_date, media_id, incharge_id, member_id FROM issues WHERE user_id = ?`;
     let params = [user_id];
 
-    let CountQuery = `SELECT COUNT(*) AS total FROM ISSUES where user_id = ?`;
+    let CountQuery = `SELECT COUNT(*) AS total FROM issues where user_id = ?`;
     let countParams = [user_id];
 
     if (status != null) {
@@ -145,6 +145,22 @@ export class issueModel {
           limit: Number(limit),
           total_pages: Number(Math.ceil(total / limit)),
         },
+      };
+    } else {
+      return {
+        success: 0,
+        error: result?.error,
+      };
+    }
+  }
+  async getIndividualIssue(id) {
+    let query = `SELECT id, cat_id, cat_name, descp, address, lat, lng, status, report_date, media_id, incharge_id, member_id FROM issues WHERE id = ?`;
+    let params = [id];
+    const result = await executeQuery(query, params);
+    if (result?.success === 1) {
+      return {
+        success: 1,
+        data: result?.data,
       };
     } else {
       return {

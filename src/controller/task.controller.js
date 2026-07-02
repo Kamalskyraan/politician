@@ -10,6 +10,7 @@ import {
 import {
   addTaskSchema,
   deleteTaskSchema,
+  getIndividualTaskSchema,
   getTaskSchema,
   updateTaskSchema,
   validateRequest,
@@ -471,8 +472,9 @@ export const getTask = async (req, res) => {
     }
 
     let data = result?.data;
-    console.log(data , "data");
+   
     let pagination = result ?.pagination
+   
     // console.log(data);
 
     const response = await Promise.all(
@@ -528,6 +530,91 @@ export const getTask = async (req, res) => {
       );
     } else if (result?.success === 0) {
       return sendResponse(res, 200, 0, "Failed to fetch task", [], "");
+    }
+  } catch (error) {
+    return sendResponse(
+      res,
+      500,
+      0,
+      "Internal server error",
+      [],
+      error.message,
+    );
+  }
+};
+export const getIndividualTask = async (req, res) => {
+  try {
+    const validatedData = validateRequest(req.body, getIndividualTaskSchema);
+    if (validatedData?.success === 0) {
+      return sendResponse(
+        res,
+        200,
+        0,
+        "validation error",
+        [],
+        validatedData?.errorObject?.errors,
+      );
+    }
+    let { id } = validatedData?.value;
+    const result = await taskMdl.getIndividualTask(id);
+    // console.log(result);
+
+    if (result?.success === 0) {
+      return sendResponse(res, 200, 0, "failed to fetch tasks", [], "");
+    } else if (result?.success === 1) {
+      let data = result?.data;
+      // console.log(data);
+
+      const response = await Promise.all(
+        data?.map(async (obj) => {
+          let media_result = [];
+          let attnds_result;
+
+          if (obj.media_id != null) {
+            let media_id = obj.media_id.split(",");
+
+            media_result = await sourceMdl.getMedia(media_id);
+            media_result = media_result?.data;
+          }
+          let attnds_with_roles = [];
+          if (obj.attnds_id != null) {
+            let attnds_id = obj.attnds_id.split(",");
+            attnds_result = await meetingMdl.getattnds(attnds_id);
+            attnds_result = attnds_result?.data;
+            // console.log(attnds_result);
+            try {
+              attnds_with_roles = await Promise.all(
+                attnds_result.map(async (attnd_obj) => {
+                  const id = attnd_obj.role_id;
+                  let role_name = await meetingMdl.getRole(id);
+                  role_name = role_name?.data[0]?.role_name;
+                  const { role_id, ...rest } = attnd_obj;
+                  return { ...rest, role_name, role_id };
+                }),
+              );
+            } catch (error) {
+              attnds_with_roles = attnds_result.map(({ role_id, ...rest }) => ({
+                ...rest,
+                role_name: null,
+              }));
+            }
+          }
+          // console.log(media_result)
+          const { media_id, attnds_id, ...rest } = obj;
+          return { ...rest, media_result, attnds_with_roles };
+        }),
+      );
+
+      const finalResponse = replaceNullWithEmptyString(response);
+
+      return sendResponse(
+        res,
+        200,
+        1,
+        "Individual task fetched successfully",
+        [finalResponse],
+        "",
+      );
     }
   } catch (error) {
     return sendResponse(

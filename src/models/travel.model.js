@@ -169,6 +169,51 @@ export class travelModel {
     }
   }
 
+  async getIndividualTravel(id) {
+    let query = `SELECT id,
+      title,
+      descp,
+      purpose,
+      travel_from,
+      from_lat,
+      from_lng,
+      travel_to,
+      to_lat,
+      to_lng,
+      from_date,
+      to_date,
+      vech_mode,
+      media_id,
+      in_hotel,
+      hot_name,
+      hot_address,
+      hot_lat,
+      hot_lng,
+      hot_in,
+      hot_out,
+      hot_media,
+      is_remind,
+      remind_tenure,
+      remind_at,
+      snooze_at,
+      nxt_snooze_at FROM travels WHERE id = ?`;
+    let params = [id];
+
+    const result = await executeQuery(query, params);
+
+    if (result?.success === 1) {
+      return {
+        success: 1,
+        data: result?.data,
+      };
+    } else if (result?.success === 0) {
+      return {
+        success: 0,
+        error: result?.error,
+      };
+    }
+  }
+
   async addDailyplan({ travel_id, from, to, departure, vech_mode, media_id }) {
     let query = `INSERT INTO travel_daily_plan (travel_id, plan_from, plan_to, departure, vech_mode, media_id) VALUES (?, ?, ?, ?, ?, ?)`;
     let params = [travel_id, from, to, departure, vech_mode, media_id];

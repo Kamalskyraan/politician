@@ -224,5 +224,38 @@ router.post(
     }
 */ taskcontroller.getTask,
 );
+router.post(
+  "/gettaskbyid",
+  /*
+    #swagger.tags = ['7.TASK & REMINDERS']
+    #swagger.summary = 'Get Task and reminders by id'
+    #swagger.description = 'Get task and reminders by passing id'
+
+    #swagger.requestBody = {
+      required: true,
+      content: {
+        "application/json": {
+          schema: {
+            type: "object",
+            properties: {
+              id: {
+                type: "number",
+                example: 1
+              }
+            }
+          }
+        }
+      }
+    }
+
+    #swagger.responses[200] = {
+      description: 'Individual Task and reminder fetched successfully'
+    }
+
+    #swagger.responses[500] = {
+      description: 'Internal Server Error'
+    }
+*/ taskcontroller.getIndividualTask,
+);
 
 export default router;

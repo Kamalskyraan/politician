@@ -12,6 +12,7 @@ import {
   deleteTravelPhotosSchema,
   deleteTravelSchema,
   getExpenseSchema,
+  getIndividualTravelSchema,
   getNotesSchema,
   getTravelPhotosSchema,
   getTravelSchema,
@@ -720,6 +721,117 @@ export const getTravel = async (req, res) => {
         1,
         "Travels fetched successfully",
         [{ data: response, pagination: pagination }],
+        "",
+      );
+    }
+  } catch (error) {
+    return sendResponse(
+      res,
+      500,
+      0,
+      "Internal server error",
+      [],
+      error.message,
+    );
+  }
+};
+
+export const getIndividualTravel = async (req, res) => {
+  try {
+    const validatedData = validateRequest(req.body, getIndividualTravelSchema);
+
+    if (validatedData?.success === 0) {
+      return sendResponse(
+        res,
+        validatedData?.errorObject?.status,
+        0,
+        "validation Error",
+        [],
+        validatedData?.errorObject?.errors,
+      );
+    }
+
+    let { id } = validatedData?.value;
+    const result = await travelMdl.getIndividualTravel(id);
+    // console.log(result);
+
+    if (result?.success === 0) {
+      return sendResponse(
+        res,
+        200,
+        0,
+        "Failed to fetch Individual travel",
+        [],
+        "",
+      );
+    } else if (result?.success === 1) {
+      let travels = result?.data;
+
+      const formattedTravels = await Promise.all(
+        travels.map(async (travel) => {
+          let media_ids;
+          let mediaResult;
+          let hot_media_ids;
+          let hot_media_result;
+          let media = [];
+          let hotel_media = [];
+
+          if (travel.media_id !== null) {
+            media_ids = travel.media_id.split(",");
+            mediaResult = await sourceMdl.getMedia(media_ids);
+          }
+          media = mediaResult?.data || [];
+          // console.log(media);
+
+          if (travel.hot_media !== null) {
+            hot_media_ids = travel.hot_media.split(",");
+            hot_media_result = await sourceMdl.getMedia(hot_media_ids);
+          }
+          hotel_media = hot_media_result?.data || [];
+
+          const { media_id, hot_media, ...rest } = travel;
+          return { ...rest, media, hotel_media };
+        }),
+      );
+
+      const travelwithdp = await Promise.all(
+        formattedTravels.map(async (formattedTravel) => {
+          if (formattedTravel?.id) {
+            const id = formattedTravel?.id;
+            const dpResult = await travelMdl.getDailyplan({ id });
+            const dailyPlan = dpResult?.data;
+            // console.log(dpResult);
+
+            let planMediaResult;
+            const dpMedia = await Promise.all(
+              dailyPlan.map(async (plan) => {
+                // console.log("dailyplan")
+                if (plan?.media_id) {
+                  let dpMediaId = plan.media_id.split(",");
+
+                  const result = await sourceMdl.getMedia(dpMediaId);
+                  // console.log(result)
+                  planMediaResult = result?.data || [];
+                }
+                // console.log(planMediaResult)
+                const { media_id, ...rest } = plan;
+                return { ...rest, media_id: planMediaResult || [] };
+              }),
+            );
+            let travel_daily_plans = dpMedia;
+            return { ...formattedTravel, travel_daily_plans };
+          }
+        }),
+      );
+
+      const response = replaceNullWithEmptyString(travelwithdp);
+
+      return sendResponse(
+        res,
+        200,
+        1,
+        "Travels fetched successfully",
+        response,
         "",
       );
     }

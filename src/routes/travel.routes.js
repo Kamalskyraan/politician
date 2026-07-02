@@ -340,6 +340,39 @@ router.post(
     }
 */ travelcontroller.getTravel,
 );
+router.post(
+  "/getravelbyid",
+  /*
+    #swagger.tags = ['6.TRAVEL']
+    #swagger.summary = 'Get Travel by id'
+    #swagger.description = 'Get travel details by passing id'
+
+    #swagger.requestBody = {
+      required: true,
+      content: {
+        "application/json": {
+          schema: {
+            type: "object",
+            properties: {
+              id: {
+                type: "number",
+                example: 1
+              },
+            }
+          }
+        }
+      }
+    }
+
+    #swagger.responses[200] = {
+      description: 'Individual Travel details fetched successfully'
+    }
+
+    #swagger.responses[500] = {
+      description: 'Internal Server Error'
+    }
+*/ travelcontroller.getIndividualTravel,
+);
 
 // this is to add daily plan for specific travel
 router.post(

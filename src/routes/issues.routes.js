@@ -238,4 +238,37 @@ router.post(
 */
   issuecontroller.getIssue,
 );
+router.post(
+  "/getissuebyid",
+  /*
+    #swagger.tags = ['8.ISSUES & GRIEVANCE']
+    #swagger.summary = 'Get issue and grievance by id'
+    #swagger.description = 'Get issue and grievance by pssing id'
+
+    #swagger.requestBody = {
+      required: true,
+      content: {
+        "application/json": {
+          schema: {
+            type: "object",
+            properties: {
+              id: {
+                type: "number",
+                example: 1
+              }
+            }
+          }
+        }
+      }
+    }
+
+    #swagger.responses[200] = {
+      description: 'Individual Issue and Grievance fetched successfully'
+    }
+
+    #swagger.responses[500] = {
+      description: 'Internal Server Error'
+    }
+*/ issuecontroller.getIndividualIssue,
+);
 export default router;

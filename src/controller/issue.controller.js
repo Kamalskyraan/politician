@@ -2,6 +2,7 @@ import express, { response } from "express";
 import {
   addIssueSchema,
   deleteIssueSchema,
+  getIndividualIssueSchema,
   getIssueSchema,
   updateIssueschema,
   validateRequest,
@@ -540,7 +541,7 @@ export const getIssue = async (req, res) => {
         200,
         1,
         "Issue fetched successfully",
-        [{data: finalResponse, pagination}],
+        [{ data: finalResponse, pagination }],
         "",
       );
     } else if (result?.success === 0) {
@@ -566,3 +567,131 @@ export const getIssue = async (req, res) => {
 };
 
 // 
+export const getIndividualIssue = async (req, res) => {
+  try {
+    const validatedData = validateRequest(req.body, getIndividualIssueSchema);
+    if (validatedData?.success === 0) {
+      return sendResponse(
+        res,
+        200,
+        0,
+        "validation error",
+        [],
+        validatedData?.errorObject?.errors,
+      );
+    }
+    let { id } = validatedData?.value;
+    const result = await issueMdl.getIndividualIssue(id);
+    // console.log(result);
+
+    if (result?.success === 1) {
+      const data = result?.data;
+      const response = replaceNullWithEmptyString(data);
+
+      const finalResponse = await Promise.all(
+        response?.map(async (issue) => {
+          let media_result = [];
+          let incharge_with_role_names = [];
+          let member_with_role_names = [];
+          let cat_name = issue.cat_name;
+
+          if (issue.cat_id !== 0) {
+            const id = issue.cat_id;
+            const result = await sourceMdl.getCatName(id);
+            cat_name = result?.data[0]?.cat_name;
+          }
+
+          if (issue.media_id != null && issue.media_id !== "") {
+            const media_id = issue.media_id.split(",");
+            const result = await sourceMdl.getMedia(media_id);
+            media_result = result?.data || [];
+          }
+
+          if (issue.incharge_id != null && issue.incharge_id !== "") {
+            const incharge_id = issue.incharge_id.split(",");
+            const result = await meetingMdl.getattnds(incharge_id);
+            const incharge_result = result?.data || [];
+
+            incharge_with_role_names = await Promise.all(
+              incharge_result.map(async (incharge) => {
+                let role_name = null;
+
+                if (incharge.role_id) {
+                  const roleResult = await meetingMdl.getRole(incharge.role_id);
+                  role_name = roleResult?.data?.[0]?.role_name || null;
+                }
+
+                const { ...rest } = incharge;
+
+                return {
+                  ...rest,
+                  role_name,
+                };
+              }),
+            );
+          }
+
+          if (issue.member_id != null && issue.member_id !== "") {
+            const member_id = issue.member_id.split(",");
+            const result = await meetingMdl.getattnds(member_id);
+            const member_result = result?.data || [];
+
+            member_with_role_names = await Promise.all(
+              member_result.map(async (member) => {
+                let role_name = null;
+
+                if (member.role_id) {
+                  const roleResult = await meetingMdl.getRole(member.role_id);
+                  role_name = roleResult?.data?.[0]?.role_name || null;
+                }
+
+                const { ...rest } = member;
+
+                return {
+                  ...rest,
+                  role_name,
+                };
+              }),
+            );
+          }
+
+          const { media_id, incharge_id, member_id, ...rest } = issue;
+
+          return {
+            ...rest,
+            cat_name,
+            media_id: media_result,
+            incharge_id: incharge_with_role_names,
+            member_id: member_with_role_names,
+          };
+        }),
+      );
+      return sendResponse(
+        res,
+        200,
+        1,
+        "Individual issue fetched successfully",
+        finalResponse,
+        "",
+      );
+    } else if (result?.success === 0) {
+      return sendResponse(
+        res,
+        200,
+        0,
+        "Failed to fetch Individual issue",
+        [],
+        "",
+      );
+    }
+  } catch (error) {
+    return sendResponse(
+      res,
+      500,
+      0,
+      "Internal server error",
+      [],
+      error.message,
+    );
+  }
+};

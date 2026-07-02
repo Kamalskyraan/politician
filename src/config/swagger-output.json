@@ -920,6 +920,39 @@
         }
       }
     },
+    "/meeting/getmeetingbyid": {
+      "post": {
+        "tags": [
+          "4.Meeting"
+        ],
+        "summary": "Get Meeting by id",
+        "description": "Get meetings by passing id.",
+        "responses": {
+          "200": {
+            "description": "Individual Meeting fetched successfully"
+          },
+          "500": {
+            "description": "Internal Server Error"
+          }
+        },
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "id": {
+                    "type": "string",
+                    "example": 1
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
     "/meeting/deletemeeting": {
       "post": {
         "tags": [
@@ -1211,6 +1244,39 @@
                     "example": "2026-06-16"
                   },
                   "page": {
+                    "type": "number",
+                    "example": 1
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/meeting/getappointmentbyid": {
+      "post": {
+        "tags": [
+          "5.Appointment"
+        ],
+        "summary": "Get Appointment by id",
+        "description": "Get appointments by passing id.",
+        "responses": {
+          "200": {
+            "description": "Individual Appointments fetched successfully"
+          },
+          "500": {
+            "description": "Internal Server Error"
+          }
+        },
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "id": {
                     "type": "number",
                     "example": 1
                   }
@@ -2120,6 +2186,39 @@
                     "example": "2026-06-19"
                   },
                   "page": {
+                    "type": "number",
+                    "example": 1
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/travel/getravelbyid": {
+      "post": {
+        "tags": [
+          "6.TRAVEL"
+        ],
+        "summary": "Get Travel by id",
+        "description": "Get travel details by passing id",
+        "responses": {
+          "200": {
+            "description": "Individual Travel details fetched successfully"
+          },
+          "500": {
+            "description": "Internal Server Error"
+          }
+        },
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "id": {
                     "type": "number",
                     "example": 1
                   }
@@ -3114,6 +3213,39 @@
         }
       }
     },
+    "/task/gettaskbyid": {
+      "post": {
+        "tags": [
+          "7.TASK & REMINDERS"
+        ],
+        "summary": "Get Task and reminders by id",
+        "description": "Get task and reminders by passing id",
+        "responses": {
+          "200": {
+            "description": "Individual Task and reminder fetched successfully"
+          },
+          "500": {
+            "description": "Internal Server Error"
+          }
+        },
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "id": {
+                    "type": "number",
+                    "example": 1
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
     "/finance/add-finance-data": {
       "post": {
         "tags": [
@@ -3737,6 +3869,39 @@
                     "example": "2026-06-14"
                   },
                   "page": {
+                    "type": "number",
+                    "example": 1
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/issue/getissuebyid": {
+      "post": {
+        "tags": [
+          "8.ISSUES & GRIEVANCE"
+        ],
+        "summary": "Get issue and grievance by id",
+        "description": "Get issue and grievance by pssing id",
+        "responses": {
+          "200": {
+            "description": "Individual Issue and Grievance fetched successfully"
+          },
+          "500": {
+            "description": "Internal Server Error"
+          }
+        },
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "id": {
                     "type": "number",
                     "example": 1
                   }

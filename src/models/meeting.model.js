@@ -317,6 +317,43 @@ export class meetingModel {
     };
   }
 
+  async getIndividualMeeting(id) {
+    let query = `SELECT id,
+      title,
+      descp,
+      m_type,
+      m_priority,
+      m_link,
+      notes,
+      address,
+      lat,
+      lng,
+      status,
+      media_id,
+      attnds_id,
+      from_date,
+      to_date,
+      is_remind,
+      remind_tenure,
+      remind_at,
+      snooze_at,
+      nxt_snooze_at
+    FROM meeting WHERE id = ?`;
+    let params = [id];
+    const result = await executeQuery(query, params);
+    if (result?.success === 1) {
+      return {
+        success: 1,
+        data: result?.data,
+      };
+    } else {
+      return {
+        success: 1,
+        error: result?.error,
+      };
+    }
+  }
+
   async deleteMeeting({ id }) {
     let query = ``;
     let params = [];
@@ -468,6 +505,24 @@ export class meetingModel {
     } else if (result?.success === 0) {
       return {
         success: 0,
+        error: result?.error,
+      };
+    }
+  }
+
+  async getIndividualAppointment(id) {
+    let query = `SELECT id, title, a_type, notes, address, lat, lng, media_id, con_name, con_desg, status, from_date, to_date, is_remind, remind_status, remind_tenure, remind_at, snooze_at, nxt_snooze_at FROM appointments WHERE id = ?`;
+    let params = [id];
+    const result = await executeQuery(query, params);
+    // console.log(result);
+    if (result?.success === 1) {
+      return {
+        success: 1,
+        data: result?.data,
+      };
+    } else {
+      return {
+        success: 1,
         error: result?.error,
       };
     }
