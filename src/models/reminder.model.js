@@ -120,7 +120,7 @@ export class reminderModel {
     ];
 
     const result = await executeQuery(query, params);
-    // console.log(result)
+    console.log(result)
     if (result?.data.length === 0) {
       return {
         success: 0,

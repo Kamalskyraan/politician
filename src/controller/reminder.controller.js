@@ -185,6 +185,8 @@ export const upcomingReminder = async (req, res) => {
       );
     }
   } catch (error) {
+
+    console.log(error , "from controler")
     return sendResponse(
       res,
       500,
