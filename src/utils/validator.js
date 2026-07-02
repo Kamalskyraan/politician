@@ -508,6 +508,10 @@ export const getMeetingSchema = Joi.object({
     "string.string": "user Id should be a string",
     "string.required": "user Id cannot be empty",
   }),
+  id: Joi.string().allow("").messages({
+    "string.base": "Id should be a string",
+    "string.required": "Id cannot be empty",
+  }),
   status: Joi.string()
     .allow("")
     .custom((value, helpers) => {

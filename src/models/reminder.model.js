@@ -99,7 +99,7 @@ export class reminderModel {
   async getUpcomingReminder(user_id) {
     const is_remind = 1;
 
-    let query = `SELECT id, "meeting" AS type, title, descp AS description, address, lat, lng, from_date, is_remind, remind_status, remind_at, nxt_snooze_at FROM MEETING WHERE user_id = ? AND is_remind = ? AND remind_status IN ('pending','snoozed') AND remind_at >= NOW()
+    let query = `SELECT id, "meeting" AS type, title, descp AS description, address, lat, lng, from_date, is_remind, remind_status, remind_at, nxt_snooze_at FROM meeting WHERE user_id = ? AND is_remind = ? AND remind_status IN ('pending','snoozed') AND remind_at >= NOW()
     UNION ALL 
     SELECT id, "appointment" AS type, title, notes AS description, address, lat, lng, from_date, is_remind, remind_status, remind_at, nxt_snooze_at FROM appointments WHERE user_id = ? AND is_remind = ? AND remind_status IN ('pending','snoozed') AND remind_at >= NOW()
     UNION ALL 
