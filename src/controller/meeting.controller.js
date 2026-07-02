@@ -713,10 +713,12 @@ export const getMeeting = async (req, res) => {
       );
     }
 
-    let { user_id, status, from_date, to_date, page } = validatedData?.value;
+    let { user_id, id, status, from_date, to_date, page } =
+      validatedData?.value;
     let result = [];
     let meetings = [];
 
+    id = id === "" ? null : id;
     status = status === "" ? null : status.split(",");
     // console.log(status);
     from_date = from_date === "" ? null : from_date;
@@ -729,6 +731,7 @@ export const getMeeting = async (req, res) => {
       to_date,
       page,
     });
+
 
     if (result?.success === 0) {
       return sendResponse(

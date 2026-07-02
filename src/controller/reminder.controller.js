@@ -101,6 +101,7 @@ export const updateReminder = async (req, res) => {
       next_snooze_at = new Date(next_snooze_at);
       next_snooze_at.setSeconds(0, 0);
       next_snooze_at = formatDateForSQL(next_snooze_at);
+      // console.log(next_snooze_at)
 
       // update_column.push(
       //   `UPDATE ${table_name} SET remind_status = ?, nxt_snooze_at = ? WHERE remind_at = ?`,
