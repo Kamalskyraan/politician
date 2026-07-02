@@ -108,6 +108,10 @@ router.post(
                 type: "string",
                 example: "USER_ZNLl2665"
               },
+              current_date: {
+                type: "string",
+                example: "2026-07-02 15:47:37"
+              }
             }
           }
         }

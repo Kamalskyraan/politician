@@ -1220,6 +1220,7 @@ export const updateMeeting = async (req, res) => {
     }
 
     const data = {
+      id: id,
       title: title,
       descp: descp,
       m_type: m_type,
