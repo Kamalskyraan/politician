@@ -285,6 +285,7 @@ export class meetingModel {
     if (to_date != null) {
       query += ` AND to_date >= ?`;
       countQuery += ` AND to_date >= ?`;
+      params.push(`${from_date} 00:00:00`);
       countParams.push(`${from_date} 00:00:00`);
     }
 
