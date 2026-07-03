@@ -117,19 +117,19 @@ export const updateProfileDetail = async (req, res) => {
 
         upt_cols.push("phnnum_upt_at = NOW()");
       } else {
-        const diffDays = getDaysDiff(user.phnnum_upt_at);
+        // const diffDays = getDaysDiff(user.phnnum_upt_at);
         // console.log("phone number", diffDays);
 
-        if (diffDays <= 30) {
-          return sendResponse(
-            res,
-            200,
-            0,
-            `Phone number can be changed after ${30 - diffDays} days`,
-            [],
-            "",
-          );
-        }
+        // if (diffDays <= 30) {
+        //   return sendResponse(
+        //     res,
+        //     200,
+        //     0,
+        //     `Phone number can be changed after ${30 - diffDays} days`,
+        //     [],
+        //     "",
+        //   );
+        // }
 
         upt_cols.push("phn_num = ?");
         params.push(phn_num);
