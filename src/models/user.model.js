@@ -56,10 +56,16 @@ export class userModel {
       };
     }
   }
-  async deleteAccount({ user_id, delete_reason, today }) {
+  async deleteAccount({ email, user_id, delete_reason, today }) {
     let check_query = `SELECT is_deleted FROM users WHERE user_id = ?`;
+    let checkParams = [user_id];
 
-    const checkResult = await executeQuery(check_query, [user_id]);
+    if (email) {
+      check_query = `SELECT is_deleted FROM users WHERE email = ?`;
+      checkParams = [email];
+    }
+
+    const checkResult = await executeQuery(check_query, checkParams);
     let user_details;
     // console.log(checkResult);
 
@@ -71,6 +77,10 @@ export class userModel {
     } else {
       let query = `UPDATE users SET delete_reason = ?, is_deleted = ?, deleted_at = ? WHERE user_id = ?`;
       let params = [delete_reason, 1, today, user_id];
+      if (email) {
+        query = `UPDATE users SET delete_reason = ?, is_deleted = ?, deleted_at = ? WHERE email = ?`;
+        params = [delete_reason, 1, today, email];
+      }
 
       user_details = await executeQuery(query, params);
     }
