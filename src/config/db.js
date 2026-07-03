@@ -37,4 +37,13 @@ const pool = mysql.createPool({
   // timezone: "Z",
   dateStrings: true,
 });
+
+(async () => {
+  try {
+    const [rows] = await pool.query("SELECT 1");
+    console.log("Database connected");
+  } catch (err) {
+    console.error(err);
+  }
+})();
 export default pool;
