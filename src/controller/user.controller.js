@@ -4,6 +4,7 @@ import { supportModel } from "../models/support.model.js";
 import {
   formatDateForSQL,
   getDaysDiff,
+  replaceNullWithEmptyString,
   sendResponse,
 } from "../utils/helper.js";
 import {
@@ -103,28 +104,41 @@ export const updateProfileDetail = async (req, res) => {
     }
     // PHONE NUMBER
     if (
-      phn_num != null && c_code != null && (String(phn_num) !== String(user.phn_num) || c_code !== user.c_code)) {
-      // const diffDays = getDaysDiff(user.phnnum_upt_at);
-      // console.log("phone number", diffDays);
+      phn_num != null &&
+      c_code != null &&
+      (String(phn_num) !== String(user.phn_num) || c_code !== user.c_code)
+    ) {
+      if (!user.phn_num || !user.c_code) {
+        upt_cols.push("phn_num = ?");
+        params.push(phn_num);
 
-      // if (diffDays <= 30) {
-      //   return sendResponse(
-      //     res,
-      //     200,
-      //     0,
-      //     `Phone number can be changed after ${30 - diffDays} days`,
-      //     [],
-      //     "",
-      //   );
-      // }
+        upt_cols.push("c_code = ?");
+        params.push(c_code);
 
-      upt_cols.push("phn_num = ?");
-      params.push(phn_num);
+        upt_cols.push("phnnum_upt_at = NOW()");
+      } else {
+        const diffDays = getDaysDiff(user.phnnum_upt_at);
+        // console.log("phone number", diffDays);
 
-      upt_cols.push("c_code = ?");
-      params.push(c_code);
+        if (diffDays <= 30) {
+          return sendResponse(
+            res,
+            200,
+            0,
+            `Phone number can be changed after ${30 - diffDays} days`,
+            [],
+            "",
+          );
+        }
 
-      upt_cols.push("phnnum_upt_at = NOW()");
+        upt_cols.push("phn_num = ?");
+        params.push(phn_num);
+
+        upt_cols.push("c_code = ?");
+        params.push(c_code);
+
+        upt_cols.push("phnnum_upt_at = NOW()");
+      }
     }
 
     let result;
@@ -178,6 +192,8 @@ export const getUserProfile = async (req, res) => {
     // console.log(userDetail?.error);
     const data = userDetail?.data;
     const error = userDetail?.error;
+
+    const finalResponse = replaceNullWithEmptyString(data);
 
     if (userDetail?.success === 1) {
       sendResponse(res, 200, 1, "user Found", [data], "");

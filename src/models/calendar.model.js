@@ -74,7 +74,7 @@ SELECT
     title,
     NULL AS descp,
     a_type AS type,
-    NULL AS priority,
+    0 AS priority,
     NULL AS m_link,
     notes,
     address,

@@ -28,12 +28,7 @@ export const requestOtpSchema = Joi.object({
       "string.max": "Mobile number must not exceed 15 digits",
       "string.pattern.base": "Mobile number must start with 6-9",
     }),
-  email: Joi.string().min(13).max(100).email().messages({
-    "any.required": "Email is required",
-    "string.empty": "Email is required",
-    "string.min": "Email must be at least 3 chars",
-    "string.max": "Email must not exceed 100 chars",
-  }),
+  email: Joi.string().optional(),
   type: Joi.number()
     .valid(0, 1, 2) // restrict to allowed values
     .required()
@@ -44,11 +39,7 @@ export const requestOtpSchema = Joi.object({
   c_code: Joi.string()
     .pattern(/^\+\d{2,3}$/)
     .optional(),
-})
-  .or("phn_num", "email")
-  .messages({
-    "object.missing": "Either mobile or email is required",
-  });
+});
 
 export const verifyOtpSchema = Joi.object({
   phn_num: Joi.string()
