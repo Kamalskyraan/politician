@@ -257,11 +257,14 @@ export const deleteAccount = async (req, res) => {
       );
     }
 
-    const { user_id, delete_reason } = validatedData?.value;
+    let { user_id, email, delete_reason } = validatedData?.value;
 
     const today = formatDateForSQL(new Date());
+    email = email === "" ? null : email;
+    user_id = user_id === "" ? null : user_id;
 
     const result = await userMdl.deleteAccount({
+      email,
       user_id,
       delete_reason,
       today,

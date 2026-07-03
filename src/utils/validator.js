@@ -1712,9 +1712,11 @@ export const getTodayEventsCountsSchema = Joi.object({
   }),
 });
 export const deleteAccountSchema = Joi.object({
-  user_id: Joi.string().required().messages({
+  user_id: Joi.string().optional().messages({
     "string.base": "user id should be string",
-    "any.required": "user id is required",
+  }),
+  email: Joi.string().optional().messages({
+    "string.base": "email should be string",
   }),
   delete_reason: Joi.string().allow("").messages({
     "string.base": "delete reason should be string",
