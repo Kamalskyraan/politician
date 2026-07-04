@@ -440,7 +440,7 @@ export class financeModel {
       params,
     );
 
-    // All rows (Summary & Chart)
+    
     const [allRows] = await pool.query(
       `
     SELECT

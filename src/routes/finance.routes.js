@@ -201,6 +201,7 @@ router.post(
             properties: {
                user_id: {type: "string" , example: "USER_Yl_e5736"},
               type: { type: "string", example: "income" },
+              d_type :{type : "string" , example: "csv"},
               from_date: {
                 type: "string",
                 example: "2026-03-22"

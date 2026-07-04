@@ -152,7 +152,7 @@ export const updateProfileDetail = async (req, res) => {
         params,
         user_id,
       });
-    }
+    }  
 
     if (result?.success === 1) {
       return sendResponse(res, 200, 1, "Profile updated successfully", [], "");

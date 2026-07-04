@@ -6,6 +6,7 @@ import { financeSchema, validateRequests } from "../utils/validator.js";
 import path from "path";
 import { generatePdf } from "../service/report.service.js";
 import fs from "fs";
+import { Parser } from "@json2csv/plainjs";
 const financeMdl = new financeModel();
 
 export const addUpdateFinanceData = async (req, res) => {
@@ -78,7 +79,7 @@ export const getFinanceData = async (req, res) => {
       from_date,
       to_date,
       page,
-      limit=10,
+      limit = 10,
     } = req.body;
 
     const data = await financeMdl.fetchFinanceData({
@@ -142,7 +143,7 @@ export const removeFinanceData = async (req, res) => {
 
 export const getReportData = async (req, res) => {
   try {
-    const { user_id, type, from_date, to_date, page , limit=10 } = req.body;
+    const { user_id, type, from_date, to_date, page, limit = 10 } = req.body;
 
     const data = await financeMdl.fetchReportData({
       user_id,
@@ -175,9 +176,60 @@ export const getReportData = async (req, res) => {
 
 //
 
+// export const downloadFinanceReport = async (req, res) => {
+//   try {
+//     const { type, user_id, from_date, to_date } = req.body;
+
+//     const reportData = await financeMdl.fetchReportData({
+//       type,
+//       user_id,
+//       from_date,
+//       to_date,
+//     });
+
+//     const templatePath = path.join(
+//       process.cwd(),
+//       "src",
+//       "views",
+//       "finance-report.ejs",
+//     );
+
+//     const pdfBuffer = await generatePdf(templatePath, reportData);
+
+//     const reportsDir = path.join(process.cwd(), "src", "uploads", "reports");
+
+//     if (!fs.existsSync(reportsDir)) {
+//       fs.mkdirSync(reportsDir, { recursive: true });
+//     }
+
+//     const fileName = `finance-report-${Date.now()}.pdf`;
+//     const filePath = path.join(reportsDir, fileName);
+
+//     fs.writeFileSync(filePath, pdfBuffer);
+
+//     const pdfUrl = `${process.env.MEDIA_BASE_URL}/uploads/reports/${fileName}`;
+
+//     return sendResponse(
+//       res,
+//       200,
+//       1,
+//       "Report Generated Successfully",
+//       {
+//         file_name: fileName,
+//         pdf_url: pdfUrl,
+//       },
+//       "",
+//     );
+//   } catch (err) {
+//     console.error(err);
+
+//     return sendResponse(res, 500, 0, "Failed to generate PDF", [], err.message);
+//   }
+// };
+
 export const downloadFinanceReport = async (req, res) => {
   try {
-    const { type, user_id, from_date, to_date } = req.body;
+    const { type, user_id, from_date, to_date, d_type } = req.body;
 
     const reportData = await financeMdl.fetchReportData({
       type,
@@ -185,6 +237,34 @@ export const downloadFinanceReport = async (req, res) => {
       from_date,
       to_date,
     });
+
+    const reportsDir = path.join(process.cwd(), "src", "uploads", "reports");
+
+    if (!fs.existsSync(reportsDir)) {
+      fs.mkdirSync(reportsDir, { recursive: true });
+    }
+
+    if (d_type === "csv") {
+      const parser = new Parser();
+      const csv = parser.parse(reportData);
+
+      const fileName = `finance-report-${Date.now()}.csv`;
+      const filePath = path.join(reportsDir, fileName);
+
+      fs.writeFileSync(filePath, csv);
+
+      return sendResponse(
+        res,
+        200,
+        1,
+        "CSV Report Generated Successfully",
+        {
+          file_name: fileName,
+          file_url: `${process.env.MEDIA_BASE_URL}/uploads/reports/${fileName}`,
+        },
+        "",
+      );
+    }
 
     const templatePath = path.join(
       process.cwd(),
@@ -195,33 +275,32 @@ export const downloadFinanceReport = async (req, res) => {
 
     const pdfBuffer = await generatePdf(templatePath, reportData);
 
-    const reportsDir = path.join(process.cwd(), "src", "uploads", "reports");
-
-    if (!fs.existsSync(reportsDir)) {
-      fs.mkdirSync(reportsDir, { recursive: true });
-    }
-
     const fileName = `finance-report-${Date.now()}.pdf`;
     const filePath = path.join(reportsDir, fileName);
 
     fs.writeFileSync(filePath, pdfBuffer);
 
-    const pdfUrl = `${process.env.MEDIA_BASE_URL}/uploads/reports/${fileName}`;
-
     return sendResponse(
       res,
       200,
       1,
-      "Report Generated Successfully",
+      "PDF Report Generated Successfully",
       {
         file_name: fileName,
-        pdf_url: pdfUrl,
+        file_url: `${process.env.MEDIA_BASE_URL}/uploads/reports/${fileName}`,
       },
       "",
     );
   } catch (err) {
     console.error(err);
 
-    return sendResponse(res, 500, 0, "Failed to generate PDF", [], err.message);
+    return sendResponse(
+      res,
+      500,
+      0,
+      "Failed to generate report",
+      [],
+      err.message,
+    );
   }
 };
