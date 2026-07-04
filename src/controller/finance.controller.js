@@ -229,7 +229,7 @@ export const getReportData = async (req, res) => {
 
 export const downloadFinanceReport = async (req, res) => {
   try {
-    const { type, user_id, from_date, to_date, d_type } = req.body;
+    const { type, user_id, from_date, to_date, d_type = "pdf" } = req.body;
 
     const reportData = await financeMdl.fetchReportData({
       type,
