@@ -152,15 +152,15 @@ export const getMembers = async (req, res) => {
     //   );
     // }
 
-    await addNotification("MEETING_CREATED", user_id, "meeting", 1);
-    await sendPushNotification({
-      user_id,
-      payload: {
-        title: "Members Fetched",
-        message: "Members Fetched successfully",
-      },
-    });
-    console.log("first");
+    // await addNotification("MEETING_CREATED", user_id, "meeting", 1);
+    // await sendPushNotification({
+    //   user_id,
+    //   payload: {
+    //     title: "Members Fetched",
+    //     message: "Members Fetched successfully",
+    //   },
+    // });
+    // console.log("first");
     return sendResponse(res, 200, 1, "Member fetched successfully", data, "");
   } catch (error) {
     return sendResponse(
