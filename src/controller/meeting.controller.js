@@ -140,11 +140,7 @@ export const getMembers = async (req, res) => {
     const data = (await result?.data) || [];
 
     if (result?.data.length >= 1) {
-      await sendPushNotification(user_id, {
-        title: "Meeting created",
-        message: "New meeting has been created",
-      });
-      console.log("first");
+      // console.log("first");
       return sendResponse(res, 200, 1, "Member fetched successfully", data, "");
     } else {
       return sendResponse(
@@ -459,6 +455,13 @@ export const addMeeting = async (req, res) => {
       }
 
       if (result?.success === 1) {
+        await sendPushNotification({
+          user_id,
+          payload: {
+            title: "Meeting Created",
+            message: "New meeting has been created",
+          },
+        });
         sendResponse(res, 200, 1, "meeting added successfully", [response], "");
       } else {
         sendResponse(res, 200, 0, result?.error, [], "");
@@ -566,6 +569,13 @@ export const addMeeting = async (req, res) => {
       }
 
       if (result?.success === 1) {
+        await sendPushNotification({
+          user_id,
+          payload: {
+            title: "Meeting Created",
+            message: "New meeting has been created",
+          },
+        });
         return sendResponse(
           res,
           200,
@@ -678,6 +688,13 @@ export const addMeeting = async (req, res) => {
         await addNotification("MEETING_CREATED", user_id, "meeting", data.id);
       }
       if (result?.success === 1) {
+        await sendPushNotification({
+          user_id,
+          payload: {
+            title: "Meeting Created",
+            message: "New meeting has been created",
+          },
+        });
         sendResponse(res, 200, 1, "meeting added successfully", [response], "");
       } else {
         sendResponse(res, 200, 0, result?.error, [], "");
@@ -1030,6 +1047,7 @@ export const updateMeeting = async (req, res) => {
 
     const update_columns = [];
     const params = [];
+    let sts;
 
     if (title) {
       update_columns.push("title = ?");
@@ -1091,7 +1109,7 @@ export const updateMeeting = async (req, res) => {
       let meeting_date = from_date;
       from_date = formatDateForSQL(from_date);
       // console.log(from_date);
-      let sts = "upcoming";
+      sts = "upcoming";
       let today = new Date();
       today.setHours(0, 0, 0, 0);
       meeting_date.setHours(0, 0, 0, 0);
@@ -1111,7 +1129,7 @@ export const updateMeeting = async (req, res) => {
     if (from_date && is_remind === 1) {
       let date = from_date;
       let status_date = date;
-      let sts = "upcoming";
+      sts = "upcoming";
       let today = new Date();
       date = new Date(date);
 
@@ -1226,6 +1244,7 @@ export const updateMeeting = async (req, res) => {
       address: address,
       lat: lat,
       lng: lng,
+      status: sts,
       from_date: from_date,
       to_date: to_date,
       is_remind: is_remind,
@@ -1242,7 +1261,7 @@ export const updateMeeting = async (req, res) => {
     // iff 24 = 24 ---> delete old notify + in progress + notification trigger
     //if 25 > 24 --> delete old one + status upcoming
     // console.log(meeting_from_date, today);
-
+    console.log(meeting_from_date, from_date, today);
     if (
       result?.success === 1 &&
       meeting_from_date.slice(0, 10) !== from_date.slice(0, 10)
@@ -1260,15 +1279,15 @@ export const updateMeeting = async (req, res) => {
 
     if (result?.success === 0) {
       // console.log(result?.error);
-      return sendResponse(
-        res,
-        200,
-        0,
-        "failed to update meeting successfully",
-        [],
-        "",
-      );
+      return sendResponse(res, 200, 0, "failed to update meeting", [], "");
     } else {
+      await sendPushNotification({
+        user_id,
+        payload: {
+          title: "Meeting Updated",
+          message: "Meeting has been updated",
+        },
+      });
       return sendResponse(
         res,
         200,
@@ -1417,6 +1436,13 @@ export const addAppointment = async (req, res) => {
       const response = replaceNullWithEmptyString(data);
 
       if (result?.success === 1) {
+        await sendPushNotification({
+          user_id,
+          payload: {
+            title: "Appointment Created",
+            message: "New appointment has been created",
+          },
+        });
         return sendResponse(
           res,
           200,
@@ -1511,6 +1537,13 @@ export const addAppointment = async (req, res) => {
 
       const response = replaceNullWithEmptyString(data);
       if (result?.success === 1) {
+        await sendPushNotification({
+          user_id,
+          payload: {
+            title: "Appointment Created",
+            message: "New appointment has been created",
+          },
+        });
         return sendResponse(
           res,
           200,
@@ -1616,6 +1649,13 @@ export const addAppointment = async (req, res) => {
       }
 
       if (result?.success === 1) {
+        await sendPushNotification({
+          user_id,
+          payload: {
+            title: "Appointment Created",
+            message: "New appointment has been created",
+          },
+        });
         return sendResponse(
           res,
           200,
@@ -1751,7 +1791,7 @@ export const getAppointment = async (req, res) => {
     result = await meetingMdl.getAppoint(upt_cols, params, page);
 
     appointments = result?.data;
-    // console.log(appointments[0]);
+    // console.log(appointments);
 
     // console.log(typeof(appointments[0]?.remind_at));
 
@@ -1935,6 +1975,7 @@ export const updateAppointment = async (req, res) => {
 
     let upt_cols = [];
     let params = [];
+    let sts;
 
     if (title) {
       upt_cols.push("title = ?");
@@ -1989,7 +2030,7 @@ export const updateAppointment = async (req, res) => {
     }
     if (from_date && is_remind === 0) {
       let today = new Date();
-      let sts = "pending";
+      sts = "pending";
       from_date = new Date(from_date);
       // console.log(from_date);
       if (
@@ -2024,7 +2065,7 @@ export const updateAppointment = async (req, res) => {
 
     if (from_date && is_remind === 1 && !snooze_at) {
       let today = new Date();
-      let sts = "pending";
+      sts = "pending";
       from_date = new Date(from_date);
       remind_at = from_date.getTime() - remind_tenure * 1000;
       remind_at = new Date(remind_at);
@@ -2056,7 +2097,7 @@ export const updateAppointment = async (req, res) => {
     let nxt_snooze_at;
     if (from_date && is_remind === 1 && snooze_at) {
       let today = new Date();
-      let sts = "pending";
+      sts = "pending";
 
       from_date = new Date(from_date);
 
@@ -2129,6 +2170,7 @@ export const updateAppointment = async (req, res) => {
       lng: lng,
       con_name: con_name,
       con_desg: con_desg,
+      status: sts,
       from_date: from_date,
       to_date: to_date,
       is_remind: is_remind,
@@ -2169,6 +2211,13 @@ export const updateAppointment = async (req, res) => {
     }
 
     if (result?.success === 1) {
+      await sendPushNotification({
+        user_id,
+        payload: {
+          title: "Appointment Updated",
+          message: "Appointment has been updated",
+        },
+      });
       return sendResponse(
         res,
         200,

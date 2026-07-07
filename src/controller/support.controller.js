@@ -5,17 +5,22 @@ import { sendContactUsMail, sendMail } from "../config/email.js";
 import {
   addIssueCategorySchema,
   addSumitCategorySchema,
+  addTravelExpCategorySchema,
   contactUsSchema,
   deleteFaqPermanentlySchema,
   deleteFaqSchema,
   deleteIssueCategorypermanentlySchema,
   deleteIssueCategorySchema,
+  deleteSumitCategorySchema,
+  deleteSumitCatpermanentlySchema,
   getCountriesSchema,
   getFaqSchema,
   getIssueCategorySchema,
   getMemberschema,
   getSumitCategorySchema,
   statusChangeSchema,
+  updateIssueCategorySchema,
+  updateSumitCategorySchema,
   userIdSchema,
   validateRequest,
 } from "../utils/validator.js";
@@ -81,7 +86,7 @@ export const getFaq = async (req, res) => {
 export const updateFaq = async (req, res) => {
   try {
     const { id, question, answer } = req.body;
-    console.log(id, question, answer);
+    // console.log(id, question, answer);
 
     const result = await supportMdl.updateFaq(id, question, answer);
     //   console.log(result)
@@ -158,7 +163,7 @@ export const deleteFaqPermanently = async (req, res) => {
     }
 
     let { id } = validatedData?.value;
-    console.log(id);
+    // console.log(id);
 
     const result = await supportMdl.deleteFaqPermanently(id);
 
@@ -426,7 +431,7 @@ export const addIssueCat = async (req, res) => {
     }
     let { category } = validatedData?.value;
 
-    const result = await supportMdl.addIssueCat({ category });
+    const result = await supportMdl.addIssueCat({ id, category });
     if (result?.success === 1) {
       return sendResponse(
         res,
@@ -527,13 +532,20 @@ export const deleteIssueCat = async (req, res) => {
         200,
         1,
         status === "active"
-          ? "Faq retrieved successfully"
-          : "Faq deleted successfully",
+          ? "Issue category retrieved successfully"
+          : "Issue category deleted successfully",
         [],
         "",
       );
     } else {
-      return sendResponse(res, 200, 0, result?.error, [], "");
+      return sendResponse(
+        res,
+        200,
+        0,
+        "Failed to delete Issue category",
+        [],
+        "",
+      );
     }
   } catch (error) {
     return sendResponse(
@@ -571,12 +583,66 @@ export const deleteIssueCatpermanently = async (req, res) => {
         res,
         200,
         1,
-        "Faq successfully deleted permanently",
+        "Issue category successfully deleted permanently",
         [],
         "",
       );
     } else {
-      return sendResponse(res, 200, 0, result?.error, [], "");
+      return sendResponse(
+        res,
+        200,
+        0,
+        "Failed to delete issue category",
+        [],
+        "",
+      );
+    }
+  } catch (error) {
+    return sendResponse(
+      res,
+      500,
+      0,
+      "Internal server error",
+      [],
+      error.message,
+    );
+  }
+};
+export const updateissuecategory = async (req, res) => {
+  try {
+    const validatedData = validateRequest(req.body, updateIssueCategorySchema);
+    if (validatedData?.success === 0) {
+      return sendResponse(
+        res,
+        200,
+        0,
+        "validation error",
+        [],
+        validatedData?.errorObject?.errors,
+      );
+    }
+    let { id, category } = validatedData?.value;
+    // console.log(id, category)
+
+    const result = await supportMdl.updateIssueCat({ id, category });
+    if (result?.success === 1) {
+      return sendResponse(
+        res,
+        200,
+        1,
+        "Issue category updated successfully",
+        [],
+        "",
+      );
+    } else if (result?.success === 0) {
+      return sendResponse(
+        res,
+        200,
+        0,
+        "Failed to update issue category",
+        [],
+        "",
+      );
     }
   } catch (error) {
     return sendResponse(
@@ -683,4 +749,196 @@ export const getSumitCategory = async (req, res) => {
     );
   }
 };
+export const updatesumitcategory = async (req, res) => {
+  try {
+    const validatedData = validateRequest(req.body, updateSumitCategorySchema);
+    if (validatedData?.success === 0) {
+      return sendResponse(
+        res,
+        200,
+        0,
+        "validation error",
+        [],
+        validatedData?.errorObject?.errors,
+      );
+    }
+    let { id, category } = validatedData?.value;
+    // console.log(id, category)
 
+    const result = await supportMdl.updateSumitCat({ id, category });
+    if (result?.success === 1) {
+      return sendResponse(
+        res,
+        200,
+        1,
+        "Sumit category updated successfully",
+        [],
+        "",
+      );
+    } else if (result?.success === 0) {
+      return sendResponse(
+        res,
+        200,
+        0,
+        "Failed to update sumit category",
+        [],
+        "",
+      );
+    }
+  } catch (error) {
+    return sendResponse(
+      res,
+      500,
+      0,
+      "Internal server error",
+      [],
+      error.message,
+    );
+  }
+};
+export const deletesumitcategory = async (req, res) => {
+  try {
+    const validatedData = validateRequest(req.body, deleteSumitCategorySchema);
+    if (validatedData?.success === 0) {
+      return sendResponse(
+        res,
+        200,
+        0,
+        "validation error",
+        [],
+        validatedData?.errorObject?.errors,
+      );
+    }
+    let { id, status } = validatedData?.value;
+    // console.log(status)
+
+    const result = await supportMdl.deleteSumitCat(id, status);
+    if (result?.success === 1) {
+      return sendResponse(
+        res,
+        200,
+        1,
+        status === "active"
+          ? "sumit category retrieved successfully"
+          : "sumit category deleted successfully",
+        [],
+        "",
+      );
+    } else {
+      return sendResponse(
+        res,
+        200,
+        0,
+        "Failed to delete sumit category",
+        [],
+        "",
+      );
+    }
+  } catch (error) {
+    return sendResponse(
+      res,
+      500,
+      0,
+      "Internal server error",
+      [],
+      error.message,
+    );
+  }
+};
+export const deleteSumitCatpermanently = async (req, res) => {
+  try {
+    const validatedData = validateRequest(
+      req.body,
+      deleteSumitCatpermanentlySchema,
+    );
+    if (validatedData?.success === 0) {
+      return sendResponse(
+        res,
+        200,
+        0,
+        "validation error",
+        [],
+        validatedData?.errorObject?.errors,
+      );
+    }
+    let { id } = validatedData?.value;
+
+    const result = await supportMdl.deleteSumitCatPermanently(id);
+
+    if (result?.success === 1) {
+      return sendResponse(
+        res,
+        200,
+        1,
+        "sumit category successfully deleted permanently",
+        [],
+        "",
+      );
+    } else {
+      return sendResponse(
+        res,
+        200,
+        0,
+        "Failed to delete sumit category",
+        [],
+        "",
+      );
+    }
+  } catch (error) {
+    return sendResponse(
+      res,
+      500,
+      0,
+      "Internal server error",
+      [],
+      error.message,
+    );
+  }
+};
+
+export const addTravelExpCategory = async (req, res) => {
+  try {
+    const validatedData = validateRequest(req.body, addTravelExpCategorySchema);
+    if (validatedData?.success === 0) {
+      return sendResponse(
+        res,
+        200,
+        0,
+        "validation error",
+        [],
+        validatedData?.errorObject?.errors,
+      );
+    }
+    let { category } = validatedData?.value;
+
+    const result = await supportMdl.addTravelExpCat({ category });
+    if (result?.success === 1) {
+      return sendResponse(
+        res,
+        200,
+        1,
+        "Travel expense category added successfully",
+        [],
+        "",
+      );
+    } else if (result?.success === 0) {
+      return sendResponse(
+        res,
+        200,
+        0,
+        "Failed to add travel expense category",
+        [],
+        "",
+      );
+    }
+  } catch (error) {
+    return sendResponse(
+      res,
+      500,
+      0,
+      "Internal server error",
+      [],
+      error.message,
+    );
+  }
+};

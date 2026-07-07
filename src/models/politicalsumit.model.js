@@ -124,7 +124,7 @@ export class politicalSumitModel {
   }
   async getSumit({ upt_cols, params, page, limit = 10 }) {
     const offset = (page - 1) * limit;
-    let query = `SELECT id, title, sumit_date, status FROM political_sumit WHERE ${upt_cols.join("")} LIMIT ? OFFSET ?`;
+    let query = `SELECT id, title, sumit_date, status FROM political_sumit WHERE ${upt_cols.join("")} ORDER BY sumit_date ASC LIMIT ? OFFSET ?`;
 
     const countQuery = `SELECT COUNT(*) AS total FROM political_sumit WHERE ${upt_cols.join("")}`;
     const countResult = await executeQuery(countQuery, params);

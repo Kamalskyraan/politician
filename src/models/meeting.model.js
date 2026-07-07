@@ -47,7 +47,7 @@ export class meetingModel {
   async getMember({ upt_cols, params }) {
     // console.log(upt_cols);
     // console.log(params);
-    let query = `SELECT m.id, m.name, m.phn_num, m.country, m.state, m.district, m.role_id, r.role_name FROM members m JOIN user_role r ON m.role_id = r.id WHERE ${upt_cols.join(" AND ")}`;
+    let query = `SELECT m.id, m.name, m.phn_num, m.country, m.state, m.district, m.role_id, r.role_name FROM members m JOIN user_role r ON m.role_id = r.id WHERE ${upt_cols.join(" AND ")} ORDER BY name ASC`;
     // let params = [user_id, "active"];
 
     // console.log(query)
@@ -293,7 +293,7 @@ export class meetingModel {
     const total = countResult?.data[0]?.total;
     // console.log(total);
 
-    query += ` LIMIT ? OFFSET ?`;
+    query += ` ORDER BY from_date ASC LIMIT ? OFFSET ?`;
     params.push(Number(limit), Number(offset));
 
     const result = await executeQuery(query, params);
@@ -484,14 +484,15 @@ export class meetingModel {
     //   params = [user_id];
     // }
 
-    query = `SELECT id, title, a_type, notes, address, lat, lng, media_id, con_name, con_desg, status, from_date, to_date, is_remind, remind_status, remind_tenure, remind_at, snooze_at, nxt_snooze_at FROM appointments WHERE ${upt_cols.join("")} LIMIT ? OFFSET ?`;
+    query = `SELECT id, title, a_type, notes, address, lat, lng, media_id, con_name, con_desg, status, from_date, to_date, is_remind, remind_status, remind_tenure, remind_at, snooze_at, nxt_snooze_at FROM appointments WHERE ${upt_cols.join("")} ORDER BY from_date ASC LIMIT ? OFFSET ?`;
 
     const countQuery = `SELECT COUNT(*) AS total FROM appointments WHERE ${upt_cols.join("")}`;
     const countResult = await executeQuery(countQuery, params);
     const total = countResult?.data[0]?.total;
-    params.push(page, offset);
+    params.push(limit, offset);
 
     const result = await executeQuery(query, params);
+    // console.log(result)
     if (result?.success === 1) {
       return {
         success: 1,

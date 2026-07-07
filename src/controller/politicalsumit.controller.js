@@ -168,6 +168,13 @@ export const addSumit = async (req, res) => {
     }
 
     if (result?.success === 1) {
+      await sendPushNotification({
+        user_id,
+        payload: {
+          title: "Political Sumit Created",
+          message: "New political sumit has been created",
+        },
+      });
       return sendResponse(
         res,
         200,
@@ -752,6 +759,13 @@ export const updateSumit = async (req, res) => {
       updateResult?.success === 1 &&
       deleteMemberResult?.success === 1
     ) {
+      await sendPushNotification({
+        user_id,
+        payload: {
+          title: "Political Sumit Updated",
+          message: "Political sumit has been updated",
+        },
+      });
       return sendResponse(
         res,
         200,

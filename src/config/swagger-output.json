@@ -1584,6 +1584,43 @@
         }
       }
     },
+    "/support/updateissuecategory": {
+      "post": {
+        "tags": [
+          "16.Dashboard Api`s"
+        ],
+        "summary": "Update category for issues and grievance",
+        "description": "Update category",
+        "responses": {
+          "200": {
+            "description": "Issue category updated successfully"
+          },
+          "500": {
+            "description": "Internal Server Error"
+          }
+        },
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "id": {
+                    "type": "number",
+                    "example": 1
+                  },
+                  "category": {
+                    "type": "string",
+                    "example": "Road"
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
     "/support/getissuecategory": {
       "post": {
         "tags": [
@@ -1745,6 +1782,146 @@
                   "status": {
                     "type": "string",
                     "example": "active"
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/support/updatesumitcategory": {
+      "post": {
+        "tags": [
+          "16.Dashboard Api`s"
+        ],
+        "summary": "Update category for political sumit",
+        "description": "update category",
+        "responses": {
+          "200": {
+            "description": "political sumit category updated successfully"
+          },
+          "500": {
+            "description": "Internal Server Error"
+          }
+        },
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "id": {
+                    "type": "number",
+                    "example": 2
+                  },
+                  "category": {
+                    "type": "string",
+                    "example": "new category"
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/support/deletesumitcategory": {
+      "post": {
+        "tags": [
+          "16.Dashboard Api`s"
+        ],
+        "summary": "Delete category for political sumit",
+        "description": "Delete category",
+        "responses": {
+          "200": {
+            "description": "political sumit category updated successfully"
+          },
+          "500": {
+            "description": "Internal Server Error"
+          }
+        },
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "id": {
+                    "type": "number",
+                    "example": 2
+                  },
+                  "status": {
+                    "type": "string",
+                    "example": "active"
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/support/deletesumitcategorypermanently": {
+      "post": {
+        "tags": [
+          "16.Dashboard Api`s"
+        ],
+        "summary": "Delete category permanently for political sumit",
+        "description": "Delete category permanently",
+        "responses": {
+          "200": {
+            "description": "political sumit category permanently deleted successfully"
+          },
+          "500": {
+            "description": "Internal Server Error"
+          }
+        },
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "id": {
+                    "type": "number",
+                    "example": 2
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/support/addtravelexpcategory": {
+      "post": {
+        "tags": [
+          "16.Dashboard Api`s"
+        ],
+        "summary": "Add category for travel expense",
+        "description": "Add category",
+        "responses": {
+          "200": {
+            "description": "Travel expense category added successfully"
+          },
+          "500": {
+            "description": "Internal Server Error"
+          }
+        },
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "category": {
+                    "type": "string",
+                    "example": "Road"
                   }
                 }
               }

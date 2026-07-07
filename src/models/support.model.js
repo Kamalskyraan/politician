@@ -180,6 +180,23 @@ export class supportModel {
       };
     }
   }
+  async updateIssueCat({ id, category }) {
+    let query = `UPDATE issue_category SET cat_name = ? WHERE id = ?`;
+    let params = [category, id];
+    const result = await executeQuery(query, params);
+    // console.log(result);
+    if (result?.success === 1) {
+      return {
+        success: 1,
+        data: result?.data,
+      };
+    } else {
+      return {
+        success: 0,
+        error: result?.error,
+      };
+    }
+  }
   async getIssueCat(status) {
     let query = `SELECT id, cat_name AS category_name FROM issue_category WHERE status = ?`;
     let params = [status];
@@ -265,6 +282,75 @@ export class supportModel {
       };
     }
   }
+  async updateSumitCat({ id, category }) {
+    let query = `UPDATE political_sumit_category SET category_name = ? WHERE id = ?`;
+    let params = [category, id];
+    const result = await executeQuery(query, params);
+    // console.log(result);
+    if (result?.success === 1) {
+      return {
+        success: 1,
+        data: result?.data,
+      };
+    } else {
+      return {
+        success: 0,
+        error: result?.error,
+      };
+    }
+  }
+  async deleteSumitCat(id, status) {
+    let query = `UPDATE political_sumit_category SET status = ? WHERE id = ?`;
+    let params = [status, id];
+
+    const result = await executeQuery(query, params);
+    if (result?.success === 1) {
+      return {
+        success: 1,
+        data: result?.data,
+      };
+    } else {
+      return {
+        success: 0,
+        error: result?.error,
+      };
+    }
+  }
+  async deleteSumitCatPermanently(id) {
+    let query = `DELETE FROM political_sumit_category WHERE id = ?`;
+    let params = [id];
+
+    const result = await executeQuery(query, params);
+    if (result?.success === 1) {
+      return {
+        success: 1,
+        data: result?.data,
+      };
+    } else {
+      return {
+        success: 0,
+        error: result?.error,
+      };
+    }
+  }
+
+  async addTravelExpCat({ category }) {
+    let query = `INSERT INTO travel_exp_category (category_name) VALUES (?)`;
+    let params = [category];
+
+    const result = await executeQuery(query, params);
+    if (result?.success === 1) {
+      return {
+        success: 1,
+        data: result?.data,
+      };
+    } else {
+      return {
+        success: 0,
+        error: result?.error,
+      };
+    }
+  }
 
   async processDailyStatusChange(today) {
     let query_1 = `UPDATE meeting SET status = ? WHERE DATE(from_date) = ?`;
@@ -283,5 +369,4 @@ export class supportModel {
     let params_4 = ["inprogress", today];
     const result_4 = await executeQuery(query_4, params_4);
   }
-  
 }

@@ -241,6 +241,13 @@ export const addTravel = async (req, res) => {
     }
 
     if (result?.success === 1) {
+      await sendPushNotification({
+        user_id,
+        payload: {
+          title: "Travel Created",
+          message: "New travel has been created",
+        },
+      });
       return sendResponse(
         res,
         200,
@@ -572,6 +579,13 @@ export const updateTravel = async (req, res) => {
     }
 
     if (result?.success === 1) {
+      await sendPushNotification({
+        user_id,
+        payload: {
+          title: "Travel Updated",
+          message: "Travel has been updated",
+        },
+      });
       return sendResponse(
         res,
         200,

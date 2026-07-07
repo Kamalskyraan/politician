@@ -295,6 +295,43 @@ router.post(
 */ supportController.addIssueCat,
 );
 router.post(
+  "/updateissuecategory",
+  /*
+    #swagger.tags = ['16.Dashboard Api`s']
+    #swagger.summary = 'Update category for issues and grievance'
+    #swagger.description = 'Update category'
+
+    #swagger.requestBody = {
+      required: true,
+      content: {
+        "application/json": {
+          schema: {
+            type: "object",
+            properties: {
+            id: {
+                type: "number",
+                example: 1
+              },
+              category: {
+                type: "string",
+                example: "Road"
+              },
+            }
+          }
+        }
+      }
+    }
+
+    #swagger.responses[200] = {
+      description: 'Issue category updated successfully'
+    }
+
+    #swagger.responses[500] = {
+      description: 'Internal Server Error'
+    }
+*/ supportController.updateissuecategory,
+);
+router.post(
   "/getissuecategory",
   /*
     #swagger.tags = ['16.Dashboard Api`s']
@@ -464,5 +501,150 @@ router.post(
     }
 */
   supportController.getSumitCategory,
+);
+router.post(
+  "/updatesumitcategory",
+  /*
+    #swagger.tags = ['16.Dashboard Api`s']
+    #swagger.summary = 'Update category for political sumit'
+    #swagger.description = 'update category'
+
+    #swagger.requestBody = {
+      required: true,
+      content: {
+        "application/json": {
+          schema: {
+            type: "object",
+            properties: {
+              id: {
+                type: "number",
+                example: 2
+              },
+              category: {
+                type: "string",
+                example: "new category"
+              },
+            }
+          }
+        }
+      }
+    }
+
+    #swagger.responses[200] = {
+      description: 'political sumit category updated successfully'
+    }
+
+    #swagger.responses[500] = {
+      description: 'Internal Server Error'
+    }
+*/
+  supportController.updatesumitcategory,
+);
+router.post(
+  "/deletesumitcategory",
+  /*
+    #swagger.tags = ['16.Dashboard Api`s']
+    #swagger.summary = 'Delete category for political sumit'
+    #swagger.description = 'Delete category'
+
+    #swagger.requestBody = {
+      required: true,
+      content: {
+        "application/json": {
+          schema: {
+            type: "object",
+            properties: {
+              id: {
+                type: "number",
+                example: 2
+              },
+              status: {
+                type: "string",
+                example: "active"
+              },
+            }
+          }
+        }
+      }
+    }
+
+    #swagger.responses[200] = {
+      description: 'political sumit category updated successfully'
+    }
+
+    #swagger.responses[500] = {
+      description: 'Internal Server Error'
+    }
+*/
+  supportController.deletesumitcategory,
+);
+router.post(
+  "/deletesumitcategorypermanently",
+  /*
+    #swagger.tags = ['16.Dashboard Api`s']
+    #swagger.summary = 'Delete category permanently for political sumit'
+    #swagger.description = 'Delete category permanently'
+
+    #swagger.requestBody = {
+      required: true,
+      content: {
+        "application/json": {
+          schema: {
+            type: "object",
+            properties: {
+              id: {
+                type: "number",
+                example: 2
+              }
+            }
+          }
+        }
+      }
+    }
+
+    #swagger.responses[200] = {
+      description: 'political sumit category permanently deleted successfully'
+    }
+
+    #swagger.responses[500] = {
+      description: 'Internal Server Error'
+    }
+*/
+  supportController.deleteSumitCatpermanently,
+);
+
+router.post(
+  "/addtravelexpcategory",
+  /*
+    #swagger.tags = ['16.Dashboard Api`s']
+    #swagger.summary = 'Add category for travel expense'
+    #swagger.description = 'Add category'
+
+    #swagger.requestBody = {
+      required: true,
+      content: {
+        "application/json": {
+          schema: {
+            type: "object",
+            properties: {
+              category: {
+                type: "string",
+                example: "Road"
+              },
+            }
+          }
+        }
+      }
+    }
+
+    #swagger.responses[200] = {
+      description: 'Travel expense category added successfully'
+    }
+
+    #swagger.responses[500] = {
+      description: 'Internal Server Error'
+    }
+*/
+  supportController.addTravelExpCategory,
 );
 export default router;

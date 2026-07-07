@@ -1079,6 +1079,13 @@ export const getExpenseSchema = Joi.object({
   }),
 });
 
+export const addTravelExpCategorySchema = Joi.object({
+  category: Joi.string().required().messages({
+    "string.base": "category should be a string",
+    "any.required": "category cannot be empty",
+  }),
+});
+
 export const addNotesSchema = Joi.object({
   travel_id: Joi.number().required().messages({
     "number.base": "Travel Id should be an integer",
@@ -1323,6 +1330,16 @@ export const addIssueCategorySchema = Joi.object({
     "any.required": "category cannot be empty",
   }),
 });
+export const updateIssueCategorySchema = Joi.object({
+  id: Joi.number().required().messages({
+    "string.base": "id should be a string",
+    "any.required": "id cannot be empty",
+  }),
+  category: Joi.string().required().messages({
+    "string.base": "category should be a string",
+    "any.required": "category cannot be empty",
+  }),
+});
 export const addIssueSchema = Joi.object({
   user_id: Joi.string().required().messages({
     "string.base": "user id should be a string",
@@ -1340,15 +1357,15 @@ export const addIssueSchema = Joi.object({
     "string.base": "description should be a string",
     "any.required": "description cannot be empty",
   }),
-  address: Joi.string().required().messages({
+  address: Joi.string().allow("").messages({
     "string.base": "address should be a string",
     "any.required": "address cannot be empty",
   }),
-  lat: Joi.string().required().messages({
+  lat: Joi.string().allow("").messages({
     "string.base": "lat must be a string",
     "any.required": "lat is required",
   }),
-  lng: Joi.string().required().messages({
+  lng: Joi.string().allow("").messages({
     "string.base": "lng must be a string",
     "any.required": "lng is required",
   }),
@@ -1468,6 +1485,32 @@ export const addSumitCategorySchema = Joi.object({
   category: Joi.string().required().messages({
     "string.base": "category should be a string",
     "any.required": "category cannot be empty",
+  }),
+});
+export const updateSumitCategorySchema = Joi.object({
+  id: Joi.number().required().messages({
+    "string.base": "id should be a string",
+    "any.required": "id cannot be empty",
+  }),
+  category: Joi.string().required().messages({
+    "string.base": "category should be a string",
+    "any.required": "category cannot be empty",
+  }),
+});
+export const deleteSumitCategorySchema = Joi.object({
+  status: Joi.string().required().messages({
+    "string.base": "status should be string",
+    "any.required": "status is required",
+  }),
+  id: Joi.number().required().messages({
+    "number.base": "id should be number",
+    "any.required": "id is required",
+  }),
+});
+export const deleteSumitCatpermanentlySchema = Joi.object({
+  id: Joi.number().required().messages({
+    "number.base": "id should be number",
+    "any.required": "id is required",
   }),
 });
 

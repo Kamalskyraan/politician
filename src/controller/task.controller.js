@@ -159,6 +159,13 @@ export const addTask = async (req, res) => {
     }
 
     if (result?.success === 1) {
+      await sendPushNotification({
+        user_id,
+        payload: {
+          title: "Task Created",
+          message: "New task has been created",
+        },
+      });
       return sendResponse(
         res,
         200,
@@ -416,6 +423,13 @@ export const updateTask = async (req, res) => {
     }
 
     if (result?.success === 1) {
+      await sendPushNotification({
+        user_id,
+        payload: {
+          title: "Task Updated",
+          message: "Task has been updated",
+        },
+      });
       return sendResponse(
         res,
         200,
