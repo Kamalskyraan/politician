@@ -116,16 +116,16 @@ export class sourceModel {
     let query = `SELECT id, url, org_name, media_size, created_at FROM media WHERE id IN (${placeHolders}) ORDER BY created_at DESC`;
     let params = id;
 
-    let query = `
-    SELECT
-      id,
-      url,
-      org_name,
-      media_size,
-      created_at
-    FROM media
-    WHERE id IN (${placeHolders})
-  `;
+  //   let query = `
+  //   SELECT
+  //     id,
+  //     url,
+  //     org_name,
+  //     media_size,
+  //     created_at
+  //   FROM media
+  //   WHERE id IN (${placeHolders})
+  // `;
 
     const result = await executeQuery(query, id);
 
