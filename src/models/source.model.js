@@ -127,7 +127,7 @@ export class sourceModel {
   //   WHERE id IN (${placeHolders})
   // `;
 
-  // 
+  
     const result = await executeQuery(query, id);
 
     if (result?.success === 1) {
