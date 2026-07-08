@@ -1766,7 +1766,7 @@
         "description": "get category",
         "responses": {
           "200": {
-            "description": "political sumit category added successfully"
+            "description": "political sumit category fetched successfully"
           },
           "500": {
             "description": "Internal Server Error"
@@ -1922,6 +1922,352 @@
                   "category": {
                     "type": "string",
                     "example": "Road"
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/support/updatetravelexpcategory": {
+      "post": {
+        "tags": [
+          "16.Dashboard Api`s"
+        ],
+        "summary": "Update category for travel expense",
+        "description": "Update category",
+        "responses": {
+          "200": {
+            "description": "Travel expense category updated successfully"
+          },
+          "500": {
+            "description": "Internal Server Error"
+          }
+        },
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "id": {
+                    "type": "numer",
+                    "example": 1
+                  },
+                  "category": {
+                    "type": "string",
+                    "example": "Road"
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/support/deletetravelexpcategory": {
+      "post": {
+        "tags": [
+          "16.Dashboard Api`s"
+        ],
+        "summary": "Delete category for travel expense",
+        "description": "Delete category",
+        "responses": {
+          "200": {
+            "description": "Travel expense category updated successfully"
+          },
+          "500": {
+            "description": "Internal Server Error"
+          }
+        },
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "id": {
+                    "type": "number",
+                    "example": 2
+                  },
+                  "status": {
+                    "type": "string",
+                    "example": "active"
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/support/deletetravelexpcategorypermanently": {
+      "post": {
+        "tags": [
+          "16.Dashboard Api`s"
+        ],
+        "summary": "Delete category permanently for travel expense",
+        "description": "Delete category permanently",
+        "responses": {
+          "200": {
+            "description": "Travel expense category permanently deleted successfully"
+          },
+          "500": {
+            "description": "Internal Server Error"
+          }
+        },
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "id": {
+                    "type": "number",
+                    "example": 2
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/support/gettravelexpensecategory": {
+      "post": {
+        "tags": [
+          "16.Dashboard Api`s"
+        ],
+        "summary": "Get category for travel expense",
+        "description": "get category",
+        "responses": {
+          "200": {
+            "description": "travel expense category fetched successfully"
+          },
+          "500": {
+            "description": "Internal Server Error"
+          }
+        },
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "status": {
+                    "type": "string",
+                    "example": "active"
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/support/addmembercategory": {
+      "post": {
+        "tags": [
+          "16.Dashboard Api`s"
+        ],
+        "summary": "Add category for member",
+        "description": "Add category",
+        "responses": {
+          "200": {
+            "description": "Member category added successfully"
+          },
+          "500": {
+            "description": "Internal Server Error"
+          }
+        },
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "category": {
+                    "type": "string",
+                    "example": "Road"
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/support/updatemembercategory": {
+      "post": {
+        "tags": [
+          "16.Dashboard Api`s"
+        ],
+        "summary": "Update category for Member",
+        "description": "Update category",
+        "responses": {
+          "200": {
+            "description": "Member category updated successfully"
+          },
+          "500": {
+            "description": "Internal Server Error"
+          }
+        },
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "id": {
+                    "type": "numer",
+                    "example": 1
+                  },
+                  "category": {
+                    "type": "string",
+                    "example": "Road"
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/support/deletemembercategory": {
+      "post": {
+        "tags": [
+          "16.Dashboard Api`s"
+        ],
+        "summary": "Delete category for member",
+        "description": "Delete category",
+        "responses": {
+          "200": {
+            "description": "member category updated successfully"
+          },
+          "500": {
+            "description": "Internal Server Error"
+          }
+        },
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "id": {
+                    "type": "number",
+                    "example": 2
+                  },
+                  "status": {
+                    "type": "string",
+                    "example": "active"
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/support/deletemembercategorypermanently": {
+      "post": {
+        "tags": [
+          "16.Dashboard Api`s"
+        ],
+        "summary": "Delete category permanently for member",
+        "description": "Delete category permanently",
+        "responses": {
+          "200": {
+            "description": "Member category permanently deleted successfully"
+          },
+          "500": {
+            "description": "Internal Server Error"
+          }
+        },
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "id": {
+                    "type": "number",
+                    "example": 2
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/support/getmembercategory": {
+      "post": {
+        "tags": [
+          "16.Dashboard Api`s"
+        ],
+        "summary": "Get category for Member",
+        "description": "get category",
+        "responses": {
+          "200": {
+            "description": "Member category fetched successfully"
+          },
+          "500": {
+            "description": "Internal Server Error"
+          }
+        },
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "status": {
+                    "type": "string",
+                    "example": "active"
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/support/getuserlist": {
+      "post": {
+        "tags": [
+          "16.Dashboard Api`s"
+        ],
+        "summary": "Get user list",
+        "description": "get user list",
+        "responses": {
+          "200": {
+            "description": "User`s list fetched successfully"
+          },
+          "500": {
+            "description": "Internal Server Error"
+          }
+        },
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "status": {
+                    "type": "string",
+                    "example": "active"
                   }
                 }
               }
@@ -2610,10 +2956,10 @@
         }
       }
     },
-    "/travel/gettravelexpensecategories": {
+    "/travel/gettravelexpcategory": {
       "post": {
         "tags": [
-          "16.Dashboard Api`s"
+          "6.2.TRAVEL EXPENSE"
         ],
         "summary": "Get travel expense categories",
         "description": "Get travel expense categories",

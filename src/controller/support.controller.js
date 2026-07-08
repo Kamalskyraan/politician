@@ -1,9 +1,14 @@
 import express from "express";
 import { supportModel } from "../models/support.model.js";
-import { executeQuery, sendResponse } from "../utils/helper.js";
+import {
+  executeQuery,
+  replaceNullWithEmptyString,
+  sendResponse,
+} from "../utils/helper.js";
 import { sendContactUsMail, sendMail } from "../config/email.js";
 import {
   addIssueCategorySchema,
+  addMemberCategorySchema,
   addSumitCategorySchema,
   addTravelExpCategorySchema,
   contactUsSchema,
@@ -11,16 +16,25 @@ import {
   deleteFaqSchema,
   deleteIssueCategorypermanentlySchema,
   deleteIssueCategorySchema,
+  deleteMemberCategorySchema,
+  deleteMemberpermanentlySchema,
   deleteSumitCategorySchema,
   deleteSumitCatpermanentlySchema,
+  deleteTravelExpCategorySchema,
+  deleteTravelExppermanentlySchema,
   getCountriesSchema,
   getFaqSchema,
   getIssueCategorySchema,
+  getMemberCategorySchema,
   getMemberschema,
   getSumitCategorySchema,
+  getTravelExpenseCategorySchema,
+  getUserListSchema,
   statusChangeSchema,
   updateIssueCategorySchema,
+  updateMemberCategorySchema,
   updateSumitCategorySchema,
+  updateTravelExpCategorySchema,
   userIdSchema,
   validateRequest,
 } from "../utils/validator.js";
@@ -51,7 +65,6 @@ export const addFaq = async (req, res) => {
     );
   }
 };
-
 export const getFaq = async (req, res) => {
   try {
     const validatedData = validateRequest(req.body, getFaqSchema);
@@ -82,7 +95,6 @@ export const getFaq = async (req, res) => {
     sendResponse(res, 500, 0, "Internal Server Error", [], error.message);
   }
 };
-
 export const updateFaq = async (req, res) => {
   try {
     const { id, question, answer } = req.body;
@@ -930,6 +942,486 @@ export const addTravelExpCategory = async (req, res) => {
         [],
         "",
       );
+    }
+  } catch (error) {
+    return sendResponse(
+      res,
+      500,
+      0,
+      "Internal server error",
+      [],
+      error.message,
+    );
+  }
+};
+export const updateTravelExpcategory = async (req, res) => {
+  try {
+    const validatedData = validateRequest(
+      req.body,
+      updateTravelExpCategorySchema,
+    );
+    if (validatedData?.success === 0) {
+      return sendResponse(
+        res,
+        200,
+        0,
+        "validation error",
+        [],
+        validatedData?.errorObject?.errors,
+      );
+    }
+    let { id, category } = validatedData?.value;
+    // console.log(id, category)
+
+    const result = await supportMdl.updateTravelExpCat({ id, category });
+    if (result?.success === 1) {
+      return sendResponse(
+        res,
+        200,
+        1,
+        "Travel expense category updated successfully",
+        [],
+        "",
+      );
+    } else if (result?.success === 0) {
+      return sendResponse(
+        res,
+        200,
+        0,
+        "Failed to update travel expense category",
+        [],
+        "",
+      );
+    }
+  } catch (error) {
+    return sendResponse(
+      res,
+      500,
+      0,
+      "Internal server error",
+      [],
+      error.message,
+    );
+  }
+};
+export const deleteTravelExpcategory = async (req, res) => {
+  try {
+    const validatedData = validateRequest(
+      req.body,
+      deleteTravelExpCategorySchema,
+    );
+    if (validatedData?.success === 0) {
+      return sendResponse(
+        res,
+        200,
+        0,
+        "validation error",
+        [],
+        validatedData?.errorObject?.errors,
+      );
+    }
+    let { id, status } = validatedData?.value;
+    // console.log(status)
+
+    const result = await supportMdl.deleteTravelExpCat(id, status);
+    if (result?.success === 1) {
+      return sendResponse(
+        res,
+        200,
+        1,
+        status === "active"
+          ? "travel expense category retrieved successfully"
+          : "travel expense category deleted successfully",
+        [],
+        "",
+      );
+    } else {
+      return sendResponse(
+        res,
+        200,
+        0,
+        "Failed to delete travel expense category",
+        [],
+        "",
+      );
+    }
+  } catch (error) {
+    return sendResponse(
+      res,
+      500,
+      0,
+      "Internal server error",
+      [],
+      error.message,
+    );
+  }
+};
+export const deleteTravelExpCatpermanently = async (req, res) => {
+  try {
+    const validatedData = validateRequest(
+      req.body,
+      deleteTravelExppermanentlySchema,
+    );
+    if (validatedData?.success === 0) {
+      return sendResponse(
+        res,
+        200,
+        0,
+        "validation error",
+        [],
+        validatedData?.errorObject?.errors,
+      );
+    }
+    let { id } = validatedData?.value;
+
+    const result = await supportMdl.deleteTravelExpCatPermanently(id);
+
+    if (result?.success === 1) {
+      return sendResponse(
+        res,
+        200,
+        1,
+        "travel expense category successfully deleted permanently",
+        [],
+        "",
+      );
+    } else {
+      return sendResponse(
+        res,
+        200,
+        0,
+        "Failed to delete travel expense category",
+        [],
+        "",
+      );
+    }
+  } catch (error) {
+    return sendResponse(
+      res,
+      500,
+      0,
+      "Internal server error",
+      [],
+      error.message,
+    );
+  }
+};
+export const getTravelExpenseCategory = async (req, res) => {
+  try {
+    const validatedData = validateRequest(
+      req.body,
+      getTravelExpenseCategorySchema,
+    );
+    if (validatedData?.success === 0) {
+      return sendResponse(
+        res,
+        200,
+        0,
+        "validation error",
+        [],
+        validatedData?.errorObject?.errors,
+      );
+    }
+    const { status } = validatedData?.value;
+    const result = await supportMdl.getTravelExpenseCat(status);
+    // console.log(result);
+    const data = result?.data;
+    if (result?.success === 1) {
+      return sendResponse(
+        res,
+        200,
+        1,
+        "Travel Expense category fetched successfully",
+        data,
+        "",
+      );
+    } else if (result?.success === 0) {
+      return sendResponse(
+        res,
+        200,
+        0,
+        "Failed to fetch travel expense category",
+        [],
+        "",
+      );
+    }
+  } catch (error) {
+    return sendResponse(
+      res,
+      500,
+      0,
+      "Internal server error",
+      [],
+      error.message,
+    );
+  }
+};
+
+export const addMemberCategory = async (req, res) => {
+  try {
+    const validatedData = validateRequest(req.body, addMemberCategorySchema);
+    if (validatedData?.success === 0) {
+      return sendResponse(
+        res,
+        200,
+        0,
+        "validation error",
+        [],
+        validatedData?.errorObject?.errors,
+      );
+    }
+    let { category } = validatedData?.value;
+
+    const result = await supportMdl.addMemberCat({ category });
+    if (result?.success === 1) {
+      return sendResponse(
+        res,
+        200,
+        1,
+        "Member category added successfully",
+        [],
+        "",
+      );
+    } else if (result?.success === 0) {
+      return sendResponse(res, 200, 0, "Failed to add member category", [], "");
+    }
+  } catch (error) {
+    return sendResponse(
+      res,
+      500,
+      0,
+      "Internal server error",
+      [],
+      error.message,
+    );
+  }
+};
+export const updateMembercategory = async (req, res) => {
+  try {
+    const validatedData = validateRequest(req.body, updateMemberCategorySchema);
+    if (validatedData?.success === 0) {
+      return sendResponse(
+        res,
+        200,
+        0,
+        "validation error",
+        [],
+        validatedData?.errorObject?.errors,
+      );
+    }
+    let { id, category } = validatedData?.value;
+    // console.log(id, category)
+
+    const result = await supportMdl.updateMemberCat({ id, category });
+    if (result?.success === 1) {
+      return sendResponse(
+        res,
+        200,
+        1,
+        "Member category updated successfully",
+        [],
+        "",
+      );
+    } else if (result?.success === 0) {
+      return sendResponse(
+        res,
+        200,
+        0,
+        "Failed to update member category",
+        [],
+        "",
+      );
+    }
+  } catch (error) {
+    return sendResponse(
+      res,
+      500,
+      0,
+      "Internal server error",
+      [],
+      error.message,
+    );
+  }
+};
+export const deleteMembercategory = async (req, res) => {
+  try {
+    const validatedData = validateRequest(req.body, deleteMemberCategorySchema);
+    if (validatedData?.success === 0) {
+      return sendResponse(
+        res,
+        200,
+        0,
+        "validation error",
+        [],
+        validatedData?.errorObject?.errors,
+      );
+    }
+    let { id, status } = validatedData?.value;
+    // console.log(status)
+
+    const result = await supportMdl.deleteMemberCat(id, status);
+    if (result?.success === 1) {
+      return sendResponse(
+        res,
+        200,
+        1,
+        status === "active"
+          ? "member category retrieved successfully"
+          : "member category deleted successfully",
+        [],
+        "",
+      );
+    } else {
+      return sendResponse(
+        res,
+        200,
+        0,
+        "Failed to delete member category",
+        [],
+        "",
+      );
+    }
+  } catch (error) {
+    return sendResponse(
+      res,
+      500,
+      0,
+      "Internal server error",
+      [],
+      error.message,
+    );
+  }
+};
+export const deletememberCatpermanently = async (req, res) => {
+  try {
+    const validatedData = validateRequest(
+      req.body,
+      deleteMemberpermanentlySchema,
+    );
+    if (validatedData?.success === 0) {
+      return sendResponse(
+        res,
+        200,
+        0,
+        "validation error",
+        [],
+        validatedData?.errorObject?.errors,
+      );
+    }
+    let { id } = validatedData?.value;
+
+    const result = await supportMdl.deleteMemberCatPermanently(id);
+
+    if (result?.success === 1) {
+      return sendResponse(
+        res,
+        200,
+        1,
+        "Member category successfully deleted permanently",
+        [],
+        "",
+      );
+    } else {
+      return sendResponse(
+        res,
+        200,
+        0,
+        "Failed to delete member category",
+        [],
+        "",
+      );
+    }
+  } catch (error) {
+    return sendResponse(
+      res,
+      500,
+      0,
+      "Internal server error",
+      [],
+      error.message,
+    );
+  }
+};
+export const getMemberCategory = async (req, res) => {
+  try {
+    const validatedData = validateRequest(req.body, getMemberCategorySchema);
+    if (validatedData?.success === 0) {
+      return sendResponse(
+        res,
+        200,
+        0,
+        "validation error",
+        [],
+        validatedData?.errorObject?.errors,
+      );
+    }
+    const { status } = validatedData?.value;
+    const result = await supportMdl.getMemberCat(status);
+    // console.log(result);
+    const data = result?.data;
+    if (result?.success === 1) {
+      return sendResponse(
+        res,
+        200,
+        1,
+        "Member category fetched successfully",
+        data,
+        "",
+      );
+    } else if (result?.success === 0) {
+      return sendResponse(
+        res,
+        200,
+        0,
+        "Failed to fetch member category",
+        [],
+        "",
+      );
+    }
+  } catch (error) {
+    return sendResponse(
+      res,
+      500,
+      0,
+      "Internal server error",
+      [],
+      error.message,
+    );
+  }
+};
+
+export const getUserList = async (req, res) => {
+  try {
+    const validatedData = validateRequest(req.body, getUserListSchema);
+    if (validatedData?.success === 0) {
+      return sendResponse(
+        res,
+        200,
+        0,
+        "validation error",
+        [],
+        validatedData?.errorObject?.errors,
+      );
+    }
+    let { status } = validatedData?.value;
+
+    status = status === "active" ? 0 : 1;
+
+    const result = await supportMdl.getUserList(status);
+    const data = result?.data;
+
+    const response = replaceNullWithEmptyString(data);
+    if (result?.success === 1) {
+      return sendResponse(
+        res,
+        200,
+        1,
+        "user list fetched successfully",
+        response,
+        "",
+      );
+    } else if (result?.success === 0) {
+      return sendResponse(res, 200, 0, "Failed to fetch user list", [], "");
     }
   } catch (error) {
     return sendResponse(

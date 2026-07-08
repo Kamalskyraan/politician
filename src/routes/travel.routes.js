@@ -689,9 +689,9 @@ router.post(
 */ travelcontroller.getExpense,
 );
 router.post(
-  "/gettravelexpensecategories",
+  "/gettravelexpcategory",
   /*
-    #swagger.tags = ['16.Dashboard Api`s']
+    #swagger.tags = ['6.2.TRAVEL EXPENSE']
     #swagger.summary = 'Get travel expense categories'
     #swagger.description = 'Get travel expense categories'
 

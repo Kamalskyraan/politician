@@ -261,6 +261,7 @@ router.post(
 */
   supportController.updateStatus,
 );
+
 router.post(
   "/issuecategory",
   /*
@@ -434,6 +435,7 @@ router.post(
     }
 */ supportController.deleteIssueCatpermanently,
 );
+
 router.post(
   "/addsumitcategory",
   /*
@@ -493,7 +495,7 @@ router.post(
     }
 
     #swagger.responses[200] = {
-      description: 'political sumit category added successfully'
+      description: 'political sumit category fetched successfully'
     }
 
     #swagger.responses[500] = {
@@ -647,4 +649,363 @@ router.post(
 */
   supportController.addTravelExpCategory,
 );
+router.post(
+  "/updatetravelexpcategory",
+  /*
+    #swagger.tags = ['16.Dashboard Api`s']
+    #swagger.summary = 'Update category for travel expense'
+    #swagger.description = 'Update category'
+
+    #swagger.requestBody = {
+      required: true,
+      content: {
+        "application/json": {
+          schema: {
+            type: "object",
+            properties: {
+              id: {
+                type: "numer",
+                example: 1
+              },
+              category: {
+                type: "string",
+                example: "Road"
+              },
+            }
+          }
+        }
+      }
+    }
+
+    #swagger.responses[200] = {
+      description: 'Travel expense category updated successfully'
+    }
+
+    #swagger.responses[500] = {
+      description: 'Internal Server Error'
+    }
+*/
+  supportController.updateTravelExpcategory,
+);
+router.post(
+  "/deletetravelexpcategory",
+  /*
+    #swagger.tags = ['16.Dashboard Api`s']
+    #swagger.summary = 'Delete category for travel expense'
+    #swagger.description = 'Delete category'
+
+    #swagger.requestBody = {
+      required: true,
+      content: {
+        "application/json": {
+          schema: {
+            type: "object",
+            properties: {
+              id: {
+                type: "number",
+                example: 2
+              },
+              status: {
+                type: "string",
+                example: "active"
+              },
+            }
+          }
+        }
+      }
+    }
+
+    #swagger.responses[200] = {
+      description: 'Travel expense category updated successfully'
+    }
+
+    #swagger.responses[500] = {
+      description: 'Internal Server Error'
+    }
+*/
+  supportController.deleteTravelExpcategory,
+);
+router.post(
+  "/deletetravelexpcategorypermanently",
+  /*
+    #swagger.tags = ['16.Dashboard Api`s']
+    #swagger.summary = 'Delete category permanently for travel expense'
+    #swagger.description = 'Delete category permanently'
+
+    #swagger.requestBody = {
+      required: true,
+      content: {
+        "application/json": {
+          schema: {
+            type: "object",
+            properties: {
+              id: {
+                type: "number",
+                example: 2
+              }
+            }
+          }
+        }
+      }
+    }
+
+    #swagger.responses[200] = {
+      description: 'Travel expense category permanently deleted successfully'
+    }
+
+    #swagger.responses[500] = {
+      description: 'Internal Server Error'
+    }
+*/
+  supportController.deleteTravelExpCatpermanently,
+);
+router.post(
+  "/gettravelexpensecategory",
+  /*
+    #swagger.tags = ['16.Dashboard Api`s']
+    #swagger.summary = 'Get category for travel expense'
+    #swagger.description = 'get category'
+
+    #swagger.requestBody = {
+      required: true,
+      content: {
+        "application/json": {
+          schema: {
+            type: "object",
+            properties: {
+              status: {
+                type: "string",
+                example: "active"
+              },
+            }
+          }
+        }
+      }
+    }
+
+    #swagger.responses[200] = {
+      description: 'travel expense category fetched successfully'
+    }
+
+    #swagger.responses[500] = {
+      description: 'Internal Server Error'
+    }
+*/
+  supportController.getTravelExpenseCategory,
+);
+
+router.post(
+  "/addmembercategory",
+  /*
+    #swagger.tags = ['16.Dashboard Api`s']
+    #swagger.summary = 'Add category for member'
+    #swagger.description = 'Add category'
+
+    #swagger.requestBody = {
+      required: true,
+      content: {
+        "application/json": {
+          schema: {
+            type: "object",
+            properties: {
+              category: {
+                type: "string",
+                example: "Road"
+              },
+            }
+          }
+        }
+      }
+    }
+
+    #swagger.responses[200] = {
+      description: 'Member category added successfully'
+    }
+
+    #swagger.responses[500] = {
+      description: 'Internal Server Error'
+    }
+*/
+  supportController.addMemberCategory,
+);
+router.post(
+  "/updatemembercategory",
+  /*
+    #swagger.tags = ['16.Dashboard Api`s']
+    #swagger.summary = 'Update category for Member'
+    #swagger.description = 'Update category'
+
+    #swagger.requestBody = {
+      required: true,
+      content: {
+        "application/json": {
+          schema: {
+            type: "object",
+            properties: {
+              id: {
+                type: "numer",
+                example: 1
+              },
+              category: {
+                type: "string",
+                example: "Road"
+              },
+            }
+          }
+        }
+      }
+    }
+
+    #swagger.responses[200] = {
+      description: 'Member category updated successfully'
+    }
+
+    #swagger.responses[500] = {
+      description: 'Internal Server Error'
+    }
+*/
+  supportController.updateMembercategory,
+);
+router.post(
+  "/deletemembercategory",
+  /*
+    #swagger.tags = ['16.Dashboard Api`s']
+    #swagger.summary = 'Delete category for member'
+    #swagger.description = 'Delete category'
+
+    #swagger.requestBody = {
+      required: true,
+      content: {
+        "application/json": {
+          schema: {
+            type: "object",
+            properties: {
+              id: {
+                type: "number",
+                example: 2
+              },
+              status: {
+                type: "string",
+                example: "active"
+              },
+            }
+          }
+        }
+      }
+    }
+
+    #swagger.responses[200] = {
+      description: 'member category updated successfully'
+    }
+
+    #swagger.responses[500] = {
+      description: 'Internal Server Error'
+    }
+*/
+  supportController.deleteMembercategory,
+);
+router.post(
+  "/deletemembercategorypermanently",
+  /*
+    #swagger.tags = ['16.Dashboard Api`s']
+    #swagger.summary = 'Delete category permanently for member'
+    #swagger.description = 'Delete category permanently'
+
+    #swagger.requestBody = {
+      required: true,
+      content: {
+        "application/json": {
+          schema: {
+            type: "object",
+            properties: {
+              id: {
+                type: "number",
+                example: 2
+              }
+            }
+          }
+        }
+      }
+    }
+
+    #swagger.responses[200] = {
+      description: 'Member category permanently deleted successfully'
+    }
+
+    #swagger.responses[500] = {
+      description: 'Internal Server Error'
+    }
+*/
+  supportController.deletememberCatpermanently,
+);
+router.post(
+  "/getmembercategory",
+  /*
+    #swagger.tags = ['16.Dashboard Api`s']
+    #swagger.summary = 'Get category for Member'
+    #swagger.description = 'get category'
+
+    #swagger.requestBody = {
+      required: true,
+      content: {
+        "application/json": {
+          schema: {
+            type: "object",
+            properties: {
+              status: {
+                type: "string",
+                example: "active"
+              },
+            }
+          }
+        }
+      }
+    }
+
+    #swagger.responses[200] = {
+      description: 'Member category fetched successfully'
+    }
+
+    #swagger.responses[500] = {
+      description: 'Internal Server Error'
+    }
+*/
+  supportController.getMemberCategory,
+);
+
+router.post(
+  "/getuserlist",
+  /*
+    #swagger.tags = ['16.Dashboard Api`s']
+    #swagger.summary = 'Get user list'
+    #swagger.description = 'get user list'
+
+    #swagger.requestBody = {
+      required: true,
+      content: {
+        "application/json": {
+          schema: {
+            type: "object",
+            properties: {
+              status: {
+                type: "string",
+                example: "active"
+              },
+            }
+          }
+        }
+      }
+    }
+
+    #swagger.responses[200] = {
+      description: 'User`s list fetched successfully'
+    }
+
+    #swagger.responses[500] = {
+      description: 'Internal Server Error'
+    }
+*/
+  supportController.getUserList,
+);
+
 export default router;

@@ -112,7 +112,7 @@ export class sourceModel {
 
   async getMedia(id) {
     let placeHolders = id.map(() => "?").join(", ");
-    let query = `SELECT id, url, org_name, media_size, created_at FROM media WHERE id IN (${placeHolders})`;
+    let query = `SELECT id, url, org_name, media_size, created_at FROM media WHERE id IN (${placeHolders}) ORDER BY created_at DESC`;
     let params = id;
 
     // console.log("params:", id);

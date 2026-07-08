@@ -303,7 +303,7 @@ export const getSumit = async (req, res) => {
     } else if (id != null) {
       result = await sumitMdl.getSumitPeopleDetails(id);
       data = result?.data;
-      // console.log("got data")
+      // console.log(data)
 
       let response = {
         id: data[0]?.sumit_id,

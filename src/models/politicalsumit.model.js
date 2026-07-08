@@ -152,7 +152,7 @@ export class politicalSumitModel {
     }
   }
   async getSumitPeopleDetails(id) {
-    let query = `SELECT s.id AS sumit_id, s.title, s.sumit_date, s.status, s.location, s.lat, s.lng, p.id AS people_id, p.name, p.type, p.cat_id, p.cat_name, p.dept_id, p.dept_name, c.category_name AS designation, dept.category_name AS department FROM political_sumit s LEFT JOIN political_sumit_peoples p ON p.sumit_id = s.id LEFT JOIN political_sumit_category c ON c.id = p.cat_id LEFT JOIN political_sumit_category dept ON dept.id = p.dept_id WHERE s.id = ?`;
+    let query = `SELECT s.id AS sumit_id, s.title, s.sumit_date, s.status, s.location, s.lat, s.lng, p.id AS people_id, p.name, p.type, p.cat_id, p.cat_name, p.dept_id, p.dept_name, c.role_name AS designation, dept.category_name AS department FROM political_sumit s LEFT JOIN political_sumit_peoples p ON p.sumit_id = s.id LEFT JOIN user_role c ON c.id = p.cat_id LEFT JOIN political_sumit_category dept ON dept.id = p.dept_id WHERE s.id = ?`;
 
     const result = await executeQuery(query, [id]);
     if (result?.success === 1) {
