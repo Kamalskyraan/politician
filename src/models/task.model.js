@@ -114,8 +114,7 @@ export class taskModel {
     const total = countResult?.data[0]?.total;
 
     const result = await executeQuery(query, params);
-    console.log(result, "result");
-    if (result?.success === 1) {
+        if (result?.success === 1) {
       return {
         success: 1,
         data: result?.data,
