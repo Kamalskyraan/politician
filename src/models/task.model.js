@@ -100,7 +100,7 @@ export class taskModel {
 
       query = `SELECT id, title, descp, t_priority, from_date, to_date, media_id, attnds_id, t_status, is_remind, remind_status, remind_tenure, remind_at, snooze_at, nxt_snooze_at FROM tasks WHERE user_id = ? AND t_status IN (${placeholders}) ORDER BY from_date LIMIT ? OFFSET ?`;
       params.push(user_id, ...status, limit, offset);
-      console.log("QUERY , PRINTED", query);
+      console.log("QUERY , PRINTED");
     } else {
       countQuery = `SELECT FROM tasks WHERE user_id = ? LIMIT ? OFFSET ?`;
       countParams.push(user_id);
