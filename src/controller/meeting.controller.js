@@ -139,7 +139,6 @@ export const getMembers = async (req, res) => {
     const result = await meetingMdl.getMember({ upt_cols, params });
     const data = (await result?.data) || [];
 
-<<<<<<< HEAD
     // if (result?.data.length >= 1) {
 
     // } else {
@@ -163,7 +162,6 @@ export const getMembers = async (req, res) => {
     // });
     // console.log("first");
     return sendResponse(res, 200, 1, "Member fetched successfully", data, "");
-=======
     if (result?.data.length >= 1) {
       // console.log("first");
       return sendResponse(res, 200, 1, "Member fetched successfully", data, "");
@@ -177,7 +175,6 @@ export const getMembers = async (req, res) => {
         "",
       );
     }
->>>>>>> 69e97d51ddff63791345088bd7c7b7d47baa8668
   } catch (error) {
     return sendResponse(
       res,
