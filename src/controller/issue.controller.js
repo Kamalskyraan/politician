@@ -18,6 +18,7 @@ import {
 import { issueModel } from "../models/issue.model.js";
 import { sourceModel } from "../models/source.model.js";
 import { meetingModel } from "../models/meeting.model.js";
+import { sendPushNotification } from "../service/notification.service.js";
 
 const issueMdl = new issueModel();
 const sourceMdl = new sourceModel();
@@ -51,6 +52,10 @@ export const addIssue = async (req, res) => {
     } = validatedData?.value;
 
     cat_name = cat_name === "" ? null : cat_name;
+
+    address = address === "" ? null : address;
+    lat = lat === "" ? null : lat;
+    lng = lng === "" ? null : lng;
 
     media_id = media_id === "" ? null : media_id;
     incharge_id = incharge_id === "" ? null : incharge_id;
@@ -149,6 +154,13 @@ export const addIssue = async (req, res) => {
     }
 
     if (result?.success === 1) {
+      await sendPushNotification({
+        user_id,
+        payload: {
+          title: "Issue Created",
+          message: "New issue has been created",
+        },
+      });
       return sendResponse(
         res,
         200,
@@ -393,6 +405,13 @@ export const updateIssue = async (req, res) => {
     }
 
     if (result?.success === 1) {
+      await sendPushNotification({
+        user_id,
+        payload: {
+          title: "Issue Updated",
+          message: "Issue has been updated",
+        },
+      });
       return sendResponse(
         res,
         200,

@@ -241,6 +241,13 @@ export const addTravel = async (req, res) => {
     }
 
     if (result?.success === 1) {
+      await sendPushNotification({
+        user_id,
+        payload: {
+          title: "Travel Created",
+          message: "New travel has been created",
+        },
+      });
       return sendResponse(
         res,
         200,
@@ -572,6 +579,13 @@ export const updateTravel = async (req, res) => {
     }
 
     if (result?.success === 1) {
+      await sendPushNotification({
+        user_id,
+        payload: {
+          title: "Travel Updated",
+          message: "Travel has been updated",
+        },
+      });
       return sendResponse(
         res,
         200,
@@ -1093,6 +1107,8 @@ export const addExpense = async (req, res) => {
     let { travel_id, cat_id, cat_name, notes, exp_date, amount } =
       validatedData?.value;
 
+    cat_name = cat_name === "" ? null : cat_name;
+
     exp_date = new Date(exp_date);
     exp_date.setSeconds(0, 0);
 
@@ -1232,13 +1248,13 @@ export const updateExpense = async (req, res) => {
     //   params.push(category);
     // }
     if (cat_id != null) {
-      upt_cols.push("cat_id = ?");
-      params.push(cat_id);
+      upt_cols.push("cat_id = ?, cat_name = ?");
+      params.push(cat_id, cat_name);
     }
-    if (cat_name) {
-      upt_cols.push("cat_name = ?");
-      params.push(cat_name);
-    }
+    // if (cat_name) {
+    //   upt_cols.push("cat_name = ?");
+    //   params.push(cat_name);
+    // }
     if (notes !== undefined) {
       upt_cols.push("notes = ?");
       params.push(notes);
@@ -2347,6 +2363,7 @@ export const travelExpenseCategory = async (req, res) => {
     const result = await travelMdl.getTravelExpenseCategory();
     // console.log(result);
     const data = result?.data;
+
     if (result?.success === 1) {
       return sendResponse(
         res,

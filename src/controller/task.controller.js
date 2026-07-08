@@ -112,7 +112,7 @@ export const addTask = async (req, res) => {
       id: result?.data?.insertId,
       title: title,
       descp: descp,
-      t_priority: 1,
+      t_priority: t_priority,
       from_date: from_date,
       to_date: to_date,
       t_status: status,
@@ -159,6 +159,13 @@ export const addTask = async (req, res) => {
     }
 
     if (result?.success === 1) {
+      await sendPushNotification({
+        user_id,
+        payload: {
+          title: "Task Created",
+          message: "New task has been created",
+        },
+      });
       return sendResponse(
         res,
         200,
@@ -362,7 +369,7 @@ export const updateTask = async (req, res) => {
       id: id,
       title: title,
       descp: descp,
-      t_priority: 1,
+      t_priority: t_priority,
       from_date: from_date,
       to_date: to_date,
       t_status: status,
@@ -416,6 +423,13 @@ export const updateTask = async (req, res) => {
     }
 
     if (result?.success === 1) {
+      await sendPushNotification({
+        user_id,
+        payload: {
+          title: "Task Updated",
+          message: "Task has been updated",
+        },
+      });
       return sendResponse(
         res,
         200,
@@ -472,10 +486,7 @@ export const getTask = async (req, res) => {
     }
 
     let data = result?.data;
-   
-    let pagination = result ?.pagination
-   
-    // console.log(data);
+    let pagination = result?.pagination;
 
     const response = await Promise.all(
       data?.map(async (obj) => {

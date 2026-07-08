@@ -286,6 +286,7 @@ export class travelModel {
   async getTravelExpenseCategory(cat_id) {
     let query;
     let params = [];
+    // console.log(cat_id);
 
     if (cat_id != null) {
       // handles both undefined and null

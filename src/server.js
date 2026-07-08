@@ -39,7 +39,7 @@ app.get("/abcde", (req, res) => {
 const port = process.env.PORT || 3000;
 
 app.listen(port, () =>
-  console.log(`politician server running successfully on port ${port}`),
+  console.log(`political server running successfully on port ${port}`),
 );
 
 

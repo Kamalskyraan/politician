@@ -131,7 +131,7 @@ export class issueModel {
     const countResult = await executeQuery(CountQuery, countParams);
     const total = countResult?.data[0]?.total;
 
-    query += ` LIMIT ? OFFSET ?`;
+    query += ` ORDER BY report_date ASC LIMIT ? OFFSET ?`;
     params.push(limit, offset);
 
     const result = await executeQuery(query, params);
@@ -205,7 +205,7 @@ export class issueModel {
   }
 
   async getTodayIssues(today) {
-    let query = `SELECT id, user_id FROM tasks WHERE DATE(report_date) = ?`;
+    let query = `SELECT id, user_id FROM issues WHERE DATE(report_date) = ?`;
     let params = [today];
 
     const result = await executeQuery(query, params);

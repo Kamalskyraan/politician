@@ -66,7 +66,7 @@ export const uploadMedia = async (req, res) => {
         today = formatDateForSQL(today);
         return {
           id: result?.data?.insertId,
-          url: url,
+          url: `${process.env.MEDIA_BASE_URL}${url}`,
           media_size: String(file.size),
           org_name: org_name[index],
           created_at: today,
@@ -113,7 +113,7 @@ export const updateUserrole = async (req, res) => {
     const result = await sourceMdl.updateRole({ id, role_name, status });
     const data = result?.data || "";
     const error = result?.error || "";
-    console.log(error);
+    // console.log(error);
 
     if (result?.success === 1) {
       return sendResponse(res, 200, 1, "Role Updated successfully", [], "");

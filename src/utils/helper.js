@@ -10,6 +10,7 @@ import { travelModel } from "../models/travel.model.js";
 import { issueModel } from "../models/issue.model.js";
 import { politicalSumitModel } from "../models/politicalsumit.model.js";
 import { supportModel } from "../models/support.model.js";
+import { sendPushNotification } from "../service/notification.service.js";
 const notificationMdl = new notificationModel();
 const meetingMdl = new meetingModel();
 const taskMdl = new taskModel();
@@ -225,15 +226,41 @@ export const processMeetingNotifications = async () => {
   try {
     const today = formatDateForSQL(new Date()).slice(0, 10);
 
-    const meetings = await meetingMdl.getTodayMeetings(today);
+    const meetings = (await meetingMdl.getTodayMeetings(today)) || [];
+
+    // console.log("from db result:", meetings);
+
+    if (meetings.data.length === 0) {
+      return;
+    }
+
+    // console.log("meeting count:", meeting_count);
+    const userMeetingCount = {};
+
     if (meetings?.success === 1) {
       for (const meeting of meetings.data) {
+        // console.log("inside in app notification");
         await addNotification(
           "MEETING_CREATED",
           meeting.user_id,
           "meeting",
           meeting.id,
         );
+
+        // count meetings per user
+        userMeetingCount[meeting.user_id] =
+          (userMeetingCount[meeting.user_id] || 0) + 1;
+      }
+      // console.log("Meeting count per user ID:", userMeetingCount);
+      for (const [user_id, count] of Object.entries(userMeetingCount)) {
+        // console.log("for push notification", user_id, count);
+        await sendPushNotification({
+          user_id,
+          payload: {
+            title: "Today's Schedule",
+            message: `Today you have ${count} meeting${count > 1 ? "s" : ""}.`,
+          },
+        });
       }
     }
   } catch (error) {
@@ -244,7 +271,14 @@ export const processAppointmentNotifications = async () => {
   try {
     const today = formatDateForSQL(new Date()).slice(0, 10);
 
-    const appointments = await meetingMdl.getTodayAppointments(today);
+    const appointments = (await meetingMdl.getTodayAppointments(today)) || [];
+
+    if (appointments.data.length === 0) {
+      return;
+    }
+
+    const userAppointmentCount = {};
+
     if (appointments?.success === 1) {
       for (const appointment of appointments.data) {
         await addNotification(
@@ -253,6 +287,19 @@ export const processAppointmentNotifications = async () => {
           "appointment",
           appointment.id,
         );
+        // count meetings per user
+        userAppointmentCount[appointment.user_id] =
+          (userAppointmentCount[appointment.user_id] || 0) + 1;
+      }
+
+      for (const [user_id, count] of Object.entries(userAppointmentCount)) {
+        await sendPushNotification({
+          user_id,
+          payload: {
+            title: "Today's Schedule",
+            message: `Today you have ${count} appointment${count > 1 ? "s" : ""}.`,
+          },
+        });
       }
     }
   } catch (error) {
@@ -263,10 +310,28 @@ export const processTaskNotifications = async () => {
   try {
     const today = formatDateForSQL(new Date()).slice(0, 10);
 
-    const tasks = await taskMdl.getTodayTasks(today);
+    const tasks = (await taskMdl.getTodayTasks(today)) || [];
+
+    if (tasks.data.length === 0) {
+      return;
+    }
+
+    const userTaskCount = {};
+
     if (tasks?.success === 1) {
       for (const task of tasks.data) {
         await addNotification("TASK_CREATED", task.user_id, "task", task.id);
+        userTaskCount[task.user_id] = (userTaskCount[task.user_id] || 0) + 1;
+      }
+
+      for (const [user_id, count] of Object.entries(userTaskCount)) {
+        await sendPushNotification({
+          user_id,
+          payload: {
+            title: "Today's Schedule",
+            message: `Today you have ${count} task${count > 1 ? "s" : ""}.`,
+          },
+        });
       }
     }
   } catch (error) {
@@ -277,7 +342,15 @@ export const processTravelNotifications = async () => {
   try {
     const today = formatDateForSQL(new Date()).slice(0, 10);
 
-    const travels = await travelMdl.getTodayTravels(today);
+    const travels = (await travelMdl.getTodayTravels(today)) || [];
+
+    if (travels.data.length === 0) {
+      return;
+    }
+
+    // console.log("meeting count:", meeting_count);
+    const userTravelCount = {};
+
     if (travels?.success === 1) {
       for (const travel of travels.data) {
         await addNotification(
@@ -286,6 +359,19 @@ export const processTravelNotifications = async () => {
           "travel",
           travel.id,
         );
+        // count meetings per user
+        userTravelCount[travel.user_id] =
+          (userTravelCount[travel.user_id] || 0) + 1;
+      }
+
+      for (const [user_id, count] of Object.entries(userMeetingCount)) {
+        await sendPushNotification({
+          user_id,
+          payload: {
+            title: "Today's Schedule",
+            message: `Today you have ${count} travel${count > 1 ? "s" : ""}.`,
+          },
+        });
       }
     }
   } catch (error) {
@@ -296,7 +382,16 @@ export const processIssueNotifications = async () => {
   try {
     const today = formatDateForSQL(new Date()).slice(0, 10);
 
-    const issues = await issueMdl.getTodayIssues(today);
+    const issues = (await issueMdl.getTodayIssues(today)) || [];
+    // console.log(issues);
+
+    if (issues.data.length === 0) {
+      return;
+    }
+
+    // console.log("meeting count:", meeting_count);
+    const userIssueCount = {};
+
     if (issues?.success === 1) {
       for (const issue of issues.data) {
         await addNotification(
@@ -305,6 +400,19 @@ export const processIssueNotifications = async () => {
           "issue",
           issue.id,
         );
+        // count meetings per user
+        userIssueCount[issue.user_id] =
+          (userIssueCount[issue.user_id] || 0) + 1;
+      }
+
+      for (const [user_id, count] of Object.entries(userIssueCount)) {
+        await sendPushNotification({
+          user_id,
+          payload: {
+            title: "Today's Schedule",
+            message: `Today you have ${count} issue${count > 1 ? "s" : ""}.`,
+          },
+        });
       }
     }
   } catch (error) {
@@ -315,7 +423,15 @@ export const processSumitNotifications = async () => {
   try {
     const today = formatDateForSQL(new Date()).slice(0, 10);
 
-    const sumits = await sumitMdl.getTodaySumits(today);
+    const sumits = (await sumitMdl.getTodaySumits(today)) || [];
+
+    if (sumits.data.length === 0) {
+      return;
+    }
+
+    // console.log("meeting count:", meeting_count);
+    const userSumitCount = {};
+
     if (sumits?.success === 1) {
       for (const sumit of sumits.data) {
         await addNotification(
@@ -324,6 +440,19 @@ export const processSumitNotifications = async () => {
           "sumit",
           sumit.id,
         );
+        // count meetings per user
+        userSumitCount[sumit.user_id] =
+          (userSumitCount[sumit.user_id] || 0) + 1;
+      }
+
+      for (const [user_id, count] of Object.entries(userSumitCount)) {
+        await sendPushNotification({
+          user_id,
+          payload: {
+            title: "Today's Schedule",
+            message: `Today you have ${count} political sumit${count > 1 ? "s" : ""}.`,
+          },
+        });
       }
     }
   } catch (error) {
@@ -335,7 +464,15 @@ export const processOverdueMeetingNotifications = async () => {
   try {
     const today = formatDateForSQL(new Date()).slice(0, 10);
 
-    const results = await meetingMdl.getOverdueMeetings(today);
+    const results = (await meetingMdl.getOverdueMeetings(today)) || [];
+
+    if (results.data.length === 0) {
+      return;
+    }
+
+    // console.log("meeting count:", meeting_count);
+    const userMeetingCount = {};
+
     if (results?.success === 1) {
       for (const result of results.data) {
         await addNotification(
@@ -344,6 +481,18 @@ export const processOverdueMeetingNotifications = async () => {
           "meeting",
           result.id,
         );
+        // count meetings per user
+        userMeetingCount[result.user_id] =
+          (userMeetingCount[result.user_id] || 0) + 1;
+      }
+      for (const [user_id, count] of Object.entries(userMeetingCount)) {
+        await sendPushNotification({
+          user_id,
+          payload: {
+            title: "Action Required",
+            message: `You have ${count} overdue meeting${count > 1 ? "s" : ""}.`,
+          },
+        });
       }
     }
   } catch (error) {
@@ -354,7 +503,15 @@ export const processOverdueAppointmentNotifications = async () => {
   try {
     const today = formatDateForSQL(new Date()).slice(0, 10);
 
-    const results = await meetingMdl.getOverdueAppointments(today);
+    const results = (await meetingMdl.getOverdueAppointments(today)) || [];
+
+    if (results.data.length === 0) {
+      return;
+    }
+
+    // console.log("meeting count:", meeting_count);
+    const userAppointmentCount = {};
+
     if (results?.success === 1) {
       for (const result of results.data) {
         await addNotification(
@@ -363,6 +520,18 @@ export const processOverdueAppointmentNotifications = async () => {
           "appointment",
           result.id,
         );
+        // count meetings per user
+        userAppointmentCount[result.user_id] =
+          (userAppointmentCount[result.user_id] || 0) + 1;
+      }
+      for (const [user_id, count] of Object.entries(userAppointmentCount)) {
+        await sendPushNotification({
+          user_id,
+          payload: {
+            title: "Action Required",
+            message: `You have ${count} overdue appointment${count > 1 ? "s" : ""}.`,
+          },
+        });
       }
     }
   } catch (error) {
@@ -373,7 +542,16 @@ export const processOverdueTaskNotifications = async () => {
   try {
     const today = formatDateForSQL(new Date()).slice(0, 10);
 
-    const results = await taskMdl.getOverdueTasks(today);
+    const results = (await taskMdl.getOverdueTasks(today)) || [];
+    // console.log(results);
+
+    if (results.data.length === 0) {
+      return;
+    }
+
+    // console.log("meeting count:", meeting_count);
+    const userTaskCount = {};
+
     if (results?.success === 1) {
       for (const result of results.data) {
         await addNotification(
@@ -382,6 +560,18 @@ export const processOverdueTaskNotifications = async () => {
           "task",
           result.id,
         );
+        // count meetings per user
+        userTaskCount[result.user_id] =
+          (userTaskCount[result.user_id] || 0) + 1;
+      }
+      for (const [user_id, count] of Object.entries(userTaskCount)) {
+        await sendPushNotification({
+          user_id,
+          payload: {
+            title: "Action Required",
+            message: `You have ${count} overdue task${count > 1 ? "s" : ""}.`,
+          },
+        });
       }
     }
   } catch (error) {
@@ -392,7 +582,15 @@ export const processOverdueIssueNotifications = async () => {
   try {
     const today = formatDateForSQL(new Date()).slice(0, 10);
 
-    const results = await issueMdl.getOverdueIssues(today);
+    const results = (await issueMdl.getOverdueIssues(today)) || [];
+
+    if (results.data.length === 0) {
+      return;
+    }
+
+    // console.log("meeting count:", meeting_count);
+    const userIssueCount = {};
+
     if (results?.success === 1) {
       for (const result of results.data) {
         await addNotification(
@@ -401,6 +599,18 @@ export const processOverdueIssueNotifications = async () => {
           "issue",
           result.id,
         );
+        // count meetings per user
+        userIssueCount[result.user_id] =
+          (userIssueCount[result.user_id] || 0) + 1;
+      }
+      for (const [user_id, count] of Object.entries(userIssueCount)) {
+        await sendPushNotification({
+          user_id,
+          payload: {
+            title: "Action Required",
+            message: `You have ${count} overdue issue${count > 1 ? "s" : ""}.`,
+          },
+        });
       }
     }
   } catch (error) {
@@ -411,7 +621,15 @@ export const processOverdueSumitNotifications = async () => {
   try {
     const today = formatDateForSQL(new Date()).slice(0, 10);
 
-    const results = await sumitMdl.getOverdueSumits(today);
+    const results = (await sumitMdl.getOverdueSumits(today)) || [];
+
+    if (results.data.length === 0) {
+      return;
+    }
+
+    // console.log("meeting count:", meeting_count);
+    const userSumitCount = {};
+
     if (results?.success === 1) {
       for (const result of results.data) {
         await addNotification(
@@ -420,6 +638,18 @@ export const processOverdueSumitNotifications = async () => {
           "sumit",
           result.id,
         );
+        // count meetings per user
+        userSumitCount[result.user_id] =
+          (userSumitCount[result.user_id] || 0) + 1;
+      }
+      for (const [user_id, count] of Object.entries(userSumitCount)) {
+        await sendPushNotification({
+          user_id,
+          payload: {
+            title: "Action Required",
+            message: `You have ${count} overdue political sumit${count > 1 ? "s" : ""}.`,
+          },
+        });
       }
     }
   } catch (error) {
