@@ -2397,6 +2397,10 @@
                   "snooze_at": {
                     "type": "string",
                     "example": "120"
+                  },
+                  "user_accept": {
+                    "type": "number",
+                    "example": 0
                   }
                 }
               }
@@ -2559,6 +2563,10 @@
                   "snooze_at": {
                     "type": "string",
                     "example": "120"
+                  },
+                  "user_accept": {
+                    "type": "number",
+                    "example": 0
                   }
                 }
               }

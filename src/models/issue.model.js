@@ -131,7 +131,7 @@ export class issueModel {
     const countResult = await executeQuery(CountQuery, countParams);
     const total = countResult?.data[0]?.total;
 
-    query += ` ORDER BY report_date ASC LIMIT ? OFFSET ?`;
+    query += ` ORDER BY report_date DESC LIMIT ? OFFSET ?`;
     params.push(limit, offset);
 
     const result = await executeQuery(query, params);

@@ -452,9 +452,6 @@ export const addMeeting = async (req, res) => {
       const currentDate = await getCurrentDateTime();
       if (currentDate.slice(0, 10) === from_date.slice(0, 10)) {
         await addNotification("MEETING_CREATED", user_id, "meeting", data.id);
-      }
-
-      if (result?.success === 1) {
         await sendPushNotification({
           user_id,
           payload: {
@@ -462,6 +459,9 @@ export const addMeeting = async (req, res) => {
             message: "New meeting has been created",
           },
         });
+      }
+
+      if (result?.success === 1) {
         sendResponse(res, 200, 1, "meeting added successfully", [response], "");
       } else {
         sendResponse(res, 200, 0, result?.error, [], "");
@@ -686,8 +686,6 @@ export const addMeeting = async (req, res) => {
       const currentDate = await getCurrentDateTime();
       if (currentDate.slice(0, 10) === from_date.slice(0, 10)) {
         await addNotification("MEETING_CREATED", user_id, "meeting", data.id);
-      }
-      if (result?.success === 1) {
         await sendPushNotification({
           user_id,
           payload: {
@@ -695,6 +693,8 @@ export const addMeeting = async (req, res) => {
             message: "New meeting has been created",
           },
         });
+      }
+      if (result?.success === 1) {
         sendResponse(res, 200, 1, "meeting added successfully", [response], "");
       } else {
         sendResponse(res, 200, 0, result?.error, [], "");
@@ -1033,13 +1033,13 @@ export const updateMeeting = async (req, res) => {
     // nxt_snooze_at = is_remind === 0 ? null : nxt_snooze_at;
 
     let mediaAllowFive = media_id ? media_id.split(",") : [];
-    let attndAllowFive = attnds_id ? attnds_id.split(",") : [];
-    if (mediaAllowFive.length > 5 || attndAllowFive.length > 5) {
+    // let attndAllowFive = attnds_id ? attnds_id.split(",") : [];
+    if (mediaAllowFive.length > 5) {
       return sendResponse(
         res,
         200,
         0,
-        "Too many id's have ben passed in media or attendees id. Only '5' or less than '5' are valid",
+        "Too many id's have ben passed in media id. Only '5' or less than '5' are valid",
         [],
         "",
       );
@@ -1270,6 +1270,13 @@ export const updateMeeting = async (req, res) => {
         // delete and add
         await deleteNotification(user_id, "meeting", id);
         await addNotification("MEETING_UPDATED", user_id, "meeting", id);
+        await sendPushNotification({
+          user_id,
+          payload: {
+            title: "Meeting Updated",
+            message: "Meeting has been updated",
+          },
+        });
       }
       if (from_date.slice(0, 10) > today.slice(0, 10)) {
         //delete alone
@@ -1281,13 +1288,6 @@ export const updateMeeting = async (req, res) => {
       // console.log(result?.error);
       return sendResponse(res, 200, 0, "failed to update meeting", [], "");
     } else {
-      await sendPushNotification({
-        user_id,
-        payload: {
-          title: "Meeting Updated",
-          message: "Meeting has been updated",
-        },
-      });
       return sendResponse(
         res,
         200,
@@ -1436,13 +1436,25 @@ export const addAppointment = async (req, res) => {
       const response = replaceNullWithEmptyString(data);
 
       if (result?.success === 1) {
-        await sendPushNotification({
-          user_id,
-          payload: {
-            title: "Appointment Created",
-            message: "New appointment has been created",
-          },
-        });
+        const currentDate = await getCurrentDateTime();
+        if (currentDate.slice(0, 10) === from_date.slice(0, 10)) {
+          await addNotification(
+            "APPOINTMENT_CREATED",
+            user_id,
+            "appointment",
+            data.id,
+          );
+          await sendPushNotification({
+            user_id,
+            payload: {
+              title: "Appointment Created",
+              message: "New appointment has been created",
+            },
+          });
+        }
+      }
+
+      if (result?.success === 1) {
         return sendResponse(
           res,
           200,
@@ -1536,14 +1548,26 @@ export const addAppointment = async (req, res) => {
       }
 
       const response = replaceNullWithEmptyString(data);
+
       if (result?.success === 1) {
-        await sendPushNotification({
-          user_id,
-          payload: {
-            title: "Appointment Created",
-            message: "New appointment has been created",
-          },
-        });
+        const currentDate = await getCurrentDateTime();
+        if (currentDate.slice(0, 10) === from_date.slice(0, 10)) {
+          await addNotification(
+            "APPOINTMENT_CREATED",
+            user_id,
+            "appointment",
+            data.id,
+          );
+          await sendPushNotification({
+            user_id,
+            payload: {
+              title: "Appointment Created",
+              message: "New appointment has been created",
+            },
+          });
+        }
+      }
+      if (result?.success === 1) {
         return sendResponse(
           res,
           200,
@@ -1645,17 +1669,17 @@ export const addAppointment = async (req, res) => {
             "appointment",
             data.id,
           );
+          await sendPushNotification({
+            user_id,
+            payload: {
+              title: "Appointment Created",
+              message: "New appointment has been created",
+            },
+          });
         }
       }
 
       if (result?.success === 1) {
-        await sendPushNotification({
-          user_id,
-          payload: {
-            title: "Appointment Created",
-            message: "New appointment has been created",
-          },
-        });
         return sendResponse(
           res,
           200,
@@ -2062,6 +2086,7 @@ export const updateAppointment = async (req, res) => {
       );
     }
     let remind_at;
+    let remind_status;
 
     if (from_date && is_remind === 1 && !snooze_at) {
       let today = new Date();
@@ -2069,6 +2094,12 @@ export const updateAppointment = async (req, res) => {
       from_date = new Date(from_date);
       remind_at = from_date.getTime() - remind_tenure * 1000;
       remind_at = new Date(remind_at);
+
+      if (remind_at > today) {
+        remind_status = "pending";
+        upt_cols.push("remind_status = ?");
+        params.push(remind_status);
+      }
 
       if (
         from_date.getFullYear() === today.getFullYear() &&
@@ -2111,6 +2142,12 @@ export const updateAppointment = async (req, res) => {
       // console.log(remind_at);
 
       nxt_snooze_at = new Date(nxt_snooze_at);
+
+      if (remind_at > today) {
+        remind_status = "pending";
+        upt_cols.push("remind_status = ?");
+        params.push(remind_status);
+      }
 
       if (
         from_date.getFullYear() === today.getFullYear() &&
@@ -2160,6 +2197,11 @@ export const updateAppointment = async (req, res) => {
     const result = await meetingMdl.updateAppointment({ upt_cols, params });
     // console.log(result?.data);
 
+    const remind_result = await meetingMdl.getIndividualAppointment(id);
+    // remind_status = remind_result?.data;
+    remind_status = remind_result?.data[0]?.remind_status;
+    // console.log(remind_status);
+
     const data = {
       id: id,
       title: title,
@@ -2174,7 +2216,7 @@ export const updateAppointment = async (req, res) => {
       from_date: from_date,
       to_date: to_date,
       is_remind: is_remind,
-      remind_status: "pending",
+      remind_status: remind_status,
       remind_tenure: remind_tenure === null ? null : String(remind_tenure),
       remind_at: remind_at,
       snooze_at: snooze_at === null ? null : String(snooze_at),
@@ -2204,6 +2246,13 @@ export const updateAppointment = async (req, res) => {
           "appointment",
           id,
         );
+        await sendPushNotification({
+          user_id,
+          payload: {
+            title: "Appointment Updated",
+            message: "Appointment has been updated",
+          },
+        });
       }
       if (from_date.slice(0, 10) > today.slice(0, 10)) {
         //delete alone
@@ -2212,13 +2261,6 @@ export const updateAppointment = async (req, res) => {
     }
 
     if (result?.success === 1) {
-      await sendPushNotification({
-        user_id,
-        payload: {
-          title: "Appointment Updated",
-          message: "Appointment has been updated",
-        },
-      });
       return sendResponse(
         res,
         200,

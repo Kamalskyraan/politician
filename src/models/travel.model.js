@@ -140,7 +140,7 @@ export class travelModel {
       remind_tenure,
       remind_at,
       snooze_at,
-      nxt_snooze_at FROM travels WHERE ${upt_cols.join("")} ORDER BY from_date ASC LIMIT ? OFFSET ?`;
+      nxt_snooze_at FROM travels WHERE ${upt_cols.join("")} ORDER BY from_date DESC LIMIT ? OFFSET ?`;
 
     const countQuery = `SELECT COUNT(*) AS total FROM travels WHERE ${upt_cols.join("")}`;
     const countParams = params;
@@ -632,6 +632,60 @@ WHERE te.travel_id = ?;`;
   async getTodayTravels(today) {
     let query = `SELECT id, user_id FROM travels WHERE DATE(from_date) = ?`;
     let params = [today];
+
+    const result = await executeQuery(query, params);
+    if (result?.success === 1) {
+      return {
+        success: 1,
+        data: result?.data,
+      };
+    } else if (result?.success === 0) {
+      return {
+        success: 0,
+        error: result?.error,
+      };
+    }
+  }
+
+  async getUserIdFromTravel(id) {
+    let query = `SELECT user_id FROM travels WHERE id = ?`;
+    let params = [id];
+
+    const result = await executeQuery(query, params);
+    // console.log(result);
+    if (result?.success === 1) {
+      return {
+        success: 1,
+        data: result?.data,
+      };
+    } else if (result?.success === 0) {
+      return {
+        success: 0,
+        error: result?.error,
+      };
+    }
+  }
+  async checkTravelDateConflict(user_id, from_date, id = null) {
+    let query = `
+    SELECT id
+    FROM travels
+    WHERE user_id = ?
+  `;
+
+    const params = [user_id];
+
+    // Ignore current record while updating
+    if (id) {
+      query += ` AND id != ?`;
+      params.push(id);
+    }
+
+    query += `
+    AND ? BETWEEN from_date AND to_date
+    LIMIT 1
+  `;
+
+    params.push(from_date);
 
     const result = await executeQuery(query, params);
     if (result?.success === 1) {

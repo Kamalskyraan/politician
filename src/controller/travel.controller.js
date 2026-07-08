@@ -36,7 +36,6 @@ import { travelModel } from "../models/travel.model.js";
 import { sourceModel } from "../models/source.model.js";
 import { sendPushNotification } from "../service/notification.service.js";
 
-
 const travelMdl = new travelModel();
 const sourceMdl = new sourceModel();
 
@@ -239,17 +238,17 @@ export const addTravel = async (req, res) => {
       const currentDate = await getCurrentDateTime();
       if (currentDate.slice(0, 10) === from_date.slice(0, 10)) {
         await addNotification("TRAVEL_CREATED", user_id, "travel", data.id);
+        await sendPushNotification({
+          user_id,
+          payload: {
+            title: "Travel Created",
+            message: "New travel has been created",
+          },
+        });
       }
     }
 
     if (result?.success === 1) {
-      await sendPushNotification({
-        user_id,
-        payload: {
-          title: "Travel Created",
-          message: "New travel has been created",
-        },
-      });
       return sendResponse(
         res,
         200,
@@ -573,6 +572,13 @@ export const updateTravel = async (req, res) => {
         // delete and add
         await deleteNotification(user_id, "travel", id);
         await addNotification("TRAVEL_UPDATED", user_id, "travel", id);
+        await sendPushNotification({
+          user_id,
+          payload: {
+            title: "Travel Updated",
+            message: "Travel has been updated",
+          },
+        });
       }
       if (from_date.slice(0, 10) > today.slice(0, 10)) {
         //delete alone
@@ -581,13 +587,6 @@ export const updateTravel = async (req, res) => {
     }
 
     if (result?.success === 1) {
-      await sendPushNotification({
-        user_id,
-        payload: {
-          title: "Travel Updated",
-          message: "Travel has been updated",
-        },
-      });
       return sendResponse(
         res,
         200,

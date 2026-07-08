@@ -18,7 +18,6 @@ import { politicalSumitModel } from "../models/politicalsumit.model.js";
 import { meetingModel } from "../models/meeting.model.js";
 import { sendPushNotification } from "../service/notification.service.js";
 
-
 const sumitMdl = new politicalSumitModel();
 const meetingMdl = new meetingModel();
 
@@ -166,17 +165,17 @@ export const addSumit = async (req, res) => {
       const currentDate = await getCurrentDateTime();
       if (currentDate.slice(0, 10) === sumit_date.slice(0, 10)) {
         await addNotification("SUMIT_CREATED", user_id, "sumit", data.id);
+        await sendPushNotification({
+          user_id,
+          payload: {
+            title: "Political Sumit Created",
+            message: "New political sumit has been created",
+          },
+        });
       }
     }
 
     if (result?.success === 1) {
-      await sendPushNotification({
-        user_id,
-        payload: {
-          title: "Political Sumit Created",
-          message: "New political sumit has been created",
-        },
-      });
       return sendResponse(
         res,
         200,
@@ -186,14 +185,7 @@ export const addSumit = async (req, res) => {
         "",
       );
     } else if (result?.success === 0) {
-      return sendResponse(
-        res,
-        200,
-        0,
-        "Failed to add political sumit",
-        [],
-        result?.error,
-      );
+      return sendResponse(res, 200, 0, "Failed to add political sumit", [], "");
     }
   } catch (error) {
     return sendResponse(
@@ -643,6 +635,13 @@ export const updateSumit = async (req, res) => {
         // delete and add
         await deleteNotification(user_id, "sumit", id);
         await addNotification("SUMIT_UPDATED", user_id, "sumit", id);
+        await sendPushNotification({
+          user_id,
+          payload: {
+            title: "Political Sumit Updated",
+            message: "Political sumit has been updated",
+          },
+        });
       }
       if (sumit_date.slice(0, 10) > curr_today.slice(0, 10)) {
         //delete alone
@@ -761,13 +760,6 @@ export const updateSumit = async (req, res) => {
       updateResult?.success === 1 &&
       deleteMemberResult?.success === 1
     ) {
-      await sendPushNotification({
-        user_id,
-        payload: {
-          title: "Political Sumit Updated",
-          message: "Political sumit has been updated",
-        },
-      });
       return sendResponse(
         res,
         200,

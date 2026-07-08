@@ -20,7 +20,6 @@ import { sourceModel } from "../models/source.model.js";
 import { meetingModel } from "../models/meeting.model.js";
 import { sendPushNotification } from "../service/notification.service.js";
 
-
 const taskMdl = new taskModel();
 const sourceMdl = new sourceModel();
 const meetingMdl = new meetingModel();
@@ -157,17 +156,17 @@ export const addTask = async (req, res) => {
       const currentDate = await getCurrentDateTime();
       if (currentDate.slice(0, 10) === from_date.slice(0, 10)) {
         await addNotification("TASK_CREATED", user_id, "task", data.id);
+        await sendPushNotification({
+          user_id,
+          payload: {
+            title: "Task Created",
+            message: "New task has been created",
+          },
+        });
       }
     }
 
     if (result?.success === 1) {
-      await sendPushNotification({
-        user_id,
-        payload: {
-          title: "Task Created",
-          message: "New task has been created",
-        },
-      });
       return sendResponse(
         res,
         200,
@@ -417,6 +416,13 @@ export const updateTask = async (req, res) => {
         // delete and add
         await deleteNotification(user_id, "task", id);
         await addNotification("TASK_UPDATED", user_id, "task", id);
+        await sendPushNotification({
+          user_id,
+          payload: {
+            title: "Task Updated",
+            message: "Task has been updated",
+          },
+        });
       }
       if (from_date.slice(0, 10) > today.slice(0, 10)) {
         //delete alone
@@ -425,13 +431,6 @@ export const updateTask = async (req, res) => {
     }
 
     if (result?.success === 1) {
-      await sendPushNotification({
-        user_id,
-        payload: {
-          title: "Task Updated",
-          message: "Task has been updated",
-        },
-      });
       return sendResponse(
         res,
         200,
