@@ -87,6 +87,7 @@ export class taskModel {
     }
   }
   async getTask({ user_id, status, page, limit = 10 }) {
+    // console.log("inside model")
     const offset = (page - 1) * limit;
     let query;
     let params = [];
