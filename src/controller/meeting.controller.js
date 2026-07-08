@@ -306,7 +306,7 @@ export const addMeeting = async (req, res) => {
     // nxt_snooze_at = is_remind === 0 ? null : nxt_snooze_at;
 
     let mediaAllowFive = media_id ? media_id.split(",") : [];
-    let attndAllowFive = attnds_id ? attnds_id.split(",") : [];
+    // let attndAllowFive = attnds_id ? attnds_id.split(",") : [];
     if (mediaAllowFive.length > 5) {
       return sendResponse(
         res,
@@ -565,17 +565,17 @@ export const addMeeting = async (req, res) => {
         const currentDate = await getCurrentDateTime();
         if (currentDate.slice(0, 10) === from_date.slice(0, 10)) {
           await addNotification("MEETING_CREATED", user_id, "meeting", data.id);
+          await sendPushNotification({
+            user_id,
+            payload: {
+              title: "Meeting Created",
+              message: "New meeting has been created",
+            },
+          });
         }
       }
 
       if (result?.success === 1) {
-        await sendPushNotification({
-          user_id,
-          payload: {
-            title: "Meeting Created",
-            message: "New meeting has been created",
-          },
-        });
         return sendResponse(
           res,
           200,
