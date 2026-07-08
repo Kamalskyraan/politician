@@ -99,14 +99,14 @@ export class taskModel {
       countQuery = `SELECT COUNT(*) AS total FROM tasks WHERE user_id = ? AND t_status IN (${placeholders})`;
       countParams.push(user_id, ...status);
 
-      query = `SELECT id, title, descp, t_priority, from_date, to_date, media_id, attnds_id, t_status, is_remind, remind_status, remind_tenure, remind_at, snooze_at, nxt_snooze_at FROM tasks WHERE user_id = ? AND t_status IN (${placeholders}) ORDER BY from_date LIMIT ? OFFSET ?`;
+      query = `SELECT id, title, descp, t_priority, from_date, to_date, media_id, attnds_id, t_status, is_remind, remind_status, remind_tenure, remind_at, snooze_at, nxt_snooze_at FROM tasks WHERE user_id = ? AND t_status IN (${placeholders}) ORDER BY from_date DESC LIMIT ? OFFSET ?`;
       params.push(user_id, ...status, limit, offset);
-      console.log("QUERY , PRINTED", query);
+      // console.log("QUERY , PRINTED", query);
     } else {
       countQuery = `SELECT FROM tasks WHERE user_id = ? LIMIT ? OFFSET ?`;
       countParams.push(user_id);
 
-      query = `SELECT id, title, descp, t_priority, from_date, to_date, media_id, attnds_id, t_status, is_remind, remind_status, remind_tenure, remind_at, snooze_at, nxt_snooze_at FROM tasks WHERE user_id = ? ORDER BY from_date ASC`;
+      query = `SELECT id, title, descp, t_priority, from_date, to_date, media_id, attnds_id, t_status, is_remind, remind_status, remind_tenure, remind_at, snooze_at, nxt_snooze_at FROM tasks WHERE user_id = ? ORDER BY from_date DESC`;
       params.push(user_id, limit, offset);
     }
 
@@ -114,7 +114,7 @@ export class taskModel {
     const total = countResult?.data[0]?.total;
 
     const result = await executeQuery(query, params);
-    console.log(result, "result");
+    // console.log(result, "result");
     if (result?.success === 1) {
       return {
         success: 1,
