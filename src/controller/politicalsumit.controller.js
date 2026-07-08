@@ -16,6 +16,8 @@ import {
 } from "../utils/helper.js";
 import { politicalSumitModel } from "../models/politicalsumit.model.js";
 import { meetingModel } from "../models/meeting.model.js";
+import { sendPushNotification } from "../service/notification.service.js";
+
 
 const sumitMdl = new politicalSumitModel();
 const meetingMdl = new meetingModel();

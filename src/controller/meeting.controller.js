@@ -2196,6 +2196,7 @@ export const updateAppointment = async (req, res) => {
       from_date: from_date,
       to_date: to_date,
       is_remind: is_remind,
+      remind_status: "pending",
       remind_tenure: remind_tenure === null ? null : String(remind_tenure),
       remind_at: remind_at,
       snooze_at: snooze_at === null ? null : String(snooze_at),
