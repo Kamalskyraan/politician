@@ -24,7 +24,6 @@ const AuthMdl = new authModel();
 export const requestOtp = async (req, res) => {
   try {
     const validatedData = validateRequest(req.body, requestOtpSchema);
-    // console.log(validatedData?.errorObject)
 
     if (validatedData?.success === 0) {
       return sendResponse(

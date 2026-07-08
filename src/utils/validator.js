@@ -45,13 +45,10 @@ export const requestOtpSchema = Joi.object({
       "string.pattern.base": "Mobile number must start with 6-9",
     }),
   email: Joi.string().optional(),
-  type: Joi.number()
-    .valid(0, 1, 2) // restrict to allowed values
-    .required()
-    .messages({
-      "any.required": "Type is required",
-      "any.only": "Type must be 0, 1, or 2",
-    }),
+  type: Joi.number().valid(0, 1, 2).required().messages({
+    "any.required": "Type is required",
+    "any.only": "Type must be 0, 1, or 2",
+  }),
   c_code: Joi.string()
     .pattern(/^\+\d{2,3}$/)
     .optional(),
