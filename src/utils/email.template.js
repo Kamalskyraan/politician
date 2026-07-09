@@ -629,4 +629,5 @@ export const emailOtpTemplate = (otp) => {
 // </html>`;
 // };
 
+// 
 export const emailContactUsTemplate = (comments) => {};
