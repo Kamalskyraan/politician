@@ -244,9 +244,103 @@ export const downloadFinanceReport = async (req, res) => {
       fs.mkdirSync(reportsDir, { recursive: true });
     }
 
+    // if (d_type === "csv") {
+    //   const parser = new Parser();
+    //   const csv = parser.parse(reportData);
+
+    //   const fileName = `finance-report-${Date.now()}.csv`;
+    //   const filePath = path.join(reportsDir, fileName);
+
+    //   fs.writeFileSync(filePath, csv);
+
+    //   return sendResponse(
+    //     res,
+    //     200,
+    //     1,
+    //     "CSV Report Generated Successfully",
+    //     {
+    //       file_name: fileName,
+    //       file_url: `${process.env.MEDIA_BASE_URL}/uploads/reports/${fileName}`,
+    //     },
+    //     "",
+    //   );
+    // }
+
     if (d_type === "csv") {
-      const parser = new Parser();
-      const csv = parser.parse(reportData);
+      const rows = [];
+
+      // Title
+      rows.push({
+        col1: "Finance Report",
+        col2: "",
+        col3: "",
+        col4: "",
+        col5: "",
+      });
+
+      rows.push({});
+
+      // User Details
+      rows.push({
+        col1: "User ID",
+        col2: reportData.user.user_id,
+      });
+
+      rows.push({
+        col1: "User Name",
+        col2: reportData.user.user_name,
+      });
+
+      rows.push({
+        col1: "Phone",
+        col2: `${reportData.user.c_code} ${reportData.user.phn_num}`,
+      });
+
+      rows.push({});
+
+      // Summary
+      rows.push({
+        col1: "Income Total",
+        col2: reportData.summary.income_total,
+      });
+
+      rows.push({
+        col1: "Expense Total",
+        col2: reportData.summary.expense_total,
+      });
+
+      rows.push({
+        col1: "Balance",
+        col2: reportData.summary.balance,
+      });
+
+      rows.push({});
+      rows.push({});
+
+      // Heading
+      rows.push({
+        Date: "Date",
+        Type: "Type",
+        Category: "Category",
+        Amount: "Amount",
+        Notes: "Notes",
+      });
+
+      reportData.data.forEach((item) => {
+        rows.push({
+          Date: item.trans_date,
+          Type: item.type,
+          Category: item.category_name || item.cat_name,
+          Amount: item.amount,
+          Notes: item.notes,
+        });
+      });
+
+      const parser = new Parser({
+        header: false,
+      });
+
+      const csv = parser.parse(rows);
 
       const fileName = `finance-report-${Date.now()}.csv`;
       const filePath = path.join(reportsDir, fileName);
@@ -265,7 +359,6 @@ export const downloadFinanceReport = async (req, res) => {
         "",
       );
     }
-
     const templatePath = path.join(
       process.cwd(),
       "src",

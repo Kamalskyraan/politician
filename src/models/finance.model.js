@@ -501,7 +501,7 @@ export class financeModel {
       chartMap[row.category_id].total_amount += Number(row.amount);
     });
 
-    // Paginated rows
+ 
     const [rows] = await pool.query(
       `
     SELECT
