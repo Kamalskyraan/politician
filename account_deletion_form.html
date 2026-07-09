@@ -92,7 +92,7 @@
           Swal.fire("Error", "Email and OTP are required", "warning");
           return;
         }
-        const verifyUrl = `${apiBaseUrl}/auth/rverifyotp`;
+        const verifyUrl = `${apiBaseUrl}/auth/verifyotp`;
         const verifyRes = await fetch(verifyUrl, {
           method: "POST",
           headers: {
