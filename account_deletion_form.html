@@ -93,16 +93,16 @@
           return;
         }
         const verifyUrl = `${apiBaseUrl}/auth/verifyotp`;
-        const verifyRes = await fetch(verifyUrl, {
-          method: "POST",
-          headers: {
-            "Content-Type": "application/json",
-          },
-          body: JSON.stringify({
-            email: email,
-            otp: otp,
-          }),
-        });
+        // const verifyRes = await fetch(verifyUrl, {
+        //   method: "POST",
+        //   headers: {
+        //     "Content-Type": "application/json",
+        //   },
+        //   body: JSON.stringify({
+        //     email: email,
+        //     otp: otp,
+        //   }),
+        // });
         const deleteUrl = `${apiBaseUrl}/user/remove-account`;
 
         try {
