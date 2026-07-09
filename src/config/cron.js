@@ -11,6 +11,7 @@ import { processOverdueTaskNotifications } from "../utils/helper.js";
 import { processOverdueIssueNotifications } from "../utils/helper.js";
 import { processOverdueSumitNotifications } from "../utils/helper.js";
 import { processDailyStatusChange } from "../utils/helper.js";
+import { deleteUserPermanentely } from "../utils/helper.js";
 
 const processNotifications = async () => {
   await processDailyStatusChange();
@@ -27,6 +28,8 @@ const processNotifications = async () => {
   await processOverdueTaskNotifications();
   await processOverdueIssueNotifications();
   await processOverdueSumitNotifications();
+
+  await deleteUserPermanentely();
 };
 
 const schedule =

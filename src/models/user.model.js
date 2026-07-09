@@ -218,4 +218,23 @@ export class userModel {
       },
     };
   }
+
+  // to delete user after 30 days by making null for phn num and email
+  async deleteUserPermanentely(today) {
+    let query = `UPDATE users SET c_code = ?, phn_num = ?, phnnum_upt_at = ?, is_phn_verified = ?, email = ?, email_upt_at = ?, is_email_verified = ? WHERE deleted_at <= DATE_SUB(NOW(), INTERVAL 30 DAY)`;
+    let params = [null, null, null, 0, null, null, 0];
+
+    const result = await executeQuery(query, params);
+    if (result?.success === 1) {
+      return {
+        success: 1,
+        data: result?.data,
+      };
+    } else {
+      return {
+        success: 0,
+        error: result?.error,
+      };
+    }
+  }
 }

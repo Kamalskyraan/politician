@@ -10,6 +10,7 @@ import { travelModel } from "../models/travel.model.js";
 import { issueModel } from "../models/issue.model.js";
 import { politicalSumitModel } from "../models/politicalsumit.model.js";
 import { supportModel } from "../models/support.model.js";
+import { userModel } from "../models/user.model.js";
 import { sendPushNotification } from "../service/notification.service.js";
 const notificationMdl = new notificationModel();
 const meetingMdl = new meetingModel();
@@ -18,6 +19,7 @@ const travelMdl = new travelModel();
 const issueMdl = new issueModel();
 const sumitMdl = new politicalSumitModel();
 const supportMdl = new supportModel();
+const userMdl = new userModel();
 
 dotenv.config();
 
@@ -669,5 +671,21 @@ export const processDailyStatusChange = async () => {
     const result = await supportMdl.processDailyStatusChange(today);
   } catch (error) {
     console.log("status change error:", error);
+  }
+};
+
+// to delete deleted user after 30 days
+export const deleteUserPermanentely = async () => {
+  try {
+    const result = await userMdl.deleteUserPermanentely();
+  } catch (error) {
+    return sendResponse(
+      res,
+      500,
+      0,
+      "Internal server error",
+      [],
+      error.message,
+    );
   }
 };
