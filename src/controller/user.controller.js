@@ -60,20 +60,20 @@ export const updateProfileDetail = async (req, res) => {
 
     // NAME
     if (name !== user.name && name != null) {
-      // const diffDays = getDaysDiff(user.name_upt_at);
-      // console.log(user.name_upt_at);
-      // console.log("name",diffDays);
+      const diffDays = getDaysDiff(user.name_upt_at);
+      console.log(user.name_upt_at);
+      console.log("name", diffDays);
 
-      // if (diffDays <= 30) {
-      //   return sendResponse(
-      //     res,
-      //     200,
-      //     0,
-      //     `Name can be changed after ${30 - diffDays} days`,
-      //     [],
-      //     "",
-      //   );
-      // }
+      if (diffDays <= 30) {
+        return sendResponse(
+          res,
+          200,
+          0,
+          `Name can be changed after ${30 - diffDays} days`,
+          [],
+          "",
+        );
+      }
 
       upt_cols.push("name = ?");
       params.push(name);
@@ -82,20 +82,20 @@ export const updateProfileDetail = async (req, res) => {
     }
     // EMAIL
     if (email !== user.email && email != null) {
-      // console.log("inside email")
-      // const diffDays = getDaysDiff(user.email_upt_at);
-      // console.log("email", diffDays);
+      console.log("inside email");
+      const diffDays = getDaysDiff(user.email_upt_at);
+      console.log("email", diffDays);
 
-      // if (diffDays <= 30) {
-      //   return sendResponse(
-      //     res,
-      //     200,
-      //     0,
-      //     `Email can be changed after ${30 - diffDays} days`,
-      //     [],
-      //     "",
-      //   );
-      // }
+      if (diffDays <= 30) {
+        return sendResponse(
+          res,
+          200,
+          0,
+          `Email can be changed after ${30 - diffDays} days`,
+          [],
+          "",
+        );
+      }
 
       upt_cols.push("email = ?");
       params.push(email);
@@ -119,19 +119,19 @@ export const updateProfileDetail = async (req, res) => {
 
         upt_cols.push("phnnum_upt_at = NOW()");
       } else {
-        // const diffDays = getDaysDiff(user.phnnum_upt_at);
-        // console.log("phone number", diffDays);
+        const diffDays = getDaysDiff(user.phnnum_upt_at);
+        console.log("phone number", diffDays);
 
-        // if (diffDays <= 30) {
-        //   return sendResponse(
-        //     res,
-        //     200,
-        //     0,
-        //     `Phone number can be changed after ${30 - diffDays} days`,
-        //     [],
-        //     "",
-        //   );
-        // }
+        if (diffDays <= 30) {
+          return sendResponse(
+            res,
+            200,
+            0,
+            `Phone number can be changed after ${30 - diffDays} days`,
+            [],
+            "",
+          );
+        }
 
         upt_cols.push("phn_num = ?");
         params.push(phn_num);
