@@ -43,7 +43,6 @@
 
         var apiUrl = `${apiBaseUrl}/auth/requestotp`;
 
-
         $(".sendotp").show();
 
         fetch(apiUrl, {
@@ -93,7 +92,7 @@
           Swal.fire("Error", "Email and OTP are required", "warning");
           return;
         }
-        const verifyUrl = `${apiBaseUrl}/user/remove-account`;
+        const verifyUrl = `${apiBaseUrl}/auth/rverifyotp`;
         const verifyRes = await fetch(verifyUrl, {
           method: "POST",
           headers: {
@@ -180,9 +179,8 @@
         </div>
 
         <form id="accdeletionform" onsubmit="submitdeletion(event)">
-          
           <span class="fw-bold">Email</span>
-          
+
           <div class="mb-3">
             <input
               class="form-control"
