@@ -263,19 +263,19 @@ export const downloadFinanceReport = async (req, res) => {
       );
       csvRows.push("");
 
-      // Summary
+      
       csvRows.push("SUMMARY");
       csvRows.push(`Income Total,${reportData.summary.income_total}`);
       csvRows.push(`Expense Total,${reportData.summary.expense_total}`);
       csvRows.push(`Balance,${reportData.summary.balance}`);
       csvRows.push("");
 
-      // Transaction Header
+      
       csvRows.push(
         "S.No,Date,Type,Category,Amount,Notes"
       );
 
-      // Transactions
+     
       reportData.data.forEach((item, index) => {
         csvRows.push([
           index + 1,
@@ -287,7 +287,6 @@ export const downloadFinanceReport = async (req, res) => {
         ].join(","));
       });
 
-      // UTF-8 BOM (prevents Excel encoding issues)
       const csvContent = "\uFEFF" + csvRows.join("\n");
 
       const fileName = `finance-report-${Date.now()}.csv`;
