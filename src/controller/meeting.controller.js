@@ -465,8 +465,8 @@ export const addMeeting = async (req, res) => {
         remind_at: remind_at,
         snooze_at: snooze_at === null ? snooze_at : String(snooze_at),
         nxt_snooze_at: nxt_snooze_at,
-        media_id: media_result,
-        attnds_id: attnds_result,
+        media: media_result,
+        attendees: attnds_result,
       };
 
       const response = replaceNullWithEmptyString(data);
@@ -1276,8 +1276,8 @@ export const updateMeeting = async (req, res) => {
       remind_at: reminder_at,
       snooze_at: snooze_at === null ? null : String(snooze_at),
       nxt_snooze_at: snzee_at,
-      media_id: media_result,
-      attnds_id: attnds_result,
+      media: media_result,
+      attendees: attnds_result,
     };
 
     const response = replaceNullWithEmptyString(data);
@@ -2242,7 +2242,7 @@ export const updateAppointment = async (req, res) => {
       remind_at: remind_at,
       snooze_at: snooze_at === null ? null : String(snooze_at),
       nxt_snooze_at: nxt_snooze_at,
-      media_id: media_id,
+      media: media_id,
     };
 
     let media_result;
