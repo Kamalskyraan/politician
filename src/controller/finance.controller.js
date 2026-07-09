@@ -7,6 +7,7 @@ import path from "path";
 import { generatePdf } from "../service/report.service.js";
 import fs from "fs";
 import { Parser } from "@json2csv/plainjs";
+import dayjs from "dayjs";
 const financeMdl = new financeModel();
 
 export const addUpdateFinanceData = async (req, res) => {
@@ -227,6 +228,7 @@ export const getReportData = async (req, res) => {
 //   }
 // };
 
+
 export const downloadFinanceReport = async (req, res) => {
   try {
     const { type, user_id, from_date, to_date, d_type = "pdf" } = req.body;
@@ -244,108 +246,54 @@ export const downloadFinanceReport = async (req, res) => {
       fs.mkdirSync(reportsDir, { recursive: true });
     }
 
-    // if (d_type === "csv") {
-    //   const parser = new Parser();
-    //   const csv = parser.parse(reportData);
-
-    //   const fileName = `finance-report-${Date.now()}.csv`;
-    //   const filePath = path.join(reportsDir, fileName);
-
-    //   fs.writeFileSync(filePath, csv);
-
-    //   return sendResponse(
-    //     res,
-    //     200,
-    //     1,
-    //     "CSV Report Generated Successfully",
-    //     {
-    //       file_name: fileName,
-    //       file_url: `${process.env.MEDIA_BASE_URL}/uploads/reports/${fileName}`,
-    //     },
-    //     "",
-    //   );
-    // }
-
+    // ================= CSV =================
     if (d_type === "csv") {
-      const rows = [];
+      const csvRows = [];
 
       // Title
-      rows.push({
-        col1: "Finance Report",
-        col2: "",
-        col3: "",
-        col4: "",
-        col5: "",
-      });
-
-      rows.push({});
+      csvRows.push("FINANCE REPORT");
+      csvRows.push("");
 
       // User Details
-      rows.push({
-        col1: "User ID",
-        col2: reportData.user.user_id,
-      });
-
-      rows.push({
-        col1: "User Name",
-        col2: reportData.user.user_name,
-      });
-
-      rows.push({
-        col1: "Phone",
-        col2: `${reportData.user.c_code} ${reportData.user.phn_num}`,
-      });
-
-      rows.push({});
+      csvRows.push("USER DETAILS");
+      csvRows.push(`User ID,${reportData.user.user_id || ""}`);
+      csvRows.push(`User Name,${reportData.user.user_name || ""}`);
+      csvRows.push(
+        `Phone,${reportData.user.c_code || ""} ${reportData.user.phn_num || ""}`,
+      );
+      csvRows.push("");
 
       // Summary
-      rows.push({
-        col1: "Income Total",
-        col2: reportData.summary.income_total,
+      csvRows.push("SUMMARY");
+      csvRows.push(`Income Total,${reportData.summary.income_total}`);
+      csvRows.push(`Expense Total,${reportData.summary.expense_total}`);
+      csvRows.push(`Balance,${reportData.summary.balance}`);
+      csvRows.push("");
+
+      // Transaction Header
+      csvRows.push(
+        "S.No,Date,Type,Category,Amount,Notes"
+      );
+
+      // Transactions
+      reportData.data.forEach((item, index) => {
+        csvRows.push([
+          index + 1,
+          dayjs(item.trans_date).format("DD-MM-YYYY"),
+          item.type,
+          `"${(item.category_name || item.cat_name || "").replace(/"/g, '""')}"`,
+          item.amount,
+          `"${(item.notes || "").replace(/"/g, '""')}"`
+        ].join(","));
       });
 
-      rows.push({
-        col1: "Expense Total",
-        col2: reportData.summary.expense_total,
-      });
-
-      rows.push({
-        col1: "Balance",
-        col2: reportData.summary.balance,
-      });
-
-      rows.push({});
-      rows.push({});
-
-      // Heading
-      rows.push({
-        Date: "Date",
-        Type: "Type",
-        Category: "Category",
-        Amount: "Amount",
-        Notes: "Notes",
-      });
-
-      reportData.data.forEach((item) => {
-        rows.push({
-          Date: item.trans_date,
-          Type: item.type,
-          Category: item.category_name || item.cat_name,
-          Amount: item.amount,
-          Notes: item.notes,
-        });
-      });
-
-      const parser = new Parser({
-        header: false,
-      });
-
-      const csv = parser.parse(rows);
+      // UTF-8 BOM (prevents Excel encoding issues)
+      const csvContent = "\uFEFF" + csvRows.join("\n");
 
       const fileName = `finance-report-${Date.now()}.csv`;
       const filePath = path.join(reportsDir, fileName);
 
-      fs.writeFileSync(filePath, csv);
+      fs.writeFileSync(filePath, csvContent, "utf8");
 
       return sendResponse(
         res,
@@ -356,14 +304,16 @@ export const downloadFinanceReport = async (req, res) => {
           file_name: fileName,
           file_url: `${process.env.MEDIA_BASE_URL}/uploads/reports/${fileName}`,
         },
-        "",
+        ""
       );
     }
+
+    // ================= PDF =================
     const templatePath = path.join(
       process.cwd(),
       "src",
       "views",
-      "finance-report.ejs",
+      "finance-report.ejs"
     );
 
     const pdfBuffer = await generatePdf(templatePath, reportData);
@@ -382,7 +332,7 @@ export const downloadFinanceReport = async (req, res) => {
         file_name: fileName,
         file_url: `${process.env.MEDIA_BASE_URL}/uploads/reports/${fileName}`,
       },
-      "",
+      ""
     );
   } catch (err) {
     console.error(err);
@@ -393,7 +343,7 @@ export const downloadFinanceReport = async (req, res) => {
       0,
       "Failed to generate report",
       [],
-      err.message,
+      err.message
     );
   }
 };
