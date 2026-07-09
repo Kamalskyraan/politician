@@ -150,17 +150,17 @@ export const addIssue = async (req, res) => {
       const currentDate = await getCurrentDateTime();
       if (currentDate.slice(0, 10) === report_date.slice(0, 10)) {
         await addNotification("ISSUE_CREATED", user_id, "issue", data.id);
+        await sendPushNotification({
+          user_id,
+          payload: {
+            title: "Issue Created",
+            message: "New issue has been created",
+          },
+        });
       }
     }
 
     if (result?.success === 1) {
-      await sendPushNotification({
-        user_id,
-        payload: {
-          title: "Issue Created",
-          message: "New issue has been created",
-        },
-      });
       return sendResponse(
         res,
         200,
@@ -170,14 +170,7 @@ export const addIssue = async (req, res) => {
         "",
       );
     } else if (result?.success === 0) {
-      return sendResponse(
-        res,
-        200,
-        0,
-        "Failed to add Issue",
-        [],
-        result?.error,
-      );
+      return sendResponse(res, 200, 0, "Failed to add Issue", [], "");
     }
   } catch (error) {
     return sendResponse(
@@ -397,6 +390,13 @@ export const updateIssue = async (req, res) => {
         // delete and add
         await deleteNotification(user_id, "issue", id);
         await addNotification("ISSUE_UPDATED", user_id, "issue", id);
+        await sendPushNotification({
+          user_id,
+          payload: {
+            title: "Issue Updated",
+            message: "Issue has been updated",
+          },
+        });
       }
       if (report_date.slice(0, 10) > today.slice(0, 10)) {
         //delete alone
@@ -405,13 +405,6 @@ export const updateIssue = async (req, res) => {
     }
 
     if (result?.success === 1) {
-      await sendPushNotification({
-        user_id,
-        payload: {
-          title: "Issue Updated",
-          message: "Issue has been updated",
-        },
-      });
       return sendResponse(
         res,
         200,
@@ -427,7 +420,7 @@ export const updateIssue = async (req, res) => {
         0,
         "Failed to update Issue",
         [],
-        result?.error,
+        "",
       );
     }
   } catch (error) {

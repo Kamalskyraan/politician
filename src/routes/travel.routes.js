@@ -1,5 +1,6 @@
 import express from "express";
 import * as travelcontroller from "../controller/travel.controller.js";
+import { checkTravelDateConflict } from "../middleware/travelDate.middleware.js";
 
 const router = express.Router();
 
@@ -117,6 +118,10 @@ router.post(
               snooze_at: {
                 type: "string",
                 example: "120"
+              },
+              user_accept: {
+                type: "number",
+                example: 0
               }
             }
           }
@@ -131,7 +136,9 @@ router.post(
     #swagger.responses[500] = {
       description: 'Internal Server Error'
     }
-*/ travelcontroller.addTravel,
+*/
+  checkTravelDateConflict,
+  travelcontroller.addTravel,
 );
 router.post(
   "/deletetravel",
@@ -279,6 +286,10 @@ router.post(
               snooze_at: {
                 type: "string",
                 example: "120"
+              },
+              user_accept: {
+                type: "number",
+                example: 0
               }
             }
           }
@@ -293,7 +304,8 @@ router.post(
     #swagger.responses[500] = {
       description: 'Internal Server Error'
     }
-*/ travelcontroller.updateTravel,
+*/ checkTravelDateConflict,
+  travelcontroller.updateTravel,
 );
 router.post(
   "/gettravel",

@@ -38,7 +38,7 @@ export const requestOtp = async (req, res) => {
 
     const { phn_num, c_code, email, type } = validatedData?.value;
 
-    let otp = await genarateotp({ phn_num, c_code });
+    let otp = await genarateotp({ email, phn_num, c_code });
 
     const expired_at =
       process.env.NODE_ENV === "development"

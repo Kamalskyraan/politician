@@ -293,7 +293,7 @@ export class meetingModel {
     const total = countResult?.data[0]?.total;
     // console.log(total);
 
-    query += ` ORDER BY from_date ASC LIMIT ? OFFSET ?`;
+    query += ` ORDER BY from_date DESC LIMIT ? OFFSET ?`;
     params.push(Number(limit), Number(offset));
 
     const result = await executeQuery(query, params);
@@ -484,7 +484,7 @@ export class meetingModel {
     //   params = [user_id];
     // }
 
-    query = `SELECT id, title, a_type, notes, address, lat, lng, media_id, con_name, con_desg, status, from_date, to_date, is_remind, remind_status, remind_tenure, remind_at, snooze_at, nxt_snooze_at FROM appointments WHERE ${upt_cols.join("")} ORDER BY from_date ASC LIMIT ? OFFSET ?`;
+    query = `SELECT id, title, a_type, notes, address, lat, lng, media_id, con_name, con_desg, status, from_date, to_date, is_remind, remind_status, remind_tenure, remind_at, snooze_at, nxt_snooze_at FROM appointments WHERE ${upt_cols.join("")} ORDER BY from_date DESC LIMIT ? OFFSET ?`;
 
     const countQuery = `SELECT COUNT(*) AS total FROM appointments WHERE ${upt_cols.join("")}`;
     const countResult = await executeQuery(countQuery, params);
