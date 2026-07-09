@@ -1261,7 +1261,6 @@ export const updateMeeting = async (req, res) => {
     // iff 24 = 24 ---> delete old notify + in progress + notification trigger
     //if 25 > 24 --> delete old one + status upcoming
     // console.log(meeting_from_date, today);
-    console.log(meeting_from_date, from_date, today);
     if (
       result?.success === 1 &&
       meeting_from_date.slice(0, 10) !== from_date.slice(0, 10)

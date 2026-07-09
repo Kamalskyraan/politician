@@ -91,6 +91,7 @@ export const addTask = async (req, res) => {
     }
     from_date = formatDateForSQL(from_date);
     to_date = formatDateForSQL(to_date);
+    console.log(remind_at);
 
     const result = await taskMdl.addTask({
       user_id,
