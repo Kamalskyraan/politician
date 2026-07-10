@@ -621,7 +621,7 @@ export class financeModel {
         t.notes,
         t.attachment AS attachment_ids
     FROM travel_exp t
-    LEFT JOIN travel_category tc ON t.cat_id = tc.id
+    LEFT JOIN travel_exp_category tc ON t.cat_id = tc.id
     ${travelWhereClause}
     ORDER BY t.exp_date DESC
     LIMIT ? OFFSET ?
