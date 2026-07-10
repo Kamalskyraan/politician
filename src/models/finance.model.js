@@ -574,7 +574,7 @@ export class financeModel {
       `
         SELECT COUNT(*) AS total
         FROM travel_exp t
-        LEFT JOIN travel_category tc ON t.cat_id = tc.id
+        LEFT JOIN travel_exp_category tc ON t.cat_id = tc.id
         ${travelWhereClause}
         `,
       travelParams,
@@ -587,7 +587,7 @@ export class financeModel {
             type,
             SUM(exp_amount) AS total_amount
         FROM travel_exp t
-        LEFT JOIN travel_category tc ON t.cat_id = tc.id
+        LEFT JOIN travel_exp_category tc ON t.cat_id = tc.id
         ${travelWhereClause}
         GROUP BY type
         `,
