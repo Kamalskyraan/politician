@@ -329,7 +329,7 @@ export class financeModel {
     LEFT JOIN finance_category fc
       ON f.category_id = fc.id
 
-LEFT JOIN travel t
+LEFT JOIN travels t
     ON t.user_id = f.user_id
   
   LEFT JOIN travel_exp te
