@@ -42,7 +42,7 @@ export const sendMail = async (email, otp) => {
   try {
     const mailContent = await emailOtpTemplate(otp);
     const mailOptions = {
-      from: "political@skyraantech.com",
+      from: "contact@skyraancloud.com",
       to: `${email}`,
       subject: "OTP Verification",
       html: mailContent,
