@@ -25,8 +25,8 @@ router.use("/meeting", verifyToken, meetingRoutes);
 
 router.use("/support", verifyToken, supportRoutes);
 // router.use("/contact", supportRoutes);
-// 
-// 
+//
+//
 router.use("/analytics", analyticsRoutes);
 router.use("/travel", verifyToken, travelRoutes);
 router.use("/task", verifyToken, taskRoutes);
@@ -36,5 +36,5 @@ router.use("/reminder", verifyToken, reminderRoutes);
 router.use("/calendar", verifyToken, calendarRoutes);
 router.use("/user", verifyToken, userRoutes);
 router.use("/notification", verifyToken, notificationRoutes);
-
+router.use("/finance", verifyToken, finaceRoutes);
 export default router;
