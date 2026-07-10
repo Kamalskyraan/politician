@@ -2251,7 +2251,7 @@ export const updateAppointment = async (req, res) => {
     if (media_id != null) {
       const ids = media_id.split(",");
       media_result = await sourceMdl.getMedia(ids);
-      data.media = media_result?.data || [];
+      data.media = [media_result?.data] || [];
     }
 
     const response = replaceNullWithEmptyString(data);
