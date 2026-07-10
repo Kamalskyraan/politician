@@ -532,10 +532,10 @@ export class financeModel {
       travelParams.push(id);
     }
 
-    if (type) {
-      travelWhereClause += ` AND t.type = ?`;
-      travelParams.push(type);
-    }
+    // if (type) {
+    //   travelWhereClause += ` AND t.type = ?`;
+    //   travelParams.push(type);
+    // }
 
     if (user_id) {
       travelWhereClause += ` AND t.user_id = ?`;
