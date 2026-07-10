@@ -37,4 +37,5 @@ router.use("/calendar", verifyToken, calendarRoutes);
 router.use("/user", verifyToken, userRoutes);
 router.use("/notification", verifyToken, notificationRoutes);
 router.use("/finance", verifyToken, finaceRoutes);
+router.use("/folder", verifyToken, folderRoutes);
 export default router;
