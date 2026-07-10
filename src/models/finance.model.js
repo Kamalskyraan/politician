@@ -318,10 +318,21 @@ export class financeModel {
       f.trans_date,
       f.amount,
       f.notes,
-      f.attachment AS attachment_ids
+      f.attachment AS attachment_ids,
+
+        te.cat_id AS travel_cat_id,
+    te.cate_name AS travel_cat_name,
+    te.amount AS travel_amount
     FROM finance f
+
+    
     LEFT JOIN finance_category fc
       ON f.category_id = fc.id
+
+      LEFT JOIN travel_exp te
+    ON te.user_id = f.user_id
+
+    
     ${whereClause}
     ORDER BY f.trans_date DESC
     LIMIT ? OFFSET ?
