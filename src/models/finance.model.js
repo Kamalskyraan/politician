@@ -321,7 +321,7 @@ export class financeModel {
       f.attachment AS attachment_ids,
 
         te.cat_id AS travel_cat_id,
-    te.cate_name AS travel_cat_name,
+    te.cat_name AS travel_cat_name,
     te.amount AS travel_amount
     FROM finance f
 
@@ -332,7 +332,7 @@ export class financeModel {
       LEFT JOIN travel_exp te
     ON te.user_id = f.user_id
 
-    
+
     ${whereClause}
     ORDER BY f.trans_date DESC
     LIMIT ? OFFSET ?
