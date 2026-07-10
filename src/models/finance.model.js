@@ -329,8 +329,11 @@ export class financeModel {
     LEFT JOIN finance_category fc
       ON f.category_id = fc.id
 
-      LEFT JOIN travel_exp te
-    ON te.user_id = f.user_id
+LEFT JOIN travel t
+    ON t.user_id = f.user_id
+  
+  LEFT JOIN travel_exp te
+    ON te.travel_id = t.id
 
 
     ${whereClause}
@@ -451,7 +454,6 @@ export class financeModel {
       params,
     );
 
-    
     const [allRows] = await pool.query(
       `
     SELECT
@@ -512,7 +514,6 @@ export class financeModel {
       chartMap[row.category_id].total_amount += Number(row.amount);
     });
 
- 
     const [rows] = await pool.query(
       `
     SELECT
@@ -561,14 +562,13 @@ export class financeModel {
       delete row.attachment_ids;
     }
 
-  
     return {
       user: {
         id: user?.id ?? "",
         user_id: user?.user_id ?? "",
         user_name: user?.name ?? "",
-        c_code : user?.c_code ?? "",
-        phn_num : user?.phn_num ?? ""
+        c_code: user?.c_code ?? "",
+        phn_num: user?.phn_num ?? "",
       },
 
       summary: {
