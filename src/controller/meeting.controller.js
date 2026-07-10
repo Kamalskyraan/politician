@@ -2248,10 +2248,14 @@ export const updateAppointment = async (req, res) => {
     };
 
     let media_result;
+
     if (media_id != null) {
       const ids = media_id.split(",");
       media_result = await sourceMdl.getMedia(ids);
-      data.media = [media_result?.data] || [];
+      data.media = media_result?.data || [];
+    }
+    if (media_id == null) {
+      data.media = [];
     }
 
     const response = replaceNullWithEmptyString(data);
