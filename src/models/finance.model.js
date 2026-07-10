@@ -610,7 +610,7 @@ export class financeModel {
     const travelQuery = `
     SELECT
         t.id,
-        t.type,
+       
         t.user_id,
         t.cat_id AS category_id,
         t.category_name,
