@@ -350,7 +350,7 @@ export const login = async (req, res) => {
       return sendResponse(res, 200, 0, "login failed", [], userlogin.error);
     } else if (userlogin?.success === 1) {
       const token = await generateJwtToken({
-        user_id: userlogin?.data,
+        user_id: userLoginResult?.user_id,
         email: email,
         device_id: device_id,
       });
