@@ -669,10 +669,7 @@ export class financeModel {
         params.push(id);
       }
 
-      if (user_id) {
-        where += ` AND te.user_id = ?`;
-        params.push(user_id);
-      }
+      
 
       if (amount) {
         where += ` AND te.amount LIKE ?`;
