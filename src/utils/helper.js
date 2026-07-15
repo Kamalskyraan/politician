@@ -137,7 +137,7 @@ export const formatDateForSQL = (dateObj) => {
 // export const replaceNullWithEmptyString = (data) => {
 //   return JSON.parse(JSON.stringify(data, (_, value) => value ?? ""));
 // };
-// 
+//
 export const replaceNullWithEmptyString = (data) => {
   if (data === null || data === undefined) {
     return "";
@@ -690,3 +690,16 @@ export const deleteUserPermanentely = async () => {
     );
   }
 };
+
+//
+
+async function getCategoryIcon(catImgIds) {
+  if (!catImgIds) return [];
+  const ids = String(catImgIds)
+    .split(",")
+    .map((id) => Number(id.trim()))
+    .filter(Boolean);
+
+  const media = await srcMdl.getMedia(ids);
+  return media?.success ? media.data : [];
+}
