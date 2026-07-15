@@ -858,7 +858,7 @@ export class financeModel {
     t.travel_to,
     t.from_date,
     t.to_date,
-    t.status
+    '' AS status
 
 FROM travel_exp te
 LEFT JOIN travels t
