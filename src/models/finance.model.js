@@ -267,7 +267,7 @@ export class financeModel {
       params.push(to_date);
     }
 
-    // Total Records Count
+  // Total Records Count
     const [[{ total }]] = await pool.query(
       `
       SELECT COUNT(*) AS total
