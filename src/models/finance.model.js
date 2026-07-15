@@ -412,7 +412,7 @@ export class financeModel {
      CONCAT(
     '${process.env.MEDIA_BASE_URL}/',
     REPLACE(COALESCE(fc.cat_img, ''), '\\', '/')
-) AS cat_img
+) AS cat_img,
       fc.cat_name,
       f.trans_date,
       f.amount,
