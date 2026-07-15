@@ -14,7 +14,7 @@ export class financeModel {
     amount,
     notes,
     attachment,
-    is_travel = 0,
+    travel_exp_id = 0,
   }) {
     if (id) {
       const [result] = await pool.query(
@@ -29,7 +29,7 @@ export class financeModel {
           amount = ?,
           notes = ?,
           attachment = ?
-          is_travel = ?
+          travel_exp_id = ?
         WHERE id = ?
         `,
         [
@@ -41,7 +41,7 @@ export class financeModel {
           amount,
           notes,
           attachment,
-          is_travel,
+          travel_exp_id,
           id,
         ],
       );
@@ -63,7 +63,7 @@ export class financeModel {
         amount,
         notes,
         attachment,
-        is_travel
+        travel_exp_id
       )
       VALUES (?, ?, ?, ?, ?, ?, ? , ? , ?)
       `,
@@ -76,7 +76,7 @@ export class financeModel {
         amount,
         notes,
         attachment,
-        is_travel,
+        travel_exp_id,
       ],
     );
 

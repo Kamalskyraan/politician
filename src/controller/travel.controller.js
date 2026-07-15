@@ -1125,7 +1125,7 @@ export const addExpense = async (req, res) => {
       exp_date,
       amount,
     });
-    console.log(result?.data);
+   
 
     let data = {
       id: result?.data?.insertId,
