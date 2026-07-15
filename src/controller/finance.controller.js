@@ -228,7 +228,6 @@ export const getReportData = async (req, res) => {
 //   }
 // };
 
-
 export const downloadFinanceReport = async (req, res) => {
   try {
     const { type, user_id, from_date, to_date, d_type = "pdf" } = req.body;
@@ -263,28 +262,25 @@ export const downloadFinanceReport = async (req, res) => {
       );
       csvRows.push("");
 
-      
       csvRows.push("SUMMARY");
       csvRows.push(`Income Total,${reportData.summary.income_total}`);
       csvRows.push(`Expense Total,${reportData.summary.expense_total}`);
       csvRows.push(`Balance,${reportData.summary.balance}`);
       csvRows.push("");
 
-      
-      csvRows.push(
-        "S.No,Date,Type,Category,Amount,Notes"
-      );
+      csvRows.push("S.No,Date,Type,Category,Amount,Notes");
 
-     
       reportData.data.forEach((item, index) => {
-        csvRows.push([
-          index + 1,
-          dayjs(item.trans_date).format("DD-MM-YYYY"),
-          item.type,
-          `"${(item.category_name || item.cat_name || "").replace(/"/g, '""')}"`,
-          item.amount,
-          `"${(item.notes || "").replace(/"/g, '""')}"`
-        ].join(","));
+        csvRows.push(
+          [
+            index + 1,
+            dayjs(item.trans_date).format("DD-MM-YYYY"),
+            item.type,
+            `"${(item.category_name || item.cat_name || "").replace(/"/g, '""')}"`,
+            item.amount,
+            `"${(item.notes || "").replace(/"/g, '""')}"`,
+          ].join(","),
+        );
       });
 
       const csvContent = "\uFEFF" + csvRows.join("\n");
@@ -303,7 +299,7 @@ export const downloadFinanceReport = async (req, res) => {
           file_name: fileName,
           file_url: `${process.env.MEDIA_BASE_URL}/uploads/reports/${fileName}`,
         },
-        ""
+        "",
       );
     }
 
@@ -312,7 +308,7 @@ export const downloadFinanceReport = async (req, res) => {
       process.cwd(),
       "src",
       "views",
-      "finance-report.ejs"
+      "finance-report.ejs",
     );
 
     const pdfBuffer = await generatePdf(templatePath, reportData);
@@ -331,7 +327,7 @@ export const downloadFinanceReport = async (req, res) => {
         file_name: fileName,
         file_url: `${process.env.MEDIA_BASE_URL}/uploads/reports/${fileName}`,
       },
-      ""
+      "",
     );
   } catch (err) {
     console.error(err);
@@ -342,7 +338,7 @@ export const downloadFinanceReport = async (req, res) => {
       0,
       "Failed to generate report",
       [],
-      err.message
+      err.message,
     );
   }
 };
