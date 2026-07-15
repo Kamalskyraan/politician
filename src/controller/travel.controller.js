@@ -1346,6 +1346,8 @@ export const updateExpense = async (req, res) => {
       );
     }
   } catch (error) {
+
+    console.log(error)
     return sendResponse(
       res,
       500,
