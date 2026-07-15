@@ -694,7 +694,7 @@ export class financeModel {
         // Get category icon if cat_id exists
         if (row.cat_id) {
           const [catData] = await pool.query(
-            `SELECT cat_img, cat_name FROM finance_category WHERE id = ?`,
+            `SELECT cat_img, cat_name , cat_img FROM finance_category WHERE id = ?`,
             [row.cat_id],
           );
           if (catData.length > 0) {
@@ -745,11 +745,9 @@ export class financeModel {
       combinedData = globalData;
       totalRecords = globalTotal;
     } else {
-     
       combinedData = [...globalData, ...travelData];
       totalRecords = globalTotal + travelTotal;
 
-      
       combinedData.sort((a, b) => {
         return new Date(b.trans_date) - new Date(a.trans_date);
       });

@@ -101,33 +101,31 @@ export class sourceModel {
       )
       VALUES (?, ?, ?, ?, ?, ?)
     `;
- 
+
     const params = [url, path, size, type, mime_type, org_name];
- 
+
     const result = await executeQuery(query, params);
     // console.log(result?.data?.insertId);
-    console.log(result)
+    console.log(result);
     return result;
   }
- 
 
   async getMedia(id) {
     let placeHolders = id.map(() => "?").join(", ");
     let query = `SELECT id, url, org_name, media_size, created_at FROM media WHERE id IN (${placeHolders}) ORDER BY created_at DESC`;
     let params = id;
 
-  //   let query = `
-  //   SELECT
-  //     id,
-  //     url,
-  //     org_name,
-  //     media_size,
-  //     created_at
-  //   FROM media
-  //   WHERE id IN (${placeHolders})
-  // `;
+    //   let query = `
+    //   SELECT
+    //     id,
+    //     url,
+    //     org_name,
+    //     media_size,
+    //     created_at
+    //   FROM media
+    //   WHERE id IN (${placeHolders})
+    // `;
 
-  
     const result = await executeQuery(query, id);
 
     if (result?.success === 1) {
@@ -195,6 +193,7 @@ export class sourceModel {
         id,
         cat_name,
         cat_type,
+        cat_img,
         status
       FROM finance_category
       WHERE 1 = 1
@@ -220,11 +219,20 @@ export class sourceModel {
 
     const [rows] = await pool.query(query, params);
 
+    const baseUrl = process.env.MEDIA_BASE_URL;
+
+    rows.forEach((row) => {
+      row.cat_img = row.cat_img
+        ? `${baseUrl}/${row.cat_img.replace(/^\/+/, "")}`
+        : "";
+    });
+
     if (!id) {
       rows.push({
         id: 0,
         cat_name: "Others",
         cat_type: "",
+        cat_img: `${process.env.MEDIA_BASE_URL}${other_expense}`,
         status: "active",
       });
     }
@@ -347,5 +355,4 @@ export class sourceModel {
   }
 }
 
-
-// 
+//
