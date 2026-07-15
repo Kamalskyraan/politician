@@ -86,6 +86,89 @@ export class financeModel {
     };
   }
 
+  // 
+  async addFinanceDataTravel({
+    id,
+    user_id,
+    type,
+    cat_id,
+    cat_name,
+    trans_date,
+    amount,
+    notes,
+    attachment,
+    travel_exp_id = 0,
+  }) {
+    if (id) {
+      const [result] = await pool.query(
+        `
+        UPDATE finance
+        SET
+        user_id = ?,
+          type = ?,
+          category_id = ?,
+          category_name = ?,
+          trans_date = ?,
+          amount = ?,
+          notes = ?,
+          attachment = ?
+          travel_exp_id = ?
+        WHERE travel_exp_id = ?
+        `,
+        [
+          user_id,
+          type,
+          cat_id,
+          cat_name,
+          trans_date,
+          amount,
+          notes,
+          attachment,
+          travel_exp_id,
+          id,
+        ],
+      );
+
+      return {
+        action: "updated",
+        id,
+      };
+    }
+
+    const [result] = await pool.query(
+      `
+      INSERT INTO finance (
+      user_id,
+        type,
+        category_id,
+        category_name,
+        trans_date,
+        amount,
+        notes,
+        attachment,
+        travel_exp_id
+      )
+      VALUES (?, ?, ?, ?, ?, ?, ? , ? , ?)
+      `,
+      [
+        user_id,
+        type,
+        cat_id,
+        cat_name,
+        trans_date,
+        amount,
+        notes,
+        attachment,
+        travel_exp_id,
+      ],
+    );
+
+    return {
+      action: "created",
+      id: result.insertId,
+    };
+  }
+
   // async fetchFinanceData({
   //   id,
   //   type,
