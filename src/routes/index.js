@@ -20,10 +20,23 @@ import { verifyToken } from "../middleware/auth.middleware.js";
 
 export const router = express.Router();
 router.use("/auth", authRoutes);
-router.use("/source", verifyToken, sourceRoutes);
-router.use("/meeting", verifyToken, meetingRoutes);
+// router.use("/source", verifyToken, sourceRoutes);
+// router.use("/meeting", verifyToken, meetingRoutes);
 
-router.use("/support", verifyToken, supportRoutes);
+// router.use("/support", verifyToken, supportRoutes);
+// // router.use("/contact", supportRoutes);
+// router.use("/travel", verifyToken, travelRoutes);
+// router.use("/task", verifyToken, taskRoutes);
+// router.use("/issue", verifyToken, issueRoutes);
+// router.use("/sumit", verifyToken, politicalsumitRoutes);
+// router.use("/reminder", verifyToken, reminderRoutes);
+// router.use("/calendar", verifyToken, calendarRoutes);
+// router.use("/user", verifyToken, userRoutes);
+// router.use("/notification", verifyToken, notificationRoutes);
+router.use("/source", sourceRoutes);
+router.use("/meeting", meetingRoutes);
+
+router.use("/support", supportRoutes);
 // router.use("/contact", supportRoutes);
 //
 //

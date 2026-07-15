@@ -23,7 +23,7 @@ if (!admin.apps.length) {
 }
 
 export const sendPushNotification = async ({ user_id, payload }) => {
-  // console.log(user_id, payload);
+  // console.log("inside push notification");
   try {
     console.log("Searching devices for user:", user_id);
 
