@@ -97,7 +97,7 @@ export class financeModel {
     amount,
     notes,
     attachment,
-    travel_exp_id = 0,
+    
   }) {
     if (id) {
       const [result] = await pool.query(
@@ -112,7 +112,6 @@ export class financeModel {
           amount = ?,
           notes = ?,
           attachment = ?
-          travel_exp_id = ?
         WHERE travel_exp_id = ?
         `,
         [
