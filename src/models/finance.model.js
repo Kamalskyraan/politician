@@ -409,7 +409,7 @@ export class financeModel {
       f.travel_exp_id,
       COALESCE(f.category_id, '0') AS category_id,
       f.category_name,
-     CONCAT(
+   CONCAT(
     '${process.env.MEDIA_BASE_URL}/',
     REPLACE(COALESCE(fc.cat_img, ''), '\\', '/')
 ) AS cat_img,
