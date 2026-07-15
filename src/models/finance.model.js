@@ -790,7 +790,7 @@ export class financeModel {
             [row.category_id],
           );
           if (catData.length > 0) {
-            row.cat_icon = catData[0].cat_img;
+            row.cat_icon = `${process.env.MEDIA_BASE_URL}${catData[0].cat_img}`;
             row.cat_name = catData[0].cat_name;
           } else {
             row.cat_icon = [];
