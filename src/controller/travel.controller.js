@@ -1123,7 +1123,7 @@ export const addExpense = async (req, res) => {
       exp_date,
       amount,
     });
-    // console.log(result);
+
     let data = {
       id: result?.data?.insertId,
       travel_id: travel_id,
@@ -1138,8 +1138,25 @@ export const addExpense = async (req, res) => {
       const cat_result = await travelMdl.getTravelExpenseCategory(cat_id);
       data.cat_name = cat_result?.data[0]?.category_name;
     }
+
     const response = replaceNullWithEmptyString(data);
 
+    const financeResult = await travelMdl.addFinanceData({
+      id: null,
+      user_id: req.user?.id,
+      type: "travel",
+      cat_id: data.cat_id,
+      cat_name: data.cat_name,
+      trans_date: exp_date,
+      amount,
+      notes,
+      attachment: null,
+    });
+
+    // if (financeResult?.id) {
+    //   await travelMdl.updateExpenseFinanceLink(data.id, financeResult.id);
+    //   data.finance_id = financeResult.id;
+    // }
     if (result?.success === 1) {
       return sendResponse(
         res,
