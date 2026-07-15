@@ -843,26 +843,31 @@ export class financeModel {
 
       // Fetch travel data with pagination
       const travelQuery = `
-        SELECT
-          te.id,
-          
-          te.travel_id,
-          te.cat_id,
-          te.cat_name,
-          te.amount,
-          te.exp_date AS trans_date,
-          te.notes AS notes,
-         
-          t.title AS travel_title,
-          t.travel_from AS travel_destination,
-          t.from_date AS travel_start_date,
-          t.to_date AS travel_end_date,
-          t.remind_status AS travel_status
-        FROM travel_exp te
-        LEFT JOIN travels t ON te.travel_id = t.id
-        ${travelWhereClause}
-        ORDER BY te.exp_date DESC
-        LIMIT ? OFFSET ?
+       SELECT
+    te.id,
+    te.cat_id,
+    te.cat_name,
+    te.amount,
+    te.exp_date AS trans_date,
+    te.notes,
+    te.attachment,
+
+    t.id AS travel_id,
+    t.title,
+    t.travel_from,
+    t.travel_to,
+    t.from_date,
+    t.to_date,
+    t.status
+
+FROM travel_exp te
+LEFT JOIN travels t
+    ON te.travel_id = t.id
+
+${travelWhereClause}
+
+ORDER BY te.exp_date DESC
+LIMIT ? OFFSET ?
       `;
 
       const [travelRows] = await pool.query(travelQuery, [
@@ -873,64 +878,70 @@ export class financeModel {
 
       // Process travel data
       for (const row of travelRows) {
-        // Set type as travel
-        row.type = "expense"; // Travel expenses are always expense type
+        row.type = "expense";
         row.type_label = "travel";
-        row.category_id = row.cat_id || "0";
-        row.category_name = row.cat_name || "";
 
-        // Process attachments
+        row.user_id = user_id;
+        row.category_id = String(row.cat_id ?? "0");
+        row.category_name = row.cat_name ?? "";
+
+        // Category Icon
+        if (row.cat_id) {
+          const [catData] = await pool.query(
+            `SELECT cat_img, cat_name
+       FROM finance_category
+       WHERE id = ?`,
+            [row.cat_id],
+          );
+
+          if (catData.length) {
+            row.cat_img = catData[0].cat_img;
+            row.cat_name = catData[0].cat_name;
+
+            const media = await srcMdl.getMedia([Number(catData[0].cat_img)]);
+            row.cat_icon = media?.success ? media.data : [];
+          } else {
+            row.cat_img = 0;
+            row.cat_icon = [];
+          }
+        } else {
+          row.cat_img = 0;
+          row.cat_icon = [];
+        }
+
+        // Attachment
         if (row.attachment) {
           const attachmentIds = String(row.attachment)
             .split(",")
-            .map((id) => Number(id.trim()))
+            .map(Number)
             .filter(Boolean);
 
           const media = await srcMdl.getMedia(attachmentIds);
+
           row.attachment = media?.success ? media.data : [];
         } else {
           row.attachment = [];
         }
 
-        // Get category icon if cat_id exists
-        if (row.cat_id) {
-          const [catData] = await pool.query(
-            `SELECT cat_img, cat_name FROM finance_category WHERE id = ?`,
-            [row.cat_id],
-          );
-          if (catData.length > 0) {
-            row.cat_icon = catData[0].cat_img
-              ? await getCategoryIcon(catData[0].cat_img)
-              : [];
-            row.cat_name = catData[0].cat_name || row.cat_name;
-          } else {
-            row.cat_icon = [];
-          }
-        } else {
-          row.cat_icon = [];
-        }
+        row.attachment_ids = row.attachment || "";
 
-        // Travel info
         row.travel_info = {
-          travel_id: row.travel_id,
-          title: row.travel_title,
-          destination: row.travel_destination,
-          start_date: row.travel_start_date,
-          end_date: row.travel_end_date,
-          status: row.travel_status,
-          cat_name: "",
+          id: row.travel_id,
+          title: row.title,
+          travel_from: row.travel_from,
+          travel_to: row.travel_to,
+          from_date: row.from_date,
+          to_date: row.to_date,
+          status: row.status,
         };
 
-        // Remove raw travel fields
         delete row.travel_id;
-        delete row.travel_title;
-        delete row.travel_destination;
-        delete row.travel_start_date;
-        delete row.travel_end_date;
-        delete row.travel_status;
-        delete row.cat_id;
-        delete row.cat_name;
-        delete row.description;
+        delete row.title;
+        delete row.travel_from;
+        delete row.travel_to;
+        delete row.from_date;
+        delete row.to_date;
+        delete row.status;
       }
 
       travelData = replaceNullWithEmptyString(travelRows);
