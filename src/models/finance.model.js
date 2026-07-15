@@ -851,7 +851,7 @@ export class financeModel {
       const travelQuery = `
         SELECT
           te.id,
-          te.user_id,
+          
           te.travel_id,
           te.cat_id,
           te.cat_name,
@@ -861,9 +861,9 @@ export class financeModel {
           te.attachment,
           t.title AS travel_title,
           t.destination AS travel_destination,
-          t.start_date AS travel_start_date,
-          t.end_date AS travel_end_date,
-          t.status AS travel_status
+          t.from_date AS travel_start_date,
+          t.to_date AS travel_end_date,
+          t.remind_status AS travel_status
         FROM travel_exp te
         LEFT JOIN travels t ON te.travel_id = t.id
         ${travelWhereClause}
