@@ -647,12 +647,13 @@ export class financeModel {
     let combinedRows = [];
 
     if (includeTravel) {
-      // Build travel WHERE clause for travel_exp table
+      // Build travel WHERE clause for travel_exp table with travels join
       let travelExpWhereClause = ` WHERE 1 = 1 `;
       const travelExpParams = [];
 
+      // Join with travels table to get user_id
       if (user_id) {
-        travelExpWhereClause += ` AND te.user_id = ?`;
+        travelExpWhereClause += ` AND t.user_id = ?`;
         travelExpParams.push(user_id);
       }
 
@@ -677,22 +678,24 @@ export class financeModel {
         travelExpParams.push(`%${category}%`);
       }
 
-      // Get travel expenses count
+      // Get travel expenses count with join
       const [[{ travelExpTotal }]] = await pool.query(
         `
             SELECT COUNT(*) AS total
             FROM travel_exp te
+            INNER JOIN travels t ON te.travel_id = t.id
             ${travelExpWhereClause}
             `,
         travelExpParams,
       );
 
-      // Get travel expense summary
+      // Get travel expense summary with join
       const [travelExpSummary] = await pool.query(
         `
             SELECT
                 SUM(CAST(te.amount AS DECIMAL(10,2))) AS total_amount
             FROM travel_exp te
+            INNER JOIN travels t ON te.travel_id = t.id
             ${travelExpWhereClause}
             `,
         travelExpParams,
@@ -700,12 +703,12 @@ export class financeModel {
 
       expense_total += Number(travelExpSummary[0]?.total_amount || 0);
 
-      // Get travel expenses with proper mapping
+      // Get travel expenses with proper mapping and user_id from travels table
       const travelExpQuery = `
             SELECT
                 te.id,
                 'expense' AS type,
-                te.user_id,
+                t.user_id,
                 te.cat_id AS category_id,
                 te.cat_name AS category_name,
                 '' AS cat_img,
@@ -713,8 +716,16 @@ export class financeModel {
                 te.exp_date AS trans_date,
                 te.amount,
                 te.notes,
-                '' AS attachment_ids
+                '' AS attachment_ids,
+                t.id AS travel_id,
+                t.title AS travel_title,
+                t.descp AS travel_description,
+                t.travel_from,
+                t.travel_to,
+                t.from_date AS travel_from_date,
+                t.to_date AS travel_to_date
             FROM travel_exp te
+            INNER JOIN travels t ON te.travel_id = t.id
             ${travelExpWhereClause}
             ORDER BY te.exp_date DESC
         `;
@@ -725,6 +736,7 @@ export class financeModel {
       for (const row of travelExpRows) {
         row.cat_icon = [];
         row.attachment = [];
+        // Ensure user_id is properly set from travels table
         row.user_id = row.user_id || null;
       }
 
