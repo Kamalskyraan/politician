@@ -1107,7 +1107,7 @@ export const addExpense = async (req, res) => {
       );
     }
 
-    let { travel_id, cat_id, cat_name, notes, exp_date, amount , user_id} =
+    let { travel_id, cat_id, cat_name, notes, exp_date, amount, user_id } =
       validatedData?.value;
 
     cat_name = cat_name === "" ? null : cat_name;
@@ -1125,6 +1125,7 @@ export const addExpense = async (req, res) => {
       exp_date,
       amount,
     });
+    console.log(result?.data);
 
     let data = {
       id: result?.data?.insertId,
@@ -1146,7 +1147,7 @@ export const addExpense = async (req, res) => {
     const financeResult = await financeMdl.addFinanceData({
       id: null,
       user_id: user_id,
-      type : "expense",
+      type: "expense",
       travel_exp_id: result?.data?.insertId,
       cat_id: data.cat_id,
       cat_name: data.cat_name,
@@ -1170,7 +1171,6 @@ export const addExpense = async (req, res) => {
         "",
       );
     } else if (result?.success === 0) {
-
       return sendResponse(
         res,
         200,
@@ -1181,8 +1181,7 @@ export const addExpense = async (req, res) => {
       );
     }
   } catch (error) {
-
-    console.log(error)
+    console.log(error);
     return sendResponse(
       res,
       500,
@@ -1258,7 +1257,7 @@ export const updateExpense = async (req, res) => {
       );
     }
 
-    let { id, cat_id, cat_name, notes, exp_date, amount } =
+    let { id, cat_id, cat_name, notes, exp_date, amount, user_id } =
       validatedData?.value;
 
     notes = notes === "" ? null : notes;
