@@ -23,7 +23,7 @@ if (!admin.apps.length) {
 }
 
 export const sendPushNotification = async ({ user_id, payload }) => {
-  // console.log("inside push notification");
+  // console.log(user_id, payload);
   try {
     const devices = await executeQuery(
       `SELECT device_token, device_type
@@ -32,12 +32,12 @@ export const sendPushNotification = async ({ user_id, payload }) => {
       [user_id],
     );
 
-    if (!devices.length) return;
+    if (!devices?.data?.length) return;
 
     const androidTokens = [];
     const iosTokens = [];
 
-    for (const d of devices) {
+    for (const d of devices?.data) {
       if (d.device_type === "android") {
         androidTokens.push(d.device_token);
       } else if (d.device_type === "ios") {

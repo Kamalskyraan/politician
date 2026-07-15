@@ -44,7 +44,7 @@ export const requestOtp = async (req, res) => {
     const expired_at =
       process.env.NODE_ENV === "development"
         ? new Date(Date.now() + 1000 * 60 * 1)
-        : new Date(Date.now() + 1000 * 60 * 5);
+        : new Date(Date.now() + 1000 * 60 * 2);
 
     if (type === 0) {
       // no db check

@@ -143,5 +143,37 @@ router.post(
     }
 */ notificationcontroller.getNotificationActiveCount,
 );
+router.post(
+  "/test-notification",
+  /*
+    #swagger.tags = ['13.Notification']
+    #swagger.summary = 'Get active notification count'
+    #swagger.description = 'Get notification active count by passing user id.'
 
+    #swagger.requestBody = {
+      required: true,
+      content: {
+        "application/json": {
+          schema: {
+            type: "object",
+            properties: {
+              user_id: {
+                type: "string",
+                example: "USER__-zw9853"
+              }
+            }
+          }
+        }
+      }
+    }
+
+    #swagger.responses[200] = {
+      description: 'Notifications active count fetched successfully'
+    }
+
+    #swagger.responses[500] = {
+      description: 'Internal Server Error'
+    }
+*/ notificationcontroller.testNotification,
+);
 export default router;
