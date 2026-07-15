@@ -1129,8 +1129,6 @@ export const addExpense = async (req, res) => {
     let data = {
       id: result?.data?.insertId,
       travel_id: travel_id,
-      type : "expense",
-      user_id : user_id ,
       cat_id: cat_id,
       cat_name: cat_name,
       notes: notes,
@@ -1147,7 +1145,8 @@ export const addExpense = async (req, res) => {
 
     const financeResult = await financeMdl.addFinanceData({
       id: null,
-      user_id: ,
+      user_id: user_id,
+      type : "expense",
       travel_exp_id: result?.data?.insertId,
       cat_id: data.cat_id,
       cat_name: data.cat_name,
