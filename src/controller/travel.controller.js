@@ -1146,7 +1146,7 @@ export const addExpense = async (req, res) => {
     const financeResult = await financeMdl.addFinanceData({
       id: null,
       user_id: req.user?.id,
-      is_travel: 0,
+      travel_exp_id: result?.data?.insertId,
       cat_id: data.cat_id,
       cat_name: data.cat_name,
       trans_date: exp_date,
@@ -1169,6 +1169,7 @@ export const addExpense = async (req, res) => {
         "",
       );
     } else if (result?.success === 0) {
+
       return sendResponse(
         res,
         200,
@@ -1179,6 +1180,8 @@ export const addExpense = async (req, res) => {
       );
     }
   } catch (error) {
+
+    console.log(error)
     return sendResponse(
       res,
       500,
