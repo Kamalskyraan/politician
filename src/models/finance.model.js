@@ -438,6 +438,7 @@ export class financeModel {
           .filter(Boolean);
 
         const catMedia = await srcMdl.getMedia(catIconIds);
+        
         row.cat_icon = catMedia?.success ? catMedia.data : [];
       } else {
         row.cat_icon = [];

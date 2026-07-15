@@ -1273,10 +1273,7 @@ export const updateExpense = async (req, res) => {
       upt_cols.push("cat_id = ?, cat_name = ?");
       params.push(cat_id, cat_name);
     }
-    // if (cat_name) {
-    //   upt_cols.push("cat_name = ?");
-    //   params.push(cat_name);
-    // }
+
     if (notes !== undefined) {
       upt_cols.push("notes = ?");
       params.push(notes);
@@ -1296,7 +1293,6 @@ export const updateExpense = async (req, res) => {
     params.push(id);
 
     const result = await travelMdl.updateExpense({ upt_cols, params });
-    // console.log(result);
 
     const data = {
       id: id,
@@ -1311,14 +1307,14 @@ export const updateExpense = async (req, res) => {
       data.cat_name = cat_result?.data[0]?.category_name;
     }
 
-     await financeMdl.addFinanceDataTravel({
+    await financeMdl.addFinanceDataTravel({
       id: id,
       user_id: user_id,
       type: "expense",
       travel_exp_id: id,
       cat_id: data.cat_id,
       cat_name: data.cat_name,
-      trans_date: exp_date,
+      trans_date: exp_date.toISOString().split("T")[0],
       amount,
       notes,
       attachment: null,
@@ -1346,8 +1342,7 @@ export const updateExpense = async (req, res) => {
       );
     }
   } catch (error) {
-
-    console.log(error)
+    console.log(error);
     return sendResponse(
       res,
       500,
