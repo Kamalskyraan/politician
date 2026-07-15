@@ -232,7 +232,7 @@ export class sourceModel {
         id: 0,
         cat_name: "Others",
         cat_type: "",
-        cat_img: `${process.env.MEDIA_BASE_URL}${other_expense}`,
+        cat_img: `${process.env.MEDIA_BASE_URL}/other_expense.png`,
         status: "active",
       });
     }
