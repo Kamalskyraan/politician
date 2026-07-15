@@ -402,29 +402,38 @@ export class financeModel {
 
     // Paginated Data
     const query = `
-    SELECT
-      f.id,
-      f.type,
-      f.user_id,
-      f.travel_exp_id,
-      COALESCE(f.category_id, '0') AS category_id,
-      f.category_name,
-   CONCAT(
-    '${process.env.MEDIA_BASE_URL}/',
-    REPLACE(COALESCE(fc.cat_img, ''), '\\', '/')
-) AS cat_img,
-      fc.cat_name,
-      f.trans_date,
-      f.amount,
-      f.notes,
-      f.attachment AS attachment_ids
-    FROM finance f
-    LEFT JOIN finance_category fc
-      ON f.category_id = fc.id
-    ${whereClause}
-    ORDER BY f.trans_date DESC
-    LIMIT ? OFFSET ?
-  `;
+SELECT
+    f.id,
+    f.type,
+    f.user_id,
+    f.travel_exp_id,
+    COALESCE(f.category_id, '0') AS category_id,
+    f.category_name,
+
+    CASE
+        WHEN fc.cat_img IS NULL OR fc.cat_img = ''
+        THEN ''
+        ELSE CONCAT(
+            '${process.env.MEDIA_BASE_URL}/',
+            REPLACE(fc.cat_img, '\\\\', '/')
+        )
+    END AS cat_img,
+
+    fc.cat_name,
+    f.trans_date,
+    f.amount,
+    f.notes,
+    f.attachment AS attachment_ids
+
+FROM finance f
+LEFT JOIN finance_category fc
+    ON f.category_id = fc.id
+
+${whereClause}
+
+ORDER BY f.trans_date DESC
+LIMIT ? OFFSET ?;
+`;
 
     const [rows] = await pool.query(query, [
       ...params,
