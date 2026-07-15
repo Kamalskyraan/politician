@@ -703,7 +703,7 @@ export class financeModel {
                 'travel_expense_icon' AS cat_img,
                 'Travel' AS cat_name,
                 te.exp_date AS trans_date,
-                te.total_exp AS amount,
+                te.amount AS amount,
                 te.expense_desc AS notes,
                 '' AS attachment_ids
             FROM travel_exp te
