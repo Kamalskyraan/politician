@@ -693,7 +693,7 @@ export const deleteUserPermanentely = async () => {
 
 //
 
-async function getCategoryIcon(catImgIds) {
+export const getCategoryIcon = async (catImgIds) => {
   if (!catImgIds) return [];
   const ids = String(catImgIds)
     .split(",")
@@ -702,4 +702,4 @@ async function getCategoryIcon(catImgIds) {
 
   const media = await srcMdl.getMedia(ids);
   return media?.success ? media.data : [];
-}
+};
