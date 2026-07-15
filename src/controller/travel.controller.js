@@ -1314,7 +1314,7 @@ export const updateExpense = async (req, res) => {
       travel_exp_id: id,
       cat_id: data.cat_id,
       cat_name: data.cat_name,
-      trans_date: exp_date.toISOString().split("T")[0],
+      trans_date: data.exp_date.toISOString().split("T")[0],
       amount,
       notes,
       attachment: null,
