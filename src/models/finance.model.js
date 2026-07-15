@@ -791,17 +791,17 @@ export class financeModel {
           );
           if (catData.length > 0) {
             row.cat_icon = `${process.env.MEDIA_BASE_URL}${catData[0].cat_img}`;
-            row.cat_name = catData[0].cat_name;
+            row.category_name = catData[0].cat_name;
           } else {
             row.cat_icon = [];
-            row.cat_name = row.category_name || "";
+            row.category_name = row.category_name || "";
           }
         } else {
           row.cat_icon = [];
-          row.cat_name = row.category_name || "";
+          row.category_name = row.category_name || "";
         }
 
-        // Remove unnecessary fields
+       
         delete row.category_name;
       }
 
