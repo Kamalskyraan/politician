@@ -918,7 +918,7 @@ export class financeModel {
           start_date: row.travel_start_date,
           end_date: row.travel_end_date,
           status: row.travel_status,
-          category_name: row.category_name,
+          cat_name: "",
         };
 
         // Remove raw travel fields
