@@ -123,7 +123,7 @@ export class financeModel {
           amount,
           notes,
           attachment,
-          travel_exp_id,
+     
           id,
         ],
       );
