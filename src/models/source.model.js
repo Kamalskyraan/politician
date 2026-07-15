@@ -223,7 +223,7 @@ export class sourceModel {
 
     rows.forEach((row) => {
       row.cat_img = row.cat_img
-        ? `${baseUrl}/${row.cat_img.replace(/^\/+/, "")}`
+        ? `${baseUrl}/${row.cat_img}`
         : "";
     });
 
@@ -232,7 +232,7 @@ export class sourceModel {
         id: 0,
         cat_name: "Others",
         cat_type: "",
-        cat_img: `${process.env.MEDIA_BASE_URL}/other_expense.png`,
+        cat_img: `${process.env.MEDIA_BASE_URL}public/icons/other_expense.png`,
         status: "active",
       });
     }
