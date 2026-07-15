@@ -12,6 +12,7 @@ import { politicalSumitModel } from "../models/politicalsumit.model.js";
 import { supportModel } from "../models/support.model.js";
 import { userModel } from "../models/user.model.js";
 import { sendPushNotification } from "../service/notification.service.js";
+import { sourceModel } from "../models/source.model.js";
 const notificationMdl = new notificationModel();
 const meetingMdl = new meetingModel();
 const taskMdl = new taskModel();
@@ -22,6 +23,8 @@ const supportMdl = new supportModel();
 const userMdl = new userModel();
 
 dotenv.config();
+
+const srcMdl = new sourceModel();
 
 export const genarateotp = ({ email, phn_num, c_code }) => {
   let otp;
