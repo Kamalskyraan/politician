@@ -86,7 +86,7 @@ export class financeModel {
     };
   }
 
-  // 
+  //
   async addFinanceDataTravel({
     id,
     user_id,
@@ -97,7 +97,6 @@ export class financeModel {
     amount,
     notes,
     attachment,
-    
   }) {
     if (id) {
       const [result] = await pool.query(
@@ -123,7 +122,7 @@ export class financeModel {
           amount,
           notes,
           attachment,
-     
+
           id,
         ],
       );
@@ -410,7 +409,10 @@ export class financeModel {
       f.travel_exp_id,
       COALESCE(f.category_id, '0') AS category_id,
       f.category_name,
-      COALESCE(fc.cat_img, 0) AS cat_img,
+     CONCAT(
+    '${process.env.MEDIA_BASE_URL}/',
+    REPLACE(COALESCE(fc.cat_img, ''), '\\', '/')
+) AS cat_img
       fc.cat_name,
       f.trans_date,
       f.amount,
@@ -438,7 +440,7 @@ export class financeModel {
           .filter(Boolean);
 
         const catMedia = await srcMdl.getMedia(catIconIds);
-        
+
         row.cat_icon = catMedia?.success ? catMedia.data : [];
       } else {
         row.cat_icon = [];
