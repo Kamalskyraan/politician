@@ -651,10 +651,7 @@ export class financeModel {
       let travelWhereClause = ` WHERE 1 = 1 `;
       const travelParams = [];
 
-      if (user_id) {
-        travelWhereClause += ` AND te.user_id = ?`;
-        travelParams.push(user_id);
-      }
+     
 
       if (from_date && to_date) {
         travelWhereClause += ` AND DATE(te.exp_date) BETWEEN ? AND ?`;
@@ -719,7 +716,7 @@ export class financeModel {
       total += travelTotal;
     }
 
-    // Get finance data
+   
     const [[{ financeTotal }]] = await pool.query(
       `
         SELECT COUNT(*) AS total
