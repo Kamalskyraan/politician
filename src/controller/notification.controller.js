@@ -8,6 +8,7 @@ import {
   validateRequest,
 } from "../utils/validator.js";
 import { notificationModel } from "../models/notification.model.js";
+import { sendAPNSNotification } from "../service/notification.service.js";
 
 const notificationMdl = new notificationModel();
 
@@ -195,6 +196,24 @@ export const getNotificationActiveCount = async (req, res) => {
         result?.error,
       );
     }
+  } catch (error) {
+    return sendResponse(
+      res,
+      500,
+      0,
+      "Internal server error",
+      [],
+      error.message,
+    );
+  }
+};
+export const testNotification = async (req, res) => {
+  try {
+   await sendAPNSNotification({
+          tokens: ["5358d3ec42f44b4ca8efb642f87b1d0f2ac745c73d42194789a83e67c50a4874"],
+          title: "Hii",
+          body:"hii",
+        });
   } catch (error) {
     return sendResponse(
       res,

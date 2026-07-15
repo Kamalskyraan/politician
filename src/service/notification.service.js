@@ -23,7 +23,7 @@ if (!admin.apps.length) {
 }
 
 export const sendPushNotification = async ({ user_id, payload }) => {
-  // console.log("inside push notification");
+  // console.log(user_id, payload);
   try {
     console.log("Searching devices for user:", user_id);
 
@@ -34,19 +34,14 @@ export const sendPushNotification = async ({ user_id, payload }) => {
        AND device_token IS NOT NULL`,
       [user_id],
     );
-    const devicess = devices?.data;
-    if (!devicess.length) {
-      console.log("No registered devices");
-      return;
-    }
+
+    if (!devices?.data?.length) return;
 
     const androidTokens = [];
     const iosTokens = [];
 
-    for (const d of devicess) {
-      console.log(d.device_type, d.device_token);
-
-      if (d.device_type?.toLowerCase() === "android") {
+    for (const d of devices?.data) {
+      if (d.device_type === "android") {
         androidTokens.push(d.device_token);
       }
 
@@ -97,6 +92,8 @@ export const sendFCMNotification = async ({ token, title, body, data }) => {
   });
 };
 
+
+// 
 export const sendAPNSNotification = async ({ tokens, title, body }) => {
   try {
     const notification = new apn.Notification();

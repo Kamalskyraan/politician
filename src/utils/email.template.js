@@ -185,7 +185,7 @@ export const emailOtpTemplate = (otp) => {
                 color: #222222;
                 line-height: 1.6;
               ">
-                OTP will expire in <strong>5 minutes</strong>.
+                OTP will expire in <strong>2 minutes</strong>.
               </p>
 
               <!-- Warning -->
