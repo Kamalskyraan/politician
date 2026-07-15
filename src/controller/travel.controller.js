@@ -1125,7 +1125,6 @@ export const addExpense = async (req, res) => {
       exp_date,
       amount,
     });
-   
 
     let data = {
       id: result?.data?.insertId,
@@ -1311,6 +1310,19 @@ export const updateExpense = async (req, res) => {
       const cat_result = await travelMdl.getTravelExpenseCategory(cat_id);
       data.cat_name = cat_result?.data[0]?.category_name;
     }
+
+    const result = await financeMdl.addFinanceData({
+      id: id,
+      user_id: user_id,
+      type: "expense",
+      travel_exp_id: id,
+      cat_id: data.cat_id,
+      cat_name: data.cat_name,
+      trans_date: exp_date,
+      amount,
+      notes,
+      attachment: null,
+    });
 
     const response = replaceNullWithEmptyString(data);
 
