@@ -207,6 +207,172 @@ export class financeModel {
   //   };
   // }
 
+  // async fetchFinanceData({
+  //   id,
+  //   type,
+  //   user_id,
+  //   category,
+  //   amount,
+  //   from_date,
+  //   to_date,
+  //   page = 1,
+  //   limit = 10,
+  // }) {
+  //   const offset = (page - 1) * limit;
+
+  //   let whereClause = ` WHERE 1 = 1 `;
+  //   const params = [];
+
+  //   if (id) {
+  //     whereClause += ` AND f.id = ?`;
+  //     params.push(id);
+  //   }
+
+  //   if (type) {
+  //     whereClause += ` AND f.type = ?`;
+  //     params.push(type);
+  //   }
+
+  //   if (user_id) {
+  //     whereClause += ` AND f.user_id = ?`;
+  //     params.push(user_id);
+  //   }
+
+  //   if (amount) {
+  //     whereClause += ` AND f.amount LIKE ?`;
+  //     params.push(`%${amount}%`);
+  //   }
+
+  //   if (category) {
+  //     whereClause += `
+  //     AND (
+  //       f.category_name LIKE ?
+  //       OR fc.cat_name LIKE ?
+  //       OR CAST(f.amount AS CHAR) LIKE ?
+  //     )
+  //   `;
+
+  //     const searchValue = `%${category}%`;
+  //     params.push(searchValue, searchValue, searchValue);
+  //   }
+
+  //   if (from_date && to_date) {
+  //     whereClause += ` AND DATE(f.trans_date) BETWEEN ? AND ?`;
+  //     params.push(from_date, to_date);
+  //   } else if (from_date) {
+  //     whereClause += ` AND DATE(f.trans_date) >= ?`;
+  //     params.push(from_date);
+  //   } else if (to_date) {
+  //     whereClause += ` AND DATE(f.trans_date) <= ?`;
+  //     params.push(to_date);
+  //   }
+
+  // // Total Records Count
+  //   const [[{ total }]] = await pool.query(
+  //     `
+  //     SELECT COUNT(*) AS total
+  //     FROM finance f
+  //     LEFT JOIN finance_category fc ON f.category_id = fc.id
+  //     ${whereClause}
+  //   `,
+  //     params,
+  //   );
+
+  //   // Income / Expense Summary
+  //   const [summaryRows] = await pool.query(
+  //     `
+  //     SELECT
+  //       type,
+  //       SUM(amount) AS total_amount
+  //     FROM finance f
+  //     LEFT JOIN finance_category fc ON f.category_id = fc.id
+  //     ${whereClause}
+  //     GROUP BY type
+  //   `,
+  //     params,
+  //   );
+
+  //   let income_total = 0;
+  //   let expense_total = 0;
+
+  //   summaryRows.forEach((row) => {
+  //     if (row.type === "income") {
+  //       income_total = Number(row.total_amount || 0);
+  //     }
+
+  //     if (row.type === "expense") {
+  //       expense_total = Number(row.total_amount || 0);
+  //     }
+  //   });
+
+  //   // Paginated Data
+  //   const query = `
+  //   SELECT
+  //     f.id,
+  //     f.type,
+  //     f.user_id,
+  //     COALESCE(f.category_id, '0') AS category_id,
+  //     f.category_name,
+  //     COALESCE(fc.cat_img, 0) AS cat_img,
+  //     fc.cat_name,
+  //     f.trans_date,
+  //     f.amount,
+  //     f.notes,
+  //     f.attachment AS attachment_ids
+  //   FROM finance f
+  //   LEFT JOIN finance_category fc
+  //     ON f.category_id = fc.id
+  //   ${whereClause}
+  //   ORDER BY f.trans_date DESC
+  //   LIMIT ? OFFSET ?
+  // `;
+
+  //   const [rows] = await pool.query(query, [
+  //     ...params,
+  //     Number(limit),
+  //     Number(offset),
+  //   ]);
+
+  //   for (const row of rows) {
+  //     if (row.cat_img) {
+  //       const catIconIds = String(row.cat_img)
+  //         .split(",")
+  //         .map((id) => Number(id.trim()))
+  //         .filter(Boolean);
+
+  //       const catMedia = await srcMdl.getMedia(catIconIds);
+  //       row.cat_icon = catMedia?.success ? catMedia.data : [];
+  //     } else {
+  //       row.cat_icon = [];
+  //     }
+
+  //     if (row.attachment_ids) {
+  //       const attachmentIds = String(row.attachment_ids)
+  //         .split(",")
+  //         .map((id) => Number(id.trim()))
+  //         .filter(Boolean);
+
+  //       const media = await srcMdl.getMedia(attachmentIds);
+  //       row.attachment = media?.success ? media.data : [];
+  //     } else {
+  //       row.attachment = [];
+  //     }
+  //   }
+
+  //   return {
+  //     income_total,
+  //     expense_total,
+  //     balance: income_total - expense_total,
+  //     data: replaceNullWithEmptyString(rows),
+  //     pagination: {
+  //       total,
+  //       page: Number(page),
+  //       limit: Number(limit),
+  //       total_pages: Math.ceil(total / limit),
+  //     },
+  //   };
+  // }
+
   async fetchFinanceData({
     id,
     type,
@@ -220,159 +386,393 @@ export class financeModel {
   }) {
     const offset = (page - 1) * limit;
 
-    let whereClause = ` WHERE 1 = 1 `;
-    const params = [];
+    // Separate queries for global finance and travel expenses
+    let globalWhereClause = ` WHERE 1 = 1 `;
+    let travelWhereClause = ` WHERE 1 = 1 `;
+    const globalParams = [];
+    const travelParams = [];
 
-    if (id) {
-      whereClause += ` AND f.id = ?`;
-      params.push(id);
+    // Handle type filtering
+    if (type === "travel") {
+      // Only fetch travel data
+      travelWhereClause = buildTravelWhereClause();
+      // Skip global query
+    } else if (type === "global") {
+      // Only fetch global data
+      globalWhereClause = buildGlobalWhereClause();
+      // Skip travel query
+    } else {
+      // Fetch both
+      globalWhereClause = buildGlobalWhereClause();
+      travelWhereClause = buildTravelWhereClause();
     }
 
-    if (type) {
-      whereClause += ` AND f.type = ?`;
-      params.push(type);
-    }
+    function buildGlobalWhereClause() {
+      let where = ` WHERE 1 = 1 `;
+      const params = [];
 
-    if (user_id) {
-      whereClause += ` AND f.user_id = ?`;
-      params.push(user_id);
-    }
-
-    if (amount) {
-      whereClause += ` AND f.amount LIKE ?`;
-      params.push(`%${amount}%`);
-    }
-
-    if (category) {
-      whereClause += `
-      AND (
-        f.category_name LIKE ?
-        OR fc.cat_name LIKE ?
-        OR CAST(f.amount AS CHAR) LIKE ?
-      )
-    `;
-
-      const searchValue = `%${category}%`;
-      params.push(searchValue, searchValue, searchValue);
-    }
-
-    if (from_date && to_date) {
-      whereClause += ` AND DATE(f.trans_date) BETWEEN ? AND ?`;
-      params.push(from_date, to_date);
-    } else if (from_date) {
-      whereClause += ` AND DATE(f.trans_date) >= ?`;
-      params.push(from_date);
-    } else if (to_date) {
-      whereClause += ` AND DATE(f.trans_date) <= ?`;
-      params.push(to_date);
-    }
-
-  // Total Records Count
-    const [[{ total }]] = await pool.query(
-      `
-      SELECT COUNT(*) AS total
-      FROM finance f
-      LEFT JOIN finance_category fc ON f.category_id = fc.id
-      ${whereClause}
-    `,
-      params,
-    );
-
-    // Income / Expense Summary
-    const [summaryRows] = await pool.query(
-      `
-      SELECT
-        type,
-        SUM(amount) AS total_amount
-      FROM finance f
-      LEFT JOIN finance_category fc ON f.category_id = fc.id
-      ${whereClause}
-      GROUP BY type
-    `,
-      params,
-    );
-
-    let income_total = 0;
-    let expense_total = 0;
-
-    summaryRows.forEach((row) => {
-      if (row.type === "income") {
-        income_total = Number(row.total_amount || 0);
+      if (id) {
+        where += ` AND id = ?`;
+        params.push(id);
       }
 
-      if (row.type === "expense") {
-        expense_total = Number(row.total_amount || 0);
-      }
-    });
-
-    // Paginated Data
-    const query = `
-    SELECT
-      f.id,
-      f.type,
-      f.user_id,
-      COALESCE(f.category_id, '0') AS category_id,
-      f.category_name,
-      COALESCE(fc.cat_img, 0) AS cat_img,
-      fc.cat_name,
-      f.trans_date,
-      f.amount,
-      f.notes,
-      f.attachment AS attachment_ids
-    FROM finance f
-    LEFT JOIN finance_category fc
-      ON f.category_id = fc.id
-    ${whereClause}
-    ORDER BY f.trans_date DESC
-    LIMIT ? OFFSET ?
-  `;
-
-    const [rows] = await pool.query(query, [
-      ...params,
-      Number(limit),
-      Number(offset),
-    ]);
-
-    for (const row of rows) {
-      if (row.cat_img) {
-        const catIconIds = String(row.cat_img)
-          .split(",")
-          .map((id) => Number(id.trim()))
-          .filter(Boolean);
-
-        const catMedia = await srcMdl.getMedia(catIconIds);
-        row.cat_icon = catMedia?.success ? catMedia.data : [];
-      } else {
-        row.cat_icon = [];
+      if (user_id) {
+        where += ` AND user_id = ?`;
+        params.push(user_id);
       }
 
-      if (row.attachment_ids) {
-        const attachmentIds = String(row.attachment_ids)
-          .split(",")
-          .map((id) => Number(id.trim()))
-          .filter(Boolean);
-
-        const media = await srcMdl.getMedia(attachmentIds);
-        row.attachment = media?.success ? media.data : [];
-      } else {
-        row.attachment = [];
+      if (amount) {
+        where += ` AND amount LIKE ?`;
+        params.push(`%${amount}%`);
       }
+
+      if (category) {
+        where += `
+        AND (
+          category_name LIKE ?
+          OR CAST(amount AS CHAR) LIKE ?
+        )
+      `;
+        const searchValue = `%${category}%`;
+        params.push(searchValue, searchValue);
+      }
+
+      if (from_date && to_date) {
+        where += ` AND DATE(trans_date) BETWEEN ? AND ?`;
+        params.push(from_date, to_date);
+      } else if (from_date) {
+        where += ` AND DATE(trans_date) >= ?`;
+        params.push(from_date);
+      } else if (to_date) {
+        where += ` AND DATE(trans_date) <= ?`;
+        params.push(to_date);
+      }
+
+      // Add to global params
+      globalParams.push(...params);
+      return where;
     }
+
+    function buildTravelWhereClause() {
+      let where = ` WHERE 1 = 1 `;
+      const params = [];
+
+      if (id) {
+        where += ` AND te.id = ?`;
+        params.push(id);
+      }
+
+      if (user_id) {
+        where += ` AND te.user_id = ?`;
+        params.push(user_id);
+      }
+
+      if (amount) {
+        where += ` AND te.amount LIKE ?`;
+        params.push(`%${amount}%`);
+      }
+
+      if (category) {
+        where += `
+        AND (
+          te.cat_name LIKE ?
+          OR t.title LIKE ?
+          OR t.destination LIKE ?
+          OR CAST(te.amount AS CHAR) LIKE ?
+        )
+      `;
+        const searchValue = `%${category}%`;
+        params.push(searchValue, searchValue, searchValue, searchValue);
+      }
+
+      if (from_date && to_date) {
+        where += ` AND DATE(te.exp_date) BETWEEN ? AND ?`;
+        params.push(from_date, to_date);
+      } else if (from_date) {
+        where += ` AND DATE(te.exp_date) >= ?`;
+        params.push(from_date);
+      } else if (to_date) {
+        where += ` AND DATE(te.exp_date) <= ?`;
+        params.push(to_date);
+      }
+
+      travelParams.push(...params);
+      return where;
+    }
+
+    // Fetch global finance data
+    let globalData = [];
+    let globalTotal = 0;
+    let globalIncomeTotal = 0;
+    let globalExpenseTotal = 0;
+
+    if (type !== "travel") {
+      // Global finance count
+      const [[{ total: globalCount }]] = await pool.query(
+        `
+        SELECT COUNT(*) AS total
+        FROM finance
+        ${globalWhereClause}
+      `,
+        globalParams,
+      );
+      globalTotal = globalCount;
+
+      // Global income/expense summary
+      const [globalSummary] = await pool.query(
+        `
+        SELECT
+          type,
+          SUM(amount) AS total_amount
+        FROM finance
+        ${globalWhereClause}
+        GROUP BY type
+      `,
+        globalParams,
+      );
+
+      globalSummary.forEach((row) => {
+        if (row.type === "income") {
+          globalIncomeTotal = Number(row.total_amount || 0);
+        }
+        if (row.type === "expense") {
+          globalExpenseTotal = Number(row.total_amount || 0);
+        }
+      });
+
+      // Fetch global data with pagination
+      const globalQuery = `
+        SELECT
+          id,
+          type,
+          user_id,
+          COALESCE(category_id, '0') AS category_id,
+          category_name,
+          trans_date,
+          amount,
+          notes,
+          attachment
+        FROM finance
+        ${globalWhereClause}
+        ORDER BY trans_date DESC
+        LIMIT ? OFFSET ?
+      `;
+
+      const [globalRows] = await pool.query(globalQuery, [
+        ...globalParams,
+        Number(limit),
+        Number(offset),
+      ]);
+
+      // Process global data
+      for (const row of globalRows) {
+        // Add type
+        row.type_label = "global";
+
+        // Process attachments
+        if (row.attachment) {
+          const attachmentIds = String(row.attachment)
+            .split(",")
+            .map((id) => Number(id.trim()))
+            .filter(Boolean);
+
+          const media = await srcMdl.getMedia(attachmentIds);
+          row.attachment = media?.success ? media.data : [];
+        } else {
+          row.attachment = [];
+        }
+
+        // Get category image if category_id exists
+        if (row.category_id && row.category_id !== "0") {
+          const [catData] = await pool.query(
+            `SELECT cat_img, cat_name FROM finance_category WHERE id = ?`,
+            [row.category_id],
+          );
+          if (catData.length > 0) {
+            row.cat_icon = catData[0].cat_img
+              ? await getCategoryIcon(catData[0].cat_img)
+              : [];
+            row.cat_name = catData[0].cat_name;
+          } else {
+            row.cat_icon = [];
+            row.cat_name = row.category_name || "";
+          }
+        } else {
+          row.cat_icon = [];
+          row.cat_name = row.category_name || "";
+        }
+
+        // Remove unnecessary fields
+        delete row.category_name;
+      }
+
+      globalData = replaceNullWithEmptyString(globalRows);
+    }
+
+    // Fetch travel expenses data
+    let travelData = [];
+    let travelTotal = 0;
+    let travelExpenseTotal = 0;
+
+    if (type !== "global") {
+      // Travel expenses count
+      const [[{ total: travelCount }]] = await pool.query(
+        `
+        SELECT COUNT(*) AS total
+        FROM travel_exp te
+        LEFT JOIN travels t ON te.travel_id = t.id
+        ${travelWhereClause}
+      `,
+        travelParams,
+      );
+      travelTotal = travelCount;
+
+      // Travel expenses summary
+      const [travelSummary] = await pool.query(
+        `
+        SELECT
+          SUM(te.amount) AS total_amount
+        FROM travel_exp te
+        LEFT JOIN travels t ON te.travel_id = t.id
+        ${travelWhereClause}
+      `,
+        travelParams,
+      );
+      travelExpenseTotal = Number(travelSummary[0]?.total_amount || 0);
+
+      // Fetch travel data with pagination
+      const travelQuery = `
+        SELECT
+          te.id,
+          te.user_id,
+          te.travel_id,
+          te.cat_id,
+          te.cat_name,
+          te.amount,
+          te.exp_date AS trans_date,
+          te.description AS notes,
+          te.attachment,
+          t.title AS travel_title,
+          t.destination AS travel_destination,
+          t.start_date AS travel_start_date,
+          t.end_date AS travel_end_date,
+          t.status AS travel_status
+        FROM travel_exp te
+        LEFT JOIN travels t ON te.travel_id = t.id
+        ${travelWhereClause}
+        ORDER BY te.exp_date DESC
+        LIMIT ? OFFSET ?
+      `;
+
+      const [travelRows] = await pool.query(travelQuery, [
+        ...travelParams,
+        Number(limit),
+        Number(offset),
+      ]);
+
+      // Process travel data
+      for (const row of travelRows) {
+        // Set type as travel
+        row.type = "expense"; // Travel expenses are always expense type
+        row.type_label = "travel";
+        row.category_id = row.cat_id || "0";
+        row.category_name = row.cat_name || "";
+
+        // Process attachments
+        if (row.attachment) {
+          const attachmentIds = String(row.attachment)
+            .split(",")
+            .map((id) => Number(id.trim()))
+            .filter(Boolean);
+
+          const media = await srcMdl.getMedia(attachmentIds);
+          row.attachment = media?.success ? media.data : [];
+        } else {
+          row.attachment = [];
+        }
+
+        // Get category icon if cat_id exists
+        if (row.cat_id) {
+          const [catData] = await pool.query(
+            `SELECT cat_img, cat_name FROM finance_category WHERE id = ?`,
+            [row.cat_id],
+          );
+          if (catData.length > 0) {
+            row.cat_icon = catData[0].cat_img
+              ? await getCategoryIcon(catData[0].cat_img)
+              : [];
+            row.cat_name = catData[0].cat_name || row.cat_name;
+          } else {
+            row.cat_icon = [];
+          }
+        } else {
+          row.cat_icon = [];
+        }
+
+        // Travel info
+        row.travel_info = {
+          travel_id: row.travel_id,
+          title: row.travel_title,
+          destination: row.travel_destination,
+          start_date: row.travel_start_date,
+          end_date: row.travel_end_date,
+          status: row.travel_status,
+        };
+
+        // Remove raw travel fields
+        delete row.travel_id;
+        delete row.travel_title;
+        delete row.travel_destination;
+        delete row.travel_start_date;
+        delete row.travel_end_date;
+        delete row.travel_status;
+        delete row.cat_id;
+        delete row.cat_name;
+        delete row.description;
+      }
+
+      travelData = replaceNullWithEmptyString(travelRows);
+    }
+
+    // Combine both datasets
+    let combinedData = [];
+    let totalRecords = 0;
+
+    if (type === "travel") {
+      combinedData = travelData;
+      totalRecords = travelTotal;
+    } else if (type === "global") {
+      combinedData = globalData;
+      totalRecords = globalTotal;
+    } else {
+     
+      combinedData = [...globalData, ...travelData];
+      totalRecords = globalTotal + travelTotal;
+
+      
+      combinedData.sort((a, b) => {
+        return new Date(b.trans_date) - new Date(a.trans_date);
+      });
+    }
+
+    // Calculate totals
+    const totalIncome = globalIncomeTotal;
+    const totalExpense = globalExpenseTotal + travelExpenseTotal;
+    const balance = totalIncome - totalExpense;
 
     return {
-      income_total,
-      expense_total,
-      balance: income_total - expense_total,
-      data: replaceNullWithEmptyString(rows),
+      income_total: totalIncome,
+      expense_total: totalExpense,
+      balance: balance,
+      data: combinedData,
       pagination: {
-        total,
+        total: totalRecords,
         page: Number(page),
         limit: Number(limit),
-        total_pages: Math.ceil(total / limit),
+        total_pages: Math.ceil(totalRecords / limit),
       },
     };
   }
-
   async removeFinData(id) {
     const [result] = await pool.query(`DELETE FROM finance WHERE id =?`, [id]);
   }
@@ -440,7 +840,6 @@ export class financeModel {
       params,
     );
 
-    
     const [allRows] = await pool.query(
       `
     SELECT
@@ -550,14 +949,13 @@ export class financeModel {
       delete row.attachment_ids;
     }
 
-  
     return {
       user: {
         id: user?.id ?? "",
         user_id: user?.user_id ?? "",
         user_name: user?.name ?? "",
-        c_code : user?.c_code ?? "",
-        phn_num : user?.phn_num ?? ""
+        c_code: user?.c_code ?? "",
+        phn_num: user?.phn_num ?? "",
       },
 
       summary: {
