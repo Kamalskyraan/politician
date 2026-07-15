@@ -697,7 +697,6 @@ export class financeModel {
             SELECT
                 te.id,
                 'expense' AS type,
-                te.user_id,
                 '0' AS category_id,
                 'Travel Expense' AS category_name,
                 'travel_expense_icon' AS cat_img,
