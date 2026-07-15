@@ -1107,7 +1107,7 @@ export const addExpense = async (req, res) => {
       );
     }
 
-    let { travel_id, cat_id, cat_name, notes, exp_date, amount } =
+    let { travel_id, cat_id, cat_name, notes, exp_date, amount , user_id} =
       validatedData?.value;
 
     cat_name = cat_name === "" ? null : cat_name;

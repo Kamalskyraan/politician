@@ -1068,6 +1068,7 @@ export const addExpenseSchema = Joi.object({
     "number.base": "Travel Id should be an integer",
     "any.required": "Travel Id cannot be empty",
   }),
+  user_id : Joi.string().optional(),
   cat_id: Joi.number().required().messages({
     "number.base": "category id should be a number",
     "any.required": "category id cannot be empty",
