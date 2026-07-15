@@ -14,7 +14,7 @@ import notificationRoutes from "./notification.routes.js";
 import { verifyToken } from "../middleware/auth.middleware.js";
 
 export const router = express.Router();
-router.use("/auth", authRoutes);
+// router.use("/auth", authRoutes);
 // router.use("/source", verifyToken, sourceRoutes);
 // router.use("/meeting", verifyToken, meetingRoutes);
 
@@ -28,6 +28,8 @@ router.use("/auth", authRoutes);
 // router.use("/calendar", verifyToken, calendarRoutes);
 // router.use("/user", verifyToken, userRoutes);
 // router.use("/notification", verifyToken, notificationRoutes);
+
+router.use("/auth", authRoutes);
 router.use("/source", sourceRoutes);
 router.use("/meeting", meetingRoutes);
 
