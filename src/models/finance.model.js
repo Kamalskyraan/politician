@@ -854,7 +854,7 @@ export class financeModel {
           te.cat_name,
           te.amount,
           te.exp_date AS trans_date,
-          te.description AS notes,
+          te.notes AS notes,
           te.attachment,
           t.title AS travel_title,
           t.destination AS travel_destination,
