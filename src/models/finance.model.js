@@ -850,7 +850,7 @@ export class financeModel {
     te.amount,
     te.exp_date AS trans_date,
     te.notes,
-    te.attachment,
+  
 
     t.id AS travel_id,
     t.title,
