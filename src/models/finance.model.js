@@ -601,7 +601,6 @@ export class financeModel {
 
     // Handle type filtering
     if (type === "travel") {
-      // Only fetch travel data
       travelWhereClause = buildTravelWhereClause();
       // Skip global query
     } else if (type === "global") {
@@ -668,8 +667,6 @@ export class financeModel {
         where += ` AND te.id = ?`;
         params.push(id);
       }
-
-      
 
       if (amount) {
         where += ` AND te.amount LIKE ?`;
@@ -921,6 +918,7 @@ export class financeModel {
           start_date: row.travel_start_date,
           end_date: row.travel_end_date,
           status: row.travel_status,
+          category_name: row.category_name,
         };
 
         // Remove raw travel fields
