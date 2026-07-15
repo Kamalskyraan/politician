@@ -34,23 +34,24 @@ export const router = express.Router();
 // router.use("/user", verifyToken, userRoutes);
 // router.use("/notification", verifyToken, notificationRoutes);
 
+
 router.use("/auth", authRoutes);
 router.use("/source", sourceRoutes);
 router.use("/meeting", meetingRoutes);
 
 router.use("/support", supportRoutes);
-// router.use("/contact", supportRoutes);
-//
-//
 router.use("/analytics", analyticsRoutes);
-router.use("/travel", verifyToken, travelRoutes);
-router.use("/task", verifyToken, taskRoutes);
-router.use("/issue", verifyToken, issueRoutes);
-router.use("/sumit", verifyToken, politicalsumitRoutes);
-router.use("/reminder", verifyToken, reminderRoutes);
-router.use("/calendar", verifyToken, calendarRoutes);
-router.use("/user", verifyToken, userRoutes);
-router.use("/notification", verifyToken, notificationRoutes);
-router.use("/finance", verifyToken, finaceRoutes);
-router.use("/folder", verifyToken, folderRoutes);
+
+
+router.use("/finance",  finaceRoutes);
+router.use("/folder",  folderRoutes);
+router.use("/travel", travelRoutes);
+router.use("/task", taskRoutes);
+router.use("/issue", issueRoutes);
+router.use("/sumit", politicalsumitRoutes);
+router.use("/reminder", reminderRoutes);
+router.use("/calendar", calendarRoutes);
+router.use("/user", userRoutes);
+router.use("/notification", notificationRoutes);
+
 export default router;
