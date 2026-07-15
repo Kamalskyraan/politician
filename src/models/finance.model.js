@@ -683,7 +683,7 @@ export class financeModel {
       const [travelSummary] = await pool.query(
         `
             SELECT
-                SUM(total_exp) AS total_amount
+                SUM(amount) AS total_amount
             FROM travel_exp te
             ${travelWhereClause}
             `,
