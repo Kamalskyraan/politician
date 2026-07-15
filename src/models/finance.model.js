@@ -637,7 +637,7 @@ export class financeModel {
       params.push(to_date);
     }
 
-    // Check if we need to include travel expenses
+    // Check if we need to include travel data
     const includeTravel = type === "expense";
 
     // For counting total records (finance + travel)
@@ -647,72 +647,92 @@ export class financeModel {
     let combinedRows = [];
 
     if (includeTravel) {
-      // Build travel WHERE clause
-      let travelWhereClause = ` WHERE 1 = 1 `;
-      const travelParams = [];
+      // Build travel WHERE clause for travel_exp table
+      let travelExpWhereClause = ` WHERE 1 = 1 `;
+      const travelExpParams = [];
+
+      if (user_id) {
+        travelExpWhereClause += ` AND te.user_id = ?`;
+        travelExpParams.push(user_id);
+      }
 
       if (from_date && to_date) {
-        travelWhereClause += ` AND DATE(te.exp_date) BETWEEN ? AND ?`;
-        travelParams.push(from_date, to_date);
+        travelExpWhereClause += ` AND DATE(te.exp_date) BETWEEN ? AND ?`;
+        travelExpParams.push(from_date, to_date);
       } else if (from_date) {
-        travelWhereClause += ` AND DATE(te.exp_date) >= ?`;
-        travelParams.push(from_date);
+        travelExpWhereClause += ` AND DATE(te.exp_date) >= ?`;
+        travelExpParams.push(from_date);
       } else if (to_date) {
-        travelWhereClause += ` AND DATE(te.exp_date) <= ?`;
-        travelParams.push(to_date);
+        travelExpWhereClause += ` AND DATE(te.exp_date) <= ?`;
+        travelExpParams.push(to_date);
       }
 
       if (amount) {
-        travelWhereClause += ` AND te.total_exp LIKE ?`;
-        travelParams.push(`%${amount}%`);
+        travelExpWhereClause += ` AND te.amount LIKE ?`;
+        travelExpParams.push(`%${amount}%`);
+      }
+
+      if (category) {
+        travelExpWhereClause += ` AND te.cat_name LIKE ?`;
+        travelExpParams.push(`%${category}%`);
       }
 
       // Get travel expenses count
-      const [[{ travelTotal }]] = await pool.query(
+      const [[{ travelExpTotal }]] = await pool.query(
         `
             SELECT COUNT(*) AS total
             FROM travel_exp te
-            ${travelWhereClause}
+            ${travelExpWhereClause}
             `,
-        travelParams,
+        travelExpParams,
       );
 
       // Get travel expense summary
-      const [travelSummary] = await pool.query(
+      const [travelExpSummary] = await pool.query(
         `
             SELECT
-                SUM(amount) AS total_amount
+                SUM(CAST(te.amount AS DECIMAL(10,2))) AS total_amount
             FROM travel_exp te
-            ${travelWhereClause}
+            ${travelExpWhereClause}
             `,
-        travelParams,
+        travelExpParams,
       );
 
-      expense_total += Number(travelSummary[0]?.total_amount || 0);
+      expense_total += Number(travelExpSummary[0]?.total_amount || 0);
 
-      // Get paginated travel expenses
-      const travelQuery = `
+      // Get travel expenses with proper mapping
+      const travelExpQuery = `
             SELECT
                 te.id,
                 'expense' AS type,
-                '0' AS category_id,
-                'Travel Expense' AS category_name,
-                'travel_expense_icon' AS cat_img,
-                'Travel' AS cat_name,
+                te.user_id,
+                te.cat_id AS category_id,
+                te.cat_name AS category_name,
+                '' AS cat_img,
+                te.cat_name,
                 te.exp_date AS trans_date,
-                te.amount AS amount,
-                te.notes AS notes,
+                te.amount,
+                te.notes,
                 '' AS attachment_ids
             FROM travel_exp te
-            ${travelWhereClause}
+            ${travelExpWhereClause}
             ORDER BY te.exp_date DESC
         `;
 
-      const [travelRows] = await pool.query(travelQuery, travelParams);
-      combinedRows = [...travelRows];
-      total += travelTotal;
+      const [travelExpRows] = await pool.query(travelExpQuery, travelExpParams);
+
+      // Process travel expense rows with cat_icon
+      for (const row of travelExpRows) {
+        row.cat_icon = [];
+        row.attachment = [];
+        row.user_id = row.user_id || null;
+      }
+
+      combinedRows = [...travelExpRows];
+      total += travelExpTotal;
     }
 
+    // Get finance data count
     const [[{ financeTotal }]] = await pool.query(
       `
         SELECT COUNT(*) AS total
@@ -769,7 +789,7 @@ export class financeModel {
 
     const [financeRows] = await pool.query(financeQuery, params);
 
-    // Combine finance and travel data
+    // Combine finance and travel expense data
     let allRows = [...financeRows, ...combinedRows];
 
     // Sort combined data by trans_date DESC
@@ -782,36 +802,54 @@ export class financeModel {
 
     // Process media for paginated rows
     for (const row of paginatedRows) {
-      if (row.cat_img && row.cat_img !== "travel_expense_icon") {
+      // Handle cat_icon for finance rows
+      if (row.cat_img && row.cat_img !== "0" && row.cat_img !== "") {
         const catIconIds = String(row.cat_img)
           .split(",")
           .map((id) => Number(id.trim()))
           .filter(Boolean);
 
-        const catMedia = await srcMdl.getMedia(catIconIds);
-        row.cat_icon = catMedia?.success ? catMedia.data : [];
-      } else if (row.cat_img === "travel_expense_icon") {
-        // Set default travel icon or handle as needed
-        row.cat_icon = [];
+        if (catIconIds.length > 0) {
+          const catMedia = await srcMdl.getMedia(catIconIds);
+          row.cat_icon = catMedia?.success ? catMedia.data : [];
+        } else {
+          row.cat_icon = [];
+        }
       } else {
         row.cat_icon = [];
       }
 
+      // Handle attachments
       if (row.attachment_ids) {
         const attachmentIds = String(row.attachment_ids)
           .split(",")
           .map((id) => Number(id.trim()))
           .filter(Boolean);
 
-        const media = await srcMdl.getMedia(attachmentIds);
-        row.attachment = media?.success ? media.data : [];
+        if (attachmentIds.length > 0) {
+          const media = await srcMdl.getMedia(attachmentIds);
+          row.attachment = media?.success ? media.data : [];
+        } else {
+          row.attachment = [];
+        }
       } else {
         row.attachment = [];
       }
+
+      // Ensure all fields are consistent
+      row.category_id = row.category_id || "0";
+      row.category_name = row.category_name || "";
+      row.cat_name = row.cat_name || "";
+      row.trans_date = row.trans_date || null;
+      row.amount = row.amount || "0";
+      row.notes = row.notes || "";
     }
 
     // Update total with both finance and travel
     total += financeTotal;
+
+    // Calculate total pages
+    const totalPages = Math.ceil(total / limit);
 
     return {
       income_total,
@@ -822,7 +860,7 @@ export class financeModel {
         total,
         page: Number(page),
         limit: Number(limit),
-        total_pages: Math.ceil(total / limit),
+        total_pages: totalPages,
       },
     };
   }
