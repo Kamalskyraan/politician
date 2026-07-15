@@ -1311,7 +1311,7 @@ export const updateExpense = async (req, res) => {
       data.cat_name = cat_result?.data[0]?.category_name;
     }
 
-    const result = await financeMdl.addFinanceData({
+     await financeMdl.addFinanceData({
       id: id,
       user_id: user_id,
       type: "expense",
