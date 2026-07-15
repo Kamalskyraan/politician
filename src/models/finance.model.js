@@ -407,6 +407,7 @@ export class financeModel {
       f.id,
       f.type,
       f.user_id,
+      f.travel_exp_id,
       COALESCE(f.category_id, '0') AS category_id,
       f.category_name,
       COALESCE(fc.cat_img, 0) AS cat_img,
