@@ -14,6 +14,7 @@ export class financeModel {
     amount,
     notes,
     attachment,
+    is_travel = 0,
   }) {
     if (id) {
       const [result] = await pool.query(
@@ -28,6 +29,7 @@ export class financeModel {
           amount = ?,
           notes = ?,
           attachment = ?
+          is_travel = ?
         WHERE id = ?
         `,
         [
@@ -39,6 +41,7 @@ export class financeModel {
           amount,
           notes,
           attachment,
+          is_travel,
           id,
         ],
       );
@@ -59,11 +62,22 @@ export class financeModel {
         trans_date,
         amount,
         notes,
-        attachment
+        attachment,
+        is_travel
       )
-      VALUES (?, ?, ?, ?, ?, ?, ? , ?)
+      VALUES (?, ?, ?, ?, ?, ?, ? , ? , ?)
       `,
-      [user_id, type, cat_id, cat_name, trans_date, amount, notes, attachment],
+      [
+        user_id,
+        type,
+        cat_id,
+        cat_name,
+        trans_date,
+        amount,
+        notes,
+        attachment,
+        is_travel,
+      ],
     );
 
     return {
@@ -440,7 +454,6 @@ export class financeModel {
       params,
     );
 
-    
     const [allRows] = await pool.query(
       `
     SELECT
@@ -550,14 +563,13 @@ export class financeModel {
       delete row.attachment_ids;
     }
 
-  
     return {
       user: {
         id: user?.id ?? "",
         user_id: user?.user_id ?? "",
         user_name: user?.name ?? "",
-        c_code : user?.c_code ?? "",
-        phn_num : user?.phn_num ?? ""
+        c_code: user?.c_code ?? "",
+        phn_num: user?.phn_num ?? "",
       },
 
       summary: {

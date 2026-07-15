@@ -35,9 +35,11 @@ import {
 import { travelModel } from "../models/travel.model.js";
 import { sourceModel } from "../models/source.model.js";
 import { sendPushNotification } from "../service/notification.service.js";
+import { financeModel } from "../models/finance.model.js";
 
 const travelMdl = new travelModel();
 const sourceMdl = new sourceModel();
+const financeMdl = new financeModel();
 
 export const addTravel = async (req, res) => {
   try {
@@ -1141,10 +1143,10 @@ export const addExpense = async (req, res) => {
 
     const response = replaceNullWithEmptyString(data);
 
-    const financeResult = await travelMdl.addFinanceData({
+    const financeResult = await financeMdl.addFinanceData({
       id: null,
       user_id: req.user?.id,
-      type: "travel",
+      is_travel: 0,
       cat_id: data.cat_id,
       cat_name: data.cat_name,
       trans_date: exp_date,
