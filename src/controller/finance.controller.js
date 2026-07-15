@@ -69,52 +69,51 @@ export const addUpdateFinanceData = async (req, res) => {
   }
 };
 
-export const getFinanceData = async (req, res) => {
-  try {
-    const {
-      id,
-      type,
-      user_id,
-      category,
-      amount,
-      from_date,
-      to_date,
-      page,
-      limit = 10,
-      
-    } = req.body;
+// export const getFinanceData = async (req, res) => {
+//   try {
+//     const {
+//       id,
+//       type,
+//       user_id,
+//       category,
+//       amount,
+//       from_date,
+//       to_date,
+//       page,
+//       limit = 10,
+//     } = req.body;
 
-    const data = await financeMdl.fetchFinanceData({
-      id,
-      type,
-      user_id,
-      category,
-      amount,
-      from_date,
-      to_date,
-      page,
-      limit,
-    });
+//     const data = await financeMdl.fetchFinanceData({
+//       id,
+//       type,
+//       user_id,
+//       category,
+//       amount,
+//       from_date,
+//       to_date,
+//       page,
+//       limit,
+//     });
 
-    return sendResponse(
-      res,
-      200,
-      1,
-      "Finance Data Fetched Successfully",
-      data,
-      "",
-    );
-  } catch (err) {
-    return sendResponse(
-      res,
-      500,
-      0,
-      "Internal server error",
-      [],
-      err.errors || err.message || err,
-    );
-  }
-};
+//     return sendResponse(
+//       res,
+//       200,
+//       1,
+//       "Finance Data Fetched Successfully",
+//       data,
+//       "",
+//     );
+//   } catch (err) {
+//     return sendResponse(
+//       res,
+//       500,
+//       0,
+//       "Internal server error",
+//       [],
+//       err.errors || err.message || err,
+//     );
+//   }
+// };
 
 export const removeFinanceData = async (req, res) => {
   try {
@@ -229,7 +228,6 @@ export const getReportData = async (req, res) => {
 //   }
 // };
 
-
 export const downloadFinanceReport = async (req, res) => {
   try {
     const { type, user_id, from_date, to_date, d_type = "pdf" } = req.body;
@@ -264,28 +262,25 @@ export const downloadFinanceReport = async (req, res) => {
       );
       csvRows.push("");
 
-      
       csvRows.push("SUMMARY");
       csvRows.push(`Income Total,${reportData.summary.income_total}`);
       csvRows.push(`Expense Total,${reportData.summary.expense_total}`);
       csvRows.push(`Balance,${reportData.summary.balance}`);
       csvRows.push("");
 
-      
-      csvRows.push(
-        "S.No,Date,Type,Category,Amount,Notes"
-      );
+      csvRows.push("S.No,Date,Type,Category,Amount,Notes");
 
-     
       reportData.data.forEach((item, index) => {
-        csvRows.push([
-          index + 1,
-          dayjs(item.trans_date).format("DD-MM-YYYY"),
-          item.type,
-          `"${(item.category_name || item.cat_name || "").replace(/"/g, '""')}"`,
-          item.amount,
-          `"${(item.notes || "").replace(/"/g, '""')}"`
-        ].join(","));
+        csvRows.push(
+          [
+            index + 1,
+            dayjs(item.trans_date).format("DD-MM-YYYY"),
+            item.type,
+            `"${(item.category_name || item.cat_name || "").replace(/"/g, '""')}"`,
+            item.amount,
+            `"${(item.notes || "").replace(/"/g, '""')}"`,
+          ].join(","),
+        );
       });
 
       const csvContent = "\uFEFF" + csvRows.join("\n");
@@ -304,7 +299,7 @@ export const downloadFinanceReport = async (req, res) => {
           file_name: fileName,
           file_url: `${process.env.MEDIA_BASE_URL}/uploads/reports/${fileName}`,
         },
-        ""
+        "",
       );
     }
 
@@ -313,7 +308,7 @@ export const downloadFinanceReport = async (req, res) => {
       process.cwd(),
       "src",
       "views",
-      "finance-report.ejs"
+      "finance-report.ejs",
     );
 
     const pdfBuffer = await generatePdf(templatePath, reportData);
@@ -332,7 +327,7 @@ export const downloadFinanceReport = async (req, res) => {
         file_name: fileName,
         file_url: `${process.env.MEDIA_BASE_URL}/uploads/reports/${fileName}`,
       },
-      ""
+      "",
     );
   } catch (err) {
     console.error(err);
@@ -343,7 +338,115 @@ export const downloadFinanceReport = async (req, res) => {
       0,
       "Failed to generate report",
       [],
-      err.message
+      err.message,
+    );
+  }
+};
+
+export const getFinanceData = async (req, res) => {
+  try {
+    const {
+      id,
+      type,
+      user_id,
+      category,
+      amount,
+      from_date,
+      to_date,
+      page,
+      limit = 10,
+      travel_id,
+    } = req.body;
+
+    // Fetch global finance data
+    const financeData = await financeMdl.fetchFinanceData({
+      id,
+      type,
+      user_id,
+      category,
+      amount,
+      from_date,
+      to_date,
+      page,
+      limit,
+    });
+
+    // Fetch travel expense data
+    const travelData = await financeMdl.fetchTravelExpenseData({
+      id,
+      travel_id,
+      user_id,
+      category,
+      amount,
+      from_date,
+      to_date,
+      page,
+      limit,
+    });
+
+    // Combine both datasets
+    const combinedData = [...financeData.data, ...travelData.data];
+
+    // Sort by trans_date descending (latest first)
+    combinedData.sort((a, b) => {
+      return new Date(b.trans_date) - new Date(a.trans_date);
+    });
+
+    // Calculate totals
+    const totalIncome = financeData.income_total || 0;
+    const totalExpense =
+      (financeData.expense_total || 0) + (travelData.expense_total || 0);
+    const totalRecords =
+      financeData.pagination.total + travelData.pagination.total;
+
+    // Apply pagination to combined data
+    const startIndex = (page - 1) * limit;
+    const endIndex = startIndex + Number(limit);
+    const paginatedData = combinedData.slice(startIndex, endIndex);
+
+    const result = {
+      income_total: totalIncome,
+      expense_total: totalExpense,
+      balance: totalIncome - totalExpense,
+      data: paginatedData,
+      summary: {
+        global: {
+          income_total: financeData.income_total || 0,
+          expense_total: financeData.expense_total || 0,
+          balance:
+            (financeData.income_total || 0) - (financeData.expense_total || 0),
+          total: financeData.pagination.total || 0,
+        },
+        travel: {
+          expense_total: travelData.expense_total || 0,
+          total: travelData.pagination.total || 0,
+        },
+      },
+      pagination: {
+        total: totalRecords,
+        page: Number(page),
+        limit: Number(limit),
+        total_pages: Math.ceil(totalRecords / limit),
+      },
+    };
+
+    return sendResponse(
+      res,
+      200,
+      1,
+      "Finance Data Fetched Successfully",
+      result,
+      "",
+    );
+  } catch (err) {
+    console.error("Error in getFinanceData:", err);
+    return sendResponse(
+      res,
+      500,
+      0,
+      "Internal server error",
+      [],
+      err.errors || err.message || err,
     );
   }
 };

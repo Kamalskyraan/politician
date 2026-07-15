@@ -440,7 +440,6 @@ export class financeModel {
       params,
     );
 
-    
     const [allRows] = await pool.query(
       `
     SELECT
@@ -550,14 +549,13 @@ export class financeModel {
       delete row.attachment_ids;
     }
 
-  
     return {
       user: {
         id: user?.id ?? "",
         user_id: user?.user_id ?? "",
         user_name: user?.name ?? "",
-        c_code : user?.c_code ?? "",
-        phn_num : user?.phn_num ?? ""
+        c_code: user?.c_code ?? "",
+        phn_num: user?.phn_num ?? "",
       },
 
       summary: {
@@ -570,6 +568,190 @@ export class financeModel {
 
       data: replaceNullWithEmptyString(rows),
 
+      pagination: {
+        total,
+        page: Number(page),
+        limit: Number(limit),
+        total_pages: Math.ceil(total / limit),
+      },
+    };
+  }
+
+  async fetchTravelExpenseData({
+    id,
+    travel_id,
+    user_id,
+    category,
+    amount,
+    from_date,
+    to_date,
+    page = 1,
+    limit = 10,
+  }) {
+    const offset = (page - 1) * limit;
+
+    let whereClause = ` WHERE 1 = 1 `;
+    const params = [];
+
+    if (id) {
+      whereClause += ` AND te.id = ?`;
+      params.push(id);
+    }
+
+    if (travel_id) {
+      whereClause += ` AND te.travel_id = ?`;
+      params.push(travel_id);
+    }
+
+    if (user_id) {
+      whereClause += ` AND te.user_id = ?`;
+      params.push(user_id);
+    }
+
+    if (amount) {
+      whereClause += ` AND te.amount LIKE ?`;
+      params.push(`%${amount}%`);
+    }
+
+    if (category) {
+      whereClause += `
+        AND (
+            te.cat_name LIKE ?
+            OR t.title LIKE ?
+            OR t.destination LIKE ?
+            OR CAST(te.amount AS CHAR) LIKE ?
+        )
+        `;
+      const searchValue = `%${category}%`;
+      params.push(searchValue, searchValue, searchValue, searchValue);
+    }
+
+    if (from_date && to_date) {
+      whereClause += ` AND DATE(te.exp_date) BETWEEN ? AND ?`;
+      params.push(from_date, to_date);
+    } else if (from_date) {
+      whereClause += ` AND DATE(te.exp_date) >= ?`;
+      params.push(from_date);
+    } else if (to_date) {
+      whereClause += ` AND DATE(te.exp_date) <= ?`;
+      params.push(to_date);
+    }
+
+    // Total Records Count
+    const [[{ total }]] = await pool.query(
+      `
+        SELECT COUNT(*) AS total
+        FROM travel_exp te
+        LEFT JOIN travels t ON te.travel_id = t.id
+        ${whereClause}
+        `,
+      params,
+    );
+
+    // Total Expense Summary
+    const [summaryRows] = await pool.query(
+      `
+        SELECT
+            SUM(te.amount) AS total_amount
+        FROM travel_exp te
+        LEFT JOIN travels t ON te.travel_id = t.id
+        ${whereClause}
+        `,
+      params,
+    );
+
+    const expense_total = Number(summaryRows[0]?.total_amount || 0);
+
+    // Paginated Data
+    const query = `
+        SELECT
+            te.id,
+            te.user_id,
+            te.travel_id,
+            te.cat_id,
+            te.cat_name,
+            te.amount,
+            te.exp_date AS trans_date,
+            te.description AS notes,
+            te.attachment AS attachment_ids,
+            t.title AS travel_title,
+            t.destination AS travel_destination,
+            t.from_date AS travel_start_date,
+            t.to_date AS travel_end_date,
+            t.status AS travel_status,
+            COALESCE(fc.cat_img, 0) AS cat_img,
+            fc.cat_name AS category_name
+        FROM travel_exp te
+        LEFT JOIN travels t ON te.travel_id = t.id
+        LEFT JOIN finance_category fc ON te.cat_id = fc.id
+        ${whereClause}
+        ORDER BY te.exp_date DESC
+        LIMIT ? OFFSET ?
+    `;
+
+    const [rows] = await pool.query(query, [
+      ...params,
+      Number(limit),
+      Number(offset),
+    ]);
+
+    for (const row of rows) {
+      // Set type as expense for travel expenses
+      row.type = "expense";
+      row.type_label = "travel";
+      row.category_id = row.cat_id || "0";
+
+      // Process category icon
+      if (row.cat_img) {
+        const catIconIds = String(row.cat_img)
+          .split(",")
+          .map((id) => Number(id.trim()))
+          .filter(Boolean);
+
+        const catMedia = await srcMdl.getMedia(catIconIds);
+        row.cat_icon = catMedia?.success ? catMedia.data : [];
+      } else {
+        row.cat_icon = [];
+      }
+
+      // Process attachments
+      if (row.attachment_ids) {
+        const attachmentIds = String(row.attachment_ids)
+          .split(",")
+          .map((id) => Number(id.trim()))
+          .filter(Boolean);
+
+        const media = await srcMdl.getMedia(attachmentIds);
+        row.attachment = media?.success ? media.data : [];
+      } else {
+        row.attachment = [];
+      }
+
+      // Add travel info as nested object
+      row.travel_info = {
+        travel_id: row.travel_id,
+        title: row.travel_title,
+        destination: row.travel_destination,
+        start_date: row.travel_start_date,
+        end_date: row.travel_end_date,
+        status: row.travel_status,
+      };
+
+      // Clean up raw travel fields
+      delete row.travel_id;
+      delete row.travel_title;
+      delete row.travel_destination;
+      delete row.travel_start_date;
+      delete row.travel_end_date;
+      delete row.travel_status;
+      delete row.cat_id;
+      delete row.cat_name;
+      delete row.description;
+    }
+
+    return {
+      expense_total,
+      data: replaceNullWithEmptyString(rows),
       pagination: {
         total,
         page: Number(page),
