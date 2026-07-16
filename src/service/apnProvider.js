@@ -17,5 +17,5 @@ export const apnProvider = new apn.Provider({
     teamId: process.env.IOS_TEAM_ID,
   },
   // production: process.env.NODE_ENV === "production" ? true : false,
-  production: true,
+  production: false,
 });
