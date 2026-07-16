@@ -172,6 +172,8 @@ export const upcomingReminder = async (req, res) => {
 
     const result = await reminderMdl.getUpcomingReminder(user_id, current_date);
 
+    console.log(result , "remin");
+
     const dataResult = result?.data;
     const data = replaceNullWithEmptyString(dataResult);
 
@@ -195,8 +197,7 @@ export const upcomingReminder = async (req, res) => {
       );
     }
   } catch (error) {
-
-    console.log(error , "from")
+    console.log(error, "from");
     return sendResponse(
       res,
       500,
