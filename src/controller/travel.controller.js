@@ -1210,6 +1210,8 @@ export const deleteExpense = async (req, res) => {
     let { id } = validatedData?.value;
 
     const result = await travelMdl.deleteExpense({ id });
+
+    const financeRes = await travelMdl.removeFinDataFromTravel(id);
     if (result?.success === 1) {
       return sendResponse(
         res,
@@ -1342,7 +1344,6 @@ export const updateExpense = async (req, res) => {
       );
     }
   } catch (error) {
-    console.log(error);
     return sendResponse(
       res,
       500,

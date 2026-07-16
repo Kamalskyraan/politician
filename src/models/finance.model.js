@@ -121,7 +121,7 @@ export class financeModel {
           trans_date,
           amount,
           notes,
-          attachment,
+        attachment,
 
           id,
         ],
@@ -166,6 +166,9 @@ export class financeModel {
       id: result.insertId,
     };
   }
+
+
+  
 
   // async fetchFinanceData({
   //   id,
@@ -684,5 +687,10 @@ LIMIT ? OFFSET ?;
         total_pages: Math.ceil(total / limit),
       },
     };
+  }
+
+
+   async removeFinDataFromTravel(id) {
+    const [result] = await pool.query(`DELETE FROM finance WHERE travel_exp_id =?`, [id]);
   }
 }
