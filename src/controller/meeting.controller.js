@@ -501,6 +501,10 @@ export const addMeeting = async (req, res) => {
       from_date_obj.setSeconds(0, 0);
       to_date_obj.setSeconds(0, 0);
       // console.log(from_date_obj);
+      const today = new Date();
+      if (from_date_obj.getDate() <= today.getDate()) {
+        status = "pending";
+      }
 
       from_date_obj = formatDateForSQL(from_date_obj);
       to_date_obj = formatDateForSQL(to_date_obj);
@@ -628,6 +632,10 @@ export const addMeeting = async (req, res) => {
       remind_at = new Date(remind_at);
       remind_at.setSeconds(0, 0);
       // remind_at = remind_at.getTime();
+      const today = new Date();
+      if (from_date_obj.getDate() <= today.getDate()) {
+        status = "pending";
+      }
 
       from_date_obj = formatDateForSQL(from_date_obj);
       to_date_obj = formatDateForSQL(to_date_obj);

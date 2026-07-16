@@ -531,6 +531,8 @@ export const getTask = async (req, res) => {
     );
 
     const finalResponse = replaceNullWithEmptyString(response);
+    // console.log(finalResponse)
+    // console.log("check to task")
 
     if (result?.success === 1) {
       return sendResponse(
