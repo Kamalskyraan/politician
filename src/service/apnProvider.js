@@ -13,9 +13,9 @@ const __dirname = path.dirname(__filename);
 export const apnProvider = new apn.Provider({
   token: {
     key: path.join(__dirname, "AuthKey_G2HUL3X6FP.p8"),
-    keyId: process.env.IOS_KEY_ID,
-    teamId: process.env.IOS_TEAM_ID,
+    keyId:"G2HUL3X6FP",
+    teamId:"38BKAW23ZM",
   },
   // production: process.env.NODE_ENV === "production" ? true : false,
-  production: false,
+  production: true,
 });
