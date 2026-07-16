@@ -19,39 +19,40 @@ import notificationRoutes from "./notification.routes.js";
 import { verifyToken } from "../middleware/auth.middleware.js";
 
 export const router = express.Router();
-// router.use("/auth", authRoutes);
-// router.use("/source", verifyToken, sourceRoutes);
-// router.use("/meeting", verifyToken, meetingRoutes);
-
-// router.use("/support", verifyToken, supportRoutes);
-// // router.use("/contact", supportRoutes);
-// router.use("/travel", verifyToken, travelRoutes);
-// router.use("/task", verifyToken, taskRoutes);
-// router.use("/issue", verifyToken, issueRoutes);
-// router.use("/sumit", verifyToken, politicalsumitRoutes);
-// router.use("/reminder", verifyToken, reminderRoutes);
-// router.use("/calendar", verifyToken, calendarRoutes);
-// router.use("/user", verifyToken, userRoutes);
-// router.use("/notification", verifyToken, notificationRoutes);
-
-
 router.use("/auth", authRoutes);
-router.use("/source", sourceRoutes);
-router.use("/meeting", meetingRoutes);
+router.use("/source", verifyToken, sourceRoutes);
+router.use("/meeting", verifyToken, meetingRoutes);
 
-router.use("/support", supportRoutes);
-router.use("/analytics", analyticsRoutes);
+router.use("/support", verifyToken, supportRoutes);
+// router.use("/contact", supportRoutes);
+router.use("/travel", verifyToken, travelRoutes);
+router.use("/task", verifyToken, taskRoutes);
+router.use("/issue", verifyToken, issueRoutes);
+router.use("/sumit", verifyToken, politicalsumitRoutes);
+router.use("/reminder", verifyToken, reminderRoutes);
+router.use("/calendar", verifyToken, calendarRoutes);
+router.use("/user", verifyToken, userRoutes);
+router.use("/notification", verifyToken, notificationRoutes);
+router.use("/finance", verifyToken, finaceRoutes);
+router.use("/folder", verifyToken, folderRoutes);
+router.use("/analytics", verifyToken, analyticsRoutes);
 
+// router.use("/auth", authRoutes);
+// router.use("/source", sourceRoutes);
+// router.use("/meeting", meetingRoutes);
 
-router.use("/finance",  finaceRoutes);
-router.use("/folder",  folderRoutes);
-router.use("/travel", travelRoutes);
-router.use("/task", taskRoutes);
-router.use("/issue", issueRoutes);
-router.use("/sumit", politicalsumitRoutes);
-router.use("/reminder", reminderRoutes);
-router.use("/calendar", calendarRoutes);
-router.use("/user", userRoutes);
-router.use("/notification", notificationRoutes);
+// router.use("/support", supportRoutes);
+// router.use("/analytics", analyticsRoutes);
+
+// router.use("/finance",  finaceRoutes);
+// router.use("/folder",  folderRoutes);
+// router.use("/travel", travelRoutes);
+// router.use("/task", taskRoutes);
+// router.use("/issue", issueRoutes);
+// router.use("/sumit", politicalsumitRoutes);
+// router.use("/reminder", reminderRoutes);
+// router.use("/calendar", calendarRoutes);
+// router.use("/user", userRoutes);
+// router.use("/notification", notificationRoutes);
 
 export default router;
