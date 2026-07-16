@@ -440,7 +440,7 @@ export const addMeeting = async (req, res) => {
             const id = attendee?.role_id;
             let role_name_result = await meetingMdl.getRole(id);
             let role_name = role_name_result?.data[0]?.role_name;
-            const { role_id, ...rest } = attendee;
+            const { ...rest } = attendee;
             return { ...rest, role_name };
           }),
         );
@@ -552,7 +552,7 @@ export const addMeeting = async (req, res) => {
             const id = attendee?.role_id;
             let role_name_result = await meetingMdl.getRole(id);
             let role_name = role_name_result?.data[0]?.role_name;
-            const { role_id, ...rest } = attendee;
+            const { ...rest } = attendee;
             return { ...rest, role_name };
           }),
         );
@@ -579,8 +579,8 @@ export const addMeeting = async (req, res) => {
         remind_at: remind_at,
         snooze_at: snooze_at === null ? snooze_at : String(snooze_at),
         nxt_snooze_at: nxt_snooze_at,
-        media_id: media_result,
-        attnds_id: attnds_result,
+        media: media_result,
+        attendees: attnds_result,
       };
 
       const response = replaceNullWithEmptyString(data);
@@ -675,7 +675,7 @@ export const addMeeting = async (req, res) => {
             const id = attendee?.role_id;
             let role_name_result = await meetingMdl.getRole(id);
             let role_name = role_name_result?.data[0]?.role_name;
-            const { role_id, ...rest } = attendee;
+            const { ...rest } = attendee;
             return { ...rest, role_name };
           }),
         );
@@ -702,8 +702,8 @@ export const addMeeting = async (req, res) => {
         remind_at: remind_at,
         snooze_at: snooze_at === null ? snooze_at : String(snooze_at),
         nxt_snooze_at: nxt_snooze_at,
-        media_id: media_result,
-        attnds_id: attnds_result,
+        media: media_result,
+        attendees: attnds_result,
       };
 
       const response = replaceNullWithEmptyString(data);
