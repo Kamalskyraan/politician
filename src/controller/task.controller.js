@@ -538,7 +538,7 @@ export const getTask = async (req, res) => {
         200,
         1,
         "Task fetched successfully",
-        [{ data: finalResponse, pagination }],
+        [{ data: finalResponse, pagination: pagination }],
         "",
       );
     } else if (result?.success === 0) {
@@ -625,7 +625,7 @@ export const getIndividualTask = async (req, res) => {
         200,
         1,
         "Individual task fetched successfully",
-        [finalResponse],
+        finalResponse,
         "",
       );
     }

@@ -1267,6 +1267,7 @@ export const updateMeeting = async (req, res) => {
       result?.success === 1 &&
       meeting_from_date.slice(0, 10) !== from_date.slice(0, 10)
     ) {
+      // console.log(from_date.slice(0, 10) === today.slice(0, 10))
       if (from_date.slice(0, 10) === today.slice(0, 10)) {
         // delete and add
         await deleteNotification(user_id, "meeting", id);
