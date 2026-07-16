@@ -98,7 +98,7 @@ export const sendAPNSNotification = async ({ tokens, title, body }) => {
     const notification = new apn.Notification();
 
     notification.alert = { title, body };
-    notification.topic = process.env.IOS_BUNDLE_ID;
+    notification.topic ="com.skyraan.politicalledger";
 
     const result = await apnProvider.send(notification, tokens);
 
