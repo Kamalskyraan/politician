@@ -100,13 +100,13 @@ export class reminderModel {
     let query;
     let params;
 
-    query = `SELECT id, "meeting" AS type, title, descp AS description, address, lat, lng, from_date, is_remind, remind_status, remind_at, nxt_snooze_at FROM meeting WHERE user_id = ? AND is_remind = ? AND remind_status IN ('pending','snoozed') AND remind_at >= DATE_FORMAT(NOW(), '%Y-%m-%d %H:%i:00')
+    query = `SELECT id, "meeting" AS type, title, descp AS description, address, lat, lng, from_date, is_remind, remind_status, remind_at, nxt_snooze_at FROM meeting WHERE user_id = ? AND is_remind = ? AND remind_status IN ('pending','snoozed') AND nxt_snooze_at >= DATE_FORMAT(NOW(), '%Y-%m-%d %H:%i:00')
     UNION ALL 
-    SELECT id, "appointment" AS type, title, notes AS description, address, lat, lng, from_date, is_remind, remind_status, remind_at, nxt_snooze_at FROM appointments WHERE user_id = ? AND is_remind = ? AND remind_status IN ('pending','snoozed') AND remind_at >= DATE_FORMAT(NOW(), '%Y-%m-%d %H:%i:00')
+    SELECT id, "appointment" AS type, title, notes AS description, address, lat, lng, from_date, is_remind, remind_status, remind_at, nxt_snooze_at FROM appointments WHERE user_id = ? AND is_remind = ? AND remind_status IN ('pending','snoozed') AND nxt_snooze_at >= DATE_FORMAT(NOW(), '%Y-%m-%d %H:%i:00')
     UNION ALL 
-    SELECT id, "task" AS type, title, descp AS description, "" AS address, "" AS lat, "" AS lng, from_date, is_remind, remind_status, remind_at, nxt_snooze_at FROM tasks WHERE user_id = ? AND is_remind = ? AND remind_status IN ('pending','snoozed') AND remind_at >= DATE_FORMAT(NOW(), '%Y-%m-%d %H:%i:00')
+    SELECT id, "task" AS type, title, descp AS description, "" AS address, "" AS lat, "" AS lng, from_date, is_remind, remind_status, remind_at, nxt_snooze_at FROM tasks WHERE user_id = ? AND is_remind = ? AND remind_status IN ('pending','snoozed') AND nxt_snooze_at >= DATE_FORMAT(NOW(), '%Y-%m-%d %H:%i:00')
     UNION ALL
-    SELECT id, "travel" AS type, title, descp AS description, travel_to, to_lat, to_lng, from_date, is_remind, remind_status, remind_at, nxt_snooze_at FROM travels WHERE user_id = ? AND is_remind = ? AND remind_status IN ('pending','snoozed') AND remind_at >= DATE_FORMAT(NOW(), '%Y-%m-%d %H:%i:00')
+    SELECT id, "travel" AS type, title, descp AS description, travel_to, to_lat, to_lng, from_date, is_remind, remind_status, remind_at, nxt_snooze_at FROM travels WHERE user_id = ? AND is_remind = ? AND remind_status IN ('pending','snoozed') AND nxt_snooze_at >= DATE_FORMAT(NOW(), '%Y-%m-%d %H:%i:00')
     ORDER BY remind_at ASC LIMIT 15`;
 
     params = [
@@ -122,14 +122,14 @@ export class reminderModel {
 
     if (current_date != null) {
       // console.log("inside if")
-      query = `SELECT id, "meeting" AS type, title, descp AS description, address, lat, lng, from_date, is_remind, remind_status, remind_at, nxt_snooze_at FROM meeting WHERE user_id = ? AND remind_at > ?
+      query = `SELECT id, "meeting" AS type, title, descp AS description, address, lat, lng, from_date, is_remind, remind_status, remind_at, nxt_snooze_at FROM meeting WHERE user_id = ? AND nxt_snooze_at > ?
     UNION ALL 
-    SELECT id, "appointment" AS type, title, notes AS description, address, lat, lng, from_date, is_remind, remind_status, remind_at, nxt_snooze_at FROM appointments WHERE user_id = ? AND remind_at > ?
+    SELECT id, "appointment" AS type, title, notes AS description, address, lat, lng, from_date, is_remind, remind_status, remind_at, nxt_snooze_at FROM appointments WHERE user_id = ? AND nxt_snooze_at > ?
     UNION ALL 
-    SELECT id, "task" AS type, title, descp AS description, "" AS address, "" AS lat, "" AS lng, from_date, is_remind, remind_status, remind_at, nxt_snooze_at FROM tasks WHERE user_id = ? AND remind_at > ?
+    SELECT id, "task" AS type, title, descp AS description, "" AS address, "" AS lat, "" AS lng, from_date, is_remind, remind_status, remind_at, nxt_snooze_at FROM tasks WHERE user_id = ? AND nxt_snooze_at > ?
     UNION ALL
-    SELECT id, "travel" AS type, title, descp AS description, travel_to, to_lat, to_lng, from_date, is_remind, remind_status, remind_at, nxt_snooze_at FROM travels WHERE user_id = ? AND remind_at > ?
-    ORDER BY remind_at ASC LIMIT 15`;
+    SELECT id, "travel" AS type, title, descp AS description, travel_to, to_lat, to_lng, from_date, is_remind, remind_status, remind_at, nxt_snooze_at FROM travels WHERE user_id = ? AND nxt_snooze_at > ?
+    ORDER BY nxt_snooze_at ASC LIMIT 15`;
 
       params = [
         user_id,
