@@ -33,7 +33,7 @@ const processNotifications = async () => {
 };
 
 const schedule =
-  process.env.NODE_ENV === "production" ? "0 0 * * *" : "0 0 * * *"; // last one for local change if u want
+  process.env.NODE_ENV === "production" ? "0 */3 * * *" : "0 0 * * *"; // last one for local change if u want
 
 export const startCronJobs = () => {
   cron.schedule(schedule, async () => {
