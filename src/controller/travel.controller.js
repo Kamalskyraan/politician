@@ -1160,6 +1160,8 @@ export const addExpense = async (req, res) => {
     //   await travelMdl.updateExpenseFinanceLink(data.id, financeResult.id);
     //   data.finance_id = financeResult.id;
     // }
+
+    // 
     if (result?.success === 1) {
       return sendResponse(
         res,
