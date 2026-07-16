@@ -163,9 +163,9 @@ export class reminderModel {
     let params;
 
     query = `SELECT id, "meeting" AS type, title, descp AS description, address, lat, lng, from_date, is_remind, remind_status, remind_at, nxt_snooze_at FROM meeting WHERE user_id = ? AND is_remind = ? AND remind_status IN ('pending','snoozed') AND remind_at >= DATE_FORMAT(NOW(), '%Y-%m-%d %H:%i:00')
-    UNION ALL
+    UNION ALL 
     SELECT id, "appointment" AS type, title, notes AS description, address, lat, lng, from_date, is_remind, remind_status, remind_at, nxt_snooze_at FROM appointments WHERE user_id = ? AND is_remind = ? AND remind_status IN ('pending','snoozed') AND remind_at >= DATE_FORMAT(NOW(), '%Y-%m-%d %H:%i:00')
-    UNION ALL
+    UNION ALL 
     SELECT id, "task" AS type, title, descp AS description, "" AS address, "" AS lat, "" AS lng, from_date, is_remind, remind_status, remind_at, nxt_snooze_at FROM tasks WHERE user_id = ? AND is_remind = ? AND remind_status IN ('pending','snoozed') AND remind_at >= DATE_FORMAT(NOW(), '%Y-%m-%d %H:%i:00')
     UNION ALL
     SELECT id, "travel" AS type, title, descp AS description, travel_to, to_lat, to_lng, from_date, is_remind, remind_status, remind_at, nxt_snooze_at FROM travels WHERE user_id = ? AND is_remind = ? AND remind_status IN ('pending','snoozed') AND remind_at >= DATE_FORMAT(NOW(), '%Y-%m-%d %H:%i:00')
@@ -206,7 +206,7 @@ export class reminderModel {
     }
 
     const result = await executeQuery(query, params);
-    // console.log(result);
+    
     if (result?.data.length === 0) {
       return {
         success: 0,
