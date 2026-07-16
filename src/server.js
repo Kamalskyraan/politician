@@ -26,6 +26,7 @@ app.use("/api", router);
 // console.log("first")
 
 app.use("/uploads", express.static("src/uploads"));
+app.use("/images", express.static("public/images"));
 
 app.get("/check", (req, res) => {
   res.send("backend server is running now");

@@ -80,9 +80,7 @@ export class reminderModel {
         result = await executeQuery(query, params);
       }
     }
-    // console.log(result);
 
-    // const result = await executeQuery(query, params);
     if (result?.success === 0) {
       return {
         success: 0,
@@ -185,7 +183,7 @@ export class reminderModel {
     ];
 
     if (current_date != null) {
-      // console.log("inside if")
+     
       query = `SELECT id, "meeting" AS type, title, descp AS description, address, lat, lng, from_date, is_remind, remind_status, remind_at, nxt_snooze_at FROM meeting WHERE user_id = ? AND remind_at > ?
     UNION ALL
     SELECT id, "appointment" AS type, title, notes AS description, address, lat, lng, from_date, is_remind, remind_status, remind_at, nxt_snooze_at FROM appointments WHERE user_id = ? AND remind_at > ?

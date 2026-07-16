@@ -172,8 +172,7 @@ export const upcomingReminder = async (req, res) => {
 
     const result = await reminderMdl.getUpcomingReminder(user_id, current_date);
 
-    console.log(result , "remin");
-
+    
     const dataResult = result?.data;
     const data = replaceNullWithEmptyString(dataResult);
 
