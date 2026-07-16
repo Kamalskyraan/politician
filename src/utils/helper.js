@@ -29,6 +29,7 @@ export const genarateotp = ({ email, phn_num, c_code }) => {
     "skyraankamalesh@gmail.com",
     "santhosh.p@skyraan.com",
     "akashskyraan@gmail.com",
+    "skyraantesting@gmail.com",
   ];
 
   if (process.env.NODE_ENV === "development") {
