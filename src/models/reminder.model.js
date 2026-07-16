@@ -95,18 +95,82 @@ export class reminderModel {
       };
     }
   }
+  // async getUpcomingReminder(user_id, current_date) {
+  //   const is_remind = 1;
+  //   let query;
+  //   let params;
+
+  //   query = `SELECT id, "meeting" AS type, title, descp AS description, address, lat, lng, from_date, is_remind, remind_status, remind_at, nxt_snooze_at FROM meeting WHERE user_id = ? AND is_remind = ? AND remind_status IN ('pending','snoozed') AND remind_at >= NOW()
+  //   UNION ALL
+  //   SELECT id, "appointment" AS type, title, notes AS description, address, lat, lng, from_date, is_remind, remind_status, remind_at, nxt_snooze_at FROM appointments WHERE user_id = ? AND is_remind = ? AND remind_status IN ('pending','snoozed') AND remind_at >= NOW()
+  //   UNION ALL
+  //   SELECT id, "task" AS type, title, descp AS description, "" AS address, "" AS lat, "" AS lng, from_date, is_remind, remind_status, remind_at, nxt_snooze_at FROM tasks WHERE user_id = ? AND is_remind = ? AND remind_status IN ('pending','snoozed') AND remind_at >= NOW()
+  //   UNION ALL
+  //   SELECT id, "travel" AS type, title, descp AS description, travel_to, to_lat, to_lng, from_date, is_remind, remind_status, remind_at, nxt_snooze_at FROM travels WHERE user_id = ? AND is_remind = ? AND remind_status IN ('pending','snoozed') AND remind_at >= NOW()
+  //   ORDER BY remind_at ASC LIMIT 15`;
+
+  //   params = [
+  //     user_id,
+  //     is_remind,
+  //     user_id,
+  //     is_remind,
+  //     user_id,
+  //     is_remind,
+  //     user_id,
+  //     is_remind,
+  //   ];
+
+  //   if (current_date != null) {
+  //     // console.log("inside if")
+  //     query = `SELECT id, "meeting" AS type, title, descp AS description, address, lat, lng, from_date, is_remind, remind_status, remind_at, nxt_snooze_at FROM meeting WHERE user_id = ? AND remind_at > ?
+  //   UNION ALL
+  //   SELECT id, "appointment" AS type, title, notes AS description, address, lat, lng, from_date, is_remind, remind_status, remind_at, nxt_snooze_at FROM appointments WHERE user_id = ? AND remind_at > ?
+  //   UNION ALL
+  //   SELECT id, "task" AS type, title, descp AS description, "" AS address, "" AS lat, "" AS lng, from_date, is_remind, remind_status, remind_at, nxt_snooze_at FROM tasks WHERE user_id = ? AND remind_at > ?
+  //   UNION ALL
+  //   SELECT id, "travel" AS type, title, descp AS description, travel_to, to_lat, to_lng, from_date, is_remind, remind_status, remind_at, nxt_snooze_at FROM travels WHERE user_id = ? AND remind_at > ?
+  //   ORDER BY remind_at ASC LIMIT 15`;
+
+  //     params = [
+  //       user_id,
+  //       current_date,
+  //       user_id,
+  //       current_date,
+  //       user_id,
+  //       current_date,
+  //       user_id,
+  //       current_date,
+  //     ];
+  //   }
+
+  //   const result = await executeQuery(query, params);
+  //   console.log(result);
+
+  //   if (result?.data.length === 0) {
+  //     return {
+  //       success: 0,
+  //       error: "No reminders found",
+  //     };
+  //   } else if (result?.success === 1) {
+  //     return {
+  //       success: 1,
+  //       data: result?.data,
+  //     };
+  //   }
+  // }
+
   async getUpcomingReminder(user_id, current_date) {
     const is_remind = 1;
     let query;
     let params;
 
-    query = `SELECT id, "meeting" AS type, title, descp AS description, address, lat, lng, from_date, is_remind, remind_status, remind_at, nxt_snooze_at FROM meeting WHERE user_id = ? AND is_remind = ? AND remind_status IN ('pending','snoozed') AND remind_at >= NOW()
-    UNION ALL 
-    SELECT id, "appointment" AS type, title, notes AS description, address, lat, lng, from_date, is_remind, remind_status, remind_at, nxt_snooze_at FROM appointments WHERE user_id = ? AND is_remind = ? AND remind_status IN ('pending','snoozed') AND remind_at >= NOW()
-    UNION ALL 
-    SELECT id, "task" AS type, title, descp AS description, "" AS address, "" AS lat, "" AS lng, from_date, is_remind, remind_status, remind_at, nxt_snooze_at FROM tasks WHERE user_id = ? AND is_remind = ? AND remind_status IN ('pending','snoozed') AND remind_at >= NOW()
+    query = `SELECT id, "meeting" AS type, title, descp AS description, address, lat, lng, from_date, is_remind, remind_status, remind_at, nxt_snooze_at FROM meeting WHERE user_id = ? AND is_remind = ? AND remind_status IN ('pending','snoozed') AND remind_at >= DATE_FORMAT(NOW(), '%Y-%m-%d %H:%i:00')
     UNION ALL
-    SELECT id, "travel" AS type, title, descp AS description, travel_to, to_lat, to_lng, from_date, is_remind, remind_status, remind_at, nxt_snooze_at FROM travels WHERE user_id = ? AND is_remind = ? AND remind_status IN ('pending','snoozed') AND remind_at >= NOW()
+    SELECT id, "appointment" AS type, title, notes AS description, address, lat, lng, from_date, is_remind, remind_status, remind_at, nxt_snooze_at FROM appointments WHERE user_id = ? AND is_remind = ? AND remind_status IN ('pending','snoozed') AND remind_at >= DATE_FORMAT(NOW(), '%Y-%m-%d %H:%i:00')
+    UNION ALL
+    SELECT id, "task" AS type, title, descp AS description, "" AS address, "" AS lat, "" AS lng, from_date, is_remind, remind_status, remind_at, nxt_snooze_at FROM tasks WHERE user_id = ? AND is_remind = ? AND remind_status IN ('pending','snoozed') AND remind_at >= DATE_FORMAT(NOW(), '%Y-%m-%d %H:%i:00')
+    UNION ALL
+    SELECT id, "travel" AS type, title, descp AS description, travel_to, to_lat, to_lng, from_date, is_remind, remind_status, remind_at, nxt_snooze_at FROM travels WHERE user_id = ? AND is_remind = ? AND remind_status IN ('pending','snoozed') AND remind_at >= DATE_FORMAT(NOW(), '%Y-%m-%d %H:%i:00')
     ORDER BY remind_at ASC LIMIT 15`;
 
     params = [
@@ -123,9 +187,9 @@ export class reminderModel {
     if (current_date != null) {
       // console.log("inside if")
       query = `SELECT id, "meeting" AS type, title, descp AS description, address, lat, lng, from_date, is_remind, remind_status, remind_at, nxt_snooze_at FROM meeting WHERE user_id = ? AND remind_at > ?
-    UNION ALL 
+    UNION ALL
     SELECT id, "appointment" AS type, title, notes AS description, address, lat, lng, from_date, is_remind, remind_status, remind_at, nxt_snooze_at FROM appointments WHERE user_id = ? AND remind_at > ?
-    UNION ALL 
+    UNION ALL
     SELECT id, "task" AS type, title, descp AS description, "" AS address, "" AS lat, "" AS lng, from_date, is_remind, remind_status, remind_at, nxt_snooze_at FROM tasks WHERE user_id = ? AND remind_at > ?
     UNION ALL
     SELECT id, "travel" AS type, title, descp AS description, travel_to, to_lat, to_lng, from_date, is_remind, remind_status, remind_at, nxt_snooze_at FROM travels WHERE user_id = ? AND remind_at > ?
@@ -144,8 +208,7 @@ export class reminderModel {
     }
 
     const result = await executeQuery(query, params);
-    console.log(result);
-
+    // console.log(result);
     if (result?.data.length === 0) {
       return {
         success: 0,
