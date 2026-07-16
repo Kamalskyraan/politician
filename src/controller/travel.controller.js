@@ -1150,7 +1150,7 @@ export const addExpense = async (req, res) => {
       travel_exp_id: result?.data?.insertId,
       cat_id: data.cat_id,
       cat_name: data.cat_name,
-      trans_date: exp_date,
+      trans_date: String(exp_date).split(" ")[0],
       amount,
       notes,
       attachment: null,
