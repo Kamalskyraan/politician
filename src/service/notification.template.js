@@ -80,20 +80,20 @@ export const NOTIFICATION_TEMPLATES = {
       "This Issue has crossed its end date and is still in progress. Please update the Issue status.",
   },
 
-  SUMIT_CREATED: {
+  SUMMIT_CREATED: {
     type: 6,
-    title: "Sumit Created",
-    message: "A new sumit has been scheduled.",
+    title: "Summit Created",
+    message: "A new summit has been scheduled.",
   },
-  SUMIT_UPDATED: {
+  SUMMIT_UPDATED: {
     type: 6,
-    title: "Sumit Updated",
-    message: "Sumit details have been rescheduled.",
+    title: "Summit Updated",
+    message: "Summit details have been rescheduled.",
   },
-  SUMIT_OVERDUE: {
+  SUMMIT_OVERDUE: {
     type: 6,
-    title: "Sumit Overdue",
+    title: "Summit Overdue",
     message:
-      "This Sumit has crossed its end date and is still in progress. Please update the Sumit status.",
+      "This Summit has crossed its end date and is still in progress. Please update the summit status.",
   },
 };

@@ -1548,8 +1548,12 @@ export const updateNotes = async (req, res) => {
     let today = new Date();
     today = formatDateForSQL(today);
 
+    const travelid_result = await travelMdl.getTravelId(id);
+    // console.log(travelid_result);
+
     const data = {
       id: id,
+      travel_id: travelid_result?.data[0]?.travel_id,
       title: title,
       descp: descp,
       created_at: today,
