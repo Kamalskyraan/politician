@@ -644,4 +644,3 @@ export const getIndividualTask = async (req, res) => {
     );
   }
 };
-// 
