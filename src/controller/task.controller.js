@@ -627,7 +627,7 @@ export const getIndividualTask = async (req, res) => {
         200,
         1,
         "Individual task fetched successfully",
-        [finalResponse],
+        finalResponse,
         "",
       );
     }
