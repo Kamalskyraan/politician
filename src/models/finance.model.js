@@ -620,10 +620,16 @@ LIMIT ? OFFSET ?;
       COALESCE(f.category_id,0) AS category_id,
       COALESCE(f.category_name,'') AS category_name,
       COALESCE(fc.cat_name,'') AS cat_name,
-      CONCAT(
-    '${process.env.MEDIA_BASE_URL}/',
-    REPLACE(COALESCE(fc.cat_img, ''), '\\\\', '/')
-) AS cat_icon,
+  CASE
+      WHEN f.category_id = 0 THEN CONCAT(
+        '${process.env.MEDIA_BASE_URL}/',
+        'public/icons/other_expense.png'
+      )
+      ELSE CONCAT(
+        '${process.env.MEDIA_BASE_URL}/',
+        REPLACE(COALESCE(fc.cat_img, ''), '\\\\', '/')
+      )
+    END AS cat_icon,
       f.trans_date,
       f.amount,
       f.notes,
