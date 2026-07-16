@@ -164,12 +164,12 @@ export const addSumit = async (req, res) => {
     if (result?.success === 1) {
       const currentDate = await getCurrentDateTime();
       if (currentDate.slice(0, 10) === sumit_date.slice(0, 10)) {
-        await addNotification("SUMIT_CREATED", user_id, "sumit", data.id);
+        await addNotification("SUMMIT_CREATED", user_id, "sumit", data.id);
         await sendPushNotification({
           user_id,
           payload: {
-            title: "Political Sumit Created",
-            message: "New political sumit has been created",
+            title: "Political Summit Created",
+            message: "New political summit has been created",
           },
         });
       }
@@ -634,12 +634,12 @@ export const updateSumit = async (req, res) => {
       if (sumit_date.slice(0, 10) === curr_today.slice(0, 10)) {
         // delete and add
         await deleteNotification(user_id, "sumit", id);
-        await addNotification("SUMIT_UPDATED", user_id, "sumit", id);
+        await addNotification("SUMMIT_UPDATED", user_id, "sumit", id);
         await sendPushNotification({
           user_id,
           payload: {
-            title: "Political Sumit Updated",
-            message: "Political sumit has been updated",
+            title: "Political Summit Updated",
+            message: "Political summit has been updated",
           },
         });
       }

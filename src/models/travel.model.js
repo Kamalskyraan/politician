@@ -471,6 +471,23 @@ WHERE te.travel_id = ?;`;
       };
     }
   }
+  async getTravelId(id) {
+    let query = `SELECT travel_id FROM travel_notes WHERE id = ?`;
+    let params = [id];
+
+    const result = await executeQuery(query, params);
+    if (result?.success === 1) {
+      return {
+        success: 1,
+        data: result?.data,
+      };
+    } else if (result?.success === 0) {
+      return {
+        success: 0,
+        error: result?.error,
+      };
+    }
+  }
 
   async addTravelPhotos({ user_id, travel_id, media_id }) {
     let query = `INSERT INTO travel_photos (travel_id, media_id) VALUES (?, ?)`;
