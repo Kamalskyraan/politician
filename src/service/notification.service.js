@@ -50,8 +50,7 @@ export const sendPushNotification = async ({ user_id, payload }) => {
       }
     }
 
-    console.log("Android:", androidTokens);
-    console.log("iOS:", iosTokens);
+  
 
     if (androidTokens.length) {
       const result = await admin.messaging().sendEachForMulticast({
