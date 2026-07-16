@@ -121,7 +121,7 @@ export class financeModel {
           trans_date,
           amount,
           notes,
-        attachment,
+          attachment,
 
           id,
         ],
@@ -166,9 +166,6 @@ export class financeModel {
       id: result.insertId,
     };
   }
-
-
-  
 
   // async fetchFinanceData({
   //   id,
@@ -528,6 +525,7 @@ LIMIT ? OFFSET ?;
         id,
         user_id,
         name,
+        email,
         c_code,
         phn_num
       FROM users
@@ -622,7 +620,10 @@ LIMIT ? OFFSET ?;
       COALESCE(f.category_id,0) AS category_id,
       COALESCE(f.category_name,'') AS category_name,
       COALESCE(fc.cat_name,'') AS cat_name,
-      COALESCE(fc.cat_img,0) AS cat_img,
+      CONCAT(
+    '${process.env.MEDIA_BASE_URL}/',
+    REPLACE(COALESCE(fc.cat_img, ''), '\\\\', '/')
+) AS cat_icon,
       f.trans_date,
       f.amount,
       f.notes,
@@ -639,12 +640,12 @@ LIMIT ? OFFSET ?;
 
     for (const row of rows) {
       // Category Icon
-      if (row.cat_img) {
-        const media = await srcMdl.getMedia([Number(row.cat_img)]);
-        row.cat_icon = media?.success ? media.data[0] : {};
-      } else {
-        row.cat_icon = {};
-      }
+      // if (row.cat_img) {
+      //   // const media = await srcMdl.getMedia([Number(row.cat_img)]);
+      //   row.cat_icon = media?.success ? media.data[0] : {};
+      // } else {
+      //   row.cat_icon = {};
+      // }
 
       // Attachments
       if (row.attachment_ids) {
@@ -657,7 +658,6 @@ LIMIT ? OFFSET ?;
         row.attachment = [];
       }
 
-      delete row.cat_img;
       delete row.attachment_ids;
     }
 
@@ -689,8 +689,10 @@ LIMIT ? OFFSET ?;
     };
   }
 
-
-   async removeFinDataFromTravel(id) {
-    const [result] = await pool.query(`DELETE FROM finance WHERE travel_exp_id =?`, [id]);
+  async removeFinDataFromTravel(id) {
+    const [result] = await pool.query(
+      `DELETE FROM finance WHERE travel_exp_id =?`,
+      [id],
+    );
   }
 }
