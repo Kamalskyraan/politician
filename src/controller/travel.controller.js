@@ -1211,7 +1211,7 @@ export const deleteExpense = async (req, res) => {
 
     const result = await travelMdl.deleteExpense({ id });
 
-    const financeRes = await travelMdl.removeFinDataFromTravel(id);
+    const financeRes = await financeMdl.removeFinDataFromTravel(id);
     if (result?.success === 1) {
       return sendResponse(
         res,
