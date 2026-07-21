@@ -1947,3 +1947,24 @@ export const getUserListSchema = Joi.object({
     "any.required": "status is required",
   }),
 });
+export const updateUserEnquirySchema = Joi.object({
+  id: Joi.number().required().messages({
+    "number.base": "id should be number",
+    "any.required": "id is required",
+  }),
+  status: Joi.string().required().valid("resolved").messages({
+    "any.base": "status should be string",
+    "any.required": "status is required",
+    "any.only": "status must be only 'resolved'",
+  }),
+});
+export const adminLoginschema = Joi.object({
+  user_name: Joi.string().required().messages({
+    "any.base": "user_name should be string",
+    "any.required": "user_name is required",
+  }),
+  password: Joi.string().required().messages({
+    "any.base": "password should be string",
+    "any.required": "password is required",
+  }),
+});

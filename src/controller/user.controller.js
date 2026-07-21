@@ -196,7 +196,7 @@ export const getUserProfile = async (req, res) => {
     const finalResponse = replaceNullWithEmptyString(data);
 
     if (userDetail?.success === 1) {
-      sendResponse(res, 200, 1, "user Found", [data], "");
+      sendResponse(res, 200, 1, "user Found", [finalResponse], "");
     } else if (userDetail?.success === 0) {
       sendResponse(res, 200, 0, "User not found", [], "");
     }
@@ -233,7 +233,7 @@ export const contactUs = async (req, res) => {
     );
     //   console.log(result);
     if (result?.success === 1) {
-      await sendContactUsMail();
+      // await sendContactUsMail();
       sendResponse(res, 200, 1, "Query has been submitted", [], "");
     } else {
       sendResponse(res, 200, 0, "Failed to sumit Query", [], "");

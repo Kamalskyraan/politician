@@ -363,7 +363,7 @@ export const login = async (req, res) => {
     return sendResponse(
       res,
       500,
-      1,
+      0,
       "Internal server error",
       [],
       error.message,

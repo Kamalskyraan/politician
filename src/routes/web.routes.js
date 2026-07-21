@@ -1,7 +1,53 @@
 import express from "express";
-import * as supportController from "../controller/support.controller.js";
+import * as webController from "../controller/web.controller.js";
+import { verifyAdminToken } from "../middleware/adminAuth.middleware.js";
 
 const router = express.Router();
+
+//public routes for dashboard
+
+router.post(
+  "/adminlogin",
+  /*
+    #swagger.tags = ['16.Dashboard Api`s']
+    #swagger.summary = 'Dashboard admin login'
+    #swagger.description = 'Dashboard admin login'
+
+     #swagger.requestBody = {
+      required: true,
+      content: {
+        "application/json": {
+          schema: {
+            type: "object",
+            properties: {
+              user_name: {
+                type: "string",
+                example: "admin@skyraan"
+              },
+              password: {
+                type: "string",
+                example: "admin"
+              },
+            }
+          }
+        }
+      }
+    }
+
+    #swagger.responses[200] = {
+      description: 'login successfull'
+    }
+
+    #swagger.responses[500] = {
+      description: 'Internal Server Error'
+    }
+*/
+  webController.adminLogin,
+);
+
+router.use(verifyAdminToken);
+
+//private routes for dashboard with token middleware
 
 router.post(
   "/addfaq",
@@ -38,7 +84,7 @@ router.post(
     #swagger.responses[500] = {
       description: 'Internal Server Error'
     }
-*/ supportController.addFaq,
+*/ webController.addFaq,
 );
 router.post(
   "/getfaq",
@@ -71,7 +117,7 @@ router.post(
     #swagger.responses[500] = {
       description: 'Internal Server Error'
     }
-*/ supportController.getFaq,
+*/ webController.getFaq,
 );
 router.post(
   "/updatefaq",
@@ -112,7 +158,7 @@ router.post(
     #swagger.responses[500] = {
       description: 'Internal Server Error'
     }
-*/ supportController.updateFaq,
+*/ webController.updateFaq,
 );
 router.post(
   "/deletefaq",
@@ -149,7 +195,7 @@ router.post(
     #swagger.responses[500] = {
       description: 'Internal Server Error'
     }
-*/ supportController.deleteFaq,
+*/ webController.deleteFaq,
 );
 router.post(
   "/deletefaqpermanently",
@@ -182,121 +228,121 @@ router.post(
     #swagger.responses[500] = {
       description: 'Internal Server Error'
     }
-*/ supportController.deleteFaqPermanently,
+*/ webController.deleteFaqPermanently,
 );
 
-router.post(
-  "/filterapi",
-  /*
-    #swagger.tags = ['3.Member']
-    #swagger.summary = 'Get filter list for member filter'
-    #swagger.description = 'Get filter list for member filter as per the user added'
+// router.post(
+//   "/filterapi",
+//   /*
+//     #swagger.tags = ['3.Member']
+//     #swagger.summary = 'Get filter list for member filter'
+//     #swagger.description = 'Get filter list for member filter as per the user added'
 
-    #swagger.requestBody = {
-      required: true,
-      content: {
-        "application/json": {
-          schema: {
-            type: "object",
-            properties: {
-              user_id: {
-                type: "string",
-                example: "USER_1JDE1213"
-              }
-            }
-          }
-        }
-      }
-    }
+//     #swagger.requestBody = {
+//       required: true,
+//       content: {
+//         "application/json": {
+//           schema: {
+//             type: "object",
+//             properties: {
+//               user_id: {
+//                 type: "string",
+//                 example: "USER_1JDE1213"
+//               }
+//             }
+//           }
+//         }
+//       }
+//     }
 
-    #swagger.responses[200] = {
-      description: 'Filter list fetched successfully'
-    }
+//     #swagger.responses[200] = {
+//       description: 'Filter list fetched successfully'
+//     }
 
-    #swagger.responses[500] = {
-      description: 'Internal Server Error'
-    }
-*/ supportController.filterApi,
-);
-router.post(
-  "/getcountry",
-  /*
-    #swagger.tags = ['3.Member']
-    #swagger.summary = 'Get Country,State,district DROPDOWN list'
-    #swagger.description = 'Get country,state,district Dropdowns by passing country and state'
+//     #swagger.responses[500] = {
+//       description: 'Internal Server Error'
+//     }
+// */ webController.filterApi,
+// );
+// router.post(
+//   "/getcountry",
+//   /*
+//     #swagger.tags = ['3.Member']
+//     #swagger.summary = 'Get Country,State,district DROPDOWN list'
+//     #swagger.description = 'Get country,state,district Dropdowns by passing country and state'
 
-    #swagger.requestBody = {
-      required: true,
-      content: {
-        "application/json": {
-          schema: {
-            type: "object",
-            properties: {
-              country: {
-                type: "string",
-                example: "India"
-              },
-              state: {
-                type: "string",
-                example: "Tamil Nadu"
-              },
-            }
-          }
-        }
-      }
-    }
+//     #swagger.requestBody = {
+//       required: true,
+//       content: {
+//         "application/json": {
+//           schema: {
+//             type: "object",
+//             properties: {
+//               country: {
+//                 type: "string",
+//                 example: "India"
+//               },
+//               state: {
+//                 type: "string",
+//                 example: "Tamil Nadu"
+//               },
+//             }
+//           }
+//         }
+//       }
+//     }
 
-    #swagger.responses[200] = {
-      description: 'Filter list fetched successfully'
-    }
+//     #swagger.responses[200] = {
+//       description: 'Filter list fetched successfully'
+//     }
 
-    #swagger.responses[500] = {
-      description: 'Internal Server Error'
-    }
-*/ supportController.getCountries,
-);
-router.post(
-  "/statuschange",
-  /*
-    #swagger.tags = ['15.Support Api`s']
-    #swagger.summary = 'Change status of Meeting,Appointment,Task,issues and political sumit'
-    #swagger.description = 'Change status'
+//     #swagger.responses[500] = {
+//       description: 'Internal Server Error'
+//     }
+// */ webController.getCountries,
+// );
+// router.post(
+//   "/statuschange",
+//   /*
+//     #swagger.tags = ['15.Support Api`s']
+//     #swagger.summary = 'Change status of Meeting,Appointment,Task,issues and political sumit'
+//     #swagger.description = 'Change status'
 
-    #swagger.requestBody = {
-      required: true,
-      content: {
-        "application/json": {
-          schema: {
-            type: "object",
-            properties: {
-              id: {
-                type: "number",
-                example: 12
-              },
-              status: {
-                type: "string",
-                example: "completed"
-              },
-              type: {
-                type: "string",
-                example: "meeting"
-              },
-            }
-          }
-        }
-      }
-    }
+//     #swagger.requestBody = {
+//       required: true,
+//       content: {
+//         "application/json": {
+//           schema: {
+//             type: "object",
+//             properties: {
+//               id: {
+//                 type: "number",
+//                 example: 12
+//               },
+//               status: {
+//                 type: "string",
+//                 example: "completed"
+//               },
+//               type: {
+//                 type: "string",
+//                 example: "meeting"
+//               },
+//             }
+//           }
+//         }
+//       }
+//     }
 
-    #swagger.responses[200] = {
-      description: 'status changed successfully'
-    }
+//     #swagger.responses[200] = {
+//       description: 'status changed successfully'
+//     }
 
-    #swagger.responses[500] = {
-      description: 'Internal Server Error'
-    }
-*/
-  supportController.updateStatus,
-);
+//     #swagger.responses[500] = {
+//       description: 'Internal Server Error'
+//     }
+// */
+//   webController.updateStatus,
+// );
 
 router.post(
   "/issuecategory",
@@ -329,7 +375,7 @@ router.post(
     #swagger.responses[500] = {
       description: 'Internal Server Error'
     }
-*/ supportController.addIssueCat,
+*/ webController.addIssueCat,
 );
 router.post(
   "/updateissuecategory",
@@ -366,7 +412,7 @@ router.post(
     #swagger.responses[500] = {
       description: 'Internal Server Error'
     }
-*/ supportController.updateissuecategory,
+*/ webController.updateissuecategory,
 );
 router.post(
   "/getissuecategory",
@@ -399,7 +445,7 @@ router.post(
     #swagger.responses[500] = {
       description: 'Internal Server Error'
     }
-*/ supportController.getIssueCat,
+*/ webController.getIssueCat,
 );
 router.post(
   "/deleteissuecategory",
@@ -436,7 +482,7 @@ router.post(
     #swagger.responses[500] = {
       description: 'Internal Server Error'
     }
-*/ supportController.deleteIssueCat,
+*/ webController.deleteIssueCat,
 );
 router.post(
   "/deleteissuecategorypermanently",
@@ -469,7 +515,7 @@ router.post(
     #swagger.responses[500] = {
       description: 'Internal Server Error'
     }
-*/ supportController.deleteIssueCatpermanently,
+*/ webController.deleteIssueCatpermanently,
 );
 
 router.post(
@@ -504,7 +550,7 @@ router.post(
       description: 'Internal Server Error'
     }
 */
-  supportController.addSumitCategory,
+  webController.addSumitCategory,
 );
 router.post(
   "/getsumitcategory",
@@ -538,7 +584,7 @@ router.post(
       description: 'Internal Server Error'
     }
 */
-  supportController.getSumitCategory,
+  webController.getSumitCategory,
 );
 router.post(
   "/updatesumitcategory",
@@ -576,7 +622,7 @@ router.post(
       description: 'Internal Server Error'
     }
 */
-  supportController.updatesumitcategory,
+  webController.updatesumitcategory,
 );
 router.post(
   "/deletesumitcategory",
@@ -614,7 +660,7 @@ router.post(
       description: 'Internal Server Error'
     }
 */
-  supportController.deletesumitcategory,
+  webController.deletesumitcategory,
 );
 router.post(
   "/deletesumitcategorypermanently",
@@ -648,7 +694,7 @@ router.post(
       description: 'Internal Server Error'
     }
 */
-  supportController.deleteSumitCatpermanently,
+  webController.deleteSumitCatpermanently,
 );
 
 router.post(
@@ -683,7 +729,7 @@ router.post(
       description: 'Internal Server Error'
     }
 */
-  supportController.addTravelExpCategory,
+  webController.addTravelExpCategory,
 );
 router.post(
   "/updatetravelexpcategory",
@@ -721,7 +767,7 @@ router.post(
       description: 'Internal Server Error'
     }
 */
-  supportController.updateTravelExpcategory,
+  webController.updateTravelExpcategory,
 );
 router.post(
   "/deletetravelexpcategory",
@@ -759,7 +805,7 @@ router.post(
       description: 'Internal Server Error'
     }
 */
-  supportController.deleteTravelExpcategory,
+  webController.deleteTravelExpcategory,
 );
 router.post(
   "/deletetravelexpcategorypermanently",
@@ -793,7 +839,7 @@ router.post(
       description: 'Internal Server Error'
     }
 */
-  supportController.deleteTravelExpCatpermanently,
+  webController.deleteTravelExpCatpermanently,
 );
 router.post(
   "/gettravelexpensecategory",
@@ -827,7 +873,7 @@ router.post(
       description: 'Internal Server Error'
     }
 */
-  supportController.getTravelExpenseCategory,
+  webController.getTravelExpenseCategory,
 );
 
 router.post(
@@ -862,7 +908,7 @@ router.post(
       description: 'Internal Server Error'
     }
 */
-  supportController.addMemberCategory,
+  webController.addMemberCategory,
 );
 router.post(
   "/updatemembercategory",
@@ -900,7 +946,7 @@ router.post(
       description: 'Internal Server Error'
     }
 */
-  supportController.updateMembercategory,
+  webController.updateMembercategory,
 );
 router.post(
   "/deletemembercategory",
@@ -938,7 +984,7 @@ router.post(
       description: 'Internal Server Error'
     }
 */
-  supportController.deleteMembercategory,
+  webController.deleteMembercategory,
 );
 router.post(
   "/deletemembercategorypermanently",
@@ -972,7 +1018,7 @@ router.post(
       description: 'Internal Server Error'
     }
 */
-  supportController.deletememberCatpermanently,
+  webController.deletememberCatpermanently,
 );
 router.post(
   "/getmembercategory",
@@ -1006,7 +1052,7 @@ router.post(
       description: 'Internal Server Error'
     }
 */
-  supportController.getMemberCategory,
+  webController.getMemberCategory,
 );
 
 router.post(
@@ -1041,7 +1087,79 @@ router.post(
       description: 'Internal Server Error'
     }
 */
-  supportController.getUserList,
+  webController.getUserList,
+);
+router.post(
+  "/getuserenquiry",
+  /*
+    #swagger.tags = ['16.Dashboard Api`s']
+    #swagger.summary = 'Get user enquiries'
+    #swagger.description = 'get user enquiries'
+
+     #swagger.requestBody = {
+      required: true,
+      content: {
+        "application/json": {
+          schema: {
+            type: "object",
+            properties: {
+              status: {
+                type: "string",
+                example: "pending"
+              },
+            }
+          }
+        }
+      }
+    }
+
+    #swagger.responses[200] = {
+      description: 'User`s enquiry fetched successfully'
+    }
+
+    #swagger.responses[500] = {
+      description: 'Internal Server Error'
+    }
+*/
+  webController.getUserEnquiries,
+);
+router.post(
+  "/updateuserenquiry",
+  /*
+    #swagger.tags = ['16.Dashboard Api`s']
+    #swagger.summary = 'Update user enquiries'
+    #swagger.description = 'Update user enquiries'
+
+     #swagger.requestBody = {
+      required: true,
+      content: {
+        "application/json": {
+          schema: {
+            type: "object",
+            properties: {
+              id: {
+                type: "number",
+                example: 2
+              },
+              status: {
+                type: "string",
+                example: "resolved"
+              },
+            }
+          }
+        }
+      }
+    }
+
+    #swagger.responses[200] = {
+      description: 'User`s enquiry updated successfully'
+    }
+
+    #swagger.responses[500] = {
+      description: 'Internal Server Error'
+    }
+*/
+  webController.updateUserEnquiries,
 );
 
 export default router;
