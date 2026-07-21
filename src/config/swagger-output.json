@@ -542,6 +542,15 @@
         ],
         "summary": "Add or Update Finance Category",
         "description": "",
+        "parameters": [
+          {
+            "name": "authorization",
+            "in": "header",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
         "responses": {
           "200": {
             "description": "Finance Catgory saved successfully"
@@ -591,6 +600,15 @@
         ],
         "summary": "Get Finance Category",
         "description": "",
+        "parameters": [
+          {
+            "name": "authorization",
+            "in": "header",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
         "responses": {
           "200": {
             "description": "Finance Catgory Fetched successfully"
@@ -632,6 +650,15 @@
         ],
         "summary": "Get Delete Reasons",
         "description": "Fetch all active delete reasons.",
+        "parameters": [
+          {
+            "name": "authorization",
+            "in": "header",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
         "responses": {
           "200": {
             "description": "Delete reasons fetched successfully"
@@ -4507,411 +4534,6 @@
         }
       }
     },
-    "/finance/add-finance-data": {
-      "post": {
-        "tags": [
-          "10.Finance"
-        ],
-        "summary": "Add or Update Finance",
-        "description": "",
-        "responses": {
-          "200": {
-            "description": "Finance saved successfully"
-          },
-          "500": {
-            "description": "Internal Server Error"
-          }
-        },
-        "requestBody": {
-          "required": false,
-          "content": {
-            "application/json": {
-              "schema": {
-                "type": "object",
-                "properties": {
-                  "id": {
-                    "type": "integer",
-                    "example": 1
-                  },
-                  "user_id": {
-                    "type": "string",
-                    "example": "USER_Yl_e5736"
-                  },
-                  "type": {
-                    "type": "string",
-                    "example": "income"
-                  },
-                  "cat_id": {
-                    "type": "string",
-                    "example": "1"
-                  },
-                  "cat_name": {
-                    "type": "string",
-                    "example": "Medical Expense"
-                  },
-                  "trans_date": {
-                    "type": "string",
-                    "example": "2026-06-03"
-                  },
-                  "amount": {
-                    "type": "number",
-                    "example": 1500
-                  },
-                  "notes": {
-                    "type": "string",
-                    "example": "Hospital bill"
-                  },
-                  "attachment": {
-                    "type": "string",
-                    "example": "1,2,3"
-                  }
-                }
-              }
-            }
-          }
-        }
-      }
-    },
-    "/finance/get-finance-data": {
-      "post": {
-        "tags": [
-          "10.Finance"
-        ],
-        "summary": "Get Finance Data",
-        "description": "Fetch finance data based on filters",
-        "responses": {
-          "200": {
-            "description": "Finance data fetched successfully"
-          },
-          "500": {
-            "description": "Internal Server Error"
-          }
-        },
-        "requestBody": {
-          "required": false,
-          "content": {
-            "application/json": {
-              "schema": {
-                "type": "object",
-                "properties": {
-                  "id": {
-                    "type": "integer",
-                    "example": 1
-                  },
-                  "user_id": {
-                    "type": "string",
-                    "example": "USER_Yl_e5736"
-                  },
-                  "type": {
-                    "type": "string",
-                    "example": "income"
-                  },
-                  "category": {
-                    "type": "string",
-                    "example": "medical"
-                  },
-                  "amount": {
-                    "type": "number",
-                    "example": 1500
-                  },
-                  "from_date": {
-                    "type": "string",
-                    "example": "2026-03-22"
-                  },
-                  "to_date": {
-                    "type": "string",
-                    "example": "2026-03-25"
-                  }
-                }
-              }
-            }
-          }
-        }
-      }
-    },
-    "/finance/remove-finance-data": {
-      "post": {
-        "tags": [
-          "10.Finance"
-        ],
-        "summary": "Remove Finance Data",
-        "description": "Delete Finance Data BY ID",
-        "responses": {
-          "200": {
-            "description": "Finance data removed successfully"
-          },
-          "500": {
-            "description": "Internal Server Error"
-          }
-        },
-        "requestBody": {
-          "required": false,
-          "content": {
-            "application/json": {
-              "schema": {
-                "type": "object",
-                "properties": {
-                  "id": {
-                    "type": "integer",
-                    "example": 1
-                  }
-                }
-              }
-            }
-          }
-        }
-      }
-    },
-    "/finance/get-report-data": {
-      "post": {
-        "tags": [
-          "10.Finance"
-        ],
-        "summary": "get Report Data",
-        "description": "Get Report Data",
-        "responses": {
-          "200": {
-            "description": "Report data fetched successfully"
-          },
-          "500": {
-            "description": "Internal Server Error"
-          }
-        },
-        "requestBody": {
-          "required": false,
-          "content": {
-            "application/json": {
-              "schema": {
-                "type": "object",
-                "properties": {
-                  "user_id": {
-                    "type": "string",
-                    "example": "USER_Yl_e5736"
-                  },
-                  "type": {
-                    "type": "string",
-                    "example": "income"
-                  },
-                  "from_date": {
-                    "type": "string",
-                    "example": "2026-03-22"
-                  },
-                  "to_date": {
-                    "type": "string",
-                    "example": "2026-03-25"
-                  }
-                }
-              }
-            }
-          }
-        }
-      }
-    },
-    "/finance/get-report-download": {
-      "post": {
-        "tags": [
-          "10.Finance"
-        ],
-        "summary": "get Report Download",
-        "description": "Get Report Download",
-        "responses": {
-          "200": {
-            "description": "Report data downloaded successfully"
-          },
-          "500": {
-            "description": "Internal Server Error"
-          }
-        },
-        "requestBody": {
-          "required": false,
-          "content": {
-            "application/json": {
-              "schema": {
-                "type": "object",
-                "properties": {
-                  "user_id": {
-                    "type": "string",
-                    "example": "USER_Yl_e5736"
-                  },
-                  "type": {
-                    "type": "string",
-                    "example": "income"
-                  },
-                  "d_type": {
-                    "type": "string",
-                    "example": "csv"
-                  },
-                  "from_date": {
-                    "type": "string",
-                    "example": "2026-03-22"
-                  },
-                  "to_date": {
-                    "type": "string",
-                    "example": "2026-03-25"
-                  }
-                }
-              }
-            }
-          }
-        }
-      }
-    },
-    "/folder/add-folder-name": {
-      "post": {
-        "tags": [
-          "11.Folder"
-        ],
-        "summary": "Add or Update Folder",
-        "description": "",
-        "responses": {
-          "200": {
-            "description": "Folder name saved successfully"
-          },
-          "500": {
-            "description": "Internal Server Error"
-          }
-        },
-        "requestBody": {
-          "required": false,
-          "content": {
-            "application/json": {
-              "schema": {
-                "type": "object",
-                "properties": {
-                  "id": {
-                    "type": "integer",
-                    "example": 1
-                  },
-                  "user_id": {
-                    "type": "string",
-                    "example": "USER_Yl_e5736"
-                  },
-                  "folder_name": {
-                    "type": "string",
-                    "example": "ABC folder"
-                  }
-                }
-              }
-            }
-          }
-        }
-      }
-    },
-    "/folder/remove-folder-img": {
-      "post": {
-        "tags": [
-          "11.Folder"
-        ],
-        "summary": "Remove Folder or Folder Images using type",
-        "description": "",
-        "responses": {
-          "200": {
-            "description": "Folder or Folder Images deleted successfully"
-          },
-          "500": {
-            "description": "Internal Server Error"
-          }
-        },
-        "requestBody": {
-          "required": false,
-          "content": {
-            "application/json": {
-              "schema": {
-                "type": "object",
-                "properties": {
-                  "ids": {
-                    "type": "string",
-                    "example": "1,2,3"
-                  },
-                  "type": {
-                    "type": "string",
-                    "example": "folder or image"
-                  }
-                }
-              }
-            }
-          }
-        }
-      }
-    },
-    "/folder/add-img-folder": {
-      "post": {
-        "tags": [
-          "11.Folder"
-        ],
-        "summary": "Add Images into a Folder",
-        "description": "",
-        "responses": {
-          "200": {
-            "description": "Add Image into folder successfully"
-          },
-          "500": {
-            "description": "Internal Server Error"
-          }
-        },
-        "requestBody": {
-          "required": false,
-          "content": {
-            "application/json": {
-              "schema": {
-                "type": "object",
-                "properties": {
-                  "id": {
-                    "type": "integer",
-                    "example": 1
-                  },
-                  "folder_id": {
-                    "type": "string",
-                    "example": "2"
-                  },
-                  "media_ids": {
-                    "type": "string",
-                    "example": "1,2"
-                  }
-                }
-              }
-            }
-          }
-        }
-      }
-    },
-    "/folder/get-img-folder": {
-      "post": {
-        "tags": [
-          "11.Folder"
-        ],
-        "summary": "Get Folder Images",
-        "description": "",
-        "responses": {
-          "200": {
-            "description": "Get Image folder successfully"
-          },
-          "500": {
-            "description": "Internal Server Error"
-          }
-        },
-        "requestBody": {
-          "required": false,
-          "content": {
-            "application/json": {
-              "schema": {
-                "type": "object",
-                "properties": {
-                  "user_id": {
-                    "type": "string",
-                    "example": "USER_Yl_e5736"
-                  },
-                  "folder_id": {
-                    "type": "string",
-                    "example": "2"
-                  }
-                }
-              }
-            }
-          }
-        }
-      }
-    },
     "/issue/addissue": {
       "post": {
         "tags": [
@@ -6285,7 +5907,492 @@
         }
       }
     },
-<<<<<<< HEAD
+    "/finance/add-finance-data": {
+      "post": {
+        "tags": [
+          "10.Finance"
+        ],
+        "summary": "Add or Update Finance",
+        "description": "",
+        "parameters": [
+          {
+            "name": "authorization",
+            "in": "header",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Finance saved successfully"
+          },
+          "500": {
+            "description": "Internal Server Error"
+          }
+        },
+        "requestBody": {
+          "required": false,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "id": {
+                    "type": "integer",
+                    "example": 1
+                  },
+                  "user_id": {
+                    "type": "string",
+                    "example": "USER_Yl_e5736"
+                  },
+                  "type": {
+                    "type": "string",
+                    "example": "income"
+                  },
+                  "cat_id": {
+                    "type": "string",
+                    "example": "1"
+                  },
+                  "cat_name": {
+                    "type": "string",
+                    "example": "Medical Expense"
+                  },
+                  "trans_date": {
+                    "type": "string",
+                    "example": "2026-06-03"
+                  },
+                  "amount": {
+                    "type": "number",
+                    "example": 1500
+                  },
+                  "notes": {
+                    "type": "string",
+                    "example": "Hospital bill"
+                  },
+                  "attachment": {
+                    "type": "string",
+                    "example": "1,2,3"
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/finance/get-finance-data": {
+      "post": {
+        "tags": [
+          "10.Finance"
+        ],
+        "summary": "Get Finance Data",
+        "description": "Fetch finance data based on filters",
+        "parameters": [
+          {
+            "name": "authorization",
+            "in": "header",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Finance data fetched successfully"
+          },
+          "500": {
+            "description": "Internal Server Error"
+          }
+        },
+        "requestBody": {
+          "required": false,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "id": {
+                    "type": "integer",
+                    "example": 1
+                  },
+                  "user_id": {
+                    "type": "string",
+                    "example": "USER_Yl_e5736"
+                  },
+                  "type": {
+                    "type": "string",
+                    "example": "income"
+                  },
+                  "category": {
+                    "type": "string",
+                    "example": "medical"
+                  },
+                  "amount": {
+                    "type": "number",
+                    "example": 1500
+                  },
+                  "from_date": {
+                    "type": "string",
+                    "example": "2026-03-22"
+                  },
+                  "to_date": {
+                    "type": "string",
+                    "example": "2026-03-25"
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/finance/remove-finance-data": {
+      "post": {
+        "tags": [
+          "10.Finance"
+        ],
+        "summary": "Remove Finance Data",
+        "description": "Delete Finance Data BY ID",
+        "parameters": [
+          {
+            "name": "authorization",
+            "in": "header",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Finance data removed successfully"
+          },
+          "500": {
+            "description": "Internal Server Error"
+          }
+        },
+        "requestBody": {
+          "required": false,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "id": {
+                    "type": "integer",
+                    "example": 1
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/finance/get-report-data": {
+      "post": {
+        "tags": [
+          "10.Finance"
+        ],
+        "summary": "get Report Data",
+        "description": "Get Report Data",
+        "parameters": [
+          {
+            "name": "authorization",
+            "in": "header",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Report data fetched successfully"
+          },
+          "500": {
+            "description": "Internal Server Error"
+          }
+        },
+        "requestBody": {
+          "required": false,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "user_id": {
+                    "type": "string",
+                    "example": "USER_Yl_e5736"
+                  },
+                  "type": {
+                    "type": "string",
+                    "example": "income"
+                  },
+                  "from_date": {
+                    "type": "string",
+                    "example": "2026-03-22"
+                  },
+                  "to_date": {
+                    "type": "string",
+                    "example": "2026-03-25"
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/finance/get-report-download": {
+      "post": {
+        "tags": [
+          "10.Finance"
+        ],
+        "summary": "get Report Download",
+        "description": "Get Report Download",
+        "parameters": [
+          {
+            "name": "authorization",
+            "in": "header",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Report data downloaded successfully"
+          },
+          "500": {
+            "description": "Internal Server Error"
+          }
+        },
+        "requestBody": {
+          "required": false,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "user_id": {
+                    "type": "string",
+                    "example": "USER_Yl_e5736"
+                  },
+                  "type": {
+                    "type": "string",
+                    "example": "income"
+                  },
+                  "d_type": {
+                    "type": "string",
+                    "example": "csv"
+                  },
+                  "from_date": {
+                    "type": "string",
+                    "example": "2026-03-22"
+                  },
+                  "to_date": {
+                    "type": "string",
+                    "example": "2026-03-25"
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/folder/add-folder-name": {
+      "post": {
+        "tags": [
+          "11.Folder"
+        ],
+        "summary": "Add or Update Folder",
+        "description": "",
+        "parameters": [
+          {
+            "name": "authorization",
+            "in": "header",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Folder name saved successfully"
+          },
+          "500": {
+            "description": "Internal Server Error"
+          }
+        },
+        "requestBody": {
+          "required": false,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "id": {
+                    "type": "integer",
+                    "example": 1
+                  },
+                  "user_id": {
+                    "type": "string",
+                    "example": "USER_Yl_e5736"
+                  },
+                  "folder_name": {
+                    "type": "string",
+                    "example": "ABC folder"
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/folder/remove-folder-img": {
+      "post": {
+        "tags": [
+          "11.Folder"
+        ],
+        "summary": "Remove Folder or Folder Images using type",
+        "description": "",
+        "parameters": [
+          {
+            "name": "authorization",
+            "in": "header",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Folder or Folder Images deleted successfully"
+          },
+          "500": {
+            "description": "Internal Server Error"
+          }
+        },
+        "requestBody": {
+          "required": false,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "ids": {
+                    "type": "string",
+                    "example": "1,2,3"
+                  },
+                  "type": {
+                    "type": "string",
+                    "example": "folder or image"
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/folder/add-img-folder": {
+      "post": {
+        "tags": [
+          "11.Folder"
+        ],
+        "summary": "Add Images into a Folder",
+        "description": "",
+        "parameters": [
+          {
+            "name": "authorization",
+            "in": "header",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Add Image into folder successfully"
+          },
+          "500": {
+            "description": "Internal Server Error"
+          }
+        },
+        "requestBody": {
+          "required": false,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "id": {
+                    "type": "integer",
+                    "example": 1
+                  },
+                  "folder_id": {
+                    "type": "string",
+                    "example": "2"
+                  },
+                  "media_ids": {
+                    "type": "string",
+                    "example": "1,2"
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/folder/get-img-folder": {
+      "post": {
+        "tags": [
+          "11.Folder"
+        ],
+        "summary": "Get Folder Images",
+        "description": "",
+        "parameters": [
+          {
+            "name": "authorization",
+            "in": "header",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Get Image folder successfully"
+          },
+          "500": {
+            "description": "Internal Server Error"
+          }
+        },
+        "requestBody": {
+          "required": false,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "user_id": {
+                    "type": "string",
+                    "example": "USER_Yl_e5736"
+                  },
+                  "folder_id": {
+                    "type": "string",
+                    "example": "2"
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
     "/analytics/get-analytics-data": {
       "post": {
         "tags": [
@@ -6293,10 +6400,49 @@
         ],
         "summary": "Get ANalytics Data",
         "description": "",
+        "parameters": [
+          {
+            "name": "authorization",
+            "in": "header",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
         "responses": {
           "200": {
             "description": "Analytics data fetched successfully"
-=======
+          },
+          "500": {
+            "description": "Internal Server Error"
+          }
+        },
+        "requestBody": {
+          "required": false,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "user_id": {
+                    "type": "string",
+                    "example": "USER_Yl_e5736"
+                  },
+                  "type": {
+                    "type": "string",
+                    "example": "appointment"
+                  },
+                  "c_status": {
+                    "type": "string",
+                    "example": "pending"
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
     "/web/adminlogin": {
       "post": {
         "tags": [
@@ -6316,34 +6462,18 @@
         "responses": {
           "200": {
             "description": "login successfull"
->>>>>>> 22212385731563793c9615161a950a7c744b460e
           },
           "500": {
             "description": "Internal Server Error"
           }
         },
         "requestBody": {
-<<<<<<< HEAD
-          "required": false,
-=======
           "required": true,
->>>>>>> 22212385731563793c9615161a950a7c744b460e
           "content": {
             "application/json": {
               "schema": {
                 "type": "object",
                 "properties": {
-<<<<<<< HEAD
-                  "user_id": {
-                    "type": "string",
-                    "example": "USER_Yl_e5736"
-                  },
-                  "type": {
-                    "type": "string",
-                    "example": "appointment"
-                  },
-                  "c_status": {
-=======
                   "user_name": {
                     "type": "string",
                     "example": "admin@skyraan"
@@ -7531,7 +7661,6 @@
                 "type": "object",
                 "properties": {
                   "status": {
->>>>>>> 22212385731563793c9615161a950a7c744b460e
                     "type": "string",
                     "example": "pending"
                   }
@@ -7541,8 +7670,6 @@
           }
         }
       }
-<<<<<<< HEAD
-=======
     },
     "/web/updateuserenquiry": {
       "post": {
@@ -7589,7 +7716,6 @@
           }
         }
       }
->>>>>>> 22212385731563793c9615161a950a7c744b460e
     }
   },
   "components": {
