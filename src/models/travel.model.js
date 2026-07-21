@@ -1,4 +1,6 @@
 import { executeQuery, sendResponse } from "../utils/helper.js";
+import { notificationModel } from "./notification.model.js";
+const notificationMdl = new notificationModel();
 
 export class travelModel {
   async addTravel({
@@ -81,6 +83,10 @@ export class travelModel {
     let params = [id];
 
     const result = await executeQuery(query, params);
+    const deleteResult = await notificationMdl.deleteNotificationByReference(
+      id,
+      "travel",
+    );
     if (result?.success === 1) {
       return {
         success: 1,

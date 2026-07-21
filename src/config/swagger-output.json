@@ -5736,8 +5736,8 @@
         "tags": [
           "13.Notification"
         ],
-        "summary": "Get active notification count",
-        "description": "Get notification active count by passing user id.",
+        "summary": "testing notification count",
+        "description": "get notification count by passing user id.",
         "parameters": [
           {
             "name": "authorization",
@@ -5749,7 +5749,7 @@
         ],
         "responses": {
           "200": {
-            "description": "Notifications active count fetched successfully"
+            "description": "Notifications successfully tested"
           },
           "500": {
             "description": "Internal Server Error"

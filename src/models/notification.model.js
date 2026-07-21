@@ -147,4 +147,20 @@ export class notificationModel {
       };
     }
   }
+  async deleteNotificationByReference(id, type) {
+    let query = `DELETE FROM notifications WHERE reference_type = ? AND reference_id = ?`;
+    let params = [type, id];
+    const result = await executeQuery(query, params);
+    if (result?.success === 1) {
+      return {
+        success: 1,
+        data: result?.data,
+      };
+    } else if (result?.success === 0) {
+      return {
+        success: 0,
+        error: result?.error,
+      };
+    }
+  }
 }
