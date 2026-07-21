@@ -235,7 +235,7 @@ export const contactUs = async (req, res) => {
     );
     //   console.log(result);
     if (result?.success === 1) {
-      await sendContactUsMail();
+      // await sendContactUsMail();
       sendResponse(res, 200, 1, "Query has been submitted", [], "");
     } else {
       sendResponse(res, 200, 0, "Failed to sumit Query", [], "");

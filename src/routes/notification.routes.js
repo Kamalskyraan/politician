@@ -147,8 +147,8 @@ router.post(
   "/test-notification",
   /*
     #swagger.tags = ['13.Notification']
-    #swagger.summary = 'Get active notification count'
-    #swagger.description = 'Get notification active count by passing user id.'
+    #swagger.summary = 'testing notification count'
+    #swagger.description = 'get notification count by passing user id.'
 
     #swagger.requestBody = {
       required: true,
@@ -168,7 +168,7 @@ router.post(
     }
 
     #swagger.responses[200] = {
-      description: 'Notifications active count fetched successfully'
+      description: 'Notifications successfully tested'
     }
 
     #swagger.responses[500] = {

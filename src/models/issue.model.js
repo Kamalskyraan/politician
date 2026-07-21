@@ -1,5 +1,7 @@
 import express from "express";
 import { executeQuery } from "../utils/helper.js";
+import { notificationModel } from "./notification.model.js";
+const notificationMdl = new notificationModel();
 
 export class issueModel {
   async addIssue({
@@ -61,6 +63,10 @@ export class issueModel {
     let params = [id];
 
     const result = await executeQuery(query, params);
+    const deleteResult = await notificationMdl.deleteNotificationByReference(
+      id,
+      "issue",
+    );
 
     if (result?.success === 1) {
       return {

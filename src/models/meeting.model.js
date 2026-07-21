@@ -1,5 +1,8 @@
 import express from "express";
 import { executeQuery, sendResponse } from "../utils/helper.js";
+import { notificationModel } from "./notification.model.js";
+
+const notificationMdl = new notificationModel();
 
 export class meetingModel {
   async addMember({
@@ -363,6 +366,10 @@ export class meetingModel {
     params = [id];
 
     const result = await executeQuery(query, params);
+    const deleteResult = await notificationMdl.deleteNotificationByReference(
+      id,
+      "meeting",
+    );
 
     // console.log(result?.data?.affectedRows);
 
@@ -459,6 +466,10 @@ export class meetingModel {
     let params = [id];
 
     const result = await executeQuery(query, params);
+    const deleteResult = await notificationMdl.deleteNotificationByReference(
+      id,
+      "appointment",
+    );
     if (result?.success === 1) {
       return {
         success: 1,

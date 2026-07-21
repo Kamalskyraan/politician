@@ -1,6 +1,8 @@
 import express from "express";
 import db from "../config/db.js";
 import { executeQuery } from "../utils/helper.js";
+import { notificationModel } from "./notification.model.js";
+const notificationMdl = new notificationModel();
 
 export class politicalSumitModel {
   async addSumit({
@@ -110,6 +112,10 @@ export class politicalSumitModel {
     let params = [id];
 
     const result = await executeQuery(query, params);
+    const deleteResult = await notificationMdl.deleteNotificationByReference(
+      id,
+      "sumit",
+    );
     if (result?.success === 1) {
       return {
         success: 1,

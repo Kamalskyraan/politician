@@ -16,7 +16,9 @@ import issueRoutes from "./issues.routes.js";
 import reminderRoutes from "./reminder.routes.js";
 import calendarRoutes from "./calendar.routes.js";
 import notificationRoutes from "./notification.routes.js";
+import webRoutes from "./web.routes.js";
 import { verifyToken } from "../middleware/auth.middleware.js";
+import { verifyAdminToken } from "../middleware/adminAuth.middleware.js";
 
 export const router = express.Router();
 router.use("/auth", authRoutes);
@@ -36,6 +38,7 @@ router.use("/notification", verifyToken, notificationRoutes);
 router.use("/finance", verifyToken, finaceRoutes);
 router.use("/folder", verifyToken, folderRoutes);
 router.use("/analytics", verifyToken, analyticsRoutes);
+router.use("/web", webRoutes);
 
 // router.use("/auth", authRoutes);
 // router.use("/source", sourceRoutes);
@@ -46,6 +49,7 @@ router.use("/analytics", verifyToken, analyticsRoutes);
 
 // router.use("/finance",  finaceRoutes);
 // router.use("/folder",  folderRoutes);
+// // router.use("/contact", supportRoutes);
 // router.use("/travel", travelRoutes);
 // router.use("/task", taskRoutes);
 // router.use("/issue", issueRoutes);
@@ -54,5 +58,6 @@ router.use("/analytics", verifyToken, analyticsRoutes);
 // router.use("/calendar", calendarRoutes);
 // router.use("/user", userRoutes);
 // router.use("/notification", notificationRoutes);
+// router.use("/web", webRoutes);
 
 export default router;
