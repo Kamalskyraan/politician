@@ -198,7 +198,7 @@ export const getUserProfile = async (req, res) => {
     const finalResponse = replaceNullWithEmptyString(data);
 
     if (userDetail?.success === 1) {
-      sendResponse(res, 200, 1, "user Found", [data], "");
+      sendResponse(res, 200, 1, "user Found", [finalResponse], "");
     } else if (userDetail?.success === 0) {
       sendResponse(res, 200, 0, "User not found", [], "");
     }
