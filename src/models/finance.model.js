@@ -28,7 +28,7 @@ export class financeModel {
           trans_date = ?,
           amount = ?,
           notes = ?,
-          attachment = ?
+          attachment = ?,
           travel_exp_id = ?
         WHERE id = ?
         `,
