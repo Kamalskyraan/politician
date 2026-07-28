@@ -205,6 +205,14 @@ router.post(
                 type: "string",
                 example: "inprogress"
               },
+              from_date: {
+                type: "string",
+                example: "2026-07-12"
+              },
+              to_date: {
+                type: "string",
+                example: "2026-07-12"
+              },
               page: {
                 type: "number",
                 example: 1

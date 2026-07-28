@@ -92,31 +92,50 @@ export class taskModel {
       };
     }
   }
-  async getTask({ user_id, status, page, limit = 10 }) {
+  async getTask({ user_id, status, from_date, to_date, page, limit = 10 }) {
     // console.log("inside model")
     const offset = (page - 1) * limit;
     let query;
     let params = [];
     let countQuery;
     let countParams = [];
+    let dateFilter = "";
+    if (from_date && to_date) {
+      dateFilter = " AND from_date <= ? AND to_date >= ?";
+    }
     if (status != null) {
       const placeholders = status.map(() => "?").join(",");
 
-      countQuery = `SELECT COUNT(*) AS total FROM tasks WHERE user_id = ? AND t_status IN (${placeholders})`;
+      countQuery = `SELECT COUNT(*) AS total FROM tasks WHERE user_id = ? AND t_status IN (${placeholders}) ${dateFilter}`;
       countParams.push(user_id, ...status);
+      if (from_date && to_date) {
+        countParams.push(to_date, from_date);
+      }
 
-      query = `SELECT id, title, descp, t_priority, from_date, to_date, media_id, attnds_id, t_status, is_remind, remind_status, remind_tenure, remind_at, snooze_at, nxt_snooze_at FROM tasks WHERE user_id = ? AND t_status IN (${placeholders}) ORDER BY from_date DESC LIMIT ? OFFSET ?`;
-      params.push(user_id, ...status, limit, offset);
+      query = `SELECT id, title, descp, t_priority, from_date, to_date, media_id, attnds_id, t_status, is_remind, remind_status, remind_tenure, remind_at, snooze_at, nxt_snooze_at FROM tasks WHERE user_id = ? AND t_status IN (${placeholders}) ${dateFilter} ORDER BY from_date DESC LIMIT ? OFFSET ?`;
+      params.push(user_id, ...status);
+      if (from_date && to_date) {
+        params.push(to_date, from_date);
+      }
+      params.push(limit, offset);
       // console.log("QUERY , PRINTED", query);
     } else {
-      countQuery = `SELECT FROM tasks WHERE user_id = ? LIMIT ? OFFSET ?`;
+      countQuery = `SELECT FROM tasks WHERE user_id = ? ${dateFilter} LIMIT ? OFFSET ?`;
       countParams.push(user_id);
+      if (from_date && to_date) {
+        countParams.push(to_date, from_date);
+      }
 
-      query = `SELECT id, title, descp, t_priority, from_date, to_date, media_id, attnds_id, t_status, is_remind, remind_status, remind_tenure, remind_at, snooze_at, nxt_snooze_at FROM tasks WHERE user_id = ? ORDER BY from_date DESC`;
-      params.push(user_id, limit, offset);
+      query = `SELECT id, title, descp, t_priority, from_date, to_date, media_id, attnds_id, t_status, is_remind, remind_status, remind_tenure, remind_at, snooze_at, nxt_snooze_at FROM tasks WHERE user_id = ? ${dateFilter} ORDER BY from_date DESC`;
+      params.push(user_id);
+      if (from_date && to_date) {
+        params.push(to_date, from_date);
+      }
+      params.push(limit, offset);
     }
-
+    // console.log(query, params);
     const countResult = await executeQuery(countQuery, countParams);
+    // console.log(countResult);
     const total = countResult?.data[0]?.total;
 
     const result = await executeQuery(query, params);

@@ -91,7 +91,7 @@ export const addTask = async (req, res) => {
     }
     from_date = formatDateForSQL(from_date);
     to_date = formatDateForSQL(to_date);
-    console.log(remind_at);
+    // console.log(remind_at);
 
     const result = await taskMdl.addTask({
       user_id,
@@ -474,17 +474,35 @@ export const getTask = async (req, res) => {
         validatedData?.errorObject?.errors,
       );
     }
-    let { user_id, status, page } = validatedData?.value;
+    let { user_id, status, from_date, to_date, page } = validatedData?.value;
+    // from_date = `${from_date} 00:00:00`;
+    // to_date = `${to_date} 23:59:59`;
+
+    // console.log(from_date, to_date)
 
     status = status === "" ? null : status.split(",");
+    from_date = from_date === "" ? null : `${from_date} 00:00:00`;
+    to_date = to_date === "" ? null : `${to_date} 23:59:59`;
     let result;
     // console.log(status);
     if (status != null) {
       // if status has value
-      result = await taskMdl.getTask({ user_id, status, page });
+      result = await taskMdl.getTask({
+        user_id,
+        status,
+        from_date,
+        to_date,
+        page,
+      });
     } else {
       // if status has not value
-      result = await taskMdl.getTask({ user_id, status, page });
+      result = await taskMdl.getTask({
+        user_id,
+        status,
+        from_date,
+        to_date,
+        page,
+      });
     }
 
     let data = result?.data;

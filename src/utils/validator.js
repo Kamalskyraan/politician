@@ -1361,6 +1361,14 @@ export const getTaskSchema = Joi.object({
     "string.base": "user id should be a string",
     "any.required": "task id cannot be empty",
   }),
+  from_date: Joi.string().allow("").messages({
+    "string.base": "from_date should be a string",
+    "any.required": "from_date cannot be empty",
+  }),
+  to_date: Joi.string().allow("").messages({
+    "string.base": "to_date should be a string",
+    "any.required": "to_date cannot be empty",
+  }),
   status: Joi.string()
     .allow("")
     .custom((value, helpers) => {

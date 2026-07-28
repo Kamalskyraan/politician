@@ -5,6 +5,10 @@ export class reminderModel {
   async getReminder({ user_id, status }) {
     let query;
     let params;
+    let is_remind = 1;
+    if (status === "completed") {
+      is_remind = 2;
+    }
 
     if (status != null) {
       query = `SELECT id, "meeting" AS type, title, descp AS description, address, lat, lng, from_date, is_remind, remind_status, remind_at, nxt_snooze_at FROM meeting WHERE user_id = ? AND is_remind = ? AND status IN ("upcoming", "pending") AND remind_status = ? UNION ALL 
@@ -13,16 +17,16 @@ export class reminderModel {
     SELECT id, "travel" AS type, title, descp AS description, travel_to, to_lat, to_lng, from_date, is_remind, remind_status, remind_at, nxt_snooze_at FROM travels WHERE user_id = ? AND is_remind = ? AND remind_status = ? ORDER BY remind_at ASC`;
       params = [
         user_id,
-        1,
+        is_remind,
         status,
         user_id,
-        1,
+        is_remind,
         status,
         user_id,
-        1,
+        is_remind,
         status,
         user_id,
-        1,
+        is_remind,
         status,
       ];
     } else {
@@ -30,7 +34,16 @@ export class reminderModel {
     SELECT id, "appointment" AS type, title, notes AS description, address, lat, lng, from_date, is_remind, remind_status, remind_at, nxt_snooze_at FROM appointments WHERE user_id = ? AND is_remind = ? AND status IN ("upcoming", "pending") AND remind_status IN ("pending","snoozed","completed") UNION ALL 
     SELECT id, "task" AS type, title, descp AS description, "" AS address, "" AS lat, "" AS lng, from_date, is_remind, remind_status, remind_at, nxt_snooze_at FROM tasks WHERE user_id = ? AND is_remind = ? AND t_status IN ("inprogress", "pending") AND remind_status IN ("pending","snoozed","completed") UNION ALL 
     SELECT id, "travel" AS type, title, descp AS description, travel_to, to_lat, to_lng, from_date, is_remind, remind_status, remind_at, nxt_snooze_at FROM travels WHERE user_id = ? AND is_remind = ? AND remind_status IN ("pending","snoozed","completed") ORDER BY remind_at ASC`;
-      params = [user_id, 1, user_id, 1, user_id, 1, user_id, 1];
+      params = [
+        user_id,
+        is_remind,
+        user_id,
+        is_remind,
+        user_id,
+        is_remind,
+        user_id,
+        is_remind,
+      ];
     }
 
     const result = await executeQuery(query, params);
