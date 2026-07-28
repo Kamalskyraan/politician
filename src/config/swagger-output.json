@@ -243,15 +243,6 @@
         ],
         "summary": "Upload media",
         "description": "Upload images, videos or documents",
-        "parameters": [
-          {
-            "name": "authorization",
-            "in": "header",
-            "schema": {
-              "type": "string"
-            }
-          }
-        ],
         "responses": {
           "200": {
             "description": "Media uploaded successfully"
@@ -297,15 +288,6 @@
         ],
         "summary": "Upload Documents",
         "description": "Upload documents only",
-        "parameters": [
-          {
-            "name": "authorization",
-            "in": "header",
-            "schema": {
-              "type": "string"
-            }
-          }
-        ],
         "responses": {
           "200": {
             "description": "Documents uploaded successfully"
@@ -346,15 +328,6 @@
         ],
         "summary": "Upload Images ",
         "description": "Upload Images Only",
-        "parameters": [
-          {
-            "name": "authorization",
-            "in": "header",
-            "schema": {
-              "type": "string"
-            }
-          }
-        ],
         "responses": {
           "200": {
             "description": "Images uploaded successfully"
@@ -395,15 +368,6 @@
         ],
         "summary": "Upload Videos ",
         "description": "Upload Videos Only",
-        "parameters": [
-          {
-            "name": "authorization",
-            "in": "header",
-            "schema": {
-              "type": "string"
-            }
-          }
-        ],
         "responses": {
           "200": {
             "description": "Videos uploaded successfully"
@@ -440,15 +404,6 @@
     "/source/addrole": {
       "post": {
         "description": "",
-        "parameters": [
-          {
-            "name": "authorization",
-            "in": "header",
-            "schema": {
-              "type": "string"
-            }
-          }
-        ],
         "responses": {
           "default": {
             "description": ""
@@ -473,15 +428,6 @@
     "/source/updaterole": {
       "post": {
         "description": "",
-        "parameters": [
-          {
-            "name": "authorization",
-            "in": "header",
-            "schema": {
-              "type": "string"
-            }
-          }
-        ],
         "responses": {
           "default": {
             "description": ""
@@ -516,15 +462,6 @@
         ],
         "summary": "Get member role dropdown list",
         "description": "Get member role dropdown list",
-        "parameters": [
-          {
-            "name": "authorization",
-            "in": "header",
-            "schema": {
-              "type": "string"
-            }
-          }
-        ],
         "responses": {
           "200": {
             "description": "dropdown list fetched successfully"
@@ -542,15 +479,6 @@
         ],
         "summary": "Add Member",
         "description": "Add a new member",
-        "parameters": [
-          {
-            "name": "authorization",
-            "in": "header",
-            "schema": {
-              "type": "string"
-            }
-          }
-        ],
         "responses": {
           "200": {
             "description": "Member added successfully"
@@ -608,15 +536,6 @@
         ],
         "summary": "Get Member",
         "description": "Get members by passing user_id",
-        "parameters": [
-          {
-            "name": "authorization",
-            "in": "header",
-            "schema": {
-              "type": "string"
-            }
-          }
-        ],
         "responses": {
           "200": {
             "description": "Members fetched successfully"
@@ -665,15 +584,6 @@
         ],
         "summary": "Update Member",
         "description": "Update member details by passing id and fields to update",
-        "parameters": [
-          {
-            "name": "authorization",
-            "in": "header",
-            "schema": {
-              "type": "string"
-            }
-          }
-        ],
         "responses": {
           "200": {
             "description": "Member updated successfully"
@@ -731,15 +641,6 @@
         ],
         "summary": "Delete Member",
         "description": "Delete member by passing id",
-        "parameters": [
-          {
-            "name": "authorization",
-            "in": "header",
-            "schema": {
-              "type": "string"
-            }
-          }
-        ],
         "responses": {
           "200": {
             "description": "Member deleted successfully"
@@ -773,15 +674,6 @@
         ],
         "summary": "Add Meeting",
         "description": "Add a new meeting by passing required fields",
-        "parameters": [
-          {
-            "name": "authorization",
-            "in": "header",
-            "schema": {
-              "type": "string"
-            }
-          }
-        ],
         "responses": {
           "200": {
             "description": "Meeting added successfully"
@@ -879,15 +771,6 @@
         ],
         "summary": "Get Meeting",
         "description": "Get meetings by passing user_id. Optionally pass status (upcoming, cancelled, completed, pending)",
-        "parameters": [
-          {
-            "name": "authorization",
-            "in": "header",
-            "schema": {
-              "type": "string"
-            }
-          }
-        ],
         "responses": {
           "200": {
             "description": "Meetings fetched successfully"
@@ -937,15 +820,6 @@
         ],
         "summary": "Get Meeting by id",
         "description": "Get meetings by passing id.",
-        "parameters": [
-          {
-            "name": "authorization",
-            "in": "header",
-            "schema": {
-              "type": "string"
-            }
-          }
-        ],
         "responses": {
           "200": {
             "description": "Individual Meeting fetched successfully"
@@ -979,15 +853,6 @@
         ],
         "summary": "Delete Meeting",
         "description": "Delete meeting by passing id",
-        "parameters": [
-          {
-            "name": "authorization",
-            "in": "header",
-            "schema": {
-              "type": "string"
-            }
-          }
-        ],
         "responses": {
           "200": {
             "description": "Meeting deleted successfully"
@@ -1021,15 +886,6 @@
         ],
         "summary": "Update Meeting",
         "description": "Update meeting by passing id and other fields to update",
-        "parameters": [
-          {
-            "name": "authorization",
-            "in": "header",
-            "schema": {
-              "type": "string"
-            }
-          }
-        ],
         "responses": {
           "200": {
             "description": "Meeting updated successfully"
@@ -1127,15 +983,6 @@
         ],
         "summary": "Add Appointment",
         "description": "Add appointment by passing user_id and other required fields",
-        "parameters": [
-          {
-            "name": "authorization",
-            "in": "header",
-            "schema": {
-              "type": "string"
-            }
-          }
-        ],
         "responses": {
           "200": {
             "description": "Appointment added successfully"
@@ -1225,15 +1072,6 @@
         ],
         "summary": "Delete Appointment",
         "description": "Delete appointment by passing id",
-        "parameters": [
-          {
-            "name": "authorization",
-            "in": "header",
-            "schema": {
-              "type": "string"
-            }
-          }
-        ],
         "responses": {
           "200": {
             "description": "Appointment deleted successfully"
@@ -1267,15 +1105,6 @@
         ],
         "summary": "Get Appointment",
         "description": "Get appointments by passing user_id. Optionally pass status (upcoming, cancelled, completed, pending)",
-        "parameters": [
-          {
-            "name": "authorization",
-            "in": "header",
-            "schema": {
-              "type": "string"
-            }
-          }
-        ],
         "responses": {
           "200": {
             "description": "Appointments fetched successfully"
@@ -1325,15 +1154,6 @@
         ],
         "summary": "Get Appointment by id",
         "description": "Get appointments by passing id.",
-        "parameters": [
-          {
-            "name": "authorization",
-            "in": "header",
-            "schema": {
-              "type": "string"
-            }
-          }
-        ],
         "responses": {
           "200": {
             "description": "Individual Appointments fetched successfully"
@@ -1367,15 +1187,6 @@
         ],
         "summary": "Update Appointment",
         "description": "Update appointment by passing id and other fields to update",
-        "parameters": [
-          {
-            "name": "authorization",
-            "in": "header",
-            "schema": {
-              "type": "string"
-            }
-          }
-        ],
         "responses": {
           "200": {
             "description": "Appointment updated successfully"
@@ -1465,15 +1276,6 @@
         ],
         "summary": "Add frequent questions and answers",
         "description": "Add frequent questions and answers",
-        "parameters": [
-          {
-            "name": "authorization",
-            "in": "header",
-            "schema": {
-              "type": "string"
-            }
-          }
-        ],
         "responses": {
           "200": {
             "description": "faq added successfully"
@@ -1511,15 +1313,6 @@
         ],
         "summary": "Get frequent questions and answers",
         "description": "Get frequent questions and answers",
-        "parameters": [
-          {
-            "name": "authorization",
-            "in": "header",
-            "schema": {
-              "type": "string"
-            }
-          }
-        ],
         "responses": {
           "200": {
             "description": "Faq list fetched successfully"
@@ -1553,15 +1346,6 @@
         ],
         "summary": "Udpate frequent questions and answers",
         "description": "Update frequent questions and answers",
-        "parameters": [
-          {
-            "name": "authorization",
-            "in": "header",
-            "schema": {
-              "type": "string"
-            }
-          }
-        ],
         "responses": {
           "200": {
             "description": "Faq updated successfully"
@@ -1603,15 +1387,6 @@
         ],
         "summary": "Delete and retrieve frequent questions and answers",
         "description": "Delete and retrieve frequent questions and answers, id and pass active to retrieve or pass inactive to delete",
-        "parameters": [
-          {
-            "name": "authorization",
-            "in": "header",
-            "schema": {
-              "type": "string"
-            }
-          }
-        ],
         "responses": {
           "200": {
             "description": "Faq deleted or retrieved successfully"
@@ -1649,15 +1424,6 @@
         ],
         "summary": "Delete faq permanently",
         "description": "Delete faq permanently",
-        "parameters": [
-          {
-            "name": "authorization",
-            "in": "header",
-            "schema": {
-              "type": "string"
-            }
-          }
-        ],
         "responses": {
           "200": {
             "description": "Faq successfully deleted permanently"
@@ -1691,15 +1457,6 @@
         ],
         "summary": "Get filter list for member filter",
         "description": "Get filter list for member filter as per the user added",
-        "parameters": [
-          {
-            "name": "authorization",
-            "in": "header",
-            "schema": {
-              "type": "string"
-            }
-          }
-        ],
         "responses": {
           "200": {
             "description": "Filter list fetched successfully"
@@ -1733,15 +1490,6 @@
         ],
         "summary": "Get Country,State,district DROPDOWN list",
         "description": "Get country,state,district Dropdowns by passing country and state",
-        "parameters": [
-          {
-            "name": "authorization",
-            "in": "header",
-            "schema": {
-              "type": "string"
-            }
-          }
-        ],
         "responses": {
           "200": {
             "description": "Filter list fetched successfully"
@@ -1779,15 +1527,6 @@
         ],
         "summary": "Change status of Meeting,Appointment,Task,issues and political sumit",
         "description": "Change status",
-        "parameters": [
-          {
-            "name": "authorization",
-            "in": "header",
-            "schema": {
-              "type": "string"
-            }
-          }
-        ],
         "responses": {
           "200": {
             "description": "status changed successfully"
@@ -1829,15 +1568,6 @@
         ],
         "summary": "Add category for issues and grievance",
         "description": "Add category",
-        "parameters": [
-          {
-            "name": "authorization",
-            "in": "header",
-            "schema": {
-              "type": "string"
-            }
-          }
-        ],
         "responses": {
           "200": {
             "description": "Issue category added successfully"
@@ -1871,15 +1601,6 @@
         ],
         "summary": "Update category for issues and grievance",
         "description": "Update category",
-        "parameters": [
-          {
-            "name": "authorization",
-            "in": "header",
-            "schema": {
-              "type": "string"
-            }
-          }
-        ],
         "responses": {
           "200": {
             "description": "Issue category updated successfully"
@@ -1917,15 +1638,6 @@
         ],
         "summary": "Get category for issues and grievance",
         "description": "get category",
-        "parameters": [
-          {
-            "name": "authorization",
-            "in": "header",
-            "schema": {
-              "type": "string"
-            }
-          }
-        ],
         "responses": {
           "200": {
             "description": "Issue category fetched successfully"
@@ -1959,15 +1671,6 @@
         ],
         "summary": "Delete and retrieve Issue Categories",
         "description": "Delete and retrieve Issue Categories, id and pass active to retrieve or pass inactive to delete",
-        "parameters": [
-          {
-            "name": "authorization",
-            "in": "header",
-            "schema": {
-              "type": "string"
-            }
-          }
-        ],
         "responses": {
           "200": {
             "description": "issue categories deleted or retrieved successfully"
@@ -2005,15 +1708,6 @@
         ],
         "summary": "Delete and retrieve Issue Categories permanently",
         "description": "Delete and retrieve Issue Categories permanently by passing id",
-        "parameters": [
-          {
-            "name": "authorization",
-            "in": "header",
-            "schema": {
-              "type": "string"
-            }
-          }
-        ],
         "responses": {
           "200": {
             "description": "issue categories successfully deleted permanently"
@@ -2047,15 +1741,6 @@
         ],
         "summary": "Add category for political sumit",
         "description": "Add category",
-        "parameters": [
-          {
-            "name": "authorization",
-            "in": "header",
-            "schema": {
-              "type": "string"
-            }
-          }
-        ],
         "responses": {
           "200": {
             "description": "political sumit category added successfully"
@@ -2089,15 +1774,6 @@
         ],
         "summary": "Get category for political sumit",
         "description": "get category",
-        "parameters": [
-          {
-            "name": "authorization",
-            "in": "header",
-            "schema": {
-              "type": "string"
-            }
-          }
-        ],
         "responses": {
           "200": {
             "description": "political sumit category fetched successfully"
@@ -2131,15 +1807,6 @@
         ],
         "summary": "Update category for political sumit",
         "description": "update category",
-        "parameters": [
-          {
-            "name": "authorization",
-            "in": "header",
-            "schema": {
-              "type": "string"
-            }
-          }
-        ],
         "responses": {
           "200": {
             "description": "political sumit category updated successfully"
@@ -2177,15 +1844,6 @@
         ],
         "summary": "Delete category for political sumit",
         "description": "Delete category",
-        "parameters": [
-          {
-            "name": "authorization",
-            "in": "header",
-            "schema": {
-              "type": "string"
-            }
-          }
-        ],
         "responses": {
           "200": {
             "description": "political sumit category updated successfully"
@@ -2223,15 +1881,6 @@
         ],
         "summary": "Delete category permanently for political sumit",
         "description": "Delete category permanently",
-        "parameters": [
-          {
-            "name": "authorization",
-            "in": "header",
-            "schema": {
-              "type": "string"
-            }
-          }
-        ],
         "responses": {
           "200": {
             "description": "political sumit category permanently deleted successfully"
@@ -2265,15 +1914,6 @@
         ],
         "summary": "Add category for travel expense",
         "description": "Add category",
-        "parameters": [
-          {
-            "name": "authorization",
-            "in": "header",
-            "schema": {
-              "type": "string"
-            }
-          }
-        ],
         "responses": {
           "200": {
             "description": "Travel expense category added successfully"
@@ -2307,15 +1947,6 @@
         ],
         "summary": "Update category for travel expense",
         "description": "Update category",
-        "parameters": [
-          {
-            "name": "authorization",
-            "in": "header",
-            "schema": {
-              "type": "string"
-            }
-          }
-        ],
         "responses": {
           "200": {
             "description": "Travel expense category updated successfully"
@@ -2353,15 +1984,6 @@
         ],
         "summary": "Delete category for travel expense",
         "description": "Delete category",
-        "parameters": [
-          {
-            "name": "authorization",
-            "in": "header",
-            "schema": {
-              "type": "string"
-            }
-          }
-        ],
         "responses": {
           "200": {
             "description": "Travel expense category updated successfully"
@@ -2399,15 +2021,6 @@
         ],
         "summary": "Delete category permanently for travel expense",
         "description": "Delete category permanently",
-        "parameters": [
-          {
-            "name": "authorization",
-            "in": "header",
-            "schema": {
-              "type": "string"
-            }
-          }
-        ],
         "responses": {
           "200": {
             "description": "Travel expense category permanently deleted successfully"
@@ -2441,15 +2054,6 @@
         ],
         "summary": "Get category for travel expense",
         "description": "get category",
-        "parameters": [
-          {
-            "name": "authorization",
-            "in": "header",
-            "schema": {
-              "type": "string"
-            }
-          }
-        ],
         "responses": {
           "200": {
             "description": "travel expense category fetched successfully"
@@ -2483,15 +2087,6 @@
         ],
         "summary": "Add category for member",
         "description": "Add category",
-        "parameters": [
-          {
-            "name": "authorization",
-            "in": "header",
-            "schema": {
-              "type": "string"
-            }
-          }
-        ],
         "responses": {
           "200": {
             "description": "Member category added successfully"
@@ -2525,15 +2120,6 @@
         ],
         "summary": "Update category for Member",
         "description": "Update category",
-        "parameters": [
-          {
-            "name": "authorization",
-            "in": "header",
-            "schema": {
-              "type": "string"
-            }
-          }
-        ],
         "responses": {
           "200": {
             "description": "Member category updated successfully"
@@ -2571,15 +2157,6 @@
         ],
         "summary": "Delete category for member",
         "description": "Delete category",
-        "parameters": [
-          {
-            "name": "authorization",
-            "in": "header",
-            "schema": {
-              "type": "string"
-            }
-          }
-        ],
         "responses": {
           "200": {
             "description": "member category updated successfully"
@@ -2617,15 +2194,6 @@
         ],
         "summary": "Delete category permanently for member",
         "description": "Delete category permanently",
-        "parameters": [
-          {
-            "name": "authorization",
-            "in": "header",
-            "schema": {
-              "type": "string"
-            }
-          }
-        ],
         "responses": {
           "200": {
             "description": "Member category permanently deleted successfully"
@@ -2659,15 +2227,6 @@
         ],
         "summary": "Get category for Member",
         "description": "get category",
-        "parameters": [
-          {
-            "name": "authorization",
-            "in": "header",
-            "schema": {
-              "type": "string"
-            }
-          }
-        ],
         "responses": {
           "200": {
             "description": "Member category fetched successfully"
@@ -2701,15 +2260,6 @@
         ],
         "summary": "Get user list",
         "description": "get user list",
-        "parameters": [
-          {
-            "name": "authorization",
-            "in": "header",
-            "schema": {
-              "type": "string"
-            }
-          }
-        ],
         "responses": {
           "200": {
             "description": "User`s list fetched successfully"
@@ -2743,15 +2293,6 @@
         ],
         "summary": "Add Travel",
         "description": "Add a new travel plan",
-        "parameters": [
-          {
-            "name": "authorization",
-            "in": "header",
-            "schema": {
-              "type": "string"
-            }
-          }
-        ],
         "responses": {
           "200": {
             "description": "Travel added successfully"
@@ -2885,15 +2426,6 @@
         ],
         "summary": "Delete Travel",
         "description": "Delete travel by passing id",
-        "parameters": [
-          {
-            "name": "authorization",
-            "in": "header",
-            "schema": {
-              "type": "string"
-            }
-          }
-        ],
         "responses": {
           "200": {
             "description": "Travel deleted successfully"
@@ -2927,15 +2459,6 @@
         ],
         "summary": "Update Travel",
         "description": "Update travel by passing id and other fields to update",
-        "parameters": [
-          {
-            "name": "authorization",
-            "in": "header",
-            "schema": {
-              "type": "string"
-            }
-          }
-        ],
         "responses": {
           "200": {
             "description": "Travel updated successfully"
@@ -3069,15 +2592,6 @@
         ],
         "summary": "Get Travel",
         "description": "Get travel details by passing user_id",
-        "parameters": [
-          {
-            "name": "authorization",
-            "in": "header",
-            "schema": {
-              "type": "string"
-            }
-          }
-        ],
         "responses": {
           "200": {
             "description": "Travel details fetched successfully"
@@ -3123,15 +2637,6 @@
         ],
         "summary": "Get Travel by id",
         "description": "Get travel details by passing id",
-        "parameters": [
-          {
-            "name": "authorization",
-            "in": "header",
-            "schema": {
-              "type": "string"
-            }
-          }
-        ],
         "responses": {
           "200": {
             "description": "Individual Travel details fetched successfully"
@@ -3165,15 +2670,6 @@
         ],
         "summary": "Add Daily Plan",
         "description": "Add a daily plan to a travel",
-        "parameters": [
-          {
-            "name": "authorization",
-            "in": "header",
-            "schema": {
-              "type": "string"
-            }
-          }
-        ],
         "responses": {
           "200": {
             "description": "Daily plan added successfully"
@@ -3227,15 +2723,6 @@
         ],
         "summary": "Update Daily Plan",
         "description": "Update a daily plan by passing id and other fields to update",
-        "parameters": [
-          {
-            "name": "authorization",
-            "in": "header",
-            "schema": {
-              "type": "string"
-            }
-          }
-        ],
         "responses": {
           "200": {
             "description": "Daily plan updated successfully"
@@ -3289,15 +2776,6 @@
         ],
         "summary": "Delete Daily Plan",
         "description": "Delete a daily plan by passing id",
-        "parameters": [
-          {
-            "name": "authorization",
-            "in": "header",
-            "schema": {
-              "type": "string"
-            }
-          }
-        ],
         "responses": {
           "200": {
             "description": "Daily plan deleted successfully"
@@ -3331,15 +2809,6 @@
         ],
         "summary": "Add Travel Expense",
         "description": "Add a travel expense",
-        "parameters": [
-          {
-            "name": "authorization",
-            "in": "header",
-            "schema": {
-              "type": "string"
-            }
-          }
-        ],
         "responses": {
           "200": {
             "description": "Travel expense added successfully"
@@ -3393,15 +2862,6 @@
         ],
         "summary": "Delete Travel Expense",
         "description": "Delete a travel expense by passing id",
-        "parameters": [
-          {
-            "name": "authorization",
-            "in": "header",
-            "schema": {
-              "type": "string"
-            }
-          }
-        ],
         "responses": {
           "200": {
             "description": "Travel expense deleted successfully"
@@ -3435,15 +2895,6 @@
         ],
         "summary": "Update Travel Expense",
         "description": "Update a travel expense by passing id and other fields to update",
-        "parameters": [
-          {
-            "name": "authorization",
-            "in": "header",
-            "schema": {
-              "type": "string"
-            }
-          }
-        ],
         "responses": {
           "200": {
             "description": "Travel expense updated successfully"
@@ -3497,15 +2948,6 @@
         ],
         "summary": "Get Travel Expense",
         "description": "Get travel expenses by passing travel_id",
-        "parameters": [
-          {
-            "name": "authorization",
-            "in": "header",
-            "schema": {
-              "type": "string"
-            }
-          }
-        ],
         "responses": {
           "200": {
             "description": "Travel expenses fetched successfully"
@@ -3539,15 +2981,6 @@
         ],
         "summary": "Get travel expense categories",
         "description": "Get travel expense categories",
-        "parameters": [
-          {
-            "name": "authorization",
-            "in": "header",
-            "schema": {
-              "type": "string"
-            }
-          }
-        ],
         "responses": {
           "200": {
             "description": "travel expense categories fetched successfully"
@@ -3565,15 +2998,6 @@
         ],
         "summary": "Add Travel Notes",
         "description": "Add notes for a travel",
-        "parameters": [
-          {
-            "name": "authorization",
-            "in": "header",
-            "schema": {
-              "type": "string"
-            }
-          }
-        ],
         "responses": {
           "200": {
             "description": "Travel notes added successfully"
@@ -3615,15 +3039,6 @@
         ],
         "summary": "Get Travel Notes",
         "description": "Get travel notes by passing travel_id",
-        "parameters": [
-          {
-            "name": "authorization",
-            "in": "header",
-            "schema": {
-              "type": "string"
-            }
-          }
-        ],
         "responses": {
           "200": {
             "description": "Travel notes fetched successfully"
@@ -3657,15 +3072,6 @@
         ],
         "summary": "Update Travel Notes",
         "description": "Update travel notes by passing id and other fields to update",
-        "parameters": [
-          {
-            "name": "authorization",
-            "in": "header",
-            "schema": {
-              "type": "string"
-            }
-          }
-        ],
         "responses": {
           "200": {
             "description": "Travel notes updated successfully"
@@ -3707,15 +3113,6 @@
         ],
         "summary": "Delete Travel Notes",
         "description": "Delete travel notes by passing id",
-        "parameters": [
-          {
-            "name": "authorization",
-            "in": "header",
-            "schema": {
-              "type": "string"
-            }
-          }
-        ],
         "responses": {
           "200": {
             "description": "Travel notes deleted successfully"
@@ -3749,15 +3146,6 @@
         ],
         "summary": "Add Travel Photos",
         "description": "Add photos to a travel",
-        "parameters": [
-          {
-            "name": "authorization",
-            "in": "header",
-            "schema": {
-              "type": "string"
-            }
-          }
-        ],
         "responses": {
           "200": {
             "description": "Travel photos added successfully"
@@ -3795,15 +3183,6 @@
         ],
         "summary": "Update Travel Photos",
         "description": "Update travel photos by passing id and media_id",
-        "parameters": [
-          {
-            "name": "authorization",
-            "in": "header",
-            "schema": {
-              "type": "string"
-            }
-          }
-        ],
         "responses": {
           "200": {
             "description": "Travel photos updated successfully"
@@ -3841,15 +3220,6 @@
         ],
         "summary": "Get Travel Photos",
         "description": "Get travel photos by passing travel_id",
-        "parameters": [
-          {
-            "name": "authorization",
-            "in": "header",
-            "schema": {
-              "type": "string"
-            }
-          }
-        ],
         "responses": {
           "200": {
             "description": "Travel photos fetched successfully"
@@ -3883,15 +3253,6 @@
         ],
         "summary": "DELETE TRAVEL PHOTOS",
         "description": "Delete travel photos by passing travel id and media id",
-        "parameters": [
-          {
-            "name": "authorization",
-            "in": "header",
-            "schema": {
-              "type": "string"
-            }
-          }
-        ],
         "responses": {
           "200": {
             "description": "Travel photos deleted successfully"
@@ -3929,15 +3290,6 @@
         ],
         "summary": "ADD TRAVEL DOCUMENTS",
         "description": "Add travel documents",
-        "parameters": [
-          {
-            "name": "authorization",
-            "in": "header",
-            "schema": {
-              "type": "string"
-            }
-          }
-        ],
         "responses": {
           "200": {
             "description": "Travel documents added successfully"
@@ -3975,15 +3327,6 @@
         ],
         "summary": "UPDATE TRAVEL DOCUMENTS",
         "description": "Update travel documents by passing travel id and other update fields",
-        "parameters": [
-          {
-            "name": "authorization",
-            "in": "header",
-            "schema": {
-              "type": "string"
-            }
-          }
-        ],
         "responses": {
           "200": {
             "description": "Travel documents updated successfully"
@@ -4021,15 +3364,6 @@
         ],
         "summary": "GET TRAVEL DOCUMENTS",
         "description": "Get travel documents by passing travel id",
-        "parameters": [
-          {
-            "name": "authorization",
-            "in": "header",
-            "schema": {
-              "type": "string"
-            }
-          }
-        ],
         "responses": {
           "200": {
             "description": "Travel documents fetched successfully"
@@ -4063,15 +3397,6 @@
         ],
         "summary": "DELETE TRAVEL DOCUMENTS",
         "description": "Delete travel documents by passing travel id and media id",
-        "parameters": [
-          {
-            "name": "authorization",
-            "in": "header",
-            "schema": {
-              "type": "string"
-            }
-          }
-        ],
         "responses": {
           "200": {
             "description": "Travel documents deleted successfully"
@@ -4109,15 +3434,6 @@
         ],
         "summary": "Add Task and reminders",
         "description": "Add task and reminders by passing user id and other fields",
-        "parameters": [
-          {
-            "name": "authorization",
-            "in": "header",
-            "schema": {
-              "type": "string"
-            }
-          }
-        ],
         "responses": {
           "200": {
             "description": "Task and reminder added successfully"
@@ -4191,15 +3507,6 @@
         ],
         "summary": "Delete Task and reminders",
         "description": "delete task and reminders by passing user id and task id",
-        "parameters": [
-          {
-            "name": "authorization",
-            "in": "header",
-            "schema": {
-              "type": "string"
-            }
-          }
-        ],
         "responses": {
           "200": {
             "description": "Task and reminder deleted successfully"
@@ -4233,15 +3540,6 @@
         ],
         "summary": "Update Task and reminders",
         "description": "Update task and reminders by passing user id and other fields to update",
-        "parameters": [
-          {
-            "name": "authorization",
-            "in": "header",
-            "schema": {
-              "type": "string"
-            }
-          }
-        ],
         "responses": {
           "200": {
             "description": "Task and reminder updated successfully"
@@ -4315,15 +3613,6 @@
         ],
         "summary": "Get Task and reminders",
         "description": "Get task and reminders by passing user id and if need by status - pass status",
-        "parameters": [
-          {
-            "name": "authorization",
-            "in": "header",
-            "schema": {
-              "type": "string"
-            }
-          }
-        ],
         "responses": {
           "200": {
             "description": "Task and reminder fetched successfully"
@@ -4347,6 +3636,14 @@
                     "type": "string",
                     "example": "inprogress"
                   },
+                  "from_date": {
+                    "type": "string",
+                    "example": "2026-07-12"
+                  },
+                  "to_date": {
+                    "type": "string",
+                    "example": "2026-07-12"
+                  },
                   "page": {
                     "type": "number",
                     "example": 1
@@ -4365,15 +3662,6 @@
         ],
         "summary": "Get Task and reminders by id",
         "description": "Get task and reminders by passing id",
-        "parameters": [
-          {
-            "name": "authorization",
-            "in": "header",
-            "schema": {
-              "type": "string"
-            }
-          }
-        ],
         "responses": {
           "200": {
             "description": "Individual Task and reminder fetched successfully"
@@ -4407,15 +3695,6 @@
         ],
         "summary": "Add issue and grievance",
         "description": "Add issue and grievance by pssing user_id and other fields",
-        "parameters": [
-          {
-            "name": "authorization",
-            "in": "header",
-            "schema": {
-              "type": "string"
-            }
-          }
-        ],
         "responses": {
           "200": {
             "description": "Issue and Grievance added successfully"
@@ -4489,15 +3768,6 @@
         ],
         "summary": "Delete issue and grievance",
         "description": "Delete issue and grievance by pssing id",
-        "parameters": [
-          {
-            "name": "authorization",
-            "in": "header",
-            "schema": {
-              "type": "string"
-            }
-          }
-        ],
         "responses": {
           "200": {
             "description": "Issue and Grievance deleted successfully"
@@ -4531,15 +3801,6 @@
         ],
         "summary": "Update issue and grievance",
         "description": "Update issue and grievance by pssing id and other fields",
-        "parameters": [
-          {
-            "name": "authorization",
-            "in": "header",
-            "schema": {
-              "type": "string"
-            }
-          }
-        ],
         "responses": {
           "200": {
             "description": "Issue and Grievance updated successfully"
@@ -4613,15 +3874,6 @@
         ],
         "summary": "Get issue and grievance",
         "description": "Get issue and grievance by pssing user id and other fields",
-        "parameters": [
-          {
-            "name": "authorization",
-            "in": "header",
-            "schema": {
-              "type": "string"
-            }
-          }
-        ],
         "responses": {
           "200": {
             "description": "Issue and Grievance fetched successfully"
@@ -4675,15 +3927,6 @@
         ],
         "summary": "Get issue and grievance by id",
         "description": "Get issue and grievance by pssing id",
-        "parameters": [
-          {
-            "name": "authorization",
-            "in": "header",
-            "schema": {
-              "type": "string"
-            }
-          }
-        ],
         "responses": {
           "200": {
             "description": "Individual Issue and Grievance fetched successfully"
@@ -4717,15 +3960,6 @@
         ],
         "summary": "Add political sumit",
         "description": "Add political sumit by passing user id and other fields",
-        "parameters": [
-          {
-            "name": "authorization",
-            "in": "header",
-            "schema": {
-              "type": "string"
-            }
-          }
-        ],
         "responses": {
           "200": {
             "description": "Political sumit added successfully"
@@ -4832,15 +4066,6 @@
         ],
         "summary": "Delete political sumit",
         "description": "Delete political sumit by pssing id",
-        "parameters": [
-          {
-            "name": "authorization",
-            "in": "header",
-            "schema": {
-              "type": "string"
-            }
-          }
-        ],
         "responses": {
           "200": {
             "description": "political sumit deleted successfully"
@@ -4874,15 +4099,6 @@
         ],
         "summary": "Get political sumit",
         "description": "Get political sumit by pssing user id and other related fields",
-        "parameters": [
-          {
-            "name": "authorization",
-            "in": "header",
-            "schema": {
-              "type": "string"
-            }
-          }
-        ],
         "responses": {
           "200": {
             "description": "political sumit fetched successfully"
@@ -4936,15 +4152,6 @@
         ],
         "summary": "Update political sumit",
         "description": "Update political sumit by passing id and other fields",
-        "parameters": [
-          {
-            "name": "authorization",
-            "in": "header",
-            "schema": {
-              "type": "string"
-            }
-          }
-        ],
         "responses": {
           "200": {
             "description": "Political sumit updated successfully"
@@ -5062,15 +4269,6 @@
         ],
         "summary": "Get reminders",
         "description": "Get reminders by passing user id and status",
-        "parameters": [
-          {
-            "name": "authorization",
-            "in": "header",
-            "schema": {
-              "type": "string"
-            }
-          }
-        ],
         "responses": {
           "200": {
             "description": "Reminders fetched successfully"
@@ -5108,15 +4306,6 @@
         ],
         "summary": "Update reminders",
         "description": "Update reminders by passing id and other fields",
-        "parameters": [
-          {
-            "name": "authorization",
-            "in": "header",
-            "schema": {
-              "type": "string"
-            }
-          }
-        ],
         "responses": {
           "200": {
             "description": "Reminders updated successfully"
@@ -5166,15 +4355,6 @@
         ],
         "summary": "Upcoming reminders",
         "description": "Upcoming reminders by passing id",
-        "parameters": [
-          {
-            "name": "authorization",
-            "in": "header",
-            "schema": {
-              "type": "string"
-            }
-          }
-        ],
         "responses": {
           "200": {
             "description": "Upcoming Reminders fetched successfully"
@@ -5212,15 +4392,6 @@
         ],
         "summary": "Get calendar details",
         "description": "Get calendar details",
-        "parameters": [
-          {
-            "name": "authorization",
-            "in": "header",
-            "schema": {
-              "type": "string"
-            }
-          }
-        ],
         "responses": {
           "200": {
             "description": "Calendar details fetched successfully"
@@ -5262,15 +4433,6 @@
         ],
         "summary": "Get today calendar events",
         "description": "Get today calendar details",
-        "parameters": [
-          {
-            "name": "authorization",
-            "in": "header",
-            "schema": {
-              "type": "string"
-            }
-          }
-        ],
         "responses": {
           "200": {
             "description": "Calendar details fetched successfully"
@@ -5312,15 +4474,6 @@
         ],
         "summary": "Get today events counts",
         "description": "Get today events counts",
-        "parameters": [
-          {
-            "name": "authorization",
-            "in": "header",
-            "schema": {
-              "type": "string"
-            }
-          }
-        ],
         "responses": {
           "200": {
             "description": "Today events counts fetched successfully"
@@ -5354,15 +4507,6 @@
         ],
         "summary": "Get user details",
         "description": "Get user details by passing user id",
-        "parameters": [
-          {
-            "name": "authorization",
-            "in": "header",
-            "schema": {
-              "type": "string"
-            }
-          }
-        ],
         "responses": {
           "200": {
             "description": "User profile details fetched successfully"
@@ -5396,15 +4540,6 @@
         ],
         "summary": "Update user details",
         "description": "Update user details by passing user id and other fields",
-        "parameters": [
-          {
-            "name": "authorization",
-            "in": "header",
-            "schema": {
-              "type": "string"
-            }
-          }
-        ],
         "responses": {
           "200": {
             "description": "User profile details updated successfully"
@@ -5454,15 +4589,6 @@
         ],
         "summary": "Contact us",
         "description": "Contact us by passing user_id, name, email, phn_num and comments",
-        "parameters": [
-          {
-            "name": "authorization",
-            "in": "header",
-            "schema": {
-              "type": "string"
-            }
-          }
-        ],
         "responses": {
           "200": {
             "description": "Inquiry submitted successfully"
@@ -5516,15 +4642,6 @@
         ],
         "summary": "Delete Account",
         "description": "Delete account by passing user id and delete reason",
-        "parameters": [
-          {
-            "name": "authorization",
-            "in": "header",
-            "schema": {
-              "type": "string"
-            }
-          }
-        ],
         "responses": {
           "200": {
             "description": "Account deleted successfully"
@@ -5562,15 +4679,6 @@
         ],
         "summary": "Get Notification",
         "description": "Get Notifications by passing user_id.",
-        "parameters": [
-          {
-            "name": "authorization",
-            "in": "header",
-            "schema": {
-              "type": "string"
-            }
-          }
-        ],
         "responses": {
           "200": {
             "description": "Notifications fetched successfully"
@@ -5608,15 +4716,6 @@
         ],
         "summary": "Set notification view changes, from unseen to seen",
         "description": "Set Notifications view by passing id.",
-        "parameters": [
-          {
-            "name": "authorization",
-            "in": "header",
-            "schema": {
-              "type": "string"
-            }
-          }
-        ],
         "responses": {
           "200": {
             "description": "Notifications view changed from unseen to seen successfully"
@@ -5654,15 +4753,6 @@
         ],
         "summary": "Set notification read changes, from unread to read",
         "description": "Set Notifications read by passing id.",
-        "parameters": [
-          {
-            "name": "authorization",
-            "in": "header",
-            "schema": {
-              "type": "string"
-            }
-          }
-        ],
         "responses": {
           "200": {
             "description": "Notifications read changed from unread to read successfully"
@@ -5696,15 +4786,6 @@
         ],
         "summary": "Get active notification count",
         "description": "Get notification active count by passing user id.",
-        "parameters": [
-          {
-            "name": "authorization",
-            "in": "header",
-            "schema": {
-              "type": "string"
-            }
-          }
-        ],
         "responses": {
           "200": {
             "description": "Notifications active count fetched successfully"
@@ -5738,15 +4819,6 @@
         ],
         "summary": "testing notification count",
         "description": "get notification count by passing user id.",
-        "parameters": [
-          {
-            "name": "authorization",
-            "in": "header",
-            "schema": {
-              "type": "string"
-            }
-          }
-        ],
         "responses": {
           "200": {
             "description": "Notifications successfully tested"
@@ -5780,15 +4852,6 @@
         ],
         "summary": "Dashboard admin login",
         "description": "Dashboard admin login",
-        "parameters": [
-          {
-            "name": "authorization",
-            "in": "header",
-            "schema": {
-              "type": "string"
-            }
-          }
-        ],
         "responses": {
           "200": {
             "description": "login successfull"
@@ -5826,15 +4889,6 @@
         ],
         "summary": "Add frequent questions and answers",
         "description": "Add frequent questions and answers",
-        "parameters": [
-          {
-            "name": "authorization",
-            "in": "header",
-            "schema": {
-              "type": "string"
-            }
-          }
-        ],
         "responses": {
           "200": {
             "description": "faq added successfully"
@@ -5872,15 +4926,6 @@
         ],
         "summary": "Get frequent questions and answers",
         "description": "Get frequent questions and answers",
-        "parameters": [
-          {
-            "name": "authorization",
-            "in": "header",
-            "schema": {
-              "type": "string"
-            }
-          }
-        ],
         "responses": {
           "200": {
             "description": "Faq list fetched successfully"
@@ -5914,15 +4959,6 @@
         ],
         "summary": "Udpate frequent questions and answers",
         "description": "Update frequent questions and answers",
-        "parameters": [
-          {
-            "name": "authorization",
-            "in": "header",
-            "schema": {
-              "type": "string"
-            }
-          }
-        ],
         "responses": {
           "200": {
             "description": "Faq updated successfully"
@@ -5964,15 +5000,6 @@
         ],
         "summary": "Delete and retrieve frequent questions and answers",
         "description": "Delete and retrieve frequent questions and answers, id and pass active to retrieve or pass inactive to delete",
-        "parameters": [
-          {
-            "name": "authorization",
-            "in": "header",
-            "schema": {
-              "type": "string"
-            }
-          }
-        ],
         "responses": {
           "200": {
             "description": "Faq deleted or retrieved successfully"
@@ -6010,15 +5037,6 @@
         ],
         "summary": "Delete faq permanently",
         "description": "Delete faq permanently",
-        "parameters": [
-          {
-            "name": "authorization",
-            "in": "header",
-            "schema": {
-              "type": "string"
-            }
-          }
-        ],
         "responses": {
           "200": {
             "description": "Faq successfully deleted permanently"
@@ -6052,15 +5070,6 @@
         ],
         "summary": "Add category for issues and grievance",
         "description": "Add category",
-        "parameters": [
-          {
-            "name": "authorization",
-            "in": "header",
-            "schema": {
-              "type": "string"
-            }
-          }
-        ],
         "responses": {
           "200": {
             "description": "Issue category added successfully"
@@ -6094,15 +5103,6 @@
         ],
         "summary": "Update category for issues and grievance",
         "description": "Update category",
-        "parameters": [
-          {
-            "name": "authorization",
-            "in": "header",
-            "schema": {
-              "type": "string"
-            }
-          }
-        ],
         "responses": {
           "200": {
             "description": "Issue category updated successfully"
@@ -6140,15 +5140,6 @@
         ],
         "summary": "Get category for issues and grievance",
         "description": "get category",
-        "parameters": [
-          {
-            "name": "authorization",
-            "in": "header",
-            "schema": {
-              "type": "string"
-            }
-          }
-        ],
         "responses": {
           "200": {
             "description": "Issue category fetched successfully"
@@ -6182,15 +5173,6 @@
         ],
         "summary": "Delete and retrieve Issue Categories",
         "description": "Delete and retrieve Issue Categories, id and pass active to retrieve or pass inactive to delete",
-        "parameters": [
-          {
-            "name": "authorization",
-            "in": "header",
-            "schema": {
-              "type": "string"
-            }
-          }
-        ],
         "responses": {
           "200": {
             "description": "issue categories deleted or retrieved successfully"
@@ -6228,15 +5210,6 @@
         ],
         "summary": "Delete and retrieve Issue Categories permanently",
         "description": "Delete and retrieve Issue Categories permanently by passing id",
-        "parameters": [
-          {
-            "name": "authorization",
-            "in": "header",
-            "schema": {
-              "type": "string"
-            }
-          }
-        ],
         "responses": {
           "200": {
             "description": "issue categories successfully deleted permanently"
@@ -6270,15 +5243,6 @@
         ],
         "summary": "Add category for political sumit",
         "description": "Add category",
-        "parameters": [
-          {
-            "name": "authorization",
-            "in": "header",
-            "schema": {
-              "type": "string"
-            }
-          }
-        ],
         "responses": {
           "200": {
             "description": "political sumit category added successfully"
@@ -6312,15 +5276,6 @@
         ],
         "summary": "Get category for political sumit",
         "description": "get category",
-        "parameters": [
-          {
-            "name": "authorization",
-            "in": "header",
-            "schema": {
-              "type": "string"
-            }
-          }
-        ],
         "responses": {
           "200": {
             "description": "political sumit category fetched successfully"
@@ -6354,15 +5309,6 @@
         ],
         "summary": "Update category for political sumit",
         "description": "update category",
-        "parameters": [
-          {
-            "name": "authorization",
-            "in": "header",
-            "schema": {
-              "type": "string"
-            }
-          }
-        ],
         "responses": {
           "200": {
             "description": "political sumit category updated successfully"
@@ -6400,15 +5346,6 @@
         ],
         "summary": "Delete category for political sumit",
         "description": "Delete category",
-        "parameters": [
-          {
-            "name": "authorization",
-            "in": "header",
-            "schema": {
-              "type": "string"
-            }
-          }
-        ],
         "responses": {
           "200": {
             "description": "political sumit category updated successfully"
@@ -6446,15 +5383,6 @@
         ],
         "summary": "Delete category permanently for political sumit",
         "description": "Delete category permanently",
-        "parameters": [
-          {
-            "name": "authorization",
-            "in": "header",
-            "schema": {
-              "type": "string"
-            }
-          }
-        ],
         "responses": {
           "200": {
             "description": "political sumit category permanently deleted successfully"
@@ -6488,15 +5416,6 @@
         ],
         "summary": "Add category for travel expense",
         "description": "Add category",
-        "parameters": [
-          {
-            "name": "authorization",
-            "in": "header",
-            "schema": {
-              "type": "string"
-            }
-          }
-        ],
         "responses": {
           "200": {
             "description": "Travel expense category added successfully"
@@ -6530,15 +5449,6 @@
         ],
         "summary": "Update category for travel expense",
         "description": "Update category",
-        "parameters": [
-          {
-            "name": "authorization",
-            "in": "header",
-            "schema": {
-              "type": "string"
-            }
-          }
-        ],
         "responses": {
           "200": {
             "description": "Travel expense category updated successfully"
@@ -6576,15 +5486,6 @@
         ],
         "summary": "Delete category for travel expense",
         "description": "Delete category",
-        "parameters": [
-          {
-            "name": "authorization",
-            "in": "header",
-            "schema": {
-              "type": "string"
-            }
-          }
-        ],
         "responses": {
           "200": {
             "description": "Travel expense category updated successfully"
@@ -6622,15 +5523,6 @@
         ],
         "summary": "Delete category permanently for travel expense",
         "description": "Delete category permanently",
-        "parameters": [
-          {
-            "name": "authorization",
-            "in": "header",
-            "schema": {
-              "type": "string"
-            }
-          }
-        ],
         "responses": {
           "200": {
             "description": "Travel expense category permanently deleted successfully"
@@ -6664,15 +5556,6 @@
         ],
         "summary": "Get category for travel expense",
         "description": "get category",
-        "parameters": [
-          {
-            "name": "authorization",
-            "in": "header",
-            "schema": {
-              "type": "string"
-            }
-          }
-        ],
         "responses": {
           "200": {
             "description": "travel expense category fetched successfully"
@@ -6706,15 +5589,6 @@
         ],
         "summary": "Add category for member",
         "description": "Add category",
-        "parameters": [
-          {
-            "name": "authorization",
-            "in": "header",
-            "schema": {
-              "type": "string"
-            }
-          }
-        ],
         "responses": {
           "200": {
             "description": "Member category added successfully"
@@ -6748,15 +5622,6 @@
         ],
         "summary": "Update category for Member",
         "description": "Update category",
-        "parameters": [
-          {
-            "name": "authorization",
-            "in": "header",
-            "schema": {
-              "type": "string"
-            }
-          }
-        ],
         "responses": {
           "200": {
             "description": "Member category updated successfully"
@@ -6794,15 +5659,6 @@
         ],
         "summary": "Delete category for member",
         "description": "Delete category",
-        "parameters": [
-          {
-            "name": "authorization",
-            "in": "header",
-            "schema": {
-              "type": "string"
-            }
-          }
-        ],
         "responses": {
           "200": {
             "description": "member category updated successfully"
@@ -6840,15 +5696,6 @@
         ],
         "summary": "Delete category permanently for member",
         "description": "Delete category permanently",
-        "parameters": [
-          {
-            "name": "authorization",
-            "in": "header",
-            "schema": {
-              "type": "string"
-            }
-          }
-        ],
         "responses": {
           "200": {
             "description": "Member category permanently deleted successfully"
@@ -6882,15 +5729,6 @@
         ],
         "summary": "Get category for Member",
         "description": "get category",
-        "parameters": [
-          {
-            "name": "authorization",
-            "in": "header",
-            "schema": {
-              "type": "string"
-            }
-          }
-        ],
         "responses": {
           "200": {
             "description": "Member category fetched successfully"
@@ -6924,15 +5762,6 @@
         ],
         "summary": "Get user list",
         "description": "get user list",
-        "parameters": [
-          {
-            "name": "authorization",
-            "in": "header",
-            "schema": {
-              "type": "string"
-            }
-          }
-        ],
         "responses": {
           "200": {
             "description": "User`s list fetched successfully"
@@ -6966,15 +5795,6 @@
         ],
         "summary": "Get user enquiries",
         "description": "get user enquiries",
-        "parameters": [
-          {
-            "name": "authorization",
-            "in": "header",
-            "schema": {
-              "type": "string"
-            }
-          }
-        ],
         "responses": {
           "200": {
             "description": "User`s enquiry fetched successfully"
@@ -7008,15 +5828,6 @@
         ],
         "summary": "Update user enquiries",
         "description": "Update user enquiries",
-        "parameters": [
-          {
-            "name": "authorization",
-            "in": "header",
-            "schema": {
-              "type": "string"
-            }
-          }
-        ],
         "responses": {
           "200": {
             "description": "User`s enquiry updated successfully"

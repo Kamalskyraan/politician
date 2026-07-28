@@ -32,16 +32,22 @@ export const getCalendarInfo = async (req, res) => {
       from_date,
       to_date,
     });
+    // console.log(result?.data.length);
     let calendarResult = [];
     let calendarMap = {};
     if (result?.data.length > 1) {
       calendarResult = await result?.data;
 
       for (const row of calendarResult) {
+        // console.log(row)
         let current = new Date(
-          row.from_date > from_date ? row.from_date : from_date,
+          row.from_date >= from_date ? row.from_date : from_date,
         );
-        let end = new Date(row.to_date < to_date ? row.to_date : to_date);
+        let end = new Date(row.to_date <= to_date ? row.to_date : to_date);
+        // console.log(row.to_date);
+        // console.log(current, "------", end);
+        current.setUTCHours(0, 0, 0, 0);
+        end.setUTCHours(0, 0, 0, 0);
 
         while (current <= end) {
           const dateKey =
@@ -50,6 +56,7 @@ export const getCalendarInfo = async (req, res) => {
             String(current.getMonth() + 1).padStart(2, "0") +
             "-" +
             String(current.getDate()).padStart(2, "0");
+          // console.log(dateKey)
 
           if (!calendarMap[dateKey]) {
             calendarMap[dateKey] = {
@@ -72,6 +79,7 @@ export const getCalendarInfo = async (req, res) => {
           }
 
           current.setDate(current.getDate() + 1);
+          // console.log(current);
         }
       }
       calendarMap = [calendarMap];
@@ -80,7 +88,7 @@ export const getCalendarInfo = async (req, res) => {
     let finalResponse = replaceNullWithEmptyString(
       result?.data.length > 1 ? calendarMap : calendarResult,
     );
-
+    // console.log(calendarMap);
     if (result?.success === 1) {
       return sendResponse(
         res,
@@ -91,14 +99,7 @@ export const getCalendarInfo = async (req, res) => {
         "",
       );
     } else if (result?.success === 0) {
-      return sendResponse(
-        res,
-        200,
-        0,
-        "Failed to get calendar info",
-        [],
-        result?.error,
-      );
+      return sendResponse(res, 200, 0, "Failed to get calendar info", [], "");
     }
   } catch (error) {
     return sendResponse(
@@ -140,7 +141,7 @@ export const getTodayEvents = async (req, res) => {
 
     result = await calendarMdl.getEvent({ user_id, event_date, page });
 
-    const pagination = result?.pagination
+    const pagination = result?.pagination;
 
     let data = result?.data;
     data = replaceNullWithEmptyString(data);
@@ -150,18 +151,11 @@ export const getTodayEvents = async (req, res) => {
         200,
         1,
         "Event info fetched successfully",
-        [{data, pagination}],
+        [{ data, pagination }],
         "",
       );
     } else if (result?.success === 0) {
-      return sendResponse(
-        res,
-        200,
-        0,
-        "Failed to get Event info",
-        [],
-        "",
-      );
+      return sendResponse(res, 200, 0, "Failed to get Event info", [], "");
     }
   } catch (error) {
     return sendResponse(

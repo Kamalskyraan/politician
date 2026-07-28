@@ -45,7 +45,7 @@ router.post(
   webController.adminLogin,
 );
 
-router.use(verifyAdminToken);
+// router.use(verifyAdminToken);
 
 //private routes for dashboard with token middleware
 
