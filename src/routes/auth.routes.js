@@ -3,7 +3,7 @@ import * as authcontroller from "../controller/auth.controller.js";
 import { verifyToken } from "../middleware/auth.middleware.js";
 import { deleteAccountCheck } from "../middleware/delAccountCheck.middleware.js";
 
-const router = express.Router();
+const  router = express.Router();
 // router.get("/check",justCheck)
 
 router.post(

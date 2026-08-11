@@ -1487,15 +1487,15 @@ export const updateIssueschema = Joi.object({
     "string.base": "description should be a string",
     "any.required": "description cannot be empty",
   }),
-  address: Joi.string().required().messages({
+  address: Joi.string().required().allow("").messages({
     "string.base": "address should be a string",
     "any.required": "address cannot be empty",
   }),
-  lat: Joi.string().required().messages({
+  lat: Joi.string().required().allow("").messages({
     "string.base": "lat must be a string",
     "any.required": "lat is required",
   }),
-  lng: Joi.string().required().messages({
+  lng: Joi.string().required().allow("").messages({
     "string.base": "lng must be a string",
     "any.required": "lng is required",
   }),
