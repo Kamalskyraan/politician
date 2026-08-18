@@ -1068,7 +1068,7 @@ export const addExpenseSchema = Joi.object({
     "number.base": "Travel Id should be an integer",
     "any.required": "Travel Id cannot be empty",
   }),
-  user_id : Joi.string().optional(),
+  user_id: Joi.string().optional(),
   cat_id: Joi.number().required().messages({
     "number.base": "category id should be a number",
     "any.required": "category id cannot be empty",
@@ -1497,7 +1497,12 @@ export const addIssueSchema = Joi.object({
     "string.base": "description should be a string",
     "any.required": "description cannot be empty",
   }),
-  address: Joi.string().optional(),
+
+  address: Joi.string().required().allow("").messages({
+    "string.base": "address should be a string",
+    "any.required": "address cannot be empty",
+  }),
+
   lat: Joi.string().allow("").messages({
     "string.base": "lat must be a string",
     "any.required": "lat is required",
@@ -1546,7 +1551,11 @@ export const updateIssueschema = Joi.object({
     "string.base": "description should be a string",
     "any.required": "description cannot be empty",
   }),
-  address: Joi.string().optional(),
+
+  address: Joi.string().required().allow("").messages({
+    "string.base": "address should be a string",
+    "any.required": "address cannot be empty",
+  }),
   lat: Joi.string().required().allow("").messages({
     "string.base": "lat must be a string",
     "any.required": "lat is required",
