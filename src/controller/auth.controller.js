@@ -342,8 +342,10 @@ export const login = async (req, res) => {
       device_id,
       device_type,
     });
+    if (userlogin?.data === undefined) {
+      return sendResponse(res, 200, 0, "User not found", [], "");
+    }
 
-    // console.log(userlogin?.data[0]);
     const userLoginResult = userlogin?.data[0];
 
     if (userlogin?.success === 0) {
