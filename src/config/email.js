@@ -17,24 +17,24 @@ dotenv.config();
 //   },
 // };
 
-const configOptions = {
-  host: "mail.skyraantech.com",
-  port: 465,
-  secure: true,
-  auth: {
-    user: "political@skyraantech.com",
-    pass: "mRmSm*^5a9AIleR6",
-  },
-};
 // const configOptions = {
-//   host: "mail.skyraancloud.com",
+//   host: "mail.skyraantech.com",
 //   port: 465,
 //   secure: true,
 //   auth: {
-//     user: "contact@skyraancloud.com",
-//     pass: "@DLwv(%Y)gtA3z5S",
+//     user: "political@skyraantech.com",
+//     pass: "mRmSm*^5a9AIleR6",
 //   },
 // };
+const configOptions = {
+  host: "mail.skyraancloud.com",
+  port: 465,
+  secure: true,
+  auth: {
+    user: "contact@skyraancloud.com",
+    pass: "@DLwv(%Y)gtA3z5S",
+  },
+};
 
 export const transporter = nodemailer.createTransport(configOptions);
 
